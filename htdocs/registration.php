@@ -195,9 +195,9 @@ function registerUser()
     $info .= "link we sent you to your email address";
     $_SESSION[ "registration_status" ] = [ "title" => $title, "info" => $info ];
 
-    // Email a confirmation link to the user - must be verified before accessing the new account
+    // Email a verification link to the user - must be verified before accessing the new account
     require_once "class.email.php";
-    $mail = new Email();
-    $mail -> prepareVerificationEmail( $email, $firstName, $lastName, $confirmId );
+    $mail = new Email( $email, $firstName, $lastName );
+    $mail -> prepareVerificationEmail( $confirmId );
     $mail -> sentEmail();
 }

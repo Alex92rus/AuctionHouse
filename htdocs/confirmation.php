@@ -14,7 +14,7 @@ if ( isset( $_GET[ "email" ] ) && isset( $_GET[ "confirmation_code" ] ) )
     $database = new Database();
 
     // SQL query for retrieving users for the given email and confirmation code
-    $confirmationQuery = "SELECT * FROM users WHERE email = '$email' AND confirmId = " . $code;
+    $confirmationQuery = "SELECT firstName, lastName, confirmId, verified FROM users WHERE email = '$email' AND confirmId = " . $code;
 
     // Query database
     $result = $database -> selectQuery( $confirmationQuery );
@@ -35,6 +35,12 @@ if ( isset( $_GET[ "email" ] ) && isset( $_GET[ "confirmation_code" ] ) )
         $title = "Registration completed!";
         $info  = "Thank you for joining us. Your account is now ready for signing in.";
         $_SESSION[ "registration_status" ] = [ "title" => $title, "info" => $info ];
+
+        // Email a registration confirmation to the user
+        require_once "class.email.php";
+        $mail = new Email( $email, $row[ 'firstName' ], $row[ 'lastName' ] );
+        $mail -> prepareConfirmationEmail();
+        $mail -> sentEmail();
     }
 
     // Close database connection

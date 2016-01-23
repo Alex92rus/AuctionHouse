@@ -5,9 +5,17 @@ require_once "phpmailer/PHPMailerAutoload.php";
 class Email
 {
     private $email;
+    private $username;
+    private $to;
+    private $firstName;
+    private $lastName;
 
-    function __construct()
+    function __construct( $to, $firstName, $lastName )
     {
+        $this -> to = $to;
+        $this -> firstName = $firstName;
+        $this -> lastName = $lastName;
+
         //Create a new PHPMailer instance
         $this -> email = new PHPMailer();
 
@@ -36,13 +44,19 @@ class Email
         $this -> email -> Port = 587;
 
         //Username to use for SMTP authentication
-        $this -> email -> Username = "auction.house.ucl@gmail.com";
+        $this -> username = "auction.house.ucl@gmail.com";
+        $this -> email -> Username = $this -> username;
 
         //Password to use for SMTP authentication
         $this -> email -> Password = "Bidder2016!";
 
         //Set who the message is to be sent from
         $this -> email -> setFrom( "auctionhouse@gmail.com", "AuctionHouse Team");
+    }
+
+    private function buildBody( $position )
+    {
+        return ( $position == 0 ) ? "<html><body><div>" : "</div></body></html>";
     }
 
     private function confirmResult( $result )
@@ -54,37 +68,49 @@ class Email
         }
     }
 
-    private function setRecipient( $to, $firstName, $lastName )
-    {
-        $this -> email -> addAddress( $to, $firstName . " " . $lastName );
-    }
 
-    public function prepareVerificationEmail( $to, $firstName, $lastName, $confirmId )
+    public function prepareVerificationEmail( $confirmId )
     {
         // Set subject
-        $subject  = "Email Verification mail";
+        $subject  = "Email Verification";
         $this -> email -> Subject = $subject;
 
         // Set message
-        $message  = "<html><body>";
-        $message .= "<div>";
-        $message .= "<h3>Hello $firstName $lastName,</h3>";
+        $message  = $this -> buildBody( 0 );
+        $message .= "<h3>Hello {$this -> firstName} {$this -> lastName},</h3>";
         $message .= "<h4>We are ready to activate your account. All we need to do is make sure this is your email address.</h4>";
-        $message .= "<a href='http://localhost:8888/confirmation.php?email=$to&confirmation_code=$confirmId'>Verify Address</a>";
+        $message .= "<a href='http://localhost:8888/confirmation.php?email={$this -> to}&confirmation_code=$confirmId'>Verify Address</a>";
         $message .= "<p>If you did not create a AuctionHouse account, just delete this email and everything will go back to the way it was.</p>";
-        $message .= "</div>";
-        $message .= "</body></html>";
+        $message .= $this -> buildBody( 1 );
         $this -> email -> Body = $message;
         $this -> email -> IsHTML( true );
+    }
 
-        // Set who the message is to be sent to
-        $this -> setRecipient( $to, $firstName, $lastName );
+
+    public function prepareConfirmationEmail()
+    {
+        // Set subject
+        $subject  = "Registration confirmation";
+        $this -> email -> Subject = $subject;
+
+        // Set message
+        $message  = $this -> buildBody( 0 );
+        $message .= "<h3>Hello {$this -> firstName} {$this -> lastName}</h3>";
+        $message .= "<h4>Your registration was successful. You are now ready to access your account and start buying and selling auctions.</h4>";
+        $message .= "<p>If you did not create a AuctionHouse account, please contact us on this email address <a href='mailto:{$this -> username}'>";
+        $message .= "{$this -> username}</a></p>";
+        $message .= $this -> buildBody( 1 );
+        $this -> email -> Body = $message;
+        $this -> email -> IsHTML( true );
     }
 
     public function sentEmail()
     {
         // Set who the message is to be sent from
-        $this -> email -> setFrom( "auctionhouse@gmail.com", "AuctionHouse Team");
+        $this -> email -> setFrom( "auctionhouse@gmail.com", "AuctionHouse Service Team");
+
+        // Set who the message is to be sent to
+        $this -> email -> addAddress( $this -> to, $this -> firstName . " " . $this -> lastName );
 
         // Send email
         $result = $this -> email -> send ();
