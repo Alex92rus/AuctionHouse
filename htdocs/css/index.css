@@ -1,0 +1,103 @@
+/*
+    Project: Auction System
+*/
+
+body
+{
+    background-color: #627991;
+}
+
+
+label
+{
+    font-weight: normal;
+}
+
+
+.container
+{
+    padding-top: 15pt;
+    padding-bottom: 15pt;
+}
+
+
+.header_container
+{
+    padding-top: 5pt;
+    padding-bottom: 5pt;
+}
+
+
+.navbar
+ {
+     margin-bottom:  0pt;
+ }
+
+
+.navbar-default
+{
+    background-color: #ffffff;
+}
+
+
+.navbar-brand
+{
+    height: auto;
+}
+
+
+.navbar-brand img
+{
+    height: 55pt;
+    width: inherit;
+}
+
+
+.p_registration
+{
+    font-size: 20px;
+}
+
+
+.valign
+{
+    display: flex;
+    align-items: center;
+}
+
+
+.form-group-lg
+{
+    margin-bottom: 5pt;
+}
+
+
+#register_instructions
+{
+    color: #66512c;
+}
+
+
+#register_icon
+{
+    font-size:2em;
+    margin-bottom: 15pt;
+}
+
+
+#seller_button
+{
+    margin-bottom: 20pt;
+}
+
+
+#buyer_button
+{
+    margin-top: 20pt;
+}
+
+
+#sign_up_button
+{
+    margin-top: 10pt;
+}
