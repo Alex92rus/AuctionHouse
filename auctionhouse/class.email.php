@@ -69,7 +69,7 @@ class Email
     }
 
 
-    public function prepareVerificationEmail( $confirmId )
+    public function prepareVerificationEmail( $confirmCode )
     {
         // Set subject
         $subject  = "Email Verification";
@@ -79,7 +79,7 @@ class Email
         $message  = $this -> buildBody( 0 );
         $message .= "<h3>Hello {$this -> firstName} {$this -> lastName},</h3>";
         $message .= "<h4>We are ready to activate your account. All we need to do is make sure this is your email address.</h4>";
-        $message .= "<a href='http://localhost:8888/confirmation.php?email={$this -> to}&confirmation_code=$confirmId'>Verify Address</a>";
+        $message .= "<a href='http://localhost:8888/confirmation.php?email={$this -> to}&confirm_code=$confirmCode'>Verify Address</a>";
         $message .= "<p>If you did not create a AuctionHouse account, just delete this email and everything will go back to the way it was.</p>";
         $message .= $this -> buildBody( 1 );
         $this -> email -> Body = $message;

@@ -3,33 +3,21 @@ session_start();
 
 
 // Ignore manual calls to 'confirmation.php'
-if ( isset( $_GET[ "email" ] ) && isset( $_GET[ "confirmation_code" ] ) )
+if ( isset( $_GET[ "email" ] ) && isset( $_GET[ "confirm_code" ] ) )
 {
     // Retrieve email and confirmation code from link
     $email = $_GET[ "email" ];
-    $code = $_GET[ "confirmation_code" ];
+    $confirm_code = $_GET[ "confirm_code" ];
 
-    // Create database object
-    require_once "class.database.php";
-    $database = new Database();
+    // Check if email and confirmation code originate from an unverified user account
+    require_once "class.queryfactory.php";
+    $result = QueryFactory::checkVerificationLink( $email, $confirm_code );
 
-    // SQL query for retrieving users for the given email and confirmation code
-    $confirmationQuery = "SELECT firstName, lastName, confirmId, verified FROM users WHERE email = '$email' AND confirmId = " . $code;
-
-    // Query database
-    $result = $database -> selectQuery( $confirmationQuery );
-
-    // Fetch row from result table (there could be none)
-    $row = $result -> fetch_assoc();
-
-    // Query returned a row with an unverified user
-    if ( $result -> num_rows == 1 && $row[ "confirmId" ] != null && $row[ "verified" ] == 0 )
+    // Verification link is correct
+    if ( !empty( $result ) )
     {
-        // SQL query for verify user's account
-        $verifyUserQuery = "UPDATE users SET verified = 1, confirmId = NULL WHERE email = '$email' AND confirmId = '$code'";
-
-        // Query database
-        $database -> updateQuery( $verifyUserQuery );
+        // Active user account
+        QueryFactory::activiateAccont( $email );
 
         // Create a session for the fully completed registration
         $title = "Registration completed!";
@@ -38,13 +26,10 @@ if ( isset( $_GET[ "email" ] ) && isset( $_GET[ "confirmation_code" ] ) )
 
         // Email a registration confirmation to the user
         require_once "class.email.php";
-        $mail = new Email( $email, $row[ 'firstName' ], $row[ 'lastName' ] );
+        $mail = new Email( $email, $result[ "firstName" ], $result[ "lastName" ] );
         $mail -> prepareConfirmationEmail();
         $mail -> sentEmail();
     }
-
-    // Close database connection
-    $database -> closeConnection();
 }
 
 // Redirect to homepage

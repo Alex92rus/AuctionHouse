@@ -31,7 +31,7 @@ function submitRegistration()
         exit();
     }
 
-    // Register new user account
+    // Register new unverified account
     registerUser();
     header( "Location: index.php" );
     exit();
@@ -105,49 +105,22 @@ function checkForEmptyFields()
 
 function checkUsernameAndEmail()
 {
-    $nonUniqueFields = [];
-
     // Retrieve username and email from the registration session
     $registration = $_SESSION[ "registration" ];
     $username = $registration -> getUsername();
     $email = $registration -> getEmail();
 
     // Check if username and email are already taken
-    $usernameResult = checkUniqueness( $nonUniqueFields, 'username', $username );
-    $emailResult = checkUniqueness( $nonUniqueFields, 'email', $email );
+    require_once "class.queryfactory.php";
+    $nonUniqueFields = [];
+    QueryFactory::checkUniqueness( $nonUniqueFields, 'username', $username );
+    QueryFactory::checkUniqueness( $nonUniqueFields, 'email', $email );
 
     // Inputted username or email were already taken
-    if ( !$usernameResult || !$emailResult )
+    if ( !empty( $nonUniqueFields ) )
     {
         // Create a session for the taken input fields
         $_SESSION[ "input_errors" ] = $nonUniqueFields;
-        return false;
-    }
-
-    return true;
-}
-
-
-function checkUniqueness( &$fieldArray, $field, $value )
-{
-    // Create database object
-    require_once "class.database.php";
-    $database = new Database();
-
-    // SQL query for retrieving users with a specific username/email
-    $checkFieldQuery = "SELECT " . $field . " FROM users where " . $field . " = '$value' ";
-
-    // Query database
-    $result = $database -> selectQuery( $checkFieldQuery );
-    $numberOfRows = $result -> num_rows;
-
-    // Close database connection
-    $database -> closeConnection();
-
-    // Query returned a row, meaning there exists already a user with the same registered username/email
-    if ( $numberOfRows > 0 )
-    {
-        $fieldArray[ $field ] = "This " . $field . " already exists";
         return false;
     }
 
@@ -169,25 +142,12 @@ function registerUser()
     $country = $registration -> getCountry();
     $password = $registration -> getPassword1();
 
-    // Create random confirmId (necessary when confirming registration)
-    $confirmId = rand( 100000, 100000000 );
+    // Create new user
+    QueryFactory::addAccount( array( &$username, &$email, &$firstName, &$lastName, &$address, &$postcode, &$city, &$country, &$password ) );
 
-    // Create database object
-    require_once "class.database.php";
-    $database = new Database();
-
-    // SQL query for creating a new user record
-    $registerUserQuery  = "INSERT INTO users (username, email, firstName, lastName, address, postcode, city, country, password, confirmId) ";
-    $registerUserQuery .= "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
-
-    // Query database
-    $database -> insertQuery(
-        $registerUserQuery,
-        "sssssssssi",
-        array( &$username, &$email, &$firstName, &$lastName, &$address, &$postcode, &$city, &$country, &$password, &$confirmId ) );
-
-    // Close database
-    $database -> closeConnection();
+    // Mark user as unverified
+    $confirmCode = rand( 100000, 100000000 );
+    QueryFactory::addUnverifiedAccount( array( &$email, &$confirmCode ) );
 
     // Create a session for the successfully submitted registration (account not verified yet)
     $title = "Registration submitted!";
@@ -198,6 +158,6 @@ function registerUser()
     // Email a verification link to the user - must be verified before accessing the new account
     require_once "class.email.php";
     $mail = new Email( $email, $firstName, $lastName );
-    $mail -> prepareVerificationEmail( $confirmId );
+    $mail -> prepareVerificationEmail( $confirmCode );
     $mail -> sentEmail();
 }
