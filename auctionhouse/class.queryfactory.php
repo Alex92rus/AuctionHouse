@@ -34,14 +34,16 @@ class QueryFactory
         self::initialize();
         $registerUserQuery  = "INSERT INTO users ( username, email, firstName, lastName, address, postcode, city, country, password ) ";
         $registerUserQuery .= "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )";
-        self::$database -> insertQuery( $registerUserQuery, "sssssssss", $parameters );
+        $insertId = self::$database -> insertQuery( $registerUserQuery, "sssssssss", $parameters );
+
+        return $insertId;
     }
 
     public static function addUnverifiedAccount( $parameters )
     {
         // SQL query for creating unregistered user
         self::initialize();
-        $unverifiedAccountQuery = "INSERT INTO unverified_users ( email, confirmCode ) VALUES ( ?, ? )";
+        $unverifiedAccountQuery = "INSERT INTO unverified_users ( userId, confirmCode ) VALUES ( ?, ? )";
         self::$database -> insertQuery( $unverifiedAccountQuery, "si", $parameters );
 
         // Close database
@@ -53,34 +55,37 @@ class QueryFactory
     {
         // SQL query for retrieving users for the given email
         self::initialize();
-        $usersQuery = "SELECT firstName, lastName, verified FROM users WHERE email = '$email'";
+        $usersQuery = "SELECT userId, firstName, lastName, verified FROM users WHERE email = '$email'";
         $usersQueryResult = self::$database -> selectQuery( $usersQuery );
         $usersRow = $usersQueryResult -> fetch_assoc();
 
         // SQL query for retrieving unverified users for the given email
-        $unverifiedQuery = "SELECT * FROM unverified_users WHERE email = '$email'";
+        $unverifiedQuery = "SELECT * FROM unverified_users WHERE userId = '{$usersRow[ "userId" ]}'";
         $unverifiedQueryResult = self::$database -> selectQuery( $unverifiedQuery );
         $unverifiedRow = $unverifiedQueryResult -> fetch_assoc();
 
-        // Query returned a row with an unverified user
+        // Email and code matches to a unique unverified user
         if ( $usersQueryResult -> num_rows == 1 && $usersRow[ "verified" ] == 0 &&
              $unverifiedQueryResult -> num_rows == 1 && $unverifiedRow[ "confirmCode" ] == $confirmCode )
         {
-            return [ "firstName" => $usersRow[ "firstName" ], "lastName" => $usersRow[ "lastName" ] ];
+            return [
+                "userId" => $usersRow[ "userId" ],
+                "firstName" => $usersRow[ "firstName" ],
+                "lastName" => $usersRow[ "lastName" ] ];
         }
 
         return null;
     }
 
-    public static function activiateAccont( $email )
+    public static function activateAccount( $userId )
     {
         // SQL query for verify user's account
         self::initialize();
-        $verifyUserQuery = "UPDATE users SET verified = 1 WHERE email = '$email'";
+        $verifyUserQuery = "UPDATE users SET verified = 1 WHERE userId = '$userId'";
         self::$database -> updateQuery( $verifyUserQuery );
 
         // SQL query for deleting unverified account
-        $deleteUnverified = "DELETE FROM unverified_users WHERE email = '$email'";
+        $deleteUnverified = "DELETE FROM unverified_users WHERE userId = '$userId'";
         self::$database -> updateQuery( $deleteUnverified );
     }
 }

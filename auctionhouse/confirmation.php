@@ -17,7 +17,7 @@ if ( isset( $_GET[ "email" ] ) && isset( $_GET[ "confirm_code" ] ) )
     if ( !empty( $result ) )
     {
         // Active user account
-        QueryFactory::activiateAccont( $email );
+        QueryFactory::activateAccount( $result[ "userId" ] );
 
         // Create a session for the fully completed registration
         $title = "Registration completed!";

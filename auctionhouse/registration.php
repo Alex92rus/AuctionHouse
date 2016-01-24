@@ -143,11 +143,12 @@ function registerUser()
     $password = $registration -> getPassword1();
 
     // Create new user
-    QueryFactory::addAccount( array( &$username, &$email, &$firstName, &$lastName, &$address, &$postcode, &$city, &$country, &$password ) );
+    $insertId = QueryFactory::addAccount( array(
+        &$username, &$email, &$firstName, &$lastName, &$address, &$postcode, &$city, &$country, &$password ) );
 
     // Mark user as unverified
     $confirmCode = rand( 100000, 100000000 );
-    QueryFactory::addUnverifiedAccount( array( &$email, &$confirmCode ) );
+    QueryFactory::addUnverifiedAccount( array( &$insertId, &$confirmCode ) );
 
     // Create a session for the successfully submitted registration (account not verified yet)
     $title = "Registration submitted!";
