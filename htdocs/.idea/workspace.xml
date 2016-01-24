@@ -21,19 +21,19 @@
     <favorites_list name="htdocs" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$USER_HOME$/COMP3013Databases/htdocs/home.php" />
-        <option value="$USER_HOME$/COMP3013Databases/htdocs/database_config.php" />
-        <option value="$USER_HOME$/COMP3013Databases/htdocs/Database.php" />
-        <option value="$USER_HOME$/COMP3013Databases/htdocs/database_factory.php" />
-        <option value="$USER_HOME$/COMP3013Databases/htdocs/index.php" />
-        <option value="$USER_HOME$/COMP3013Databases/htdocs/registration.php" />
-        <option value="$USER_HOME$/COMP3013Databases/htdocs/confirmation.php" />
-        <option value="$USER_HOME$/COMP3013Databases/htdocs/class.email.php" />
+        <option value="$PROJECT_DIR$/home.php" />
+        <option value="$PROJECT_DIR$/database_config.php" />
+        <option value="$PROJECT_DIR$/Database.php" />
+        <option value="$PROJECT_DIR$/database_factory.php" />
+        <option value="$PROJECT_DIR$/index.php" />
+        <option value="$PROJECT_DIR$/registration.php" />
+        <option value="$PROJECT_DIR$/confirmation.php" />
+        <option value="$PROJECT_DIR$/class.email.php" />
       </list>
     </option>
   </component>
@@ -77,14 +77,21 @@
       <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
-        <subPane />
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="htdocs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
       </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
-    <property name="last_opened_file_path" value="$USER_HOME$/COMP3013Databases/auctionhouse" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../auctionhouse" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
