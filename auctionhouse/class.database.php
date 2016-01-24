@@ -35,13 +35,13 @@ class Database
         {
             die( $message );
         }
-        return $result;
     }
 
     public function selectQuery( $sql )
     {
         $result = $this -> connection -> query( $sql );
-        return $this -> confirmResult( $result, "Database select query failed." );
+        $this -> confirmResult( $result, "Database select query failed." );
+        return $result;
     }
 
     public function insertQuery( $sql, $type, $params )
@@ -49,13 +49,14 @@ class Database
         $statement = $this -> connection -> prepare( $sql );
         call_user_func_array( array( $statement, "bind_param" ), array_merge( array( $type ), $params ) );
         $result = $statement -> execute();
-        return $this -> confirmResult( $result, "Database insert query failed." );
+        $this -> confirmResult( $result, "Database insert query failed." );
+        return $statement -> insert_id;
     }
 
     public function updateQuery( $sql )
     {
         $result = $this -> connection -> query( $sql );
-        return $this -> confirmResult( $result, "Database update query failed." );
+        $this -> confirmResult( $result, "Database update query failed." );
     }
 
     public function closeConnection()
