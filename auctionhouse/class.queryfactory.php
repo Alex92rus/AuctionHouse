@@ -18,11 +18,10 @@ class QueryFactory
         self::initialize();
         $checkFieldQuery = "SELECT " . $field . " FROM users where " . $field . " = '$value' ";
         $result = self::$database -> selectQuery( $checkFieldQuery );
-        $numberOfRows = $result -> num_rows;
         self::$database -> closeConnection();
 
         // Query returned a row, meaning there exists already a user with the same registered username/email
-        if ( $numberOfRows > 0 )
+        if ($result -> num_rows   > 0 )
         {
             $fieldArray[ $field ] = "This " . $field . " already exists";
         }
@@ -33,7 +32,7 @@ class QueryFactory
         // SQL query for creating a new user record
         self::initialize();
         $registerUserQuery  = "INSERT INTO users ( username, email, firstName, lastName, address, postcode, city, country, password ) ";
-        $registerUserQuery .= "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+        $registerUserwQuery .= "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )";
         $insertId = self::$database -> insertQuery( $registerUserQuery, "sssssssss", $parameters );
 
         return $insertId;
