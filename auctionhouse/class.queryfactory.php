@@ -23,7 +23,7 @@ class QueryFactory
         self::$database -> closeConnection();
 
         // Query returned a row, meaning there exists already a user with the same registered username/email
-        if ($result -> num_rows   > 0 )
+        if ( $result -> num_rows   > 0 )
         {
             $fieldArray[ $field ] = "This " . $field . " already exists";
         }
@@ -34,7 +34,7 @@ class QueryFactory
         // SQL query for creating a new user record
         self::initialize();
         $registerUserQuery  = "INSERT INTO users ( username, email, firstName, lastName, address, postcode, city, country, password ) ";
-        $registerUserwQuery .= "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+        $registerUserQuery .= "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )";
         $insertId = self::$database -> insertQuery( $registerUserQuery, "sssssssss", $parameters );
 
         // Close database
@@ -70,6 +70,7 @@ class QueryFactory
 
         // Close database
         self::$database -> closeConnection();
+
         // Email and code matches to a unique unverified user
         if ( $usersQueryResult -> num_rows == 1 && $usersRow[ "verified" ] == 0 &&
              $unverifiedQueryResult -> num_rows == 1 && $unverifiedRow[ "confirmCode" ] == $confirmCode )
@@ -92,6 +93,7 @@ class QueryFactory
         // SQL query for deleting unverified account
         $deleteUnverified = "DELETE FROM unverified_users WHERE userId = '$userId'";
         self::$database -> updateQuery( $deleteUnverified );
+        
         // Close database
         self::$database -> closeConnection();
     }
