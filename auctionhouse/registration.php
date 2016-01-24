@@ -140,7 +140,7 @@ function registerUser()
     $postcode = $registration -> getPostcode();
     $city = $registration -> getCity();
     $country = $registration -> getCountry();
-    $password = $registration -> getPassword1();
+    $password = password_hash( $registration -> getPassword1(), PASSWORD_BCRYPT );
 
     // Create new user
     $insertId = QueryFactory::addAccount( array(
