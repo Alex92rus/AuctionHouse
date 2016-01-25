@@ -1,62 +1,64 @@
 <?php
-require_once "class.user.php";
-session_start();
+require_once "helperfunctions.php";
+require_once "class.session_factory.php";
+
+
+// Registration form was submitted
 submitRegistration();
 
 
-// Call when a registration form is submitted
+// Check and process registration form
 function submitRegistration()
 {
     // Only process registration form if sign up button was clicked
     if ( !isset( $_POST[ "signup" ] ) )
     {
-        header( "Location: index.php" );
-        exit();
+        redirectTo( "index.php" );
     }
 
-    // Create a session for all input fields of the registration form
-    createRegistrationSession();
+    // Store POST values from registration form
+    $registration = createUserRegistration();
 
-    // Check if any input fields are empty
-    if ( checkForEmptyFields() )
+    // Check registration inputs
+    if ( checkForEmptyFields( $registration ) ||
+        !checkUsernameAndEmail( $registration[ 'username' ], $registration[ 'email' ] ) )
     {
-        header( "Location: index.php" );
-        exit();
+        // Create a session for the registration inputs so that they can be recovered after the page reloads
+        SessionFactory::setRegistration( $registration );
     }
-
-    // Check if both username and email is not already used by another account
-    if ( !checkUsernameAndEmail() )
+    // Registration from valid - register new unverified account
+    else
     {
-        header( "Location: index.php" );
-        exit();
+        registerUser( $registration );
     }
 
-    // Register new unverified account
-    registerUser();
-    header( "Location: index.php" );
-    exit();
+    // Redirect back
+    redirectTo( "index.php" );
 }
 
 
-function createRegistrationSession()
+// Get all registration information
+function createUserRegistration()
 {
-    $registration = new User(
-        $_POST[ 'username' ],
-        $_POST[ 'email' ],
-        $_POST[ 'firstName' ],
-        $_POST[ 'lastName' ],
-        $_POST[ 'address' ],
-        $_POST[ 'postcode' ],
-        $_POST[ 'city' ],
-        $_POST[ 'country' ],
-        $_POST[ 'password1' ],
-        $_POST[ 'password2' ] );
+    $registration = [
+        'username'  => $_POST[ 'username' ],
+        'email'     => $_POST[ 'email' ],
+        'firstName' => $_POST[ 'firstName' ],
+        'lastName'  => $_POST[ 'lastName' ],
+        'address'   => $_POST[ 'address' ],
+        'postcode'  => $_POST[ 'postcode' ],
+        'city'      => $_POST[ 'city' ],
+        'country'   => $_POST[ 'country' ],
+        'password1' => $_POST[ 'password1' ],
+        'password2' => $_POST[ 'password2' ]
+    ];
 
-    $_SESSION[ "registration" ] = $registration;
+    return $registration;
 }
 
 
-function checkForEmptyFields()
+// Check if any input fields are empty
+function checkForEmptyFields( $registration )
 {
     // Error messages for each field in case it is empty
     $emptyFieldMessages = [
@@ -75,11 +77,8 @@ function checkForEmptyFields()
     // Variable for storing missing input fields
     $emptyFields = [];
 
-    // Get user object (stores registration information)
-    $registrationFields = $_SESSION[ "registration" ] -> getObjectVars();
-
     // For each member variable in the user object, check if it is empty
-    foreach ( $registrationFields as $key => $value )
+    foreach ( $registration as $key => $value )
     {
         // Trim whitespaces
         $value = is_array( $value ) ? $value : trim( $value );
@@ -95,7 +94,7 @@ function checkForEmptyFields()
     if ( !empty( $emptyFields ) )
     {
         // Create a session for the missing input fields
-        $_SESSION[ "input_errors" ] = $emptyFields;
+        SessionFactory::setRegistrationErrors( $emptyFields );
         return true;
     }
     
@@ -103,15 +102,11 @@ function checkForEmptyFields()
 }
 
 
-function checkUsernameAndEmail()
+// Check if both username and email is not already used by another account
+function checkUsernameAndEmail( $username, $email )
 {
-    // Retrieve username and email from the registration session
-    $registration = $_SESSION[ "registration" ];
-    $username = $registration -> getUsername();
-    $email = $registration -> getEmail();
-
     // Check if username and email are already taken
-    require_once "class.queryfactory.php";
+    require_once "class.query_factory.php";
     $nonUniqueFields = [];
     QueryFactory::checkUniqueness( $nonUniqueFields, 'username', $username );
     QueryFactory::checkUniqueness( $nonUniqueFields, 'email', $email );
@@ -120,7 +115,7 @@ function checkUsernameAndEmail()
     if ( !empty( $nonUniqueFields ) )
     {
         // Create a session for the taken input fields
-        $_SESSION[ "input_errors" ] = $nonUniqueFields;
+        SessionFactory::setRegistrationErrors( $nonUniqueFields );
         return false;
     }
 
@@ -128,37 +123,30 @@ function checkUsernameAndEmail()
 }
 
 
-function registerUser()
+function registerUser( $completeForm )
 {
-    // Retrieve all information from the registration session
-    $registration = $_SESSION[ "registration" ];
-    $username = $registration -> getUsername();
-    $email = $registration -> getEmail();
-    $firstName = $registration -> getFirstName();
-    $lastName = $registration -> getLastName();
-    $address = $registration -> getAddress();
-    $postcode = $registration -> getPostcode();
-    $city = $registration -> getCity();
-    $country = $registration -> getCountry();
-    $password = password_hash( $registration -> getPassword1(), PASSWORD_BCRYPT );
-
     // Create new user
     $insertId = QueryFactory::addAccount( array(
-        &$username, &$email, &$firstName, &$lastName, &$address, &$postcode, &$city, &$country, &$password ) );
+        &$completeForm[ 'username' ],
+        &$completeForm[ 'email' ],
+        &$completeForm[ 'firstName' ],
+        &$completeForm[ 'lastName' ],
+        &$completeForm[ 'address' ],
+        &$completeForm[ 'postcode' ],
+        &$completeForm[ 'city' ],
+        &$completeForm[ 'country' ],
+        &$completeForm[ 'password1' ] ) );
 
     // Mark user as unverified
     $confirmCode = rand( 100000, 100000000 );
     QueryFactory::addUnverifiedAccount( array( &$insertId, &$confirmCode ) );
 
     // Create a session for the successfully submitted registration (account not verified yet)
-    $title = "Registration submitted!";
-    $info  = "Before accessing your account, you have to follow the verification ";
-    $info .= "link we sent you to your email address";
-    $_SESSION[ "registration_status" ] = [ "title" => $title, "info" => $info ];
+    SessionFactory::setRegistrationStatus( 'submitted' );
 
     // Email a verification link to the user - must be verified before accessing the new account
     require_once "class.email.php";
-    $mail = new Email( $email, $firstName, $lastName );
+    $mail = new Email( $completeForm[ 'email' ], $completeForm[ 'firstName' ], $completeForm[ 'lastName' ] );
     $mail -> prepareVerificationEmail( $confirmCode );
     $mail -> sentEmail();
 }

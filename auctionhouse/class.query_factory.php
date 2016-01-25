@@ -93,7 +93,7 @@ class QueryFactory
         // SQL query for deleting unverified account
         $deleteUnverified = "DELETE FROM unverified_users WHERE userId = '$userId'";
         self::$database -> updateQuery( $deleteUnverified );
-        
+
         // Close database
         self::$database -> closeConnection();
     }

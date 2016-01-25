@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once "class.session_factory.php";
+require_once "helperfunctions.php";
 
 
 // Ignore manual calls to 'confirmation.php'
@@ -10,7 +11,7 @@ if ( isset( $_GET[ "email" ] ) && isset( $_GET[ "confirm_code" ] ) )
     $confirm_code = $_GET[ "confirm_code" ];
 
     // Check if email and confirmation code originate from an unverified user account
-    require_once "class.queryfactory.php";
+    require_once "class.query_factory.php";
     $result = QueryFactory::checkVerificationLink( $email, $confirm_code );
 
     // Verification link is correct
@@ -19,10 +20,8 @@ if ( isset( $_GET[ "email" ] ) && isset( $_GET[ "confirm_code" ] ) )
         // Active user account
         QueryFactory::activateAccount( $result[ "userId" ] );
 
-        // Create a session for the fully completed registration
-        $title = "Registration completed!";
-        $info  = "Thank you for joining us. Your account is now ready for signing in.";
-        $_SESSION[ "registration_status" ] = [ "title" => $title, "info" => $info ];
+        // Create a session for completed registration
+        SessionFactory::setRegistrationStatus( 'completed' );
 
         // Email a registration confirmation to the user
         require_once "class.email.php";
@@ -33,6 +32,5 @@ if ( isset( $_GET[ "email" ] ) && isset( $_GET[ "confirm_code" ] ) )
 }
 
 // Redirect to homepage
-header( "Location: index.php" );
-exit();
+redirectTo( "index.php" );
 

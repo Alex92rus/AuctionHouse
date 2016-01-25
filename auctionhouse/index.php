@@ -1,4 +1,4 @@
-<?php require "session.php" ?>
+<?php require "class.session_factory.php" ?>
 <!DOCTYPE html>
 <html>
 
@@ -68,7 +68,7 @@
             </p><hr>
 
             <!-- display registration status if available -->
-            <?php list( $title, $info ) = getRegistrationStatus(); if ( $title != null && $info != null ) : ?>
+            <?php list( $title, $info ) = SessionFactory::getRegistrationStatus(); if ( $title != null && $info != null ) : ?>
                 <script>
                     $.notify({
                         icon: "glyphicon glyphicon-ok",
@@ -94,82 +94,82 @@
                 <div class="col-xs-8">
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo getErrorMessage( "username" ) ?>
+                            <?php echo SessionFactory::getErrorMessage( "username" ) ?>
                         </label>
                         <input type="text" name="username" class="form-control" id="username" maxlength="30" placeholder="Pick a username"
-                            <?php echo 'value = "' . getInput( 'username' ) . '"'; ?> >
+                            <?php echo 'value = "' . SessionFactory::getInput( 'username' ) . '"'; ?> >
                     </div>
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo getErrorMessage( "email" ) ?>
+                            <?php echo SessionFactory::getErrorMessage( "email" ) ?>
                         </label>
                         <input type="text" name="email" class="form-control" id="email" maxlength="30" placeholder="Email"
-                            <?php echo 'value = "' . getInput( 'email' ) . '"'; ?> >
+                            <?php echo 'value = "' . SessionFactory::getInput( 'email' ) . '"'; ?> >
                     </div>
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo getErrorMessage( "firstName" ) ?>
+                            <?php echo SessionFactory::getErrorMessage( "firstName" ) ?>
                         </label>
                         <input type="text" name="firstName" class="form-control" id="firstName" maxlength="30" placeholder="First Name"
-                            <?php echo 'value = "' . getInput( 'firstName' ) . '"'; ?> >
+                            <?php echo 'value = "' . SessionFactory::getInput( 'firstName' ) . '"'; ?> >
                     </div>
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo getErrorMessage( "lastName" ) ?>
+                            <?php echo SessionFactory::getErrorMessage( "lastName" ) ?>
                         </label>
                         <input type="text" name="lastName" class="form-control" id="lastName" maxlength="30" placeholder="Last Name"
-                            <?php echo 'value = "' . getInput( 'lastName' ) . '"'; ?> >
+                            <?php echo 'value = "' . SessionFactory::getInput( 'lastName' ) . '"'; ?> >
                     </div>
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo getErrorMessage( "address" ) ?>
+                            <?php echo SessionFactory::getErrorMessage( "address" ) ?>
                         </label>
                         <input type="text" name="address" class="form-control" id="address" maxlength="50" placeholder="Address"
-                            <?php echo 'value = "' . getInput( 'address' ) . '"'; ?> >
+                            <?php echo 'value = "' . SessionFactory::getInput( 'address' ) . '"'; ?> >
                     </div>
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo getErrorMessage( "postcode" ) ?>
+                            <?php echo SessionFactory::getErrorMessage( "postcode" ) ?>
                         </label>
                         <input type="text" name="postcode" class="form-control" id="postcode" maxlength="30" placeholder="Postcode"
-                            <?php echo 'value = "' . getInput( 'postcode' ) . '"'; ?> >
+                            <?php echo 'value = "' . SessionFactory::getInput( 'postcode' ) . '"'; ?> >
                     </div>
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo getErrorMessage( "city" ) ?>
+                            <?php echo SessionFactory::getErrorMessage( "city" ) ?>
                         </label>
                         <input type="text" name="city" class="form-control" id="city" maxlength="30" placeholder="City"
-                            <?php echo 'value = "' . getInput( 'city' ) . '"'; ?> >
+                            <?php echo 'value = "' . SessionFactory::getInput( "city" ) . '"'; ?> >
                     </div>
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo getErrorMessage( "country" ) ?>
+                            <?php echo SessionFactory::getErrorMessage( "country" ) ?>
                         </label><br>
                         <input type="text" name="country" class="form-control" id="country" maxlength="30" placeholder="Country"
-                            <?php echo 'value = "' . getInput( 'country' ) . '"'; ?> >
+                            <?php echo 'value = "' . SessionFactory::getInput( 'country' ) . '"'; ?> >
                     </div>
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo getErrorMessage( "password1" ) ?>
+                            <?php echo SessionFactory::getErrorMessage( "password1" ) ?>
                         </label>
                         <input type="password" name="password1" class="form-control" id="password1" maxlength="30" placeholder="Create a password"
-                            <?php echo 'value = "' . getInput( 'password1' ) . '"'; ?> >
+                            <?php echo 'value = "' . SessionFactory::getInput( 'password1' ) . '"'; ?> >
                     </div>
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo getErrorMessage( "password2" ) ?>
+                            <?php echo SessionFactory::getErrorMessage( "password2" ) ?>
                         </label>
                         <input type="password" name="password2" class="form-control" id="password2" maxlength="30" placeholder="Repeat password"
-                            <?php echo 'value = "' . getInput( 'password2' ) . '"'; ?> >
+                            <?php echo 'value = "' . SessionFactory::getInput( 'password2' ) . '"'; ?> >
                     </div>
                 </div>
                 <!-- account details end -->
@@ -194,7 +194,7 @@
     <div class="footer navbar navbar-inverse" role="navigation">
         <div class="container">
             <div class="navbar-text pull-left">
-                <p>Copyright &copy; 2016 AuctionHouse</p>
+                <p>Copyright &copy; <?php echo date( "Y", time() ); ?> AuctionHouse</p>
             </div>
             <div class="navbar-text pull-right">
                 <p><a href="#">About</a> |  <a href="#">Contact</a> |  <a href="#">Privacy & Cookies</a> |  <a href="#">Developers</a></p>
