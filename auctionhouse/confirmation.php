@@ -1,6 +1,6 @@
 <?php
-require_once "class.session_factory.php";
 require_once "helperfunctions.php";
+require_once "class.session_factory.php";
 
 
 // Ignore manual calls to 'confirmation.php'
