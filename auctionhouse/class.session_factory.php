@@ -17,6 +17,30 @@ class SessionFactory
         $_SESSION[ "input_errors" ] = $incorrectFields;
     }
 
+    // Get error message for incorrect field input
+    public static function getRegistrationErrors( $key )
+    {
+        $message = "";
+
+        // There was an input error within a specific field
+        if ( isset( $_SESSION[ "input_errors" ] ) && array_key_exists( $key, $_SESSION[ "input_errors" ] ) )
+        {
+            // Get the error message for the input field
+            $message = $_SESSION[ "input_errors" ][ $key ];
+
+            // Remove the input field from the input errors array
+            unset( $_SESSION[ "input_errors" ][ $key ] );
+
+            // Delete the input error session after all error messages were outputted to the screen
+            if ( empty( $_SESSION[ "input_errors" ] ) )
+            {
+                unset( $_SESSION[ "input_errors" ] );
+            }
+        }
+
+        return $message;
+    }
+
     // Create a session for the successfully submitted / fully completed registration
     public static function setRegistrationStatus( $status )
     {
@@ -55,29 +79,6 @@ class SessionFactory
         return array( $title, $info );
     }
 
-    // Get error message for incorrect field input
-    public static function getErrorMessage( $key )
-    {
-        $message = "";
-
-        // There was an input error within a specific field
-        if ( isset( $_SESSION[ "input_errors" ] ) && array_key_exists( $key, $_SESSION[ "input_errors" ] ) )
-        {
-            // Get the error message for the input field
-            $message = $_SESSION[ "input_errors" ][ $key ];
-
-            // Remove the input field from the input errors array
-            unset( $_SESSION[ "input_errors" ][ $key ] );
-
-            // Delete the input error session after all error messages were outputted to the screen
-            if ( empty( $_SESSION[ "input_errors" ] ) )
-            {
-                unset( $_SESSION[ "input_errors" ] );
-            }
-        }
-
-        return $message;
-    }
 
     // Recover field input after each unsuccessful registration attempt
     public static function getInput( $key )

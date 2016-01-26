@@ -94,7 +94,7 @@
                 <div class="col-xs-8">
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo SessionFactory::getErrorMessage( "username" ) ?>
+                            <?php echo SessionFactory::getRegistrationErrors( "username" ) ?>
                         </label>
                         <input type="text" name="username" class="form-control" id="username" maxlength="30" placeholder="Pick a username"
                             <?php echo 'value = "' . SessionFactory::getInput( 'username' ) . '"'; ?> >
@@ -102,7 +102,7 @@
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo SessionFactory::getErrorMessage( "email" ) ?>
+                            <?php echo SessionFactory::getRegistrationErrors( "email" ) ?>
                         </label>
                         <input type="text" name="email" class="form-control" id="email" maxlength="30" placeholder="Email"
                             <?php echo 'value = "' . SessionFactory::getInput( 'email' ) . '"'; ?> >
@@ -110,7 +110,7 @@
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo SessionFactory::getErrorMessage( "firstName" ) ?>
+                            <?php echo SessionFactory::getRegistrationErrors( "firstName" ) ?>
                         </label>
                         <input type="text" name="firstName" class="form-control" id="firstName" maxlength="30" placeholder="First Name"
                             <?php echo 'value = "' . SessionFactory::getInput( 'firstName' ) . '"'; ?> >
@@ -118,7 +118,7 @@
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo SessionFactory::getErrorMessage( "lastName" ) ?>
+                            <?php echo SessionFactory::getRegistrationErrors( "lastName" ) ?>
                         </label>
                         <input type="text" name="lastName" class="form-control" id="lastName" maxlength="30" placeholder="Last Name"
                             <?php echo 'value = "' . SessionFactory::getInput( 'lastName' ) . '"'; ?> >
@@ -126,7 +126,7 @@
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo SessionFactory::getErrorMessage( "address" ) ?>
+                            <?php echo SessionFactory::getRegistrationErrors( "address" ) ?>
                         </label>
                         <input type="text" name="address" class="form-control" id="address" maxlength="50" placeholder="Address"
                             <?php echo 'value = "' . SessionFactory::getInput( 'address' ) . '"'; ?> >
@@ -134,7 +134,7 @@
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo SessionFactory::getErrorMessage( "postcode" ) ?>
+                            <?php echo SessionFactory::getRegistrationErrors( "postcode" ) ?>
                         </label>
                         <input type="text" name="postcode" class="form-control" id="postcode" maxlength="30" placeholder="Postcode"
                             <?php echo 'value = "' . SessionFactory::getInput( 'postcode' ) . '"'; ?> >
@@ -142,7 +142,7 @@
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo SessionFactory::getErrorMessage( "city" ) ?>
+                            <?php echo SessionFactory::getRegistrationErrors( "city" ) ?>
                         </label>
                         <input type="text" name="city" class="form-control" id="city" maxlength="30" placeholder="City"
                             <?php echo 'value = "' . SessionFactory::getInput( "city" ) . '"'; ?> >
@@ -150,7 +150,7 @@
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo SessionFactory::getErrorMessage( "country" ) ?>
+                            <?php echo SessionFactory::getRegistrationErrors( "country" ) ?>
                         </label><br>
                         <input type="text" name="country" class="form-control" id="country" maxlength="30" placeholder="Country"
                             <?php echo 'value = "' . SessionFactory::getInput( 'country' ) . '"'; ?> >
@@ -158,7 +158,7 @@
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo SessionFactory::getErrorMessage( "password1" ) ?>
+                            <?php echo SessionFactory::getRegistrationErrors( "password1" ) ?>
                         </label>
                         <input type="password" name="password1" class="form-control" id="password1" maxlength="30" placeholder="Create a password"
                             <?php echo 'value = "' . SessionFactory::getInput( 'password1' ) . '"'; ?> >
@@ -166,7 +166,7 @@
 
                     <div class="form-group-lg col-xs-6">
                         <label class="text-danger">&nbsp
-                            <?php echo SessionFactory::getErrorMessage( "password2" ) ?>
+                            <?php echo SessionFactory::getRegistrationErrors( "password2" ) ?>
                         </label>
                         <input type="password" name="password2" class="form-control" id="password2" maxlength="30" placeholder="Repeat password"
                             <?php echo 'value = "' . SessionFactory::getInput( 'password2' ) . '"'; ?> >

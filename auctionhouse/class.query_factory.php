@@ -12,7 +12,7 @@ class QueryFactory
         self::$database = new Database();
     }
 
-    public static function checkUniqueness( &$fieldArray, $field, $value )
+    public static function checkUniqueness( $field, $value )
     {
         // SQL query for retrieving users with a specific username/email
         self::initialize();
@@ -25,8 +25,10 @@ class QueryFactory
         // Query returned a row, meaning there exists already a user with the same registered username/email
         if ( $result -> num_rows   > 0 )
         {
-            $fieldArray[ $field ] = "This " . $field . " already exists";
+            return false;
         }
+
+        return true;
     }
 
     public static function addAccount( $parameters )
