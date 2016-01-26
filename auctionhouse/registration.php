@@ -99,6 +99,7 @@ function checkForEmptyFields( $registration )
         return true;
     }
 
+    // No error
     return false;
 }
 
@@ -128,24 +129,36 @@ function checkUsernameAndEmail( $username, $email )
         return false;
     }
 
+    // No error
     return true;
 }
 
 
-// Check if the two inputted passwords match
+// Check inputted passwords
 function checkPasswords( $password1, $password2 )
 {
-    if ( strcmp( $password1, $password2 ) != 0 )
-    {
-        // Prepare error message
-        $info = "Passwords do not match!";
-        $mismatch = [ "password1" => $info, "password2" => $info ];
+    $info = null;
 
-        // Create a session for the missing input fields
-        SessionFactory::setRegistrationErrors( $mismatch );
+    // Check if passwords have a minimum length
+    if ( strlen( $password1 ) < 10 )
+    {
+        $info = "Password needs to be at least 10 characters long!";
+    }
+    // Check if the two inputted passwords match
+    else if ( strcmp( $password1, $password2 ) != 0 )
+    {
+        $info = "Does not match with other password field!";
+    }
+
+    // Create a session for the incorrect passwords
+    if ( $info != null )
+    {
+        $passwordError = [ "password1" => $info, "password2" => $info ];
+        SessionFactory::setRegistrationErrors( $passwordError );
         return false;
     }
 
+    // No error
     return true;
 }
 
