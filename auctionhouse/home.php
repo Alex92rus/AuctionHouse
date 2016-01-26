@@ -1,3 +1,6 @@
+<?php
+require_once "user_session.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +8,6 @@
     <title>Title</title>
 </head>
 <body>
-    <?php phpinfo(); ?>
+    <p>You are logged in</p>
 </body>
 </html>

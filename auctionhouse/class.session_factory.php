@@ -5,20 +5,40 @@ session_start();
 
 class SessionFactory
 {
-    // Create a session for the just submitted registration from
-    public static function setRegistration( $registration )
+    // Create a session for the just submitted but failed form
+    public static function setFormInput( $form )
     {
-        $_SESSION[ "registration" ] = $registration;
+        $_SESSION[ "form_inputs" ] = $form;
     }
 
-    // Create a session for the incorrect registration fields
-    public static function setRegistrationErrors( $incorrectFields )
+    // Recover field input after each failed form submission
+    public static function getFormInput( $key )
+    {
+        $input = "";
+
+        if ( isset( $_SESSION[ "form_inputs" ] ) && array_key_exists( $key, $_SESSION[ "form_inputs" ] ) )
+        {
+            $input = htmlentities( $_SESSION[ "form_inputs" ][ $key ] );
+            unset( $_SESSION[ "form_inputs" ][ $key ] );
+
+            // Delete the session after all field inputs were recovered
+            if ( empty( $_SESSION[ "form_inputs" ] ) )
+            {
+                unset( $_SESSION[ "form_inputs" ] );
+            }
+        }
+
+        return $input;
+    }
+
+    // Create a session for the incorrect form fields
+    public static function setInputErrors( $incorrectFields )
     {
         $_SESSION[ "input_errors" ] = $incorrectFields;
     }
 
     // Get error message for incorrect field input
-    public static function getRegistrationErrors( $key )
+    public static function getInputErrors( $key )
     {
         $message = "";
 
@@ -79,24 +99,30 @@ class SessionFactory
         return array( $title, $info );
     }
 
-
-    // Recover field input after each unsuccessful registration attempt
-    public static function getInput( $key )
+    // Login user
+    public static function login( $id )
     {
-        $input = "";
+        $_SESSION[ "userId" ] = $id;
+    }
 
-        if ( isset( $_SESSION[ "registration" ] ) )
+    // Logout user
+    public static function logout()
+    {
+        if ( isset( $_SESSION[ "userId" ] ) )
         {
-            $input = htmlentities( $_SESSION[ "registration" ][ $key ] );
-            unset( $_SESSION[ "registration" ][ $key ] );
+            unset( $_SESSION[ "userId" ] );
+        }
+    }
 
-            // Delete the registration session after all field inputs were recovered
-            if ( empty( $_SESSION[ "registration" ] ) )
-            {
-                unset( $_SESSION[ "registration" ] );
-            }
+    // Check if a user has already logged in
+    public static function isLoggedIn()
+    {
+        if ( isset( $_SESSION[ "userId" ] ) )
+        {
+            return true;
         }
 
-        return $input;
+        return false;
     }
+
 }

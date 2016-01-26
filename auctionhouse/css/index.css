@@ -72,6 +72,12 @@ label
 }
 
 
+.login_input
+{
+    padding: 3pt;
+}
+
+
 #register_instructions
 {
     color: #66512c;
@@ -85,19 +91,13 @@ label
 }
 
 
-#seller_button
-{
-    margin-bottom: 20pt;
-}
-
-
-#buyer_button
-{
-    margin-top: 20pt;
-}
-
-
 #sign_up_button
 {
     margin-top: 10pt;
+}
+
+
+#forgotPassword
+{
+    font-size: 10pt;
 }

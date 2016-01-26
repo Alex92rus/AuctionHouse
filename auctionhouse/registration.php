@@ -4,20 +4,20 @@ require_once "class.session_factory.php";
 
 
 // Registration form was submitted
-submitRegistration();
+signUp();
 
 
 // Check and process registration form
-function submitRegistration()
+function signUp()
 {
-    // Only process registration form if sign up button was clicked
-    if ( !isset( $_POST[ "signup" ] ) )
+    // Only process when sign up button was clicked
+    if ( !isset( $_POST[ "signUp" ] ) )
     {
         redirectTo( "index.php" );
     }
 
     // Store POST values from registration form
-    $registration = createUserRegistration();
+    $registration = createRegistration();
 
     // Check registration inputs
     if ( checkForEmptyFields( $registration ) ||
@@ -25,7 +25,7 @@ function submitRegistration()
          !checkPasswords( $registration[ "password1" ], $registration[ "password2" ] ) )
     {
         // Create a session for the registration inputs so that they can be recovered after the page reloads
-        SessionFactory::setRegistration( $registration );
+        SessionFactory::setFormInput( $registration );
     }
     // Registration form valid
     else
@@ -39,7 +39,7 @@ function submitRegistration()
 
 
 // Get all registration information
-function createUserRegistration()
+function createRegistration()
 {
     $registration = [
         "username"  => $_POST[ "username" ],
@@ -51,8 +51,7 @@ function createUserRegistration()
         "city"      => $_POST[ "city" ],
         "country"   => $_POST[ "country" ],
         "password1" => $_POST[ "password1" ],
-        "password2" => $_POST[ "password2" ]
-    ];
+        "password2" => $_POST[ "password2" ] ];
 
     return $registration;
 }
@@ -95,7 +94,7 @@ function checkForEmptyFields( $registration )
     if ( !empty( $emptyFields ) )
     {
         // Create a session for the missing input fields
-        SessionFactory::setRegistrationErrors( $emptyFields );
+        SessionFactory::setInputErrors( $emptyFields );
         return true;
     }
 
@@ -125,7 +124,7 @@ function checkUsernameAndEmail( $username, $email )
     if ( !empty( $nonUniqueFields ) )
     {
         // Create a session for the taken input fields
-        SessionFactory::setRegistrationErrors( $nonUniqueFields );
+        SessionFactory::setInputErrors( $nonUniqueFields );
         return false;
     }
 
@@ -154,7 +153,7 @@ function checkPasswords( $password1, $password2 )
     if ( $info != null )
     {
         $passwordError = [ "password1" => $info, "password2" => $info ];
-        SessionFactory::setRegistrationErrors( $passwordError );
+        SessionFactory::setInputErrors( $passwordError );
         return false;
     }
 
@@ -167,6 +166,7 @@ function checkPasswords( $password1, $password2 )
 function registerUser( $completeForm )
 {
     // Create new user
+    $encryptedPassword = password_hash( $completeForm[ "password1" ], PASSWORD_BCRYPT );
     $insertId = QueryFactory::addAccount( array(
         &$completeForm[ "username" ],
         &$completeForm[ "email" ],
@@ -176,7 +176,7 @@ function registerUser( $completeForm )
         &$completeForm[ "postcode" ],
         &$completeForm[ "city" ],
         &$completeForm[ "country" ],
-        &$completeForm[ "password1" ] ) );
+        &$encryptedPassword ) );
 
     // Mark user as unverified
     $confirmCode = rand( 100000, 100000000 );

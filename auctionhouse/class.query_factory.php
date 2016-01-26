@@ -87,7 +87,7 @@ class QueryFactory
 
     public static function activateAccount( $userId )
     {
-           // SQL query for verify user's account
+        // SQL query for verify user's account
         self::initialize();
         $verifyUserQuery = "UPDATE users SET verified = 1 WHERE userId = '$userId'";
         self::$database -> updateQuery( $verifyUserQuery );
@@ -98,5 +98,34 @@ class QueryFactory
 
         // Close database
         self::$database -> closeConnection();
+    }
+
+
+    public static function checkAccount( $email, $password )
+    {
+        // SQL query for checking if account exists
+        self::initialize();
+        $checkAccount  = "SELECT userId, password from users ";
+        $checkAccount .= "WHERE email='{$email}' AND verified = 1 ";
+        $result = self::$database -> selectQuery( $checkAccount );
+        self::$database -> closeConnection();
+
+        // Check for inconsistency
+        if ( $result -> num_rows > 1 )
+        {
+            die( "Database inconsistency. {$email} not unique" );
+        }
+
+        // Process result table
+        $account = $result -> fetch_assoc();
+
+        // One verified account exits for this email and password matches as well
+        if( $account != null && password_verify( $password, $account[ "password" ] ) )
+        {
+            return $account[ "userId" ];
+        }
+
+        // Email and/or password incorrect
+        return null;
     }
 }
