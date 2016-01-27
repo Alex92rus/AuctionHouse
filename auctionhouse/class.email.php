@@ -86,6 +86,24 @@ class Email
         $this -> email -> IsHTML( true );
     }
 
+    public function prepareRecoveryEmail() 
+    {
+        // Set subject
+        $subject  = "Password Recovery";
+        $this -> email -> Subject = $subject;
+
+        // Set message
+        $message  = $this -> buildBody( 0 );
+        $message .= "<h3>Hello {$this -> firstName} {$this -> lastName},</h3>";
+        $message .= "<h4>Please follow the given link  to change your password</h4>";
+        $message .= "<a href='http://localhost:8888/changepassword.php?email={$this -> to}'>Change Password</a>";
+        $message .= "<p>Cheers!!!</p>";
+        $message .= $this -> buildBody( 1 );
+        $this -> email -> Body = $message;
+        $this -> email -> IsHTML( true );
+    }
+
+
 
     public function prepareConfirmationEmail()
     {

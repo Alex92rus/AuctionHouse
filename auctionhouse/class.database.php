@@ -55,8 +55,9 @@ class Database
 
     public function updateQuery( $sql )
     {
-        $result = $this -> connection -> query( $sql );
-        $this -> confirmResult( $result, "Database update query failed." );
+        $statement = $this -> connection -> query( $sql );
+        $this -> confirmResult( $statement, "Database update query failed." );
+        return $statement;
     }
 
     public function closeConnection()
