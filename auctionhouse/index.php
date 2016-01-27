@@ -1,4 +1,4 @@
-<?php require "class.session_factory.php" ?>
+<?php require "class.session_handler.php" ?>
 <!DOCTYPE html>
 <html>
 
