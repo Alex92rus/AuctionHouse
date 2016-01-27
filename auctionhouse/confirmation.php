@@ -1,6 +1,6 @@
 <?php
 require_once "helperfunctions.php";
-require_once "class.session_factory.php";
+require_once "class.session_handler.php";
 
 
 // Ignore manual calls to 'confirmation.php'
@@ -11,7 +11,7 @@ if ( isset( $_GET[ "email" ] ) && isset( $_GET[ "confirm_code" ] ) )
     $confirm_code = $_GET[ "confirm_code" ];
 
     // Check if email and confirmation code originate from an unverified user account
-    require_once "class.query_factory.php";
+    require_once "class.query_handler.php";
     $result = QueryFactory::checkVerificationLink( $email, $confirm_code );
 
     // Verification link is correct

@@ -1,6 +1,6 @@
 <?php
 require_once "helperfunctions.php";
-require_once "class.session_factory.php";
+require_once "class.session_handler.php";
 
 
 // Registration form was submitted
@@ -106,7 +106,7 @@ function checkForEmptyFields( $registration )
 // Check if both username and email is not already used by another account
 function checkUsernameAndEmail( $username, $email )
 {
-    require_once "class.query_factory.php";
+    require_once "class.query_handler.php";
     $nonUniqueFields = [];
 
     // Check if username is already taken

@@ -12,8 +12,8 @@ function signIn()
     // Sign in button was clicked
     if ( isset( $_POST[ "signIn" ] ) )
     {
-        require_once "class.query_factory.php";
-        require_once "class.session_factory.php";
+        require_once "class.query_handler.php";
+        require_once "class.session_handler.php";
         $email = trim( $_POST[ "loginEmail" ] );
         $password = trim( $_POST[ "loginPassword" ] );
 

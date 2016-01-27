@@ -106,7 +106,7 @@ class QueryFactory
         // SQL query for checking if account exists
         self::initialize();
         $checkAccount  = "SELECT userId, password from users ";
-        $checkAccount .= "WHERE email='{$email}' AND verified = 1 ";
+        $checkAccount .= "WHERE email='$email' AND verified = 1 ";
         $result = self::$database -> selectQuery( $checkAccount );
         self::$database -> closeConnection();
 
