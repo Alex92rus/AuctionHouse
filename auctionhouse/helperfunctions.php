@@ -1,5 +1,5 @@
 <?php
-require_once "class.session_factory.php";
+require_once "class.session_handler.php";
 
 
 // Check inputted passwords

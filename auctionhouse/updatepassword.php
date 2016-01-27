@@ -1,5 +1,5 @@
 <?php
-require_once  "class.query_factory.php";
+require_once  "class.query_handler.php";
 require_once  "helperfunctions.php";
 
 updatePass();

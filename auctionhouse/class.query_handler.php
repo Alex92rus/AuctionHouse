@@ -154,14 +154,14 @@ class QueryFactory
         return null;
     }
 
-    public static function  updatePassword($email, $password) {
+    public static function  updatePassword( $email, $password ) {
         self::initialize();
         $encryptedPassword = password_hash( $password, PASSWORD_BCRYPT );
-        $updateQuery = "UPDATE users ";
+        $updateQuery  = "UPDATE users ";
         $updateQuery .= "SET password = '$encryptedPassword' ";
         $updateQuery .=  "WHERE email = '$email'  ";
         echo  $updateQuery;
-        self::$database->updateQuery($updateQuery);
-        self::$database->closeConnection();        
+        self::$database -> updateQuery($updateQuery);
+        self::$database -> closeConnection();
      }
 }
