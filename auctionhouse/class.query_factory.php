@@ -128,4 +128,40 @@ class QueryFactory
         // Email and/or password incorrect
         return null;
     }
+
+    public static function getAccountFromEmail($email) {
+        self::initialize();
+        $getAccountQuery  = "SELECT email, firstName, lastName from users ";
+        $getAccountQuery .= "WHERE email='{$email}' AND verified = 1 ";
+        $result = self::$database->selectQuery($getAccountQuery);
+        self::$database->closeConnection();
+
+        if ( $result -> num_rows > 1 )
+        {
+            die( "Database inconsistency. {$email} not unique" );
+        }
+
+        // Process result table
+        $account = $result -> fetch_assoc();
+
+        // One verified account exits for this email and password matches as well
+        if( $account != null)
+        {
+            return array("email" => $account["email"], "firstName" => $account[ "firstName" ], "lastName" => $account[ "lastName" ]);
+        }
+
+        // Email  does not exist
+        return null;
+    }
+
+    public static function  updatePassword($email, $password) {
+        self::initialize();
+        $encryptedPassword = password_hash( $password, PASSWORD_BCRYPT );
+        $updateQuery = "UPDATE users ";
+        $updateQuery .= "SET password = '$encryptedPassword' ";
+        $updateQuery .=  "WHERE email = '$email'  ";
+        echo  $updateQuery;
+        self::$database->updateQuery($updateQuery);
+        self::$database->closeConnection();        
+     }
 }

@@ -28,7 +28,9 @@ function signIn()
         else
         {
             // Create a session for the login inputs so that they can be recovered after the page reloads
-            SessionFactory::setFormInput( createLogin() );
+            SessionFactory::setFormInput( [
+                    "loginEmail" => $email,
+                    "loginPassword" =>$password]);
 
             // Create a session for incorrect email and user details
             $message = "The entered email and password did not match our records, please try again.";
@@ -39,19 +41,3 @@ function signIn()
     // Sign in button was not clicked or sign in failed
     redirectTo( "index.php" );
 }
-
-
-// Get all login information
-function createLogin()
-{
-    $login = [
-        "loginEmail" => $_POST[ "loginEmail" ],
-        "loginPassword" => $_POST[ "loginPassword" ] ];
-
-    return $login;
-}
-
-
-
-
-

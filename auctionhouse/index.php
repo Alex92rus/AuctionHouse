@@ -23,21 +23,8 @@
     <div class="navbar navbar-default navbar-static-top">
         <div class="container header_container valign">
 
-            <!-- header logo start -->
-            <div class="ol-xs-7 navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#login">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-                <br>
-                <a class="navbar-brand" href="index.php">
-                    <img src="images/logo.png" alt="logo">
-                </a>
-            </div>
-            <!-- header logo end -->
+            <!-- header logo -->
+           <?php include_once("header.php");?>
 
             <!-- login start -->
             <div id="login" class="col-xs-5 navbar-collapse collapse">
@@ -57,7 +44,7 @@
                         <button type="submit" class="btn btn-success" name="signIn" id="signIn" >Sign In</button><br>
                     </div>
                 </form>
-                <a class="col-xs-offset-5 col-xs-5" href="#" id="forgotPassword">Forgot your password?</a>
+                <a class="col-xs-offset-5 col-xs-5" href="forgotpassword.php" id="forgotPassword">Forgot your password?</a>
             </div>
             <!-- login end -->
 
