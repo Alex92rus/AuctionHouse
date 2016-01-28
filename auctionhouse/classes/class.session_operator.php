@@ -3,8 +3,13 @@
 session_start();
 
 
-class SessionFactory
+class SessionOperator
 {
+    const SUBMITTED = "submitted";
+    const COMPLETED = "completed";
+    const RECOVERED = "recovered";
+    const CHANGED   = "changed";
+
     // Create a session for the just submitted but failed form
     public static function setFormInput( $form )
     {
@@ -62,38 +67,50 @@ class SessionFactory
     }
 
     // Create a session for the successfully submitted / fully completed registration
-    public static function setRegistrationStatus( $status )
+    public static function setFeedback( $status )
     {
-        if ( $status == 'submitted' )
+        switch ( $status )
         {
-            $title = "Registration submitted!";
-            $info  = "Before accessing your account, you have to follow the verification ";
-            $info .= "link we sent you to your email address";
-        }
-        else
-        {
-            $title = "Registration completed!";
-            $info  = "Thank you for joining us. Your account is now ready for signing in.";
+            case SessionOperator::SUBMITTED:
+                $title = "Registration submitted!";
+                $info  = "Before accessing your account, you have to follow the verification ";
+                $info .= "link we sent you to your email address.";
+                break;
+            case SessionOperator::COMPLETED:
+                $title = "Registration completed!";
+                $info  = "Thank you for joining us. Your account is now ready for signing in.";
+                break;
+            case SessionOperator::RECOVERED:
+                $title = "Password recovered!";
+                $info  = "We sent you a link to change your password.";
+                break;
+            case SessionOperator::CHANGED;
+                $title = "Password changed!";
+                $info  = "Your password was changed. You can now login with your new password";
+                break;
+            default:
+                $title = $info = null;
+                break;
         }
 
-        $_SESSION[ "registration_status" ] = [ "title" => $title, "info" => $info ];
+        $_SESSION[ "feedback" ] = [ "title" => $title, "info" => $info ];
     }
 
     // Check if a registration was successfully submitted or completed, if yes output positive feedback on the screen
-    public static function getRegistrationStatus()
+    public static function getFeedback()
     {
         $title = null;
         $info = null;
 
-        if ( isset( $_SESSION[ "registration_status" ] ) )
+        if ( isset( $_SESSION[ "feedback" ] ) )
         {
             // Retrieve registration status
-            $status = $_SESSION[ "registration_status" ];
+            $status = $_SESSION[ "feedback" ];
             $title = "<strong>" . $status[ "title" ] . "</strong>";
             $info = $status[ "info" ];
 
             // Delete registration notification session
-            unset( $_SESSION[ "registration_status" ] );
+            unset( $_SESSION[ "feedback" ] );
         }
 
         return array( $title, $info );
@@ -125,4 +142,21 @@ class SessionFactory
         return false;
     }
 
+    // Create email session for changing passwords page
+    public static function setEmail( $email )
+    {
+        $_SESSION[ "email" ] = $email;
+    }
+
+    // Get email session
+    public static function getEmail()
+    {
+        return $_SESSION[ "email" ];
+    }
+
+    // Delete email session
+    public static function deleteEmail()
+    {
+        unset( $_SESSION[ "email" ] );
+    }
 }

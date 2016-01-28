@@ -1,5 +1,5 @@
 <?php
-require_once "phpmailer/PHPMailerAutoload.php";
+require_once "../phpmailer/PHPMailerAutoload.php";
 
 
 class Email
@@ -68,7 +68,6 @@ class Email
         }
     }
 
-
     public function prepareVerificationEmail( $confirmCode )
     {
         // Set subject
@@ -79,7 +78,7 @@ class Email
         $message  = $this -> buildBody( 0 );
         $message .= "<h3>Hello {$this -> firstName} {$this -> lastName},</h3>";
         $message .= "<h4>We are ready to activate your account. All we need to do is make sure this is your email address.</h4>";
-        $message .= "<a href='http://localhost:8888/confirmation.php?email={$this -> to}&confirm_code=$confirmCode'>Verify Address</a>";
+        $message .= "<a href='http://localhost:8888/scripts/confirmation.php?email={$this -> to}&confirm_code=$confirmCode'>Verify Address</a>";
         $message .= "<p>If you did not create a AuctionHouse account, just delete this email and everything will go back to the way it was.</p>";
         $message .= $this -> buildBody( 1 );
         $this -> email -> Body = $message;
@@ -97,12 +96,10 @@ class Email
         $message .= "<h3>Hello {$this -> firstName} {$this -> lastName},</h3>";
         $message .= "<h4>Please follow the given link  to change your password</h4>";
         $message .= "<a href='http://localhost:8888/changepassword.php?email={$this -> to}'>Change Password</a>";
-        $message .= "<p>Cheers!!!</p>";
         $message .= $this -> buildBody( 1 );
         $this -> email -> Body = $message;
         $this -> email -> IsHTML( true );
     }
-
 
 
     public function prepareConfirmationEmail()

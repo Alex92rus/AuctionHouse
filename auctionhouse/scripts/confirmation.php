@@ -1,6 +1,6 @@
 <?php
 require_once "helperfunctions.php";
-require_once "class.session_handler.php";
+require_once "../classes/class.session_operator.php";
 
 
 // Ignore manual calls to 'confirmation.php'
@@ -11,20 +11,20 @@ if ( isset( $_GET[ "email" ] ) && isset( $_GET[ "confirm_code" ] ) )
     $confirm_code = $_GET[ "confirm_code" ];
 
     // Check if email and confirmation code originate from an unverified user account
-    require_once "class.query_handler.php";
-    $result = QueryFactory::checkVerificationLink( $email, $confirm_code );
+    require_once "../classes/class.query_operator.php";
+    $result = QueryOperator::checkVerificationLink( $email, $confirm_code );
 
     // Verification link is correct
     if ( !empty( $result ) )
     {
         // Active user account
-        QueryFactory::activateAccount( $result[ "userId" ] );
+        QueryOperator::activateAccount( $result[ "userId" ] );
 
         // Create a session for completed registration
-        SessionFactory::setRegistrationStatus( 'completed' );
+        SessionOperator::setFeedback( 'completed' );
 
         // Email a registration confirmation to the user
-        require_once "class.email.php";
+        require_once "../classes/class.email.php";
         $mail = new Email( $email, $result[ "firstName" ], $result[ "lastName" ] );
         $mail -> prepareConfirmationEmail();
         $mail -> sentEmail();
@@ -32,5 +32,5 @@ if ( isset( $_GET[ "email" ] ) && isset( $_GET[ "confirm_code" ] ) )
 }
 
 // Redirect to homepage
-redirectTo( "index.php" );
+redirectTo( "../index.php" );
 

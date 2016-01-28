@@ -1,5 +1,6 @@
 <?php
 require_once "helperfunctions.php";
+require_once "../classes/class.session_operator.php";
 
 
 // User wants to sign in
@@ -12,32 +13,32 @@ function signIn()
     // Sign in button was clicked
     if ( isset( $_POST[ "signIn" ] ) )
     {
-        require_once "class.query_handler.php";
-        require_once "class.session_handler.php";
+        require_once "../classes/class.query_operator.php";
+        require_once "../classes/class.session_operator.php";
         $email = trim( $_POST[ "loginEmail" ] );
         $password = trim( $_POST[ "loginPassword" ] );
 
         // Login details correct
-        if ( !is_null( $userId = QueryFactory::checkAccount( $email, $password ) ) )
+        if ( !is_null( $userId = QueryOperator::checkAccount( $email, $password ) ) )
         {
             // Login user and redirect to home page
-            SessionFactory::login( $userId );
-            redirectTo( "home.php" );
+            SessionOperator::login( $userId );
+            redirectTo( "../home.php" );
         }
         // Login failed
         else
         {
             // Create a session for the login inputs so that they can be recovered after the page reloads
-            SessionFactory::setFormInput( [
+            SessionOperator::setFormInput( [
                     "loginEmail" => $email,
-                    "loginPassword" =>$password]);
+                    "loginPassword" =>$password ] );
 
             // Create a session for incorrect email and user details
             $message = "The entered email and password did not match our records, please try again.";
-            SessionFactory::setInputErrors( [ "login" => $message ] );
+            SessionOperator::setInputErrors( [ "login" => $message ] );
         }
     }
 
     // Sign in button was not clicked or sign in failed
-    redirectTo( "index.php" );
+    redirectTo( "../index.php" );
 }

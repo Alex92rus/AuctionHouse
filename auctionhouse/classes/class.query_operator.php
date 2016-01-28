@@ -2,7 +2,7 @@
 require_once "class.database.php";
 
 
-class QueryFactory
+class QueryOperator
 {
     private static $database;
 
@@ -100,7 +100,6 @@ class QueryFactory
         self::$database -> closeConnection();
     }
 
-
     public static function checkAccount( $email, $password )
     {
         // SQL query for checking if account exists
@@ -129,13 +128,16 @@ class QueryFactory
         return null;
     }
 
-    public static function getAccountFromEmail($email) {
+    public static function getAccountFromEmail( $email )
+    {
+        // SQL for checking if given email is associated with a verified account
         self::initialize();
         $getAccountQuery  = "SELECT email, firstName, lastName from users ";
-        $getAccountQuery .= "WHERE email='{$email}' AND verified = 1 ";
-        $result = self::$database->selectQuery($getAccountQuery);
-        self::$database->closeConnection();
+        $getAccountQuery .= "WHERE email='{$email}' AND verified = 1";
+        $result = self::$database -> selectQuery( $getAccountQuery );
+        self::$database -> closeConnection();
 
+        // Check for inconsistency
         if ( $result -> num_rows > 1 )
         {
             die( "Database inconsistency. {$email} not unique" );
@@ -144,24 +146,25 @@ class QueryFactory
         // Process result table
         $account = $result -> fetch_assoc();
 
-        // One verified account exits for this email and password matches as well
-        if( $account != null)
+        // One verified account exits for this email
+        if( $account != null )
         {
-            return array("email" => $account["email"], "firstName" => $account[ "firstName" ], "lastName" => $account[ "lastName" ]);
+            return array( "email" => $account[ "email" ], "firstName" => $account[ "firstName" ], "lastName" => $account[ "lastName" ] );
         }
 
-        // Email  does not exist
+        // Email does not exist
         return null;
     }
 
-    public static function  updatePassword( $email, $password ) {
+    public static function  updatePassword( $email, $password )
+    {
+        // SQL query for updating a user's password
         self::initialize();
         $encryptedPassword = password_hash( $password, PASSWORD_BCRYPT );
         $updateQuery  = "UPDATE users ";
         $updateQuery .= "SET password = '$encryptedPassword' ";
         $updateQuery .=  "WHERE email = '$email'  ";
-        echo  $updateQuery;
-        self::$database -> updateQuery($updateQuery);
+        self::$database -> updateQuery( $updateQuery );
         self::$database -> closeConnection();
      }
 }

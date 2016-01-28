@@ -1,5 +1,7 @@
 <?php
-require_once "user_session.php";
+require_once "classes/class.session_operator.php";
+require_once "scripts/helperfunctions.php";
+require_once "scripts/user_session.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,22 +25,20 @@ require_once "user_session.php";
 <div class="navbar navbar-default navbar-static-top">
     <div class="container header_container valign">
 
-        <!-- header logo -->
-       <?php include_once("header.php");?>
+        <!-- header logo start -->
+       <?php include_once("includes/header.php");?>
+        <!-- header logo end -->
 
-        <!-- logout start -->
-        <div id="login" class="col-xs-5 navbar-collapse collapse">
-            <form class="navbar-form"  method="post" action="login.php" role="form">
-                <div class="form-group col-xs-2" style="padding: 3pt;">
-                    <button type="submit" class="btn btn-success" name="signIn" id="signIn" >LogOut</button><br>
-                </div>
-            </form>
-            <a class="col-xs-offset-5 col-xs-5" href="#" id="forgotPassword">Forgot your password?</a>
-        </div>
-        <!-- logout finish -->
     </div>
 </div>
-            <!-- login end -->
-    <p>You are logged in</p>
+    <!-- main start -->
+    <div class="container">
+        <p>You are logged in</p>
+    </div>
+    <!-- main end -->
+
+    <!-- footer start -->
+    <?php include_once( "includes/footer.php" );?>
+    <!-- footer end -->
 </body>
 </html>
