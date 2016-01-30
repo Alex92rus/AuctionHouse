@@ -1,0 +1,48 @@
+/*
+    Project: Auction System
+*/
+
+.navbar
+{
+    margin-bottom: 0;
+}
+
+
+.navbar-brand
+{
+    height: auto;
+}
+
+
+.navbar-brand img
+{
+    height: 33pt;
+    width: inherit;
+}
+
+
+.navbar-right
+{
+    padding-top: 10pt;
+    padding-bottom: 10pt;
+}
+
+
+.navbar-left
+{
+    padding-top: 5pt;
+    padding-bottom: 5pt;
+}
+
+
+.navbar-top
+{
+    background-color: #5fd4af;
+    border-bottom: solid 1pt #273646;
+}
+
+
+.auction-search
+{
+    width: 450pt;
+}

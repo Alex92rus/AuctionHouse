@@ -7,12 +7,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="css/general.css" rel="stylesheet" type="text/css">
-    <link href="css/index.css" rel="stylesheet" type="text/css">
-    <link href="css/animate.css" rel="stylesheet" type="text/css">
-
+    <!-- Font -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
+
+    <!-- CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="css/animate.css" rel="stylesheet" type="text/css">
+    <link href="css/index.css" rel="stylesheet" type="text/css">
+
+    <!-- JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap-notify.min.js"></script>
@@ -38,28 +41,39 @@
         <div class="container header_container valign">
 
             <!-- header logo start -->
-           <?php include_once( "includes/header.php" );?>
+            <div class="navbar-header pull-left">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#login">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="index.php">
+                    <img src="images/logo_long.png" alt="logo">
+                </a>
+            </div>
             <!-- header logo start -->
 
             <!-- login start -->
-            <div id="login" class="col-xs-5 navbar-collapse collapse">
-                <form class="navbar-form" method="post" action="scripts/login.php" role="form">
+            <div id="login" class="navbar-collapse collapse">
+                <form class="navbar-form pull-right" method="post" action="scripts/login.php" role="form">
                     <label class="text-danger">&nbsp
                         <?php echo SessionOperator::getInputErrors( "login" ) ?>
                     </label><br>
-                    <div class="form-group col-xs-5" style="padding: 3pt;">
+                    <div class="input-group col-xs-5" style="padding: 1pt;">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input type="text" placeholder="Email" class="form-control" maxlength="30" name="loginEmail" id="loginEmail"
                             <?php echo 'value = "' . SessionOperator::getFormInput( "loginEmail" ) . '"'; ?> >
                     </div>
-                    <div class="form-group col-xs-5" style="padding: 3pt;">
+                    <div class="input-group col-xs-5" style="padding: 1pt;">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input type="password" placeholder="Password" class="form-control" maxlength="30" name="loginPassword" id="loginPassword"
                             <?php echo 'value = "' . SessionOperator::getFormInput( "loginPassword" ) . '"'; ?> >
                     </div>
-                    <div class="form-group col-xs-2" style="padding: 3pt;">
-                        <button type="submit" class="btn btn-success" name="signIn" id="signIn" >Sign In</button><br>
-                    </div>
+                    <button type="submit" class="btn btn-success" name="signIn" id="signIn" >Sign In</button><br>
                 </form>
-                <a class="col-xs-offset-5 col-xs-5" href="forgotpassword.php" id="forgotPassword">Forgot your password?</a>
+                <a class="col-xs-offset-6 col-xs-5" href="forgotpassword.php" id="forgotPassword">Forgot your password?</a>
             </div>
             <!-- login end -->
 
@@ -192,7 +206,16 @@
 
 
     <!-- footer start -->
-    <?php include_once( "includes/footer.php" );?>
+    <div class="footer">
+        <div class="container">
+            <div class="navbar-text pull-left">
+                <p>Copyright &copy; <?php echo date( "Y", time() ); ?> AuctionHouse</p>
+            </div>
+            <div class="navbar-text pull-right">
+                <p><a href="#">About</a> |  <a href="#">Contact</a> |  <a href="#">Privacy & Cookies</a> |  <a href="#">Developers</a></p>
+            </div>
+        </div>
+    </div>
     <!-- footer end -->
 
 </body>
