@@ -32,6 +32,7 @@ require_once "scripts/user_session.php";
     <script src="js/bootstrap-notify.min.js"></script>
     <script src="js/metisMenu.min.js"></script>
     <script src="js/sb-admin-2.js"></script>
+    <script src="js/auctionhouse.js"></script>
 </head>
 
 <body>
@@ -55,16 +56,29 @@ require_once "scripts/user_session.php";
         </div>
         <!-- header end -->
 
-        <!-- left side start -->
+        <!-- search start -->
         <form class="navbar-form navbar-top-links navbar-left" role="search" >
-            <div class="input-group input-group-lg auction-search">
-                <input type="text" class="form-control" placeholder="Search for live auctions">
+            <div class="input-group input-group-lg" style="width: inherit">
+                <div class="input-group-btn search-panel">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span id="search_concept">All</span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#contains">Example 1</a></li>
+                        <li><a href="#its_equal">Example 2</a></li>
+                        <li><a href="#greather_than">Example 3</a></li>
+                        <li><a href="#less_than">Example 4</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#all">All</a></li>
+                    </ul>
+                </div>
+                <input type="text" class="form-control" style="width: 500px;" placeholder="Search for live auctions">
                 <span class="input-group-btn">
                      <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                 </span>
             </div>
         </form>
-        <!-- right side end -->
+        <!-- search end -->
 
         <!-- right side start -->
         <ul class="nav navbar-top-links navbar-right">

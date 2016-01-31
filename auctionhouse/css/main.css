@@ -16,33 +16,27 @@
 
 .navbar-brand img
 {
-    height: 33pt;
+    height: 43px;
     width: inherit;
 }
 
 
 .navbar-right
 {
-    padding-top: 10pt;
-    padding-bottom: 10pt;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 
 .navbar-left
 {
-    padding-top: 5pt;
-    padding-bottom: 5pt;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 
 .navbar-top
 {
     background-color: #5fd4af;
-    border-bottom: solid 1pt #273646;
-}
-
-
-.auction-search
-{
-    width: 450pt;
+    border-bottom: solid 1px #273646;
 }
