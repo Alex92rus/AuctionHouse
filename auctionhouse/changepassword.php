@@ -62,7 +62,7 @@ SessionOperator::setEmail( $_GET[ "email" ] );
         <div class="col-xs-12">
             <h2>
                 <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-                Recover your password
+                Change your password
             </h2>
             <p class="p_instructions">
                 If you want to recover your password, enter your new password twice and then click the 'Change Password' button.

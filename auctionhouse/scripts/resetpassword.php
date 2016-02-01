@@ -10,13 +10,13 @@ require_once "../classes/class.session_operator.php";
 $userInfo = QueryOperator:: getAccountFromEmail( $_POST[ "email" ] );
 
 
-// Email belongs to an account - send password recovery email to that user
+// Email belongs to an account - send password reset email to that user
 if ( $userInfo != null )
 {
-    $mail = new Email( $userInfo[ "email" ], $userInfo[ "firstName" ], $userInfo[ "lastName" ] );
-    $mail -> prepareRecoveryEmail();
+    $mail = new Email( $_POST[ "email" ], $userInfo[ "firstName" ], $userInfo[ "lastName" ] );
+    $mail -> prepareResetEmail();
     $mail -> sentEmail();
-    SessionOperator::setFeedback( SessionOperator::RECOVERED );
+    SessionOperator::setFeedback( SessionOperator::RESET );
     redirectTo( "../index.php" );
 }
 else

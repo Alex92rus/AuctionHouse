@@ -57,14 +57,14 @@ require_once "classes/class.session_operator.php";
                 Forgot your password
             </h2>
             <p class="p_instructions">
-                If you forgot your password for your account, enter your email and click the 'Recover Password' button. You will then
+                If you forgot your password for your account, enter your email and click the 'Reset Password' button. You will then
                 receive an email to change your password.
             </p>
         </div>
         <!-- instructions end -->
 
         <!-- forgot password start -->
-        <form method="post" action="scripts/recoverpassword.php">
+        <form method="post" action="scripts/resetpassword.php">
             <div class="col-xs-4 form-group-lg">
                 <label class="text-danger">&nbsp
                     <?php echo SessionOperator::getInputErrors( "email" ); ?>
@@ -74,7 +74,7 @@ require_once "classes/class.session_operator.php";
             </div>
             <div class="col-xs-8">
                 <label>&nbsp</label><br>
-                <button type="submit" name="signUp" id="signUp" class="btn btn-success btn-lg">Recover Password</button>
+                <button type="submit" name="signUp" id="signUp" class="btn btn-success btn-lg">Reset Password</button>
             </div>
         </form>
         <!-- forgot password end -->
