@@ -9,11 +9,13 @@ require_once "classes/class.session_operator.php";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- CSS -->
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="css/general.css" rel="stylesheet" type="text/css">
     <link href="css/index.css" rel="stylesheet" type="text/css">
     <link href="css/animate.css" rel="stylesheet" type="text/css">
 
+    <!-- JS -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -85,6 +87,6 @@ require_once "classes/class.session_operator.php";
     <!-- footer start -->
     <?php include_once "includes/footer.php";?>
     <!-- footer end -->
-    
+
 </body>
 </html>

@@ -14,7 +14,7 @@ require_once "scripts/user_session.php";
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Home</title>
+    <title>User Profile</title>
 
     <!-- Font -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
@@ -33,6 +33,7 @@ require_once "scripts/user_session.php";
     <script src="js/metisMenu.min.js"></script>
     <script src="js/sb-admin-2.js"></script>
     <script src="js/auctionhouse.js"></script>
+    <script src="js/bootstrap.file-input.js"></script>
 </head>
 
 <body>
@@ -190,11 +191,90 @@ require_once "scripts/user_session.php";
 
         <!-- main start -->
         <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Dashboard</h1>
+            <!-- profile header start -->
+            <div class="col-xs-12 page-header">
+                <div class="col-xs-6">
+                    <h2>Profile Details</h2>
+                </div>
+                <div class="col-xs-6">
+                    <a class="btn btn-danger pull-right" id="changePassword" data-toggle="modal" data-toogle="popover" href="#changePasswordModal" title="Password" data-content="Your password was successfully changed" data-placement="right">
+                        <span class="glyphicon glyphicon-edit"></span> Change Password
+                    </a>
                 </div>
             </div>
+            <!-- profile header end -->
+
+            <!-- profile image start -->
+            <div class="col-xs-4">
+                <img src="images/blank_profile_image.png" class="img-responsive">
+                <form action="scripts/upload_photo.php" method="POST" class="text-center" enctype="multipart/form-data">
+                    <input type="file" data-filename-placement="inside" name="profileImage">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary" name="upload"><span class="glyphicon glyphicon-upload"></span> Upload</button>
+                    </div>
+                </form>
+                <?php echo SessionOperator::getInputErrors( "upload" ) ?>
+            </div>
+            <!-- profile image end -->
+
+            <!-- profile details start -->
+            <form action="" method="post" class="col-xs-8 form-horizontal" role="form" >
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">Username</label>
+                    <div class="col-xs-10">
+                        <input type="text" class="form-control" name="username" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">Email</label>
+                    <div class="col-xs-10">
+                        <input type="text" class="form-control" name="email" value="">
+                    </div>
+                </div>
+                <div class="form-group" >
+                    <label class="col-xs-2 control-label">First Name</label>
+                    <div class="col-xs-10">
+                        <input type="text" class="form-control" name="firstName" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">Last Name</label>
+                    <div class="col-xs-10">
+                        <input type="text" class="form-control" name="lastName" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">Address</label>
+                    <div class="col-xs-10">
+                        <input type="text" class="form-control" name="address" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">Postcode</label>
+                    <div class="col-xs-10">
+                        <input type="text" class="form-control" name="postcode" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">City</label>
+                    <div class="col-xs-10">
+                        <input type="text" class="form-control" name="City" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">Country</label>
+                    <div class="col-xs-10">
+                        <input type="text" class="form-control" name="country" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-2 col-xs-10">
+                        <button type="submit" class="btn btn-primary" name="save"><span class="glyphicon glyphicon-save"></span> Save Changes</button>
+                    </div>
+                </div>
+            </form>
+            <!-- profile details end -->
+
         </div>
         <!-- main end -->
 

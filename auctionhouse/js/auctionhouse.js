@@ -7,3 +7,8 @@ $(document).ready(function(e){
         $('.input-group #search_param').val(param);
     });
 });
+
+
+$(document).ready(function(){
+    $('input[type=file]').bootstrapFileInput();
+});
