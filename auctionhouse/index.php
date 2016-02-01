@@ -1,4 +1,7 @@
-<?php require "classes/class.session_operator.php" ?>
+<?php
+require "classes/class.session_operator.php" ;
+require "scripts/countries.php"
+?>
 <!DOCTYPE html>
 <html>
 
@@ -167,8 +170,17 @@
                         <label class="text-danger">&nbsp
                             <?php echo SessionOperator::getInputErrors( "country" ) ?>
                         </label><br>
-                        <input type="text" name="country" class="form-control" id="country" maxlength="30" placeholder="Country"
-                            <?php echo 'value = "' . SessionOperator::getFormInput( 'country' ) . '"'; ?> >
+                        <select name="country" class="form-control"
+                            <?php echo 'value = "' . SessionOperator::getFormInput( "country" ) . '"'; ?> >
+                            <option default selected>Country</option>
+                            <?php
+                                foreach($countries as $value) {
+                            ?>
+                                <option value="<?= $value ?>" title="<?= htmlspecialchars($value) ?>"><?= htmlspecialchars($value) ?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
                     </div>
 
                     <div class="form-group-lg col-xs-6">

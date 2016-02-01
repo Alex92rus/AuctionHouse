@@ -12,6 +12,18 @@ class QueryOperator
         self::$database = new Database();
     }
 
+    public static function getCountryId( $countryName) {
+        self::initialize();
+        $getCountryQuery = "SELECT  countryId FROM countries WHERE  countryName='$countryName'";
+        $getCountryQueryResult = self::$database -> selectQuery($getCountryQuery);
+
+        //Close database
+        self::$database -> closeConnection();
+    
+        $countryRow =  $getCountryQueryResult -> fetch_assoc();
+        return $countryRow['countryId'];
+    }
+
     public static function checkUniqueness( $field, $value )
     {
         // SQL query for retrieving users with a specific username/email
@@ -35,9 +47,9 @@ class QueryOperator
     {
         // SQL query for creating a new user record
         self::initialize();
-        $registerUserQuery  = "INSERT INTO users ( username, email, firstName, lastName, address, postcode, city, country, password ) ";
+        $registerUserQuery  = "INSERT INTO users ( username, email, firstName, lastName, address, postcode, city, countryId, password ) ";
         $registerUserQuery .= "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )";
-        $insertId = self::$database -> insertQuery( $registerUserQuery, "sssssssss", $parameters );
+        $insertId = self::$database -> insertQuery( $registerUserQuery, "sssssssis", $parameters );
 
         // Close database
         self::$database -> closeConnection();

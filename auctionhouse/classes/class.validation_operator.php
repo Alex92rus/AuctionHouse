@@ -4,7 +4,7 @@ require_once "class.session_operator.php";
 
 class ValidationOperator
 {
-    const EMPTY_FIELD_MESSAGES = [
+   const EMPTY_FIELD_MESSAGES = [
         "username" => "Please enter a username",
         "email" => "Please enter your email",
         "firstName" => "Please enter your first name",

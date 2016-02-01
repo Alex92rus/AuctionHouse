@@ -148,6 +148,10 @@ p > a
     text-decoration: underline;
 }
 
+select option[default] {
+    color: #333;
+    display: none;
+}
 
 p > a:hover,
 p > a:focus

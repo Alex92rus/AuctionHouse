@@ -2,7 +2,7 @@
 require_once "helperfunctions.php";
 require_once "../classes/class.session_operator.php";
 require_once "../classes/class.validation_operator.php";
-
+require_once "../classes/class.query_operator.php";
 
 // Registration form was submitted
 signUp();
@@ -17,6 +17,7 @@ function signUp()
         redirectTo( "../index.php" );
     }
 
+    $countryID = QueryOperator::getCountryId($_POST[ "country" ]);
     // Store POST values from registration form
     $registration = [
         "username"  => $_POST[ "username" ],
@@ -26,7 +27,7 @@ function signUp()
         "address"   => $_POST[ "address" ],
         "postcode"  => $_POST[ "postcode" ],
         "city"      => $_POST[ "city" ],
-        "country"   => $_POST[ "country" ],
+        "country"   => $countryID,
         "password1" => $_POST[ "password1" ],
         "password2" => $_POST[ "password2" ] ];
 
