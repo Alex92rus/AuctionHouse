@@ -85,10 +85,10 @@ class Email
         $this -> email -> IsHTML( true );
     }
 
-    public function prepareRecoveryEmail() 
+    public function prepareResetEmail()
     {
         // Set subject
-        $subject  = "Password Recovery";
+        $subject  = "Password Reset";
         $this -> email -> Subject = $subject;
 
         // Set message
@@ -101,8 +101,7 @@ class Email
         $this -> email -> IsHTML( true );
     }
 
-
-    public function prepareConfirmationEmail()
+    public function prepareRegistrationConfirmEmail()
     {
         // Set subject
         $subject  = "Registration confirmation";
@@ -112,6 +111,23 @@ class Email
         $message  = $this -> buildBody( 0 );
         $message .= "<h3>Hello {$this -> firstName} {$this -> lastName}</h3>";
         $message .= "<h4>Your registration was successful. You are now ready to access your account and start buying and selling auctions.</h4>";
+        $message .= "<p>If you did not create a AuctionHouse account, please contact us on this email address <a href='mailto:{$this -> username}'>";
+        $message .= "{$this -> username}</a></p>";
+        $message .= $this -> buildBody( 1 );
+        $this -> email -> Body = $message;
+        $this -> email -> IsHTML( true );
+    }
+
+    public function preparePasswordConfirmEmail()
+    {
+        // Set subject
+        $subject  = "Password confirmation";
+        $this -> email -> Subject = $subject;
+
+        // Set message
+        $message  = $this -> buildBody( 0 );
+        $message .= "<h3>Hello {$this -> firstName} {$this -> lastName}</h3>";
+        $message .= "<h4>Your successfully changed your password.</h4>";
         $message .= "<p>If you did not create a AuctionHouse account, please contact us on this email address <a href='mailto:{$this -> username}'>";
         $message .= "{$this -> username}</a></p>";
         $message .= $this -> buildBody( 1 );

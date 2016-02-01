@@ -7,7 +7,7 @@ class SessionOperator
 {
     const SUBMITTED = "submitted";
     const COMPLETED = "completed";
-    const RECOVERED = "recovered";
+    const RESET = "reset";
     const CHANGED   = "changed";
 
     // Create a session for the just submitted but failed form
@@ -80,8 +80,8 @@ class SessionOperator
                 $title = "Registration completed!";
                 $info  = "Thank you for joining us. Your account is now ready for signing in.";
                 break;
-            case SessionOperator::RECOVERED:
-                $title = "Password recovered!";
+            case SessionOperator::RESET:
+                $title = "Password reset!";
                 $info  = "We sent you a link to change your password.";
                 break;
             case SessionOperator::CHANGED;

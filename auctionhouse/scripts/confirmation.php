@@ -26,7 +26,7 @@ if ( isset( $_GET[ "email" ] ) && isset( $_GET[ "confirm_code" ] ) )
         // Email a registration confirmation to the user
         require_once "../classes/class.email.php";
         $mail = new Email( $email, $result[ "firstName" ], $result[ "lastName" ] );
-        $mail -> prepareConfirmationEmail();
+        $mail -> prepareRegistrationConfirmEmail();
         $mail -> sentEmail();
     }
 }

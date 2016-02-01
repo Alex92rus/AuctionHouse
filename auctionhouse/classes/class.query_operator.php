@@ -144,7 +144,7 @@ class QueryOperator
     {
         // SQL for checking if given email is associated with a verified account
         self::initialize();
-        $getAccountQuery  = "SELECT email, firstName, lastName from users ";
+        $getAccountQuery  = "SELECT firstName, lastName from users ";
         $getAccountQuery .= "WHERE email='{$email}' AND verified = 1";
         $result = self::$database -> selectQuery( $getAccountQuery );
         self::$database -> closeConnection();
@@ -161,14 +161,14 @@ class QueryOperator
         // One verified account exits for this email
         if( $account != null )
         {
-            return array( "email" => $account[ "email" ], "firstName" => $account[ "firstName" ], "lastName" => $account[ "lastName" ] );
+            return array( "firstName" => $account[ "firstName" ], "lastName" => $account[ "lastName" ] );
         }
 
         // Email does not exist
         return null;
     }
 
-    public static function  updatePassword( $email, $password )
+    public static function updatePassword( $email, $password )
     {
         // SQL query for updating a user's password
         self::initialize();
