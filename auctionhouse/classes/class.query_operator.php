@@ -12,16 +12,17 @@ class QueryOperator
         self::$database = new Database();
     }
 
-    public static function getCountryId( $countryName) {
+    public static function getCountryId( $countryName )
+    {
         self::initialize();
-        $getCountryQuery = "SELECT  countryId FROM countries WHERE  countryName='$countryName'";
-        $getCountryQueryResult = self::$database -> selectQuery($getCountryQuery);
+        $getCountryQuery = "SELECT countryId FROM countries WHERE countryName = '$countryName'";
+        $getCountryQueryResult = self::$database -> selectQuery( $getCountryQuery );
 
         //Close database
         self::$database -> closeConnection();
     
         $countryRow =  $getCountryQueryResult -> fetch_assoc();
-        return $countryRow['countryId'];
+        return $countryRow[ "countryId" ];
     }
 
     public static function checkUniqueness( $field, $value )
@@ -116,7 +117,7 @@ class QueryOperator
     {
         // SQL query for checking if account exists
         self::initialize();
-        $checkAccount  = "SELECT userId, password from users ";
+        $checkAccount  = "SELECT userId, username, email, firstName, lastName, address, postcode, city, countryId, password, image from users ";
         $checkAccount .= "WHERE email='$email' AND verified = 1 ";
         $result = self::$database -> selectQuery( $checkAccount );
         self::$database -> closeConnection();
@@ -133,7 +134,7 @@ class QueryOperator
         // One verified account exits for this email and password matches as well
         if( $account != null && password_verify( $password, $account[ "password" ] ) )
         {
-            return $account[ "userId" ];
+            return $account;
         }
 
         // Email and/or password incorrect
@@ -179,4 +180,13 @@ class QueryOperator
         self::$database -> updateQuery( $updateQuery );
         self::$database -> closeConnection();
      }
+
+    public static function uploadImage( $userId, $imageName, $table )
+    {
+        // SQL query for uploading an image
+        self::initialize();
+        $uploadImage = "UPDATE {$table} SET image = '{$imageName}' WHERE userId = {$userId}";
+        self::$database -> updateQuery( $uploadImage );
+        self::$database -> closeConnection();
+    }
 }

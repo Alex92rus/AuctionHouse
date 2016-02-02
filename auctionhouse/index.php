@@ -176,7 +176,7 @@ require "scripts/countries.php"
                             <?php
                                 foreach($countries as $value) {
                             ?>
-                                <option value="<?= $value ?>" title="<?= htmlspecialchars($value) ?>"><?= htmlspecialchars($value) ?></option>
+                                <option value="<?= $value ?>"><?= htmlspecialchars($value) ?></option>
                             <?php
                             }
                             ?>

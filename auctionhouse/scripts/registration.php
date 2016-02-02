@@ -17,7 +17,7 @@ function signUp()
         redirectTo( "../index.php" );
     }
 
-    $countryID = QueryOperator::getCountryId($_POST[ "country" ]);
+    $countryId = QueryOperator::getCountryId( $_POST[ "country" ] );
     // Store POST values from registration form
     $registration = [
         "username"  => $_POST[ "username" ],
@@ -27,7 +27,7 @@ function signUp()
         "address"   => $_POST[ "address" ],
         "postcode"  => $_POST[ "postcode" ],
         "city"      => $_POST[ "city" ],
-        "country"   => $countryID,
+        "country"   => $countryId,
         "password1" => $_POST[ "password1" ],
         "password2" => $_POST[ "password2" ] ];
 

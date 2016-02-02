@@ -1,6 +1,7 @@
 <?php
 require_once "helperfunctions.php";
 require_once "../classes/class.session_operator.php";
+require_once "../classes/class.user.php";
 
 
 // Sign in button was clicked
@@ -12,10 +13,21 @@ if ( isset( $_POST[ "signIn" ] ) )
     $password = trim( $_POST[ "loginPassword" ] );
 
     // Login details correct
-    if ( !is_null( $userId = QueryOperator::checkAccount( $email, $password ) ) )
+    if ( !is_null( $account = QueryOperator::checkAccount( $email, $password ) ) )
     {
         // Login user and redirect to home page
-        SessionOperator::login( $userId );
+        SessionOperator::login( new User (
+            $account[ "userId" ],
+            $account[ "username" ],
+            $account[ "email" ],
+            $account[ "firstName" ],
+            $account[ "lastName" ],
+            $account[ "address" ],
+            $account[ "postcode" ],
+            $account[ "city" ],
+            $account[ "countryId" ],
+            $account[ "image" ]
+        ) );
         redirectTo( "../home.php" );
     }
     // Login failed

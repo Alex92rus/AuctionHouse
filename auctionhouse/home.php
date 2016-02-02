@@ -144,7 +144,7 @@ require_once "scripts/user_session.php";
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li>
-                            <a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                            <a href="profile.php"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
                         <li>
                             <a href="scripts/logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>

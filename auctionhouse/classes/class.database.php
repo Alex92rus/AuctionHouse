@@ -1,13 +1,14 @@
 <?php
+require_once( $_SERVER['DOCUMENT_ROOT'] . '/config/config.php' );
 
 
 class Database
 {
-    private $host = "localhost";
-    private $user = "root";
-    private $password = "root";
-    private $database = "auction_house";
-    private $port = 8889;
+    private $host = DB_HOST;
+    private $user = DB_USER;
+    private $password = DB_PASSWORD;
+    private $database = DB_NAME;
+    private $port = DB_PORT;
     private $connection;
 
     function __construct()
@@ -33,6 +34,7 @@ class Database
     {
         if ( !$result )
         {
+            echo mysqli_error( $this->connection );
             die( $message );
         }
     }
@@ -55,9 +57,8 @@ class Database
 
     public function updateQuery( $sql )
     {
-        $statement = $this -> connection -> query( $sql );
-        $this -> confirmResult( $statement, "Database update query failed." );
-        return $statement;
+        $result = $this -> connection -> query( $sql );
+        $this -> confirmResult( $result, "Database update query failed." );
     }
 
     public function closeConnection()

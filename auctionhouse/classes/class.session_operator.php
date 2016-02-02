@@ -1,5 +1,5 @@
 <?php
-
+include "class.user.php";
 session_start();
 
 
@@ -117,29 +117,46 @@ class SessionOperator
     }
 
     // Login user
-    public static function login( $id )
+    public static function login( $user )
     {
-        $_SESSION[ "userId" ] = $id;
+        $_SESSION[ "user" ] = $user;
     }
 
     // Logout user
     public static function logout()
     {
-        if ( isset( $_SESSION[ "userId" ] ) )
+        if ( isset( $_SESSION[ "user" ] ) )
         {
-            unset( $_SESSION[ "userId" ] );
+            unset( $_SESSION[ "user" ] );
         }
     }
 
     // Check if a user has already logged in
     public static function isLoggedIn()
     {
-        if ( isset( $_SESSION[ "userId" ] ) )
+        if ( isset( $_SESSION[ "user" ] ) )
         {
             return true;
         }
 
         return false;
+    }
+
+    // Get current user session
+    public static function getUser()
+    {
+        if ( isset( $_SESSION[ "user" ] ) )
+        {
+            return $_SESSION[ "user" ];
+        }
+
+        return null;
+    }
+
+    // Update current user session
+    public static function updateUser( $user )
+    {
+        $_SESSION[ "user" ] = $user;
     }
 
     // Create email session for changing passwords page
