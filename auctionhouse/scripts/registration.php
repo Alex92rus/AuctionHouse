@@ -88,7 +88,7 @@ function checkUsernameAndEmail( $username, $email )
 function registerUser( $completeForm )
 {
     // Create new user
-    $completeForm["country"] = QueryOperator::getCountryId($completeForm["country"]);
+    $completeForm[ "country" ] = QueryOperator::getCountryId( $completeForm[ "country" ] );
     $encryptedPassword = password_hash( $completeForm[ "password1" ], PASSWORD_BCRYPT );
     $insertId = QueryOperator::addAccount( array(
         &$completeForm[ "username" ],

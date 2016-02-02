@@ -210,7 +210,7 @@ require_once "classes/class.query_operator.php";
             <!-- image start -->
             <br><img src="
                 <?php
-                if ( is_null( $imageName = SessionOperator::getUser() -> getImageName() ) )
+                if ( empty( $imageName = SessionOperator::getUser() -> getImageName() ) )
                     echo "uploads/profile_images/blank_profile.png";
                 else
                     echo "uploads/profile_images/" . $imageName; ?>" class="img-responsive">
@@ -222,7 +222,7 @@ require_once "classes/class.query_operator.php";
                     <?php echo SessionOperator::getInputErrors( "upload" ) ?>
                 </label>
                 <input class="col-xs-12" type="file" data-filename-placement="inside" name="image">
-                <?php if ( !is_null( SessionOperator::getUser() -> getImageName() ) ) : ?>
+                <?php if ( !empty( SessionOperator::getUser() -> getImageName() ) ) : ?>
                     <a href="scripts/delete_image.php" class="btn btn-danger col-xs-12" style="margin-top: 5px"><span class="glyphicon glyphicon-remove"></span> Delete Profile Picture</a>
                 <?php endif ?>
                 <button type="submit" class="btn btn-primary col-xs-12" name="upload" style="margin-top: 5px"><span class="glyphicon glyphicon-upload"></span> Upload</button>

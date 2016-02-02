@@ -64,7 +64,7 @@ if ( isset( $_POST[ "upload" ] ) )
             if ( move_uploaded_file( $image, UPLOAD_PROFILE_PATH . $newImageName ) )
             {
                 // Delete old profile pic (if exists)
-                if ( !is_null( $imageName = $user -> getImageName() ) )
+                if ( !empty( $imageName = $user -> getImageName() ) )
                 {
                     unlink( UPLOAD_PROFILE_PATH . $imageName );
                 }
