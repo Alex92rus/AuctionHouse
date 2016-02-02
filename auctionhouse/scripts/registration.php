@@ -17,8 +17,6 @@ function signUp()
         redirectTo( "../index.php" );
     }
 
-
-    $countryId = QueryOperator::getCountryId( $_POST[ "country" ] );
     // Store POST values from registration form
     $registration = [
         "username"  => $_POST[ "username" ],
@@ -28,13 +26,14 @@ function signUp()
         "address"   => $_POST[ "address" ],
         "postcode"  => $_POST[ "postcode" ],
         "city"      => $_POST[ "city" ],
-        "country"   => $countryId,
+        "country"   =>  $_POST[ "country" ],
         "password1" => $_POST[ "password1" ],
         "password2" => $_POST[ "password2" ] ];
 
     // Check registration inputs
-    if ($registration["country"] == "Country") {
-        $registration["country"]  = "";
+    if ( $registration[ "country" ] == "Country" )
+    {
+        $registration[ "country" ]  = "";
     }
     if ( !ValidationOperator::checkForEmptyFields( $registration ) ||
          !checkUsernameAndEmail( $registration[ "username" ], $registration[ "email" ] ) ||
@@ -99,7 +98,7 @@ function registerUser( $completeForm )
         &$completeForm[ "address" ],
         &$completeForm[ "postcode" ],
         &$completeForm[ "city" ],
-        &$completeForm[ "country" ],
+        &$completeForm["country"],
         &$encryptedPassword ) );
 
     // Mark user as unverified
