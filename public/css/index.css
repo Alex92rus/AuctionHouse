@@ -1,0 +1,186 @@
+/*
+    Project: Auction System
+*/
+
+html
+{
+    position: relative;
+    min-height: 100%;
+}
+
+
+body
+{
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    margin-bottom: 100px;
+    background-color: #627991;
+}
+
+
+hr
+{
+    border-top: 1px solid #888888;
+}
+
+
+label
+{
+    font-weight: normal;
+}
+
+
+@media (min-width: 768px) {
+    .container {
+        width: 760px;
+    }
+}
+
+
+@media (min-width: 992px) {
+    .container {
+        width: 980px;
+    }
+}
+
+
+@media (min-width: 1200px) {
+    .container {
+        width: 1270px;
+    }
+}
+
+
+.container
+{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+
+.header_container
+{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+
+.navbar
+{
+    margin-bottom: 0;
+}
+
+
+.navbar-brand
+{
+    height: auto;
+}
+
+
+.navbar-brand img
+{
+    height: 70px;
+    width: inherit;
+}
+
+
+.navbar-text p > a
+{
+    color: inherit;
+    text-decoration: none;
+}
+
+
+.p_instructions
+{
+    font-size: 20px;
+}
+
+
+.valign
+{
+    display: flex;
+    align-items: center;
+}
+
+
+.form-group-lg
+{
+    margin-bottom: 5px;
+}
+
+
+.login_input
+{
+    padding: 3px;
+}
+
+
+.navbar-default
+{
+    background-color: #ffffff;
+    box-shadow: 0 0 10px 1px #e9e9e9;
+}
+
+
+.navbar-text p > a:hover,
+.navbar-text p > a:focus
+{
+    color: #337ab7;
+}
+
+
+.footer
+{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background-color: #222;
+    color: #879291;
+}
+
+
+p > a
+{
+    color: #c0a16b;
+    text-decoration: underline;
+}
+
+select option[default] {
+    color: #333;
+    display: none;
+}
+
+p > a:hover,
+p > a:focus
+{
+    color: #66512c;
+    text-decoration: underline;
+}
+
+
+#register_instructions
+{
+    color: #fea779;
+}
+
+
+#register_icon
+{
+    font-size:2em;
+    margin-bottom: 15px;
+}
+
+
+#sign_up_button
+{
+    margin-top: 10px;
+}
+
+
+#forgotPassword
+{
+    font-size: 13px;
+}

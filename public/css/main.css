@@ -1,0 +1,63 @@
+/*
+    Project: Auction System
+*/
+
+.navbar
+{
+    margin-bottom: 0;
+}
+
+
+.navbar-brand
+{
+    height: auto;
+}
+
+
+.navbar-brand img
+{
+    height: 43px;
+    width: inherit;
+}
+
+
+.navbar-right
+{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+
+.navbar-left
+{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+
+.navbar-top
+{
+    background-color: #5fd4af;
+    border-bottom: solid 1px #273646;
+}
+
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}

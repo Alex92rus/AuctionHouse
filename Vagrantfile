@@ -11,4 +11,16 @@ Vagrant.configure("2") do |config|
     # Optional NFS. Make sure to remove other synced_folder line too
     #config.vm.synced_folder ".", "/var/www", :nfs => { :mount_options => ["dmode=777","fmode=666"] }
 
+	config.vm.provision "shell", inline: <<-SHELL
+	    sudo bash -c \'echo export APP_ENV="development" >> /etc/apache2/envvars\'
+	    sudo bash -c \'echo export DB_HOST="localhost" >> /etc/apache2/envvars\'
+	    sudo bash -c \'echo export DB_PASSWORD="root" >> /etc/apache2/envvars\'
+	    sudo bash -c \'echo export DB_USERNAME="root" >> /etc/apache2/envvars\'
+	    sudo bash -c \'echo export DB_NAME="auctionsystem" >> /etc/apache2/envvars\'
+	    sudo bash -c \'echo export DB_PORT="3306" >> /etc/apache2/envvars\'
+
+
+	    sudo service apache2 restart
+	SHELL
 end
+
