@@ -170,13 +170,17 @@ require "scripts/countries.php"
                         <label class="text-danger">&nbsp
                             <?php echo SessionOperator::getInputErrors( "country" ) ?>
                         </label><br>
-                        <select name="country" class="form-control"
-                            <?php echo 'value = "' . SessionOperator::getFormInput( "country" ) . '"'; ?> >
-                            <option default selected>Country</option>
+                        <select name="country" class="form-control" >
+                            <option default>Country</option>
                             <?php
+                                $country = SessionOperator::getFormInput( "country" ); 
                                 foreach($countries as $value) {
+                                  $selected = "";
+                                  if ($value == $country) {
+                                    $selected = "selected";
+                                  }
                             ?>
-                                <option value="<?= $value ?>" title="<?= htmlspecialchars($value) ?>"><?= htmlspecialchars($value) ?></option>
+                                <option value="<?= $value ?>" title="<?= htmlspecialchars($value) ?>" <?= $selected ?> ><?= htmlspecialchars($value) ?></option>
                             <?php
                             }
                             ?>

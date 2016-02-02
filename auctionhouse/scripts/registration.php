@@ -17,7 +17,6 @@ function signUp()
         redirectTo( "../index.php" );
     }
 
-    $countryID = QueryOperator::getCountryId($_POST[ "country" ]);
     // Store POST values from registration form
     $registration = [
         "username"  => $_POST[ "username" ],
@@ -27,11 +26,14 @@ function signUp()
         "address"   => $_POST[ "address" ],
         "postcode"  => $_POST[ "postcode" ],
         "city"      => $_POST[ "city" ],
-        "country"   => $countryID,
+        "country"   =>  $_POST[ "country" ],
         "password1" => $_POST[ "password1" ],
         "password2" => $_POST[ "password2" ] ];
 
     // Check registration inputs
+    if ($registration["country"] == "Country") {
+        $registration["country"]  = "";
+    }
     if ( !ValidationOperator::checkForEmptyFields( $registration ) ||
          !checkUsernameAndEmail( $registration[ "username" ], $registration[ "email" ] ) ||
          !ValidationOperator::checkPasswords( $registration[ "password1" ], $registration[ "password2" ] ) )
@@ -85,6 +87,7 @@ function checkUsernameAndEmail( $username, $email )
 function registerUser( $completeForm )
 {
     // Create new user
+    $completeForm["country"] = QueryOperator::getCountryId($completeForm["country"]);
     $encryptedPassword = password_hash( $completeForm[ "password1" ], PASSWORD_BCRYPT );
     $insertId = QueryOperator::addAccount( array(
         &$completeForm[ "username" ],
