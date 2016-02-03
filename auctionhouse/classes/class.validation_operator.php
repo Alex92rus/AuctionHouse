@@ -4,7 +4,7 @@ require_once "class.session_operator.php";
 
 class ValidationOperator
 {
-   const EMPTY_FIELD_MESSAGES = [
+   const EMPTY_FIELD_REGISTRATION = [
         "username" => "Please enter a username",
         "email" => "Please enter your email",
         "firstName" => "Please enter your first name",
@@ -16,13 +16,23 @@ class ValidationOperator
         "password1" => "Please enter a password",
         "password2" => "Please enter the same password again"
     ];
+    const EMPTY_FIELD_UPDATE = [
+        "username" => "Please enter a non empty username",
+        "firstName" => "Please enter a non empty first name",
+        "lastName" => "Please enter a non empty last name",
+        "address" => "Please enter a non empty address",
+        "postcode" => "Please enter a non empty postcode",
+        "city" => "Please enter a non empty city",
+        "country" => "Please select a non empty username",
+    ];
     const INCORRECT_PASSWORDS = [
         "Password needs to be at least 10 characters long!",
         "Does not match with other password field!"
     ];
 
 
-    public static function checkForEmptyFields( $fields )
+    // Check for empty inputs
+    public static function hasEmtpyFields( $fields, $errorMessages )
     {
         // Variable for storing missing input fields
         $emptyFields = [];
@@ -36,7 +46,7 @@ class ValidationOperator
             // Empty field was found, hence store them with their corresponding error message
             if ( empty( $value ) &&  $key != "signUp" )
             {
-                $emptyFields[ $key ] = ValidationOperator::EMPTY_FIELD_MESSAGES[ $key ];
+                $emptyFields[ $key ] = $errorMessages[ $key ];
             }
         }
 
@@ -45,29 +55,29 @@ class ValidationOperator
         {
             // Create a session for the missing input fields
             SessionOperator::setInputErrors( $emptyFields );
-            return false;
+            return true;
         }
 
         // No error
-        return true;
+        return false;
     }
 
 
     // Check if both username and email is not already used by another account
-    public static function checkUsernameAndEmail( $username, $email )
+    public static function isTaken( $username, $email = null )
     {
         require_once "../classes/class.query_operator.php";
         $nonUniqueFields = [];
 
         // Check if username is already taken
-        if ( !QueryOperator::checkUniqueness( "username", $username ) )
+        if ( !QueryOperator::isUnique( "username", $username ) )
         {
-            $nonUniqueFields[ "username" ] = "This " . $username . " already exists";
+            $nonUniqueFields[ "username" ] = $username . " already exists";
         }
         // Check if email is already taken
-        if ( !QueryOperator::checkUniqueness( "email", $email ) )
+        if ( !is_null( $email ) && !QueryOperator::isUnique( "email", $email ) )
         {
-            $nonUniqueFields[ "email" ] = "This " . $email . " already exists";
+            $nonUniqueFields[ "email" ] = $email . " already exists";
         }
 
         // Inputted username or email were already taken
@@ -75,16 +85,39 @@ class ValidationOperator
         {
             // Create a session for the taken input fields
             SessionOperator::setInputErrors( $nonUniqueFields );
-            return false;
+            return true;
         }
 
         // No error
-        return true;
+        return false;
+    }
+
+
+    // Check for new username
+    public static function getChangedFields( $updated_user )
+    {
+        $changedFields = [];
+        $user = SessionOperator::getUser();
+
+        foreach ( $updated_user as $key => $value )
+        {
+            if ( strcmp( $key, "country" ) == 0 )
+            {
+                $key = $key . "Id";
+            }
+            $previous_value = call_user_func( array( $user, "get" . ucfirst( $key ) ) );
+            if ( strcmp( $previous_value, $value ) != 0 )
+            {
+                $changedFields[ $key ] = $previous_value;
+            }
+        }
+
+        return $changedFields;
     }
 
 
     // Check inputted passwords
-    public static function checkPasswords( $password1, $password2 )
+    public static function validPasswords( $password1, $password2 )
     {
         $info = null;
 

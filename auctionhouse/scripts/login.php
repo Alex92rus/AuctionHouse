@@ -16,18 +16,7 @@ if ( isset( $_POST[ "signIn" ] ) )
     if ( !is_null( $account = QueryOperator::checkAccount( $email, $password ) ) )
     {
         // Login user and redirect to home page
-        SessionOperator::login( new User (
-            $account[ "userId" ],
-            $account[ "username" ],
-            $account[ "email" ],
-            $account[ "firstName" ],
-            $account[ "lastName" ],
-            $account[ "address" ],
-            $account[ "postcode" ],
-            $account[ "city" ],
-            $account[ "countryId" ],
-            $account[ "image" ]
-        ) );
+        SessionOperator::login( new User ( $account ) );
         redirectTo( "../home.php" );
     }
     // Login failed

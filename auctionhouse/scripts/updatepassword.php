@@ -11,12 +11,12 @@ $email = SessionOperator::getEmail();
 $userDetails = QueryOperator::getAccountFromEmail( $email );
 
 // Both passwords valid and match
-if ( ValidationOperator::checkForEmptyFields( $passwordFields ) &&
-	 ValidationOperator::checkPasswords( $passwordFields[ "password1" ], $passwordFields[ "password2" ] ) )
+if ( ValidationOperator::isEmtpy( $passwordFields, ValidationOperator::EMPTY_FIELD_REGISTRATION ) &&
+	 ValidationOperator::validPasswords( $passwordFields[ "password1" ], $passwordFields[ "password2" ] ) )
 {
 	QueryOperator::updatePassword( $email, $passwordFields[ "password2" ] );
 	SessionOperator::deleteEmail();
-	SessionOperator::setFeedback( SessionOperator::CHANGED );
+	SessionOperator::setFeedback( SessionOperator::CHANGED_PASSWORD );
 
 	// Send a password changed confirmation email to the user
 	require_once "../classes/class.email.php";

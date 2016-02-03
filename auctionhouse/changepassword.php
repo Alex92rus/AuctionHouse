@@ -20,7 +20,6 @@ SessionOperator::setEmail( $_GET[ "email" ] );
 
     <!-- CSS -->
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="css/general.css" rel="stylesheet" type="text/css">
     <link href="css/index.css" rel="stylesheet" type="text/css">
     <link href="css/animate.css" rel="stylesheet" type="text/css">
 
@@ -33,14 +32,15 @@ SessionOperator::setEmail( $_GET[ "email" ] );
 </head>
 <body>
     <!-- display feedback (if available) start -->
-    <?php list( $title, $info ) = SessionOperator::getFeedback(); if ( $title != null && $info != null ) : ?>
+    <?php
+    if ( !is_null( $feedback = SessionOperator::getFeedback() ) ) : ?>
         <script>
             $.notify({
                 icon: "glyphicon glyphicon-ok",
-                title: <?php echo json_encode( $title ); ?>,
-                message: <?php echo json_encode( $info ); ?>
+                title: <?php echo json_encode( $feedback[ 0 ] ); ?>,
+                message: <?php echo json_encode( $feedback[ 1 ] ); ?>
             },{
-                type: "success"
+                type: <?php echo json_encode( $feedback[ 2 ] ); ?>
             });
         </script>
     <?php endif ?>
@@ -79,14 +79,14 @@ SessionOperator::setEmail( $_GET[ "email" ] );
                 <label class="text-danger">&nbsp
                     <?php echo SessionOperator::getInputErrors( "password1" ) ?>
                 </label>
-                <input type="password" name="password1" class="form-control" id="password1" maxlength="30" placeholder="Create a password"
+                <input type="password" name="password1" class="form-control" id="password1" maxlength="23" placeholder="Create a password"
                     <?php echo 'value = "' . SessionOperator::getFormInput( 'password1' ) . '"'; ?> >
             </div>
             <div class="col-xs-4 form-group-lg ">
                 <label class="text-danger">&nbsp
                     <?php echo SessionOperator::getInputErrors( "password2" ) ?>
                 </label>
-                <input type="password" name="password2" class="form-control" id="password2" maxlength="30" placeholder="Repeat password"
+                <input type="password" name="password2" class="form-control" id="password2" maxlength="23" placeholder="Repeat password"
                     <?php echo 'value = "' . SessionOperator::getFormInput( 'password2' ) . '"'; ?> >
             </div>
             <div class="col-xs-4">

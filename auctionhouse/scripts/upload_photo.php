@@ -64,17 +64,20 @@ if ( isset( $_POST[ "upload" ] ) )
             if ( move_uploaded_file( $image, UPLOAD_PROFILE_PATH . $newImageName ) )
             {
                 // Delete old profile pic (if exists)
-                if ( !empty( $imageName = $user -> getImageName() ) )
+                if ( !empty( $imageName = $user -> getImage() ) )
                 {
                     unlink( UPLOAD_PROFILE_PATH . $imageName );
                 }
 
                 // Store image name in database
-                QueryOperator::uploadImage( $user -> getUserId(), $newImageName, USERS_TABLE );
+                QueryOperator::uploadImage( $user -> getUserId(), $newImageName, "users" );
 
                 // Update user session
-                $user -> setImageName( $newImageName );
-                SessionOperator::updateUser( $user );
+                $user = QueryOperator::getAccount( $user -> getUserId() );
+                SessionOperator::updateUser( new User( $user ) );
+
+                // Set feedback session
+                SessionOperator::setFeedback( SessionOperator::UPLOADED_PROFILE_PHOTO );
             }
             // Error - image cannot be uploaded
             else

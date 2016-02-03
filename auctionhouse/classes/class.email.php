@@ -1,4 +1,5 @@
 <?php
+require_once "../config/config.php";
 require_once "../phpmailer/PHPMailerAutoload.php";
 
 
@@ -29,29 +30,29 @@ class Email
         $this -> email -> SMTPDebug = 0;
 
         //Ask for HTML-friendly debug output
-        $this -> email -> Debugoutput = "html";
+        $this -> email -> Debugoutput = EMAIL_DEBUG;
 
         //Whether to use SMTP authentication
         $this -> email -> SMTPAuth = true;
 
         //Set the encryption system to use - ssl (deprecated) or tls
-        $this -> email -> SMTPSecure = "tls";
+        $this -> email -> SMTPSecure = EMAIL_ENCRYPTION;
 
         //Set the hostname of the mail server
-        $this -> email -> Host = "smtp.gmail.com";
+        $this -> email -> Host = EMAIL_HOST;
 
         //Set the SMTP port number - 587 for authenticated TLS
-        $this -> email -> Port = 587;
+        $this -> email -> Port = EMAIL_SMTP;
 
         //Username to use for SMTP authentication
-        $this -> username = "auction.house.ucl@gmail.com";
+        $this -> username = EMAIL_USER;
         $this -> email -> Username = $this -> username;
 
         //Password to use for SMTP authentication
-        $this -> email -> Password = "Bidder2016!";
+        $this -> email -> Password = EMAIL_PASSWORD;
 
-        //Set who the message is to be sent from
-        $this -> email -> setFrom( "auctionhouse@gmail.com", "AuctionHouse Team");
+        // Set who the message is to be sent from
+        $this -> email -> setFrom( "auctionhouse@gmail.com", "AuctionHouse Service Team" );
     }
 
     private function buildBody( $position )
@@ -137,9 +138,6 @@ class Email
 
     public function sentEmail()
     {
-        // Set who the message is to be sent from
-        $this -> email -> setFrom( "auctionhouse@gmail.com", "AuctionHouse Service Team");
-
         // Set who the message is to be sent to
         $this -> email -> addAddress( $this -> to, $this -> firstName . " " . $this -> lastName );
 

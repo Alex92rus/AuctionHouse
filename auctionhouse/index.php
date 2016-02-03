@@ -26,14 +26,15 @@ require_once "config/config.php";
 
 <body>
     <!-- display feedback (if available) start -->
-    <?php list( $title, $info ) = SessionOperator::getFeedback(); if ( $title != null && $info != null ) : ?>
+    <?php
+    if ( !is_null( $feedback = SessionOperator::getFeedback() ) ) : ?>
         <script>
             $.notify({
                 icon: "glyphicon glyphicon-ok",
-                title: <?php echo json_encode( $title ); ?>,
-                message: <?php echo json_encode( $info ); ?>
+                title: <?php echo json_encode( $feedback[ 0 ] ); ?>,
+                message: <?php echo json_encode( $feedback[ 1 ] ); ?>
             },{
-                type: "success"
+                type: <?php echo json_encode( $feedback[ 2 ] ); ?>
             });
         </script>
     <?php endif ?>
@@ -114,7 +115,7 @@ require_once "config/config.php";
                         <label class="text-danger">&nbsp
                             <?php echo SessionOperator::getInputErrors( "username" ) ?>
                         </label>
-                        <input type="text" name="username" class="form-control" id="username" maxlength="30" placeholder="Pick a username"
+                        <input type="text" name="username" class="form-control" id="username" maxlength="45" placeholder="Pick a username"
                             <?php echo 'value = "' . SessionOperator::getFormInput( 'username' ) . '"'; ?> >
                     </div>
 
@@ -122,7 +123,7 @@ require_once "config/config.php";
                         <label class="text-danger">&nbsp
                             <?php echo SessionOperator::getInputErrors( "email" ) ?>
                         </label>
-                        <input type="text" name="email" class="form-control" id="email" maxlength="30" placeholder="Email"
+                        <input type="text" name="email" class="form-control" id="email" maxlength="45" placeholder="Email"
                             <?php echo 'value = "' . SessionOperator::getFormInput( 'email' ) . '"'; ?> >
                     </div>
 
@@ -130,7 +131,7 @@ require_once "config/config.php";
                         <label class="text-danger">&nbsp
                             <?php echo SessionOperator::getInputErrors( "firstName" ) ?>
                         </label>
-                        <input type="text" name="firstName" class="form-control" id="firstName" maxlength="30" placeholder="First Name"
+                        <input type="text" name="firstName" class="form-control" id="firstName" maxlength="45" placeholder="First Name"
                             <?php echo 'value = "' . SessionOperator::getFormInput( 'firstName' ) . '"'; ?> >
                     </div>
 
@@ -138,7 +139,7 @@ require_once "config/config.php";
                         <label class="text-danger">&nbsp
                             <?php echo SessionOperator::getInputErrors( "lastName" ) ?>
                         </label>
-                        <input type="text" name="lastName" class="form-control" id="lastName" maxlength="30" placeholder="Last Name"
+                        <input type="text" name="lastName" class="form-control" id="lastName" maxlength="45" placeholder="Last Name"
                             <?php echo 'value = "' . SessionOperator::getFormInput( 'lastName' ) . '"'; ?> >
                     </div>
 
@@ -146,7 +147,7 @@ require_once "config/config.php";
                         <label class="text-danger">&nbsp
                             <?php echo SessionOperator::getInputErrors( "address" ) ?>
                         </label>
-                        <input type="text" name="address" class="form-control" id="address" maxlength="50" placeholder="Address"
+                        <input type="text" name="address" class="form-control" id="address" maxlength="90" placeholder="Address"
                             <?php echo 'value = "' . SessionOperator::getFormInput( 'address' ) . '"'; ?> >
                     </div>
 
@@ -154,7 +155,7 @@ require_once "config/config.php";
                         <label class="text-danger">&nbsp
                             <?php echo SessionOperator::getInputErrors( "postcode" ) ?>
                         </label>
-                        <input type="text" name="postcode" class="form-control" id="postcode" maxlength="30" placeholder="Postcode"
+                        <input type="text" name="postcode" class="form-control" id="postcode" maxlength="45" placeholder="Postcode"
                             <?php echo 'value = "' . SessionOperator::getFormInput( 'postcode' ) . '"'; ?> >
                     </div>
 
@@ -162,7 +163,7 @@ require_once "config/config.php";
                         <label class="text-danger">&nbsp
                             <?php echo SessionOperator::getInputErrors( "city" ) ?>
                         </label>
-                        <input type="text" name="city" class="form-control" id="city" maxlength="30" placeholder="City"
+                        <input type="text" name="city" class="form-control" id="city" maxlength="45" placeholder="City"
                             <?php echo 'value = "' . SessionOperator::getFormInput( "city" ) . '"'; ?> >
                     </div>
 
@@ -191,7 +192,7 @@ require_once "config/config.php";
                         <label class="text-danger">&nbsp
                             <?php echo SessionOperator::getInputErrors( "password1" ) ?>
                         </label>
-                        <input type="password" name="password1" class="form-control" id="password1" maxlength="30" placeholder="Create a password"
+                        <input type="password" name="password1" class="form-control" id="password1" maxlength="23" placeholder="Create a password"
                             <?php echo 'value = "' . SessionOperator::getFormInput( 'password1' ) . '"'; ?> >
                     </div>
 
@@ -199,7 +200,7 @@ require_once "config/config.php";
                         <label class="text-danger">&nbsp
                             <?php echo SessionOperator::getInputErrors( "password2" ) ?>
                         </label>
-                        <input type="password" name="password2" class="form-control" id="password2" maxlength="30" placeholder="Repeat password"
+                        <input type="password" name="password2" class="form-control" id="password2" maxlength="23" placeholder="Repeat password"
                             <?php echo 'value = "' . SessionOperator::getFormInput( 'password2' ) . '"'; ?> >
                     </div>
                 </div>

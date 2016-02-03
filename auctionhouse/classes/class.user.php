@@ -12,20 +12,20 @@ Class User
     private $postcode;
     private $city;
     private $countryId;
-    private $imageName;
+    private $image;
 
-    public function __construct( $userId, $username, $email, $firstName, $lastName, $address, $postcode, $city, $countryId, $imageName )
+    public function __construct( $account )
     {
-        $this -> userId = $userId;
-        $this -> username = $username;
-        $this -> email = $email;
-        $this -> firstName = $firstName;
-        $this -> lastName = $lastName;
-        $this -> address = $address;
-        $this -> postcode = $postcode;
-        $this -> city = $city;
-        $this -> countryId = $countryId;
-        $this -> imageName = $imageName;
+        $this -> userId = $account[ "userId" ];
+        $this -> username = $account[ "username" ];
+        $this -> email = $account[ "email" ];
+        $this -> firstName = $account[ "firstName" ];
+        $this -> lastName = $account[ "lastName" ];
+        $this -> address = $account[ "address" ];
+        $this -> postcode = $account[ "postcode" ];
+        $this -> city = $account[ "city" ];
+        $this -> countryId = $account[ "countryId" ];
+        $this -> image = $account[ "image" ];
     }
 
     public function getUserId()
@@ -33,19 +33,9 @@ Class User
         return $this -> userId;
     }
 
-    public function setUsername( $update )
-    {
-        $this -> username = $update;
-    }
-
     public function getUsername()
     {
         return $this -> username;
-    }
-
-    public function setEmail( $update )
-    {
-        $this -> email = $update;
     }
 
     public function getEmail()
@@ -53,19 +43,9 @@ Class User
         return $this -> email;
     }
 
-    public function setFirstName( $update )
-    {
-        $this -> firstName = $update;
-    }
-
     public function getFirstName()
     {
         return $this -> firstName;
-    }
-
-    public function setLastName( $update )
-    {
-        $this -> lastName = $update;
     }
 
     public function getLastName()
@@ -73,19 +53,9 @@ Class User
         return $this -> lastName;
     }
 
-    public function setAddress( $update )
-    {
-        $this -> address = $update;
-    }
-
     public function getAddress()
     {
         return $this -> address;
-    }
-
-    public function setPostcode( $update )
-    {
-        $this -> postcode = $update;
     }
 
     public function getPostcode()
@@ -93,19 +63,9 @@ Class User
         return $this -> postcode;
     }
 
-    public function setCity( $update )
-    {
-        $this -> city = $update;
-    }
-
     public function getCity()
     {
         return $this -> city;
-    }
-
-    public function setCountryId( $update )
-    {
-        $this -> countryId = $update;
     }
 
     public function getCountryId()
@@ -113,13 +73,8 @@ Class User
         return $this -> countryId;
     }
 
-    public function setImageName( $update )
+    public function getImage()
     {
-        $this -> imageName = $update;
-    }
-
-    public function getImageName()
-    {
-        return $this -> imageName;
+        return $this -> image;
     }
 }

@@ -16,7 +16,7 @@ if ( $userInfo != null )
     $mail = new Email( $_POST[ "email" ], $userInfo[ "firstName" ], $userInfo[ "lastName" ] );
     $mail -> prepareResetEmail();
     $mail -> sentEmail();
-    SessionOperator::setFeedback( SessionOperator::RESET );
+    SessionOperator::setFeedback( SessionOperator::RESET_PASSWORD );
     redirectTo( "../index.php" );
 }
 else

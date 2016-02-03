@@ -22,6 +22,7 @@ require_once "scripts/user_session.php";
 
     <!-- CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet" type="text/css">
     <link href="css/metisMenu.min.css" rel="stylesheet">
     <link href="css/sb-admin-2.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
@@ -36,6 +37,20 @@ require_once "scripts/user_session.php";
 </head>
 
 <body>
+    <!-- display feedback (if available) start -->
+    <?php
+    if ( !is_null( $feedback = SessionOperator::getFeedback() ) ) : ?>
+        <script>
+            $.notify({
+                icon: "glyphicon glyphicon-ok",
+                title: <?php echo json_encode( $feedback[ 0 ] ); ?>,
+                message: <?php echo json_encode( $feedback[ 1 ] ); ?>
+            },{
+                type: <?php echo json_encode( $feedback[ 2 ] ); ?>
+            });
+        </script>
+    <?php endif ?>
+    <!-- display feedback (if available) end -->
 
     <div id="wrapper">
 

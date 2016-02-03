@@ -5,42 +5,62 @@ session_start();
 
 class SessionOperator
 {
-    const SUBMITTED = "submitted";
-    const COMPLETED = "completed";
-    const RESET = "reset";
-    const CHANGED   = "changed";
+    const FORM_INPUTS = "form_inputs";
+    const INPUT_ERRORS = "input_errors";
+    const USER = "user";
+    const EMAIL = "email";
+    const FEEDBACK = "feedback";
+    const TITLE = "title";
+    const INFO = "info";
+    const TYPE = "type";
+
+    const SUBMITTED_REGISTRATION = "submitted_registration";
+    const COMPLETED_REGISTRATION = "completed_registration";
+    const RESET_PASSWORD = "reset_password";
+    const CHANGED_PASSWORD = "changed_password";
+    const UPDATED_PROFILE_INFO = "updated_profile_info";
+    const UPLOADED_PROFILE_PHOTO = "uploaded_profile_photo";
+    const DELETED_PROFILE_PHOTO = "deleted_profile_photo";
+
+    const SUCCESS = "success";
+    const WARNING = "warning";
+    const DANGER = "danger";
+
 
     // Create a session for the just submitted but failed form
     public static function setFormInput( $form )
     {
-        $_SESSION[ "form_inputs" ] = $form;
+        $_SESSION[ self::FORM_INPUTS ] = $form;
     }
+
 
     // Recover field input after each failed form submission
     public static function getFormInput( $key )
     {
         $input = "";
 
-        if ( isset( $_SESSION[ "form_inputs" ] ) && array_key_exists( $key, $_SESSION[ "form_inputs" ] ) )
+        if ( isset( $_SESSION[ self::FORM_INPUTS ] ) && array_key_exists( $key, $_SESSION[ self::FORM_INPUTS ] ) )
         {
-            $input = htmlentities( $_SESSION[ "form_inputs" ][ $key ] );
-            unset( $_SESSION[ "form_inputs" ][ $key ] );
+            $input = htmlentities( $_SESSION[ self::FORM_INPUTS ][ $key ] );
+            unset( $_SESSION[ self::FORM_INPUTS ][ $key ] );
 
             // Delete the session after all field inputs were recovered
-            if ( empty( $_SESSION[ "form_inputs" ] ) )
+            if ( empty( $_SESSION[ self::FORM_INPUTS ] ) )
             {
-                unset( $_SESSION[ "form_inputs" ] );
+                unset( $_SESSION[ self::FORM_INPUTS ] );
             }
         }
 
         return $input;
     }
 
+
     // Create a session for the incorrect form fields
     public static function setInputErrors( $incorrectFields )
     {
-        $_SESSION[ "input_errors" ] = $incorrectFields;
+        $_SESSION[ self::INPUT_ERRORS ] = $incorrectFields;
     }
+
 
     // Get error message for incorrect field input
     public static function getInputErrors( $key )
@@ -48,93 +68,117 @@ class SessionOperator
         $message = "";
 
         // There was an input error within a specific field
-        if ( isset( $_SESSION[ "input_errors" ] ) && array_key_exists( $key, $_SESSION[ "input_errors" ] ) )
+        if ( isset( $_SESSION[ self::INPUT_ERRORS ] ) && array_key_exists( $key, $_SESSION[ self::INPUT_ERRORS ] ) )
         {
             // Get the error message for the input field
-            $message = $_SESSION[ "input_errors" ][ $key ];
+            $message = $_SESSION[ self::INPUT_ERRORS ][ $key ];
 
             // Remove the input field from the input errors array
-            unset( $_SESSION[ "input_errors" ][ $key ] );
+            unset( $_SESSION[ self::INPUT_ERRORS ][ $key ] );
 
             // Delete the input error session after all error messages were outputted to the screen
-            if ( empty( $_SESSION[ "input_errors" ] ) )
+            if ( empty( $_SESSION[ self::INPUT_ERRORS ] ) )
             {
-                unset( $_SESSION[ "input_errors" ] );
+                unset( $_SESSION[ self::INPUT_ERRORS ] );
             }
         }
 
         return $message;
     }
 
-    // Create a session for the successfully submitted / fully completed registration
+
+    // Create a feedback session
     public static function setFeedback( $status )
     {
         switch ( $status )
         {
-            case SessionOperator::SUBMITTED:
+            case self::SUBMITTED_REGISTRATION:
                 $title = "Registration submitted!";
                 $info  = "Before accessing your account, you have to follow the verification ";
                 $info .= "link we sent you to your email address.";
+                $type = self::SUCCESS;
                 break;
-            case SessionOperator::COMPLETED:
+            case self::COMPLETED_REGISTRATION:
                 $title = "Registration completed!";
                 $info  = "Thank you for joining us. Your account is now ready for signing in.";
+                $type = self::SUCCESS;
                 break;
-            case SessionOperator::RESET:
+            case self::RESET_PASSWORD:
                 $title = "Password reset!";
                 $info  = "We sent you a link to change your password.";
+                $type = self::SUCCESS;
                 break;
-            case SessionOperator::CHANGED;
+            case self::CHANGED_PASSWORD:
                 $title = "Password changed!";
-                $info  = "Your password was changed. You can now login with your new password";
+                $info  = "Your password was changed. You can now login with your new password.";
+                $type = self::SUCCESS;
+                break;
+            case self::UPDATED_PROFILE_INFO:
+                $title = "Profile updated!";
+                $info  = "Your new profile information was saved.";
+                $type = self::SUCCESS;
+                break;
+            case self::UPLOADED_PROFILE_PHOTO:
+                $title = "Profile photo uploaded!";
+                $info  = "Your have a new profile image.";
+                $type = self::SUCCESS;
+                break;
+            case self::DELETED_PROFILE_PHOTO:
+                $title = "Profile photo deleted!";
+                $info  = "You have currently no profile image.";
+                $type = self::DANGER;
                 break;
             default:
-                $title = $info = null;
+                $title = $info = $type = null;
                 break;
         }
 
-        $_SESSION[ "feedback" ] = [ "title" => $title, "info" => $info ];
+        $_SESSION[ self::FEEDBACK ] = [ self::TITLE => $title, self::INFO => $info, self::TYPE => $type ];
     }
 
-    // Check if a registration was successfully submitted or completed, if yes output positive feedback on the screen
+
+    // Check if a feedback has to be displayed
     public static function getFeedback()
     {
-        $title = null;
-        $info = null;
-
-        if ( isset( $_SESSION[ "feedback" ] ) )
+        if ( isset( $_SESSION[ self::FEEDBACK ] ) )
         {
-            // Retrieve registration status
-            $status = $_SESSION[ "feedback" ];
-            $title = "<strong>" . $status[ "title" ] . "</strong>";
-            $info = $status[ "info" ];
+            // Retrieve status
+            $status = $_SESSION[ self::FEEDBACK ];
+            $title = "<strong>" . $status[ self::TITLE ] . "</strong>";
+            $info = $status[ self::INFO ];
+            $type = $status[ self::TYPE ];
 
-            // Delete registration notification session
-            unset( $_SESSION[ "feedback" ] );
+            // Delete session
+            unset( $_SESSION[ self::FEEDBACK ] );
+
+            return array( $title, $info, $type );
         }
 
-        return array( $title, $info );
+        return null;
     }
+
 
     // Login user
     public static function login( $user )
     {
-        $_SESSION[ "user" ] = $user;
+        $_SESSION[ self::USER ] = $user;
     }
+
 
     // Logout user
     public static function logout()
     {
-        if ( isset( $_SESSION[ "user" ] ) )
+        if ( isset( $_SESSION[ self::USER ] ) )
         {
-            unset( $_SESSION[ "user" ] );
+            unset( $_SESSION[ self::USER ] );
         }
     }
+
 
     // Check if a user has already logged in
     public static function isLoggedIn()
     {
-        if ( isset( $_SESSION[ "user" ] ) )
+        if ( isset( $_SESSION[ self::USER ] ) )
         {
             return true;
         }
@@ -142,38 +186,43 @@ class SessionOperator
         return false;
     }
 
+
     // Get current user session
     public static function getUser()
     {
-        if ( isset( $_SESSION[ "user" ] ) )
+        if ( isset( $_SESSION[ self::USER ] ) )
         {
-            return $_SESSION[ "user" ];
+            return $_SESSION[ self::USER ];
         }
 
         return null;
     }
 
+
     // Update current user session
     public static function updateUser( $user )
     {
-        $_SESSION[ "user" ] = $user;
+        $_SESSION[ self::USER  ] = $user;
     }
+
 
     // Create email session for changing passwords page
     public static function setEmail( $email )
     {
-        $_SESSION[ "email" ] = $email;
+        $_SESSION[ self::EMAIL ] = $email;
     }
+
 
     // Get email session
     public static function getEmail()
     {
-        return $_SESSION[ "email" ];
+        return $_SESSION[ self::EMAIL ];
     }
+
 
     // Delete email session
     public static function deleteEmail()
     {
-        unset( $_SESSION[ "email" ] );
+        unset( $_SESSION[ self::EMAIL ] );
     }
 }

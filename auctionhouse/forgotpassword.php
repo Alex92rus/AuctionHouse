@@ -11,7 +11,6 @@ require_once "classes/class.session_operator.php";
 
     <!-- CSS -->
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="css/general.css" rel="stylesheet" type="text/css">
     <link href="css/index.css" rel="stylesheet" type="text/css">
     <link href="css/animate.css" rel="stylesheet" type="text/css">
 
@@ -24,14 +23,15 @@ require_once "classes/class.session_operator.php";
 <body>
 
     <!-- display feedback (if available) start -->
-    <?php list( $title, $info ) = SessionOperator::getFeedback(); if ( $title != null && $info != null ) : ?>
+    <?php
+    if ( !is_null( $feedback = SessionOperator::getFeedback() ) ) : ?>
         <script>
             $.notify({
                 icon: "glyphicon glyphicon-ok",
-                title: <?php echo json_encode( $title ); ?>,
-                message: <?php echo json_encode( $info ); ?>
+                title: <?php echo json_encode( $feedback[ 0 ] ); ?>,
+                message: <?php echo json_encode( $feedback[ 1 ] ); ?>
             },{
-                type: "success"
+                type: <?php echo json_encode( $feedback[ 2 ] ); ?>
             });
         </script>
     <?php endif ?>
@@ -71,7 +71,7 @@ require_once "classes/class.session_operator.php";
                 <label class="text-danger">&nbsp
                     <?php echo SessionOperator::getInputErrors( "email" ); ?>
                 </label>
-                <input type="text" name="email" class="form-control" id="email" maxlength="30" placeholder="Enter your email here"
+                <input type="text" name="email" class="form-control" id="email" maxlength="45" placeholder="Enter your email here"
                     <?php echo 'value = "' . SessionOperator::getFormInput( "email" ) . '"'; ?> >
             </div>
             <div class="col-xs-8">

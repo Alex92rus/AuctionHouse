@@ -6,11 +6,13 @@ class QueryOperator
 {
     private static $database;
 
+
     private static function initialize()
     {
         // Create new database object
         self::$database = new Database();
     }
+
 
     public static function getCountryId( $countryName )
     {
@@ -21,11 +23,12 @@ class QueryOperator
         //Close database
         self::$database -> closeConnection();
     
-        $countryRow =  $getCountryQueryResult -> fetch_assoc();
+        $countryRow = $getCountryQueryResult -> fetch_assoc();
         return $countryRow[ "countryId" ];
     }
 
-    public static function checkUniqueness( $field, $value )
+
+    public static function isUnique( $field, $value )
     {
         // SQL query for retrieving users with a specific username/email
         self::initialize();
@@ -44,6 +47,7 @@ class QueryOperator
         return true;
     }
 
+
     public static function addAccount( $parameters )
     {
         // SQL query for creating a new user record
@@ -57,6 +61,7 @@ class QueryOperator
 
         return $insertId;
     }
+
 
     public static function addUnverifiedAccount( $parameters )
     {
@@ -98,6 +103,7 @@ class QueryOperator
         return null;
     }
 
+
     public static function activateAccount( $userId )
     {
         // SQL query for verify user's account
@@ -113,6 +119,7 @@ class QueryOperator
         self::$database -> closeConnection();
     }
 
+
     public static function checkAccount( $email, $password )
     {
         // SQL query for checking if account exists
@@ -122,24 +129,53 @@ class QueryOperator
         $result = self::$database -> selectQuery( $checkAccount );
         self::$database -> closeConnection();
 
-        // Check for inconsistency
-        if ( $result -> num_rows > 1 )
-        {
-            die( "Database inconsistency. {$email} not unique" );
-        }
-
         // Process result table
         $account = $result -> fetch_assoc();
 
         // One verified account exits for this email and password matches as well
         if( $account != null && password_verify( $password, $account[ "password" ] ) )
         {
+            unset( $account[ "password" ] );
             return $account;
         }
 
         // Email and/or password incorrect
         return null;
     }
+
+
+    public static function getAccount( $userId )
+    {
+        // SQL query for retrieving account information
+        self::initialize();
+        $getAccount  = "SELECT userId, username, email, firstName, lastName, address, postcode, city, countryId, image from users ";
+        $getAccount .= "WHERE userId='$userId'";
+        $result = self::$database -> selectQuery( $getAccount );
+        self::$database -> closeConnection();
+
+        return $result -> fetch_assoc();
+    }
+
+
+    public static function updateAccount( $userId, $updatedUser )
+    {
+        // SQL query for updating user information
+        self::initialize();
+        $update  = "UPDATE users SET ";
+        $update .= "username = '{$updatedUser[ "username" ]}',";
+        $update .= "firstName = '{$updatedUser[ "firstName" ]}',";
+        $update .= "lastName = '{$updatedUser[ "lastName" ]}',";
+        $update .= "address = '{$updatedUser[ "address" ]}',";
+        $update .= "postcode = '{$updatedUser[ "postcode" ]}',";
+        $update .= "city = '{$updatedUser[ "city" ]}',";
+        $update .= "countryId = '{$updatedUser[ "country" ]}' ";
+        $update .= "WHERE userId = $userId";
+        self::$database -> updateQuery( $update );
+
+        // Close database
+        self::$database -> closeConnection();
+    }
+
 
     public static function getAccountFromEmail( $email )
     {
@@ -169,6 +205,7 @@ class QueryOperator
         return null;
     }
 
+
     public static function updatePassword( $email, $password )
     {
         // SQL query for updating a user's password
@@ -180,6 +217,7 @@ class QueryOperator
         self::$database -> updateQuery( $updateQuery );
         self::$database -> closeConnection();
      }
+
 
     public static function uploadImage( $userId, $imageName, $table )
     {

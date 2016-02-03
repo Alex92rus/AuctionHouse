@@ -11,7 +11,7 @@ if ( !isset( $_POST[ "signUp" ] ) )
     redirectTo( "../index.php" );
 }
 
-// Store POST values from registration form
+// Store POST values
 $registration = [
     "username"  => $_POST[ "username" ],
     "email"     => $_POST[ "email" ],
@@ -20,23 +20,25 @@ $registration = [
     "address"   => $_POST[ "address" ],
     "postcode"  => $_POST[ "postcode" ],
     "city"      => $_POST[ "city" ],
-    "country"   =>  $_POST[ "country" ],
+    "country"   => $_POST[ "country" ],
     "password1" => $_POST[ "password1" ],
     "password2" => $_POST[ "password2" ] ];
 
-// Check registration inputs
+// Add empty string for default country
 if ( $registration[ "country" ] == "Country" )
 {
     $registration[ "country" ]  = "";
 }
-if ( !ValidationOperator::checkForEmptyFields( $registration ) ||
-     !ValidationOperator::checkUsernameAndEmail( $registration[ "username" ], $registration[ "email" ] ) ||
-     !ValidationOperator::checkPasswords( $registration[ "password1" ], $registration[ "password2" ] ) )
+
+// Check inputs
+if ( ValidationOperator::hasEmtpyFields( $registration, ValidationOperator::EMPTY_FIELD_REGISTRATION ) ||
+     ValidationOperator::isTaken( $registration[ "username" ], $registration[ "email" ] ) ||
+     !ValidationOperator::validPasswords( $registration[ "password1" ], $registration[ "password2" ] ) )
 {
     // Create a session for the registration inputs so that they can be recovered after the page reloads
     SessionOperator::setFormInput( $registration );
 }
-// Registration form valid
+// Form valid
 else
 {
     // Create new user
@@ -50,7 +52,7 @@ else
         &$registration[ "address" ],
         &$registration[ "postcode" ],
         &$registration[ "city" ],
-        &$registration["country"],
+        &$registration[ "country" ],
         &$encryptedPassword ) );
 
     // Mark user as unverified
@@ -58,7 +60,7 @@ else
     QueryOperator::addUnverifiedAccount( array( &$insertId, &$confirmCode ) );
 
     // Create a session for the successfully submitted registration (account not verified yet)
-    SessionOperator::setFeedback( "submitted" );
+    SessionOperator::setFeedback( SessionOperator::SUBMITTED_REGISTRATION );
 
     // Email a verification link to the user - must be verified before accessing the new account
     require_once "../classes/class.email.php";
