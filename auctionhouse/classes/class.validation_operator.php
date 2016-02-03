@@ -53,6 +53,36 @@ class ValidationOperator
     }
 
 
+    // Check if both username and email is not already used by another account
+    public static function checkUsernameAndEmail( $username, $email )
+    {
+        require_once "../classes/class.query_operator.php";
+        $nonUniqueFields = [];
+
+        // Check if username is already taken
+        if ( !QueryOperator::checkUniqueness( "username", $username ) )
+        {
+            $nonUniqueFields[ "username" ] = "This " . $username . " already exists";
+        }
+        // Check if email is already taken
+        if ( !QueryOperator::checkUniqueness( "email", $email ) )
+        {
+            $nonUniqueFields[ "email" ] = "This " . $email . " already exists";
+        }
+
+        // Inputted username or email were already taken
+        if ( !empty( $nonUniqueFields ) )
+        {
+            // Create a session for the taken input fields
+            SessionOperator::setInputErrors( $nonUniqueFields );
+            return false;
+        }
+
+        // No error
+        return true;
+    }
+
+
     // Check inputted passwords
     public static function checkPasswords( $password1, $password2 )
     {

@@ -1,6 +1,6 @@
 <?php
-require "classes/class.session_operator.php" ;
-require "scripts/countries.php"
+require_once "classes/class.session_operator.php" ;
+require_once "config/config.php";
 ?>
 <!DOCTYPE html>
 <html>
@@ -174,7 +174,7 @@ require "scripts/countries.php"
                             <option default>Country</option>
                             <?php
                                 $country = SessionOperator::getFormInput( "country" ); 
-                                foreach($countries as $value) {
+                                foreach( COUNTRIES_ARRAY as $value ) {
                                   $selected = "";
                                   if ($value == $country) {
                                     $selected = "selected";
