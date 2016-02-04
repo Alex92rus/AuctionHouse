@@ -74,7 +74,7 @@ SessionOperator::setEmail( $_GET[ "email" ] );
         <!-- instructions end -->
 
         <!-- change password start -->
-        <form method="post" action="scripts/update_password.php">
+        <form method="post" action="scripts/password.php">
             <div class="col-xs-4 form-group-lg">
                 <label class="text-danger">&nbsp
                     <?php echo SessionOperator::getInputErrors( "password1" ) ?>

@@ -66,7 +66,7 @@ require_once "classes/class.session_operator.php";
         <!-- instructions end -->
 
         <!-- forgot password start -->
-        <form method="post" action="scripts/reset_password.php">
+        <form method="post" action="scripts/password.php">
             <div class="col-xs-4 form-group-lg">
                 <label class="text-danger">&nbsp
                     <?php echo SessionOperator::getInputErrors( "email" ); ?>
