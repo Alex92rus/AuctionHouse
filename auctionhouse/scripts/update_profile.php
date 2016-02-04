@@ -36,7 +36,7 @@ $changedFields = ValidationOperator::getChangedFields( $update );
 
 // Check inputs
 if ( !empty( $changedFields ) &&
-     !ValidationOperator::hasEmtpyFields( $update, ValidationOperator::EMPTY_FIELD_UPDATE ) &&
+     !ValidationOperator::hasEmtpyFields( $update ) &&
     ( !isset( $changedFields[ "username" ] ) || !ValidationOperator::isTaken( $update[ "username" ] ) ) )
 {
     // Update user information

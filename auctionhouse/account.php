@@ -219,39 +219,45 @@ require_once "scripts/user_session.php";
             <!-- profile header end -->
 
             <!-- change password start -->
-            <form action="#" method="post" class="col-xs-7" role="form" >
+            <form action="scripts/update_account.php" method="post" class="form-horizontal col-xs-7" role="form" >
 
-                <label class="text-danger">&nbsp
-                    <?= SessionOperator::getInputErrors( "passwordOld" ) ?>
+                <label class="col-xs-offset-3 text-danger">&nbsp
+                    <?= SessionOperator::getInputErrors( "currentPassword" ) ?>
                 </label>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                    <input type="password" class="form-control" name="passwordOld" maxlength="23" placeholder="Old password"
-                           value= "" >
+                <div class="form-group">
+                    <label class="col-xs-3 control-label">Current password</label>
+                    <div class="col-xs-9">
+                        <input type="password" class="form-control" name="currentPassword" maxlength="23"
+                            <?php echo 'value = "' . SessionOperator::getFormInput( 'currentPassword' ) . '"'; ?> >
+                    </div>
                 </div>
 
-                <label class="text-danger">&nbsp
+                <label class="col-xs-offset-3 text-danger">&nbsp
                     <?= SessionOperator::getInputErrors( "password1" ) ?>
                 </label>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                    <input type="password" class="form-control" name="password1" maxlength="23" placeholder="New password"
-                           value= "" >
+                <div class="form-group">
+                    <label class="col-xs-3 control-label">New Password</label>
+                    <div class="col-xs-9">
+                        <input type="password" class="form-control" name="password1" maxlength="23"
+                            <?php echo 'value = "' . SessionOperator::getFormInput( 'password1' ) . '"'; ?> >
+                    </div>
                 </div>
 
-                <label class="text-danger">&nbsp
+                <label class="col-xs-offset-3 text-danger">&nbsp
                     <?= SessionOperator::getInputErrors( "password2" ) ?>
                 </label>
-                <div class="input-group" >
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                    <input type="password" class="form-control" name="password2" maxlength="23" placeholder="Repeat your new password"
-                           value= "" >
+                <div class="form-group">
+                    <label class="col-xs-3 control-label">Repeat new password</label>
+                    <div class="col-xs-9">
+                        <input type="password" class="form-control" name="password2" maxlength="23"
+                            <?php echo 'value = "' . SessionOperator::getFormInput( 'password2' ) . '"'; ?> >
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <div class="pull-right">
                         <br>
-                        <button type="submit" class="btn btn-primary pull-right" name="save">
+                        <button type="submit" class="btn btn-primary pull-right" name="save" id="save">
                             <span class="glyphicon glyphicon-save"></span> Change Password
                         </button>
                     </div>

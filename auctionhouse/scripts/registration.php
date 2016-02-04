@@ -31,7 +31,7 @@ if ( $registration[ "country" ] == "Country" )
 }
 
 // Check inputs
-if ( ValidationOperator::hasEmtpyFields( $registration, ValidationOperator::EMPTY_FIELD_REGISTRATION ) ||
+if ( ValidationOperator::hasEmtpyFields( $registration ) ||
      ValidationOperator::isTaken( $registration[ "username" ], $registration[ "email" ] ) ||
      !ValidationOperator::validPasswords( $registration[ "password1" ], $registration[ "password2" ] ) )
 {

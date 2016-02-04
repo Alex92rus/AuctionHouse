@@ -3,6 +3,7 @@ require_once "helper_functions.php";
 require_once "../classes/class.validation_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../classes/class.session_operator.php";
+require_once "../classes/class.email.php";
 
 
 // Retrieve Passwords
@@ -11,7 +12,7 @@ $email = SessionOperator::getEmail();
 $userDetails = QueryOperator::getAccountFromEmail( $email );
 
 // Both passwords valid and match
-if ( !ValidationOperator::hasEmtpyFields( $passwordFields, ValidationOperator::EMPTY_FIELD_REGISTRATION ) &&
+if ( !ValidationOperator::hasEmtpyFields( $passwordFields ) &&
 	 ValidationOperator::validPasswords( $passwordFields[ "password1" ], $passwordFields[ "password2" ] ) )
 {
 	QueryOperator::updatePassword( $email, $passwordFields[ "password2" ] );
@@ -19,7 +20,6 @@ if ( !ValidationOperator::hasEmtpyFields( $passwordFields, ValidationOperator::E
 	SessionOperator::setFeedback( SessionOperator::CHANGED_PASSWORD );
 
 	// Send a password changed confirmation email to the user
-	require_once "../classes/class.email.php";
 	$mail = new Email( $email, $userDetails[ "firstName" ], $userDetails[ "lastName" ] );
 	$mail -> preparePasswordConfirmEmail();
 	$mail -> sentEmail();

@@ -4,21 +4,56 @@ require_once( $_SERVER['DOCUMENT_ROOT'] . '/config/config.php' );
 
 class Database
 {
-    private $host = DB_HOST;
-    private $user = DB_USER;
-    private $password = DB_PASSWORD;
-    private $database = DB_NAME;
-    private $port = DB_PORT;
+    private $host;
+    private $user;
+    private $password;
+    private $database;
+    private $port;
     private $connection;
 
-    function __construct()
+
+    public function __construct()
     {
-        $this -> openConnection();
-        if ( $this -> connection -> connect_error )
-        {
-            die( "Database connection failed: " . $this -> $connection -> connect_error );
-        }
+        $this -> host = DB_HOST;
+        $this -> user = DB_USER;
+        $this -> password = DB_PASSWORD;
+        $this -> database = DB_NAME;
+        $this -> port = DB_PORT;
     }
+
+
+    public function issueQuery( $sql, $insertType = null, $params = null )
+    {
+        $result = true;
+
+        // Determine query type
+        $queryType = explode( " ", trim( $sql ) );
+        $queryType = strtoupper( $queryType[ 0 ] );
+
+        // Open database connection
+        $this -> openConnection();
+
+        // Perform query
+        switch( $queryType )
+        {
+            case "SELECT":
+                $result = $this -> selectQuery( $sql );
+                break;
+            case "INSERT":
+                $result = $this -> insertQuery( $sql, $insertType, $params );
+                break;
+            default:
+                $this->otherQuery( $sql );
+                break;
+        }
+
+        // Close database connection
+        $this -> closeConnection();
+
+        // Return result ( true -> no result, otherwise -> result )
+        return $result;
+    }
+
 
     private function openConnection()
     {
@@ -28,7 +63,22 @@ class Database
             $this -> password,
             $this -> database,
             $this -> port );
+
+        if ( $this -> connection -> connect_error )
+        {
+            die( "Database connection failed: " . $this -> $connection -> connect_error );
+        }
     }
+
+
+    private function closeConnection()
+    {
+        if ( isset( $this -> connection ) )
+        {
+            $this -> connection -> close();
+        }
+    }
+
 
     private function confirmResult( $result, $message )
     {
@@ -39,14 +89,16 @@ class Database
         }
     }
 
-    public function selectQuery( $sql )
+
+    private function selectQuery( $sql )
     {
         $result = $this -> connection -> query( $sql );
         $this -> confirmResult( $result, "Database select query failed." );
         return $result;
     }
 
-    public function insertQuery( $sql, $type, $params )
+
+    private function insertQuery( $sql, $type, $params )
     {
         $statement = $this -> connection -> prepare( $sql );
         call_user_func_array( array( $statement, "bind_param" ), array_merge( array( $type ), $params ) );
@@ -55,18 +107,11 @@ class Database
         return $statement -> insert_id;
     }
 
-    public function updateQuery( $sql )
+
+    private function otherQuery( $sql )
     {
         $result = $this -> connection -> query( $sql );
         $this -> confirmResult( $result, "Database update query failed." );
-    }
-
-    public function closeConnection()
-    {
-        if ( isset( $this -> connection ) )
-        {
-            $this -> connection -> close();
-        }
     }
 }
 

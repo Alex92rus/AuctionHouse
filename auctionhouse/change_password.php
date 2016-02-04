@@ -91,7 +91,7 @@ SessionOperator::setEmail( $_GET[ "email" ] );
             </div>
             <div class="col-xs-4">
                 <label>&nbsp</label><br>
-                <button type="submit" name="signUp" id="signUp" class="btn btn-success btn-lg">Change Password</button>
+                <button type="submit" name="changePassword" id="changePassword" class="btn btn-success btn-lg">Change Password</button>
             </div>
         </form>
         <!-- change password end -->

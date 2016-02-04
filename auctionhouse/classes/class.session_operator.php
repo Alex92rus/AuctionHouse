@@ -27,6 +27,10 @@ class SessionOperator
     const DANGER = "danger";
 
 
+    // Prevent people from instantiating this static class
+    private function __construct() {}
+
+
     // Create a session for the just submitted but failed form
     public static function setFormInput( $form )
     {
@@ -110,7 +114,7 @@ class SessionOperator
                 break;
             case self::CHANGED_PASSWORD:
                 $title = "Password changed!";
-                $info  = "Your password was changed. You can now login with your new password.";
+                $info  = "User your new password to login next time.";
                 $type = self::SUCCESS;
                 break;
             case self::UPDATED_PROFILE_INFO:

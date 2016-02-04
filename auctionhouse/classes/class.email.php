@@ -125,7 +125,7 @@ class Email
         // Set message
         $message  = $this -> buildBody( 0 );
         $message .= "<h3>Hello {$this -> firstName} {$this -> lastName}</h3>";
-        $message .= "<h4>Your successfully changed your password.</h4>";
+        $message .= "<h4>You successfully changed your password.</h4>";
         $message .= "<p>If you did not create a AuctionHouse account, please contact us on this email address <a href='mailto:{$this -> username}'>";
         $message .= "{$this -> username}</a></p>";
         $message .= $this -> buildBody( 1 );
