@@ -1,5 +1,5 @@
 <?php
-require_once "helperfunctions.php";
+require_once "helper_functions.php";
 require_once "../classes/class.validation_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../classes/class.session_operator.php";
@@ -11,7 +11,7 @@ $email = SessionOperator::getEmail();
 $userDetails = QueryOperator::getAccountFromEmail( $email );
 
 // Both passwords valid and match
-if ( ValidationOperator::isEmtpy( $passwordFields, ValidationOperator::EMPTY_FIELD_REGISTRATION ) &&
+if ( !ValidationOperator::hasEmtpyFields( $passwordFields, ValidationOperator::EMPTY_FIELD_REGISTRATION ) &&
 	 ValidationOperator::validPasswords( $passwordFields[ "password1" ], $passwordFields[ "password2" ] ) )
 {
 	QueryOperator::updatePassword( $email, $passwordFields[ "password2" ] );
@@ -32,4 +32,4 @@ else
 	SessionOperator::setFormInput( $passwordFields );
 }
 
-redirectTo( "../changepassword.php?email=" . $email );
+redirectTo( "../change_password.php?email=" . $email );

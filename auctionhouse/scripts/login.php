@@ -1,5 +1,5 @@
 <?php
-require_once "helperfunctions.php";
+require_once "helper_functions.php";
 require_once "../classes/class.session_operator.php";
 require_once "../classes/class.user.php";
 

@@ -1,6 +1,6 @@
 <?php
 require_once "classes/class.session_operator.php";
-require_once "scripts/helperfunctions.php";
+require_once "scripts/helper_functions.php";
 require_once "scripts/user_session.php";
 ?>
 <!DOCTYPE html>
@@ -160,6 +160,9 @@ require_once "scripts/user_session.php";
                     <ul class="dropdown-menu dropdown-user">
                         <li>
                             <a href="profile.php"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li>
+                            <a href="account.php"><i class="fa fa-cog fa-fw"></i> Account Settings</a>
                         </li>
                         <li>
                             <a href="scripts/logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>

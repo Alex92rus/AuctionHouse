@@ -2,7 +2,6 @@
 require_once "classes/class.session_operator.php";
 require_once "scripts/helper_functions.php";
 require_once "scripts/user_session.php";
-require_once "config/config.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +14,7 @@ require_once "config/config.php";
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>User Profile</title>
+    <title>Account Settings</title>
 
     <!-- Font -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
@@ -164,7 +163,7 @@ require_once "config/config.php";
                             <a href="profile.php"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
                         <li>
-                            <a href="account.php"><i class="fa fa-cog fa-fw"></i> Account Settings</a>
+                            <a href="#"><i class="fa fa-cog fa-fw"></i> Account Settings</a>
                         </li>
                         <li>
                             <a href="scripts/logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -213,145 +212,53 @@ require_once "config/config.php";
             <!-- profile header start -->
             <div class="row">
                 <div class="col-lg-12">
-                    <h2><i class="fa fa-user fa-fw"></i> User Profile</h2>
+                    <h2><i class="fa fa-cog fa-fw"></i> Account Settings</h2>
                     <hr>
                 </div>
             </div>
             <!-- profile header end -->
 
-            <div class="row">
-                <!-- profile image start -->
-                <div class="col-xs-4">
-                    <!-- image start -->
-                    <br><img src="
-                        <?php
-                    if ( empty( $imageName = SessionOperator::getUser() -> getImage() ) )
-                        echo "uploads/profile_images/blank_profile.png";
-                    else
-                        echo "uploads/profile_images/" . $imageName; ?>" class="img-responsive img-rounded">
-                    <!-- image end -->
+            <!-- change password start -->
+            <form action="#" method="post" class="col-xs-7" role="form" >
 
-                    <!-- menu start -->
-                    <form action="scripts/upload_photo.php" method="post" class="text-center" enctype="multipart/form-data">
-                        <label class="text-danger col-xs-12 text-center" style="margin-top: 5px">&nbsp
-                            <?php echo SessionOperator::getInputErrors( "upload" ) ?>
-                        </label>
-                        <?php if ( !empty( SessionOperator::getUser() -> getImage() ) ) : ?>
-                            <a href="scripts/delete_image.php" class="btn btn-danger col-xs-12" style="margin-bottom: 5px"><span class="glyphicon glyphicon-remove"></span> Delete Profile Picture</a>
-                        <?php endif ?>
-                        <input class="col-xs-12" type="file" data-filename-placement="inside" name="image">
-                        <button type="submit" class="btn btn-primary col-xs-12" name="upload" style="margin-top: 5px"><span class="glyphicon glyphicon-upload"></span> Upload</button>
-                    </form>
-                    <!-- menu end -->
-
+                <label class="text-danger">&nbsp
+                    <?= SessionOperator::getInputErrors( "passwordOld" ) ?>
+                </label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input type="password" class="form-control" name="passwordOld" maxlength="23" placeholder="Old password"
+                           value= "" >
                 </div>
-                <!-- profile image end -->
 
-                <!-- profile details start -->
-                <form action="scripts/update_profile.php" method="post" class="col-xs-8 form-horizontal" role="form" >
-                    <label class="col-xs-offset-2 text-danger">&nbsp
-                        <?= SessionOperator::getInputErrors( "username" ) ?>
-                    </label>
-                    <div class="form-group">
-                        <label class="col-xs-2 control-label">Username</label>
-                        <div class="col-xs-10">
-                            <input type="text" class="form-control" name="username" maxlength="45"
-                                   value= "<?= htmlspecialchars( SessionOperator::getUser() -> getUsername() ) ?>" >
-                        </div>
+                <label class="text-danger">&nbsp
+                    <?= SessionOperator::getInputErrors( "password1" ) ?>
+                </label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input type="password" class="form-control" name="password1" maxlength="23" placeholder="New password"
+                           value= "" >
+                </div>
+
+                <label class="text-danger">&nbsp
+                    <?= SessionOperator::getInputErrors( "password2" ) ?>
+                </label>
+                <div class="input-group" >
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input type="password" class="form-control" name="password2" maxlength="23" placeholder="Repeat your new password"
+                           value= "" >
+                </div>
+
+                <div class="form-group">
+                    <div class="pull-right">
+                        <br>
+                        <button type="submit" class="btn btn-primary pull-right" name="save">
+                            <span class="glyphicon glyphicon-save"></span> Change Password
+                        </button>
                     </div>
-                    <label class="col-xs-offset-2 text-danger">&nbsp
-                    </label>
-                    <div class="form-group">
-                        <label class="col-xs-2 control-label">Email</label>
-                        <div class="col-xs-10">
-                            <input disabled="disabled" type="text" class="form-control" name="email" maxlength="45"
-                                   value= "<?= htmlspecialchars( SessionOperator::getUser() -> getEmail() ) ?>" >
-                        </div>
-                    </div>
-                    <label class="col-xs-offset-2 text-danger">&nbsp
-                        <?= SessionOperator::getInputErrors( "firstName" ) ?>
-                    </label>
-                    <div class="form-group" >
-                        <label class="col-xs-2 control-label">First Name</label>
-                        <div class="col-xs-10">
-                            <input type="text" class="form-control" name="firstName" maxlength="45"
-                                   value= "<?= htmlspecialchars( SessionOperator::getUser() -> getFirstName() ) ?>" >
-                        </div>
-                    </div>
-                    <label class="col-xs-offset-2 text-danger">&nbsp
-                        <?= SessionOperator::getInputErrors( "lastName" ) ?>
-                    </label>
-                    <div class="form-group">
-                        <label class="col-xs-2 control-label">Last Name</label>
-                        <div class="col-xs-10">
-                            <input type="text" class="form-control" name="lastName" maxlength="45"
-                                   value= "<?= htmlspecialchars( SessionOperator::getUser() -> getLastName() ) ?>" >
-                        </div>
-                    </div>
-                    <label class="col-xs-offset-2 text-danger">&nbsp
-                        <?= SessionOperator::getInputErrors( "address" ) ?>
-                    </label>
-                    <div class="form-group">
-                        <label class="col-xs-2 control-label">Address</label>
-                        <div class="col-xs-10">
-                            <input type="text" class="form-control" name="address" maxlength="90"
-                                   value= "<?= htmlspecialchars( SessionOperator::getUser() -> getAddress() ) ?>" >
-                        </div>
-                    </div>
-                    <label class="col-xs-offset-2 text-danger">&nbsp
-                        <?= SessionOperator::getInputErrors( "postcode" ) ?>
-                    </label>
-                    <div class="form-group">
-                        <label class="col-xs-2 control-label">Postcode</label>
-                        <div class="col-xs-10">
-                            <input type="text" class="form-control" name="postcode" maxlength="45"
-                                   value= "<?= htmlspecialchars( SessionOperator::getUser() -> getPostcode() ) ?>" >
-                        </div>
-                    </div>
-                    <label class="col-xs-offset-2 text-danger">&nbsp
-                        <?= SessionOperator::getInputErrors( "city" ) ?>
-                    </label>
-                    <div class="form-group">
-                        <label class="col-xs-2 control-label">City</label>
-                        <div class="col-xs-10">
-                            <input type="text" class="form-control" name="city" maxlength="45"
-                                   value= "<?= htmlspecialchars( SessionOperator::getUser() -> getCity() ) ?>" >
-                        </div>
-                    </div>
-                    <label class="col-xs-offset-2 text-danger">&nbsp
-                        <?= SessionOperator::getInputErrors( "country" ) ?>
-                    </label>
-                    <div class="form-group">
-                        <label class="col-xs-2 control-label">Country</label>
-                        <div class="col-xs-10">
-                            <select name="country" class="form-control" >
-                                <option default>Country</option>
-                                <?php
-                                $countryId = SessionOperator::getUser() -> getCountryId();
-                                foreach ( COUNTRIES_ARRAY as $key => $value )
-                                {
-                                    $selected = "";
-                                    if ( ( $key + 1 ) == $countryId )
-                                    {
-                                        $selected = "selected";
-                                    }
-                                    ?>
-                                    <option value="<?= $value ?>" title="<?= htmlspecialchars($value) ?>" <?= $selected ?> ><?= htmlspecialchars($value) ?></option>
-                                    <?php
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-xs-offset-2 col-xs-10">
-                            <br>
-                            <button type="submit" class="btn btn-primary pull-right" name="save"><span class="glyphicon glyphicon-save"></span> Save Changes</button>
-                        </div>
-                    </div>
-                </form>
-                <!-- profile details end -->
-            </div>
+                </div>
+
+            </form>
+            <!-- change password end -->
 
             <!-- footer start -->
             <div class="footer">

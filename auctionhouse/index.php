@@ -77,7 +77,7 @@ require_once "config/config.php";
                     </div>
                     <button type="submit" class="btn btn-success" name="signIn" id="signIn" >Sign In</button><br>
                 </form>
-                <a class="col-xs-offset-6 col-xs-5" href="forgotpassword.php" id="forgotPassword">Forgot your password?</a>
+                <a class="col-xs-offset-6 col-xs-5" href="forgot_password.php" id="forgotPassword">Forgot your password?</a>
             </div>
             <!-- login end -->
 

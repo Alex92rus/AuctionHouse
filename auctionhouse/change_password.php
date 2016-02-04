@@ -1,5 +1,5 @@
 <?php
-require_once "scripts/helperfunctions.php";
+require_once "scripts/helper_functions.php";
 require_once "classes/class.session_operator.php";
 
 if ( !isset( $_GET[ "email" ] ) )
@@ -74,7 +74,7 @@ SessionOperator::setEmail( $_GET[ "email" ] );
         <!-- instructions end -->
 
         <!-- change password start -->
-        <form method="post" action="scripts/updatepassword.php">
+        <form method="post" action="scripts/update_password.php">
             <div class="col-xs-4 form-group-lg">
                 <label class="text-danger">&nbsp
                     <?php echo SessionOperator::getInputErrors( "password1" ) ?>

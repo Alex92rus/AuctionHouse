@@ -50,9 +50,6 @@ class Email
 
         //Password to use for SMTP authentication
         $this -> email -> Password = EMAIL_PASSWORD;
-
-        // Set who the message is to be sent from
-        $this -> email -> setFrom( "auctionhouse@gmail.com", "AuctionHouse Service Team" );
     }
 
     private function buildBody( $position )
@@ -96,7 +93,7 @@ class Email
         $message  = $this -> buildBody( 0 );
         $message .= "<h3>Hello {$this -> firstName} {$this -> lastName},</h3>";
         $message .= "<h4>Please follow the given link  to change your password</h4>";
-        $message .= "<a href='http://localhost:8888/changepassword.php?email={$this -> to}'>Change Password</a>";
+        $message .= "<a href='http://localhost:8888/change_password.php?email={$this -> to}'>Change Password</a>";
         $message .= $this -> buildBody( 1 );
         $this -> email -> Body = $message;
         $this -> email -> IsHTML( true );
@@ -138,6 +135,9 @@ class Email
 
     public function sentEmail()
     {
+        // Set who the message is to be sent from
+        $this -> email -> setFrom( "auctionhouse@gmail.com", "AuctionHouse Service Team" );
+
         // Set who the message is to be sent to
         $this -> email -> addAddress( $this -> to, $this -> firstName . " " . $this -> lastName );
 

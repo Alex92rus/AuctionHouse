@@ -12,3 +12,5 @@ $(document).ready(function(e){
 $(document).ready(function(){
     $('input[type=file]').bootstrapFileInput();
 });
+
+
