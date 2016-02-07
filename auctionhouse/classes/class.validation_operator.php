@@ -4,35 +4,32 @@ require_once "class.session_operator.php";
 
 class ValidationOperator
 {
-   const EMPTY_FIELD_REGISTRATION = [
-        "username" => "Please enter a username",
-        "email" => "Please enter your email",
-        "firstName" => "Please enter your first name",
-        "lastName" => "Please enter your last name",
-        "address" => "Please enter your address you live in",
-        "postcode" => "Please enter your postcode",
-        "city" => "Please enter the city you live in",
-        "country" => "Please enter the country you live in",
-        "password1" => "Please enter a password",
-        "password2" => "Please enter the same password again"
-    ];
-    const EMPTY_FIELD_UPDATE = [
+    const EMPTY_FIELDS_MESSAGES = [
         "username" => "Please enter a non empty username",
+        "email" => "Please enter a non empty email address",
         "firstName" => "Please enter a non empty first name",
         "lastName" => "Please enter a non empty last name",
         "address" => "Please enter a non empty address",
         "postcode" => "Please enter a non empty postcode",
         "city" => "Please enter a non empty city",
         "country" => "Please select a non empty username",
+        "currentPassword" => "Please enter your current password",
+        "password1" => "Please enter a new password",
+        "password2" => "Please enter the same new password again"
     ];
-    const INCORRECT_PASSWORDS = [
+    const INCORRECT_PASSWORD_MESSAGES = [
         "Password needs to be at least 10 characters long!",
-        "Does not match with other password field!"
+        "Does not match with the other password field!",
+        "Please enter your correct current password!"
     ];
+
+
+    // Prevent people from instantiating this static class
+    private function __construct() {}
 
 
     // Check for empty inputs
-    public static function hasEmtpyFields( $fields, $errorMessages )
+    public static function hasEmtpyFields( $fields )
     {
         // Variable for storing missing input fields
         $emptyFields = [];
@@ -46,7 +43,7 @@ class ValidationOperator
             // Empty field was found, hence store them with their corresponding error message
             if ( empty( $value ) &&  $key != "signUp" )
             {
-                $emptyFields[ $key ] = $errorMessages[ $key ];
+                $emptyFields[ $key ] = ValidationOperator::EMPTY_FIELDS_MESSAGES[ $key ];
             }
         }
 
@@ -116,6 +113,23 @@ class ValidationOperator
     }
 
 
+    // Check inputted "current" password
+    public static function isCurrentPassword( $currentPassword )
+    {
+        $userId = SessionOperator::getUser() -> getUserId();
+
+        // Password matches
+        if ( QueryOperator::checkPassword( $userId , $currentPassword ) )
+        {
+            return true;
+        }
+
+        // Password does not match
+        SessionOperator::setInputErrors( [ "currentPassword" => ValidationOperator::INCORRECT_PASSWORD_MESSAGES[ 2 ] ] );
+        return false;
+    }
+
+
     // Check inputted passwords
     public static function validPasswords( $password1, $password2 )
     {
@@ -124,12 +138,12 @@ class ValidationOperator
         // Check if passwords have a minimum length
         if ( strlen( $password1 ) < 10 )
         {
-            $info = ValidationOperator::INCORRECT_PASSWORDS[ 0 ];
+            $info = ValidationOperator::INCORRECT_PASSWORD_MESSAGES[ 0 ];
         }
         // Check if the two inputted passwords mismatch
         else if ( strcmp( $password1, $password2 ) != 0 )
         {
-            $info = ValidationOperator::INCORRECT_PASSWORDS[ 1 ];
+            $info = ValidationOperator::INCORRECT_PASSWORD_MESSAGES[ 1 ];
         }
 
         // Create a session for the incorrect passwords

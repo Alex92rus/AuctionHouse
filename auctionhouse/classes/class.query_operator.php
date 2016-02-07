@@ -7,23 +7,26 @@ class QueryOperator
     private static $database;
 
 
-    private static function initialize()
+    // Prevent people from instantiating this static class
+    private function __construct() {}
+
+
+    private static function getDatabaseInstance()
     {
-        // Create new database object
-        self::$database = new Database();
+        if ( is_null( self::$database ) )
+        {
+            self::$database = new Database();
+        }
     }
 
 
     public static function getCountryId( $countryName )
     {
-        self::initialize();
+        self::getDatabaseInstance();
         $getCountryQuery = "SELECT countryId FROM countries WHERE countryName = '$countryName'";
-        $getCountryQueryResult = self::$database -> selectQuery( $getCountryQuery );
-
-        //Close database
-        self::$database -> closeConnection();
+        $result = self::$database -> issueQuery( $getCountryQuery );
     
-        $countryRow = $getCountryQueryResult -> fetch_assoc();
+        $countryRow = $result -> fetch_assoc();
         return $countryRow[ "countryId" ];
     }
 
@@ -31,12 +34,9 @@ class QueryOperator
     public static function isUnique( $field, $value )
     {
         // SQL query for retrieving users with a specific username/email
-        self::initialize();
+        self::getDatabaseInstance();
         $checkFieldQuery = "SELECT " . $field . " FROM users where " . $field . " = '$value' ";
-        $result = self::$database -> selectQuery( $checkFieldQuery );
-        
-        //Close database
-        self::$database -> closeConnection();
+        $result = self::$database -> issueQuery( $checkFieldQuery );
 
         // Query returned a row, meaning there exists already a user with the same registered username/email
         if ( $result -> num_rows   > 0 )
@@ -51,13 +51,10 @@ class QueryOperator
     public static function addAccount( $parameters )
     {
         // SQL query for creating a new user record
-        self::initialize();
+        self::getDatabaseInstance();
         $registerUserQuery  = "INSERT INTO users ( username, email, firstName, lastName, address, postcode, city, countryId, password ) ";
         $registerUserQuery .= "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )";
-        $insertId = self::$database -> insertQuery( $registerUserQuery, "sssssssis", $parameters );
-
-        // Close database
-        self::$database -> closeConnection();
+        $insertId = self::$database -> issueQuery( $registerUserQuery, "sssssssis", $parameters );
 
         return $insertId;
     }
@@ -66,30 +63,24 @@ class QueryOperator
     public static function addUnverifiedAccount( $parameters )
     {
         // SQL query for creating unregistered user
-        self::initialize();
+        self::getDatabaseInstance();
         $unverifiedAccountQuery = "INSERT INTO unverified_users ( userId, confirmCode ) VALUES ( ?, ? )";
-        self::$database -> insertQuery( $unverifiedAccountQuery, "si", $parameters );
-
-        // Close database
-        self::$database -> closeConnection();
+        self::$database -> issueQuery( $unverifiedAccountQuery, "si", $parameters );
     }
 
 
     public static function checkVerificationLink( $email, $confirmCode )
     {
         // SQL query for retrieving users for the given email
-        self::initialize();
+        self::getDatabaseInstance();
         $usersQuery = "SELECT userId, firstName, lastName, verified FROM users WHERE email = '$email'";
-        $usersQueryResult = self::$database -> selectQuery( $usersQuery );
+        $usersQueryResult = self::$database -> issueQuery( $usersQuery );
         $usersRow = $usersQueryResult -> fetch_assoc();
 
         // SQL query for retrieving unverified users for the given email
         $unverifiedQuery = "SELECT * FROM unverified_users WHERE userId = '{$usersRow[ "userId" ]}'";
-        $unverifiedQueryResult = self::$database -> selectQuery( $unverifiedQuery );
+        $unverifiedQueryResult = self::$database -> issueQuery( $unverifiedQuery );
         $unverifiedRow = $unverifiedQueryResult -> fetch_assoc();
-
-        // Close database
-        self::$database -> closeConnection();
 
         // Email and code matches to a unique unverified user
         if ( $usersQueryResult -> num_rows == 1 && $usersRow[ "verified" ] == 0 &&
@@ -100,6 +91,7 @@ class QueryOperator
                 "firstName" => $usersRow[ "firstName" ],
                 "lastName" => $usersRow[ "lastName" ] ];
         }
+
         return null;
     }
 
@@ -107,27 +99,23 @@ class QueryOperator
     public static function activateAccount( $userId )
     {
         // SQL query for verify user's account
-        self::initialize();
+        self::getDatabaseInstance();
         $verifyUserQuery = "UPDATE users SET verified = 1 WHERE userId = '$userId'";
-        self::$database -> updateQuery( $verifyUserQuery );
+        self::$database -> issueQuery( $verifyUserQuery );
 
         // SQL query for deleting unverified account
         $deleteUnverified = "DELETE FROM unverified_users WHERE userId = '$userId'";
-        self::$database -> updateQuery( $deleteUnverified );
-
-        // Close database
-        self::$database -> closeConnection();
+        self::$database -> issueQuery( $deleteUnverified );
     }
 
 
     public static function checkAccount( $email, $password )
     {
-        // SQL query for checking if account exists
-        self::initialize();
+        // SQL query for retrieving a verified user
+        self::getDatabaseInstance();
         $checkAccount  = "SELECT userId, username, email, firstName, lastName, address, postcode, city, countryId, password, image from users ";
         $checkAccount .= "WHERE email='$email' AND verified = 1 ";
-        $result = self::$database -> selectQuery( $checkAccount );
-        self::$database -> closeConnection();
+        $result = self::$database -> issueQuery( $checkAccount );
 
         // Process result table
         $account = $result -> fetch_assoc();
@@ -144,14 +132,34 @@ class QueryOperator
     }
 
 
+    public static function checkPassword( $userId, $password )
+    {
+        // SQL query for retrieving a user's account password
+        self::getDatabaseInstance();
+        $checkPassword  = "SELECT password from users WHERE userId='$userId'";
+        $result = self::$database -> issueQuery( $checkPassword );
+
+        // Process result table
+        $account = $result -> fetch_assoc();
+
+        // Password matching
+        if ( password_verify( $password, $account[ "password" ] ) )
+        {
+            return true;
+        }
+
+        // No match
+        return false;
+    }
+
+
     public static function getAccount( $userId )
     {
         // SQL query for retrieving account information
-        self::initialize();
+        self::getDatabaseInstance();
         $getAccount  = "SELECT userId, username, email, firstName, lastName, address, postcode, city, countryId, image from users ";
         $getAccount .= "WHERE userId='$userId'";
-        $result = self::$database -> selectQuery( $getAccount );
-        self::$database -> closeConnection();
+        $result = self::$database -> issueQuery( $getAccount );
 
         return $result -> fetch_assoc();
     }
@@ -160,7 +168,7 @@ class QueryOperator
     public static function updateAccount( $userId, $updatedUser )
     {
         // SQL query for updating user information
-        self::initialize();
+        self::getDatabaseInstance();
         $update  = "UPDATE users SET ";
         $update .= "username = '{$updatedUser[ "username" ]}',";
         $update .= "firstName = '{$updatedUser[ "firstName" ]}',";
@@ -170,27 +178,17 @@ class QueryOperator
         $update .= "city = '{$updatedUser[ "city" ]}',";
         $update .= "countryId = '{$updatedUser[ "country" ]}' ";
         $update .= "WHERE userId = $userId";
-        self::$database -> updateQuery( $update );
-
-        // Close database
-        self::$database -> closeConnection();
+        self::$database -> issueQuery( $update );
     }
 
 
     public static function getAccountFromEmail( $email )
     {
-        // SQL for checking if given email is associated with a verified account
-        self::initialize();
+        // SQL for checking retrieving a user's account through an email
+        self::getDatabaseInstance();
         $getAccountQuery  = "SELECT firstName, lastName from users ";
         $getAccountQuery .= "WHERE email='{$email}' AND verified = 1";
-        $result = self::$database -> selectQuery( $getAccountQuery );
-        self::$database -> closeConnection();
-
-        // Check for inconsistency
-        if ( $result -> num_rows > 1 )
-        {
-            die( "Database inconsistency. {$email} not unique" );
-        }
+        $result = self::$database -> issueQuery( $getAccountQuery );
 
         // Process result table
         $account = $result -> fetch_assoc();
@@ -209,22 +207,20 @@ class QueryOperator
     public static function updatePassword( $email, $password )
     {
         // SQL query for updating a user's password
-        self::initialize();
+        self::getDatabaseInstance();
         $encryptedPassword = password_hash( $password, PASSWORD_BCRYPT );
         $updateQuery  = "UPDATE users ";
         $updateQuery .= "SET password = '$encryptedPassword' ";
         $updateQuery .=  "WHERE email = '$email'  ";
-        self::$database -> updateQuery( $updateQuery );
-        self::$database -> closeConnection();
+        self::$database -> issueQuery( $updateQuery );
      }
 
 
     public static function uploadImage( $userId, $imageName, $table )
     {
         // SQL query for uploading an image
-        self::initialize();
+        self::getDatabaseInstance();
         $uploadImage = "UPDATE {$table} SET image = '{$imageName}' WHERE userId = {$userId}";
-        self::$database -> updateQuery( $uploadImage );
-        self::$database -> closeConnection();
+        self::$database -> issueQuery( $uploadImage );
     }
 }
