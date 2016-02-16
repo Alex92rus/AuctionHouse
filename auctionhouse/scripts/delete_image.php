@@ -17,4 +17,4 @@ SessionOperator::updateUser( new User( $user ) );
 // Set feedback session
 SessionOperator::setFeedback( SessionOperator::DELETED_PROFILE_PHOTO );
 
-redirectTo(  "../profile.php" );
+redirectTo(  "../views/profile_view.php" );

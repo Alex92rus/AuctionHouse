@@ -93,7 +93,7 @@ class Email
         $message  = $this -> buildBody( 0 );
         $message .= "<h3>Hello {$this -> firstName} {$this -> lastName},</h3>";
         $message .= "<h4>Please follow the given link  to change your password</h4>";
-        $message .= "<a href='http://localhost:8888/change_password.php?email={$this -> to}'>Change Password</a>";
+        $message .= "<a href='http://localhost:8888/views/change_password_view.php?email={$this -> to}'>Change Password</a>";
         $message .= $this -> buildBody( 1 );
         $this -> email -> Body = $message;
         $this -> email -> IsHTML( true );

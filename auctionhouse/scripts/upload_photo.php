@@ -95,4 +95,4 @@ if ( isset( $_POST[ "upload" ] ) )
 
 
 // Stay on profile page
-redirectTo( "../profile.php" );
+redirectTo( "../views/profile_view.php" );

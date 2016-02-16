@@ -7,7 +7,7 @@ require_once "../classes/class.query_operator.php";
 // Only process when save button was clicked
 if ( !isset( $_POST[ "save" ] ) )
 {
-    redirectTo( "../home.php" );
+    redirectTo( "../views/profile_view.php" );
 }
 
 // Store POST values
@@ -52,4 +52,4 @@ if ( !empty( $changedFields ) &&
 }
 
 // Redirect back
-redirectTo( "../profile.php" );
+redirectTo( "../views/profile_view.php" );

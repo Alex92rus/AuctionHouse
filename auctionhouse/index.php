@@ -26,38 +26,17 @@ require_once "config/config.php";
 
 <body>
     <!-- display feedback (if available) start -->
-    <?php
-    if ( !is_null( $feedback = SessionOperator::getFeedback() ) ) : ?>
-        <script>
-            $.notify({
-                icon: "glyphicon glyphicon-ok",
-                title: <?php echo json_encode( $feedback[ 0 ] ); ?>,
-                message: <?php echo json_encode( $feedback[ 1 ] ); ?>
-            },{
-                type: <?php echo json_encode( $feedback[ 2 ] ); ?>
-            });
-        </script>
-    <?php endif ?>
+    <?php require_once "includes/feedback.php" ?>
     <!-- display feedback (if available) end -->
+
 
     <!-- header start -->
     <div class="navbar navbar-default navbar-static-top">
         <div class="container header_container valign">
 
             <!-- header logo start -->
-            <div class="navbar-header pull-left">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#login">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-
-                <a class="navbar-brand" href="index.php">
-                    <img src="images/logo_long.png" alt="logo">
-                </a>
-            </div>
-            <!-- header logo start -->
+            <?php include_once "includes/header.php";?>
+            <!-- header logo end -->
 
             <!-- login start -->
             <div id="login" class="navbar-collapse collapse">
@@ -77,7 +56,7 @@ require_once "config/config.php";
                     </div>
                     <button type="submit" class="btn btn-success" name="signIn" id="signIn" >Sign In</button><br>
                 </form>
-                <a class="col-xs-offset-6 col-xs-5" href="forgot_password.php" id="forgotPassword">Forgot your password?</a>
+                <a class="col-xs-offset-6 col-xs-5" href="views/forgot_password_view.php" id="forgotPassword">Forgot your password?</a>
             </div>
             <!-- login end -->
 
@@ -223,16 +202,7 @@ require_once "config/config.php";
 
 
     <!-- footer start -->
-    <div class="footer">
-        <div class="container">
-            <div class="navbar-text pull-left">
-                <p>Copyright &copy; <?php echo date( "Y", time() ); ?> AuctionHouse</p>
-            </div>
-            <div class="navbar-text pull-right">
-                <p><a href="#">About</a> |  <a href="#">Contact</a> |  <a href="#">Privacy & Cookies</a> |  <a href="#">Developers</a></p>
-            </div>
-        </div>
-    </div>
+    <?php include_once "includes/footer.php";?>
     <!-- footer end -->
 
 </body>

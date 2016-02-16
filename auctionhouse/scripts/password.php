@@ -24,7 +24,7 @@ if ( isset( $_POST[ "resetPassword" ] ) )
         SessionOperator::setInputErrors(["email" => "Email could not be found in our records"]);
         // Create a session for the inputted email so that it can be recovered after the page reloads
         SessionOperator::setFormInput(["email" => $_POST["email"]]);
-        redirectTo("../forgot_password.php");
+        redirectTo("../views/forgot_password_view.php");
     }
 }
 // Change password after password was reset
@@ -56,7 +56,7 @@ else if ( isset( $_POST[ "changePassword" ] ) )
         SessionOperator::setFormInput( $passwordFields );
     }
 
-    redirectTo( "../change_password.php?email=" . $email );
+    redirectTo( "../views/change_password_view.php?email=" . $email );
 }
 // Change password from when signed in into account
 else if ( isset( $_POST[ "changePasswordSignedIn" ] ) )
@@ -90,6 +90,6 @@ else if ( isset( $_POST[ "changePasswordSignedIn" ] ) )
         SessionOperator::setFormInput( $passwordFields );
     }
 
-    redirectTo( "../account.php" );
+    redirectTo( "../views/account_view.php" );
 }
 

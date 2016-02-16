@@ -1,5 +1,5 @@
 <?php
-require_once "classes/class.session_operator.php";
+require_once "../classes/class.session_operator.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,15 +10,15 @@ require_once "classes/class.session_operator.php";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="css/index.css" rel="stylesheet" type="text/css">
-    <link href="css/animate.css" rel="stylesheet" type="text/css">
+    <link href="../css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="../css/index.css" rel="stylesheet" type="text/css">
+    <link href="../css/animate.css" rel="stylesheet" type="text/css">
 
     <!-- JS -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrap-notify.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap-notify.min.js"></script>
 </head>
 <body>
 
@@ -42,7 +42,7 @@ require_once "classes/class.session_operator.php";
         <div class="container header_container">
 
             <!-- header logo start -->
-           <?php include_once "includes/header.php";?>
+           <?php include_once "../includes/header.php";?>
             <!-- header logo end -->
 
         </div>
@@ -66,7 +66,7 @@ require_once "classes/class.session_operator.php";
         <!-- instructions end -->
 
         <!-- forgot password start -->
-        <form method="post" action="scripts/password.php">
+        <form method="post" action="../scripts/password.php">
             <div class="col-xs-4 form-group-lg">
                 <label class="text-danger">&nbsp
                     <?php echo SessionOperator::getInputErrors( "email" ); ?>
@@ -85,7 +85,7 @@ require_once "classes/class.session_operator.php";
     <!-- main end -->
 
     <!-- footer start -->
-    <?php include_once "includes/footer.php";?>
+    <?php include_once "../includes/footer.php";?>
     <!-- footer end -->
 
 </body>

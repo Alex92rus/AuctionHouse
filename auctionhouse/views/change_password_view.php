@@ -1,6 +1,6 @@
 <?php
-require_once "scripts/helper_functions.php";
-require_once "classes/class.session_operator.php";
+require_once "../scripts/helper_functions.php";
+require_once "../classes/class.session_operator.php";
 
 if ( !isset( $_GET[ "email" ] ) )
 {
@@ -19,39 +19,29 @@ SessionOperator::setEmail( $_GET[ "email" ] );
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="css/index.css" rel="stylesheet" type="text/css">
-    <link href="css/animate.css" rel="stylesheet" type="text/css">
+    <link href="../css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="../css/index.css" rel="stylesheet" type="text/css">
+    <link href="../css/animate.css" rel="stylesheet" type="text/css">
 
     <!-- JS -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrap-notify.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/bootstrap-notify.min.js"></script>
 
 </head>
 <body>
     <!-- display feedback (if available) start -->
-    <?php
-    if ( !is_null( $feedback = SessionOperator::getFeedback() ) ) : ?>
-        <script>
-            $.notify({
-                icon: "glyphicon glyphicon-ok",
-                title: <?php echo json_encode( $feedback[ 0 ] ); ?>,
-                message: <?php echo json_encode( $feedback[ 1 ] ); ?>
-            },{
-                type: <?php echo json_encode( $feedback[ 2 ] ); ?>
-            });
-        </script>
-    <?php endif ?>
+    <?php require_once "../includes/feedback.php" ?>
     <!-- display feedback (if available) end -->
+
 
     <!-- header start -->
     <div class="navbar navbar-default navbar-static-top">
         <div class="container header_container">
 
             <!-- header logo start -->
-           <?php include_once("includes/header.php");?>
+           <?php include_once("../includes/header.php");?>
             <!-- header logo end -->
 
         </div>
@@ -74,7 +64,7 @@ SessionOperator::setEmail( $_GET[ "email" ] );
         <!-- instructions end -->
 
         <!-- change password start -->
-        <form method="post" action="scripts/password.php">
+        <form method="post" action="../scripts/password.php">
             <div class="col-xs-4 form-group-lg">
                 <label class="text-danger">&nbsp
                     <?php echo SessionOperator::getInputErrors( "password1" ) ?>
@@ -100,7 +90,7 @@ SessionOperator::setEmail( $_GET[ "email" ] );
     <!-- main end -->
 
     <!-- footer start -->
-    <?php include_once( "includes/footer.php" );?>
+    <?php include_once( "../includes/footer.php" );?>
     <!-- footer end -->
 
 </body>
