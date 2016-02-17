@@ -4,7 +4,14 @@ require_once "class.session_operator.php";
 
 class ValidationOperator
 {
-    const EMPTY_FIELDS_MESSAGES = [
+    const NO_MATCH = "no_match";
+    const WRONG_FORMAT = "wrong_format";
+    const INVALID_SIZE = "invalid_size";
+    const INVALID_PRICES = "invalid_prices";
+    const INCORRECT_PASSWORD = "incorrect_password";
+    const NO_IMAGE = "no_image";
+
+    const EMPTY_FIELDS = [
         "username" => "Please enter a non empty username",
         "email" => "Please enter a non empty email address",
         "firstName" => "Please enter a non empty first name",
@@ -12,15 +19,37 @@ class ValidationOperator
         "address" => "Please enter a non empty address",
         "postcode" => "Please enter a non empty postcode",
         "city" => "Please enter a non empty city",
-        "country" => "Please select a non empty username",
+        "country" => "Please select a country",
         "currentPassword" => "Please enter your current password",
         "password1" => "Please enter a new password",
-        "password2" => "Please enter the same new password again"
+        "password2" => "Please enter the same new password again",
+
+        "item" => "Please specify whether you want to create a new item or use one of your existing ones",
+        "itemName" => "Please enter a non empty item name",
+        "itemBrand" => "Please enter a non empty item brand",
+        "itemCategory" => "Please select your item's category",
+        "itemCondition" => "Please specify your item's condition",
+        "itemDescription" => "Please describe your item and its features",
+        "quantity" => "Please specify the amount of items you want to sell",
+        "startTime" => "Please specify your auction's start time",
+        "endTime" => "Please specify your auction's end time",
+        "startPrice" => "Please specify your auction's start price",
+        "reservePrice" => "Please specify your auction's reserve price"
     ];
-    const INCORRECT_PASSWORD_MESSAGES = [
-        "Password needs to be at least 10 characters long!",
-        "Does not match with the other password field!",
-        "Please enter your correct current password!"
+    const PASSWORD = [
+        ValidationOperator::INVALID_SIZE => "Password needs to be at least 10 characters long!",
+        ValidationOperator::NO_MATCH => "Does not match with the other password field!",
+        ValidationOperator::INCORRECT_PASSWORD => "Please enter your correct current password!"
+    ];
+    const IMAGE_UPLOAD = [
+        ValidationOperator::NO_IMAGE => "Please select an image file",
+        ValidationOperator::WRONG_FORMAT => "Please choose a JPEG, JPG or PNG file",
+        ValidationOperator::INVALID_SIZE => "The image size must be less than 500KB"
+    ];
+    const PRICES = [
+        ValidationOperator::WRONG_FORMAT => " must be a decimal number",
+        ValidationOperator::INVALID_SIZE => " must be greater than 0",
+        ValidationOperator::INVALID_PRICES => "The start price must be less than the reserve price"
     ];
 
 
@@ -41,9 +70,9 @@ class ValidationOperator
             $value = is_array( $value ) ? $value : trim( $value );
 
             // Empty field was found, hence store them with their corresponding error message
-            if ( empty( $value ) &&  $key != "signUp" )
+            if ( empty( $value ) )
             {
-                $emptyFields[ $key ] = ValidationOperator::EMPTY_FIELDS_MESSAGES[ $key ];
+                $emptyFields[ $key ] = ValidationOperator::EMPTY_FIELDS[ $key ];
             }
         }
 
@@ -125,7 +154,7 @@ class ValidationOperator
         }
 
         // Password does not match
-        SessionOperator::setInputErrors( [ "currentPassword" => ValidationOperator::INCORRECT_PASSWORD_MESSAGES[ 2 ] ] );
+        SessionOperator::setInputErrors( [ "currentPassword" => ValidationOperator::PASSWORD[ ValidationOperator::INCORRECT_PASSWORD ] ] );
         return false;
     }
 
@@ -138,12 +167,12 @@ class ValidationOperator
         // Check if passwords have a minimum length
         if ( strlen( $password1 ) < 10 )
         {
-            $info = ValidationOperator::INCORRECT_PASSWORD_MESSAGES[ 0 ];
+            $info = ValidationOperator::PASSWORD[ ValidationOperator::INVALID_LENGTH ];
         }
         // Check if the two inputted passwords mismatch
         else if ( strcmp( $password1, $password2 ) != 0 )
         {
-            $info = ValidationOperator::INCORRECT_PASSWORD_MESSAGES[ 1 ];
+            $info = ValidationOperator::PASSWORD[ ValidationOperator::NO_MATCH ];
         }
 
         // Create a session for the incorrect passwords
@@ -156,5 +185,113 @@ class ValidationOperator
 
         // No error
         return true;
+    }
+
+
+    // Check image file
+    public static function checkImage()
+    {
+        $image = null;
+        $image_name = null;
+        $image_extension = null;
+        $error = [];
+
+        // No file selected
+        if ( $_FILES[ "image" ][ "error" ] != UPLOAD_ERR_OK )
+        {
+            $error[ "upload" ] = ValidationOperator::IMAGE_UPLOAD[ ValidationOperator::NO_IMAGE ];
+        }
+        else
+        {
+            $image = ( $_FILES[ "image" ][ "tmp_name" ] );
+            $image_name = $_FILES[ "image" ][ "name" ];
+            $image_extension = pathinfo( addslashes( $image_name ), PATHINFO_EXTENSION );
+            $image_dimensions = getimagesize( $image );
+            $image_size = $_FILES[ "image" ][ "size" ];
+            $extensions = array( "jpeg", "jpg", "png" );
+
+            // File is not an image
+            if ( empty( $error ) && $image_dimensions == False )
+            {
+                $error[ "upload" ] = ValidationOperator::IMAGE_UPLOAD[ ValidationOperator::NO_IMAGE ];
+            }
+
+            // Image has wrong extension
+            if ( empty( $error ) &&  in_array( $image_extension, $extensions ) === false )
+            {
+                $error[ "upload" ] = ValidationOperator::IMAGE_UPLOAD[ ValidationOperator::WRONG_FORMAT ];
+            }
+
+            // Image size is too large
+            if ( $image_size > 512000 )
+            {
+                $error[ "upload" ] = ValidationOperator::IMAGE_UPLOAD[ ValidationOperator::INVALID_SIZE ];
+            }
+        }
+
+        // Display errors
+        if ( !empty( $error ) )
+        {
+            SessionOperator::setInputErrors( $error );
+            return null;
+        }
+
+        // No errors
+        return [ "image" => $image, "imageExtension" => $image_extension ];
+    }
+
+
+    // Check inputted prices
+    public static function checkPrizes( $startPrice, $reservePrice )
+    {
+        if ( ValidationOperator::isPositiveNumber( $startPrice, "startPrice", "Start Price" ) &&
+             ValidationOperator::isPositiveNumber( $reservePrice, "reservePrice", "Reserve Price" ) )
+        {
+            // Valid prices
+            if ( $startPrice < $reservePrice )
+            {
+                return true;
+            }
+            // Invalid prices
+            else
+            {
+                $error = [ "startPrice" => ValidationOperator::PRICES[ ValidationOperator::INVALID_PRICES ] ];
+                SessionOperator::setInputErrors( $error );
+            }
+        }
+
+        // Error
+        return false;
+    }
+
+
+    // Check input is number
+    private static function isPositiveNumber( $fieldValue, $fieldName, $fieldText )
+    {
+        $error = [];
+
+        // Is a number
+        if ( is_numeric( $fieldValue ) )
+        {
+            // Is positive
+            if ( $fieldValue > 0 )
+            {
+                return true;
+            }
+            // Not a number
+            else
+            {
+                $error[ $fieldName ] = $fieldText . ValidationOperator::PRICES[ ValidationOperator::INVALID_SIZE ];
+            }
+        }
+        // Not decimal
+        else
+        {
+            $error[ $fieldName ] = $fieldText . ValidationOperator::PRICES[ ValidationOperator::WRONG_FORMAT ];
+        }
+
+        // Error
+        SessionOperator::setInputErrors( $error );
+        return false;
     }
 }

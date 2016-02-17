@@ -91,6 +91,23 @@ class SessionOperator
     }
 
 
+    // Get all error messages
+    public static function getAllErrors()
+    {
+        $errors = null;
+
+        // There are errors
+        if ( isset( $_SESSION[ self::INPUT_ERRORS ] ) )
+        {
+            $errors = $_SESSION[ self::INPUT_ERRORS ];
+            unset( $_SESSION[ self::INPUT_ERRORS ] );
+
+        }
+
+        return $errors;
+    }
+
+
     // Create a feedback session
     public static function setFeedback( $status )
     {

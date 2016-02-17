@@ -35,7 +35,7 @@ if ( ValidationOperator::hasEmtpyFields( $registration ) ||
      ValidationOperator::isTaken( $registration[ "username" ], $registration[ "email" ] ) ||
      !ValidationOperator::validPasswords( $registration[ "password1" ], $registration[ "password2" ] ) )
 {
-    // Create a session for the registration inputs so that they can be recovered after the page reloads
+    // Create a session for all inputs so that they can be recovered after the page returns
     SessionOperator::setFormInput( $registration );
 }
 // Form valid

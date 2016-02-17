@@ -47,10 +47,6 @@ require_once "../config/config.php";
 </head>
 
 <body>
-    <!-- display feedback (if available) start -->
-    <?php require_once "../includes/feedback.php" ?>
-    <!-- display feedback (if available) end -->
-
 
     <div id="wrapper">
 
@@ -70,9 +66,26 @@ require_once "../config/config.php";
             </div>
             <!-- profile header end -->
 
+            <!-- display item related input errors (if available) start -->
+            <?php if ( ( $errors =  SessionOperator::getAllErrors() ) != null ) :  ?>
+                <div class="alert alert-danger fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Input error!</strong><br>
+                    <ul>
+                        <?php
+                            foreach ( $errors as $key => $message )
+                            {
+                                echo "<li>" . $message . "</li>";
+                            }
+                        ?>
+                    </ul>
+                </div>
+            <?php endif ?>
+            <!-- display item related input errors (if available) end -->
+
 
             <!-- auction setup start -->
-            <form action="xxx" method="post" class="row" role="form">
+            <form action="../scripts/create_auction.php" method="post" class="row" role="form"  enctype="multipart/form-data">
 
                 <!-- item details start -->
                 <div class="panel panel-default">
@@ -85,46 +98,38 @@ require_once "../config/config.php";
                         <!-- left column start -->
                         <div class="col-lg-5">
                             <div class="form-group">
-                                <label>Create a new item or use one of your already existing one</label>
+                                <label>Create a new item or use one of your existing ones</label>
                                 <select class="selectpicker form-control" name="item">
                                     <option default>New Item</option>
-                                    <option>Item 1</option>
-                                    <option>Item 2</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label>Name</label>
-                                <label class="pull-right text-danger">&nbsp
-                                    <?= SessionOperator::getInputErrors( "itemName" ) ?>
-                                </label>
-                                <input type="text" class="form-control" name="itemName" maxlength="45" value= "" >
+                                <input type="text" class="form-control" name="itemName" maxlength="45"
+                                    <?php echo 'value = "' . SessionOperator::getFormInput( "itemName" ) . '"'; ?> >
                             </div>
 
                             <div class="form-group">
                                 <label>Brand</label>
-                                <label class="pull-right text-danger">&nbsp
-                                    <?= SessionOperator::getInputErrors( "itemBrand" ) ?>
-                                </label>
-                                <input type="text" class="form-control" name="itemBrand" maxlength="45" value= "" >
+                                <input type="text" class="form-control" name="itemBrand" maxlength="45"
+                                    <?php echo 'value = "' . SessionOperator::getFormInput( "itemBrand" ) . '"'; ?> >
                             </div>
 
                             <div class="form-group">
                                 <label>Category</label>
-                                <label class="pull-right text-danger">&nbsp
-                                    <?= SessionOperator::getInputErrors( "itemCategory" ) ?>
-                                </label>
-                                <select class="selectpicker form-control" name="category" >
-                                    <option default>Select category</option>
+                                <select class="selectpicker form-control" name="itemCategory"  data-dropup-auto="false">
+                                    <option default>Select</option>
                                     <?php
                                     $itemCategory = SessionOperator::getFormInput( "itemCategory" );
                                     foreach( ITEM_CATEGORIES_ARRAY as $value ) {
+                                        $value = htmlspecialchars($value);
                                         $selected = "";
                                         if ($value == $itemCategory) {
                                             $selected = "selected";
                                         }
                                         ?>
-                                        <option value="<?= $value ?>" title="<?= htmlspecialchars($value) ?>" <?= $selected ?> ><?= htmlspecialchars($value) ?></option>
+                                        <option value="<?= $value ?>" title="<?= $value ?>" <?= $selected ?> ><?= $value ?></option>
                                         <?php
                                     }
                                     ?>
@@ -133,20 +138,18 @@ require_once "../config/config.php";
 
                             <div class="form-group">
                                 <label>Condition</label>
-                                <label class="pull-right text-danger">&nbsp
-                                    <?= SessionOperator::getInputErrors( "itemCondition" ) ?>
-                                </label>
-                                <select class="selectpicker form-control" name="category" >
-                                    <option default>Select category</option>
+                                <select class="selectpicker form-control" name="itemCondition"  data-dropup-auto="false">
+                                    <option default>Select</option>
                                     <?php
                                     $itemCondition = SessionOperator::getFormInput( "itemCondition" );
                                     foreach( CONDITION_CATEGORIES_ARRAY as $value ) {
+                                        $value = htmlspecialchars($value);
                                         $selected = "";
                                         if ($value == $itemCondition) {
                                             $selected = "selected";
                                         }
                                         ?>
-                                        <option value="<?= $value ?>" title="<?= htmlspecialchars($value) ?>" <?= $selected ?> ><?= htmlspecialchars($value) ?></option>
+                                        <option value="<?= $value ?>" title="<?= $value ?>" <?= $selected ?> ><?= $value ?></option>
                                         <?php
                                     }
                                     ?>
@@ -157,11 +160,8 @@ require_once "../config/config.php";
                             <!-- right column start -->
                             <div class="form-group">
                                 <label>Image</label>
-                                <label class="pull-right text-danger">&nbsp
-                                    <?= SessionOperator::getInputErrors( "itemImage" ) ?>
-                                </label>
                                 <div class="input-group image-preview">
-                                    <input type="text" class="form-control image-preview-filename" disabled="disabled">
+                                    <input type="text" class="form-control image-preview-filename" disabled="disabled" >
                                     <span class="input-group-btn">
                                         <!-- image-preview-clear button -->
                                         <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
@@ -171,7 +171,7 @@ require_once "../config/config.php";
                                         <div class="btn btn-default image-preview-input">
                                             <span class="glyphicon glyphicon-folder-open"></span>
                                             <span class="image-preview-input-title">Browse</span>
-                                            <input type="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview" />
+                                            <input type="file" accept="image/png, image/jpeg" name="image" >
                                         </div>
                                     </span>
                                 </div>
@@ -183,10 +183,7 @@ require_once "../config/config.php";
                         <div class="col-xs-7">
                             <div class="form-group">
                                 <label>Description</label>
-                                <label class="pull-right text-danger">&nbsp
-                                    <?= SessionOperator::getInputErrors( "itemDescription" ) ?>
-                                </label>
-                                <textarea class="form-control textarea" id="description" rows="24" name="description" placeholder="Enter a description" maxlength="2000"></textarea>
+                                <textarea class="form-control textarea" id="itemDescription" rows="24" name="itemDescription" placeholder="Enter a description" maxlength="2000"><?php echo SessionOperator::getFormInput( "itemDescription" ) ?></textarea>
                                 <h6 class="pull-right" id="counter"></h6>
                             </div>
                         </div>
@@ -203,100 +200,82 @@ require_once "../config/config.php";
                         <strong>Auction details</strong>
                     </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body row">
 
-                        <div class="row">
-
-                            <div class="col-xs-4">
-                                <label>Item quantity</label>
-                                <label class="pull-right text-danger">&nbsp
-                                    <?= SessionOperator::getInputErrors( "quantity" ) ?>
-                                </label>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[2]">
-                                                <span class="glyphicon glyphicon-minus"></span>
-                                            </button>
-                                        </span>
-                                        <input type="text" name="quant[2]" class="form-control input-number" value="1">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
-                                                <span class="glyphicon glyphicon-plus"></span>
-                                            </button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4">
-                                <label>Start Time</label>
-                                <label class="pull-right text-danger">&nbsp
-                                    <?= SessionOperator::getInputErrors( "startTime" ) ?>
-                                </label>
-                                <div class="form-group">
-                                    <div class='input-group date' id='datetimepickerStart'>
-                                        <input type='text' class="form-control" readonly />
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4">
-                                <label>End Time</label>
-                                <label class="pull-right text-danger">&nbsp
-                                    <?= SessionOperator::getInputErrors( "endTime" ) ?>
-                                </label>
-                                <div class="form-group">
-                                    <div class='input-group date' id='datetimepickerEnd'>
-                                        <input type='text' class="form-control" readonly />
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
-                                    </div>
+                        <div class="col-xs-2">
+                            <label>Item quantity</label>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quantity">
+                                            <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input type="text" name="quantity" class="form-control input-number"
+                                        <?php
+                                        $quantity = SessionOperator::getFormInput( "quantity" );
+                                        if ( empty( $quantity ) )
+                                        {
+                                            echo "value = 1";
+                                        }
+                                        else
+                                        {
+                                            echo 'value = "' . $quantity . '"';
+                                        }
+                                        ?> >
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quantity">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    </span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-xs-4">
-                                <label>Start price</label>
-                                <label class="pull-right text-danger">&nbsp
-                                    <?= SessionOperator::getInputErrors( "startPrice" ) ?>
-                                </label>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" id="basic-addon1">£</span>
-                                        <input type="text" class="form-control" placeholder="10.00">
-                                    </div>
+                        <div class="col-xs-3">
+                            <label>Start Time</label>
+                            <div class="form-group">
+                                <div class='input-group date' id='datetimepickerStart'>
+                                    <input type='text' class="form-control" name="startTime" readonly
+                                        <?php echo 'value = "' . SessionOperator::getFormInput( "startTime" ) . '"'; ?> >
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-xs-4">
-                                <label>Reserve price</label>
-                                <label class="pull-right text-danger">&nbsp
-                                    <?= SessionOperator::getInputErrors( "reservePrice" ) ?>
-                                </label>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" id="basic-addon1">£</span>
-                                        <input type="text" class="form-control" placeholder="100.00">
-                                    </div>
+                        <div class="col-xs-3">
+                            <label>End Time</label>
+                            <div class="form-group">
+                                <div class='input-group date' id='datetimepickerEnd'>
+                                    <input type='text' class="form-control" name="endTime" readonly
+                                        <?php echo 'value = "' . SessionOperator::getFormInput( "endTime" ) . '"'; ?> >
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-xs-4">
-                                <label>Shipping costs</label>
-                                <label class="pull-right text-danger">&nbsp
-                                    <?= SessionOperator::getInputErrors( "shippingCosts" ) ?>
-                                </label>
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon" id="basic-addon1">£</span>
-                                        <input type="text" class="form-control" placeholder="0.00">
-                                    </div>
+                        <div class="col-xs-2">
+                            <label>Start price</label>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon1">£</span>
+                                    <input type="text" class="form-control" name="startPrice" placeholder="10.00"
+                                        <?php echo 'value = "' . SessionOperator::getFormInput( "startPrice" ) . '"'; ?> >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-2">
+                            <label>Reserve price</label>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon1">£</span>
+                                    <input type="text" class="form-control" name="reservePrice" placeholder="100.00"
+                                        <?php echo 'value = "' . SessionOperator::getFormInput( "reservePrice" ) . '"'; ?> >
                                 </div>
                             </div>
                         </div>

@@ -3,8 +3,8 @@ $(document).ready(function(){
     var text_max = 2000;
     $('#counter').html(text_max + ' remaining');
 
-    $('#description').keyup(function() {
-        var text_length = $('#description').val().length;
+    $('#itemDescription').keyup(function() {
+        var text_length = $('#itemDescription').val().length;
         var text_remaining = text_max - text_length;
 
         $('#counter').html(text_remaining + ' remaining');
@@ -157,7 +157,7 @@ $(document).ready(function(){
     $(function () {
         $('#datetimepickerStart').datetimepicker({
             minDate: moment(),
-            ignoreReadonly: true
+            ignoreReadonly: true,
         });
         $('#datetimepickerEnd').datetimepicker({
             ignoreReadonly: true,

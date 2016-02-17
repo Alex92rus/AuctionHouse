@@ -75,14 +75,14 @@ require_once "../config/config.php";
                     <!-- image end -->
 
                     <!-- menu start -->
-                    <form action="../scripts/upload_photo.php" method="post" class="text-center" enctype="multipart/form-data">
+                    <form action="../scripts/update_profile.php" method="post" class="text-center" enctype="multipart/form-data">
                         <label class="text-danger col-xs-12 text-center" style="margin-top: 5px">&nbsp
                             <?php echo SessionOperator::getInputErrors( "upload" ) ?>
                         </label>
                         <?php if ( !empty( SessionOperator::getUser() -> getImage() ) ) : ?>
                             <a href="../scripts/delete_image.php" class="btn btn-danger col-xs-12" style="margin-bottom: 5px"><span class="glyphicon glyphicon-remove"></span> Delete Profile Picture</a>
                         <?php endif ?>
-                        <input class="col-xs-12" type="file" data-filename-placement="inside" name="image">
+                        <input class="col-xs-12" type="file" data-filename-placement="inside" name="image" accept="image/png, image/jpeg">
                         <button type="submit" class="btn btn-primary col-xs-12" name="upload" style="margin-top: 5px"><span class="glyphicon glyphicon-upload"></span> Upload</button>
                     </form>
                     <!-- menu end -->
