@@ -275,3 +275,14 @@ defined( "COUNTRIES_ARRAY" ) ? null : define( "COUNTRIES_ARRAY", array(
         'Zaire',
         'Zambia',
         'Zimbabwe' ) );
+
+defined( "ITEM_CATEGORIES_ARRAY" ) ? null : define( "ITEM_CATEGORIES_ARRAY", array(
+    'Category 1',
+    'Category 2',
+    'Category 3', ) );
+
+defined( "CONDITION_CATEGORIES_ARRAY" ) ? null : define( "CONDITION_CATEGORIES_ARRAY", array(
+    'Brand New',
+    'New other',
+    'Used',
+    'For parts or not working' ) );

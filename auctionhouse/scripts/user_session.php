@@ -2,5 +2,5 @@
 
 if ( !SessionOperator::isLoggedIn() )
 {
-    redirectTo( "index.php" );
+    redirectTo( "../index.php" );
 }

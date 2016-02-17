@@ -33,7 +33,6 @@ require_once "../scripts/user_session.php";
     <script src="../js/bootstrap-notify.min.js"></script>
     <script src="../js/metisMenu.min.js"></script>
     <script src="../js/sb-admin-2.js"></script>
-    <script src="../js/auctionhouse.js"></script>
 </head>
 
 <body>

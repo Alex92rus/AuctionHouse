@@ -34,8 +34,9 @@ require_once "../config/config.php";
     <script src="../js/bootstrap-notify.min.js"></script>
     <script src="../js/metisMenu.min.js"></script>
     <script src="../js/sb-admin-2.js"></script>
-    <script src="../js/auctionhouse.js"></script>
     <script src="../js/bootstrap.file-input.js"></script>
+    <script src="../js/custom/search.js"></script>
+    <script src="../js/custom/profile.js"></script>
 </head>
 
 <body>
@@ -57,7 +58,6 @@ require_once "../config/config.php";
             <div class="row">
                 <div class="col-lg-12">
                     <h2 class="page-header"><i class="fa fa-user fa-fw"></i> My Profile</h2>
-                    <hr>
                 </div>
             </div>
             <!-- profile header end -->
@@ -91,7 +91,7 @@ require_once "../config/config.php";
                 <!-- profile image end -->
 
                 <!-- profile details start -->
-                <form action="../scripts/update_profile.php" method="post" class="col-xs-9 form-horizontal" role="form" >
+                <form action="../scripts/update_profile.php" method="post" class="col-xs-9 form-horizontal" role="form">
                     <label class="col-xs-offset-2 text-danger">&nbsp
                         <?= SessionOperator::getInputErrors( "username" ) ?>
                     </label>

@@ -164,6 +164,19 @@ p > a:focus
 }
 
 
+.input-lg, .form-group-lg .form-control
+{
+    font-size: 17px;
+}
+
+
+.bootstrap-select > .dropdown-toggle
+{
+    height: 46px;
+    font-size: inherit;
+}
+
+
 #register_instructions
 {
     color: #fea779;

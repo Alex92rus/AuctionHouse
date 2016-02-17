@@ -16,12 +16,15 @@ require_once "config/config.php";
     <!-- CSS -->
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="css/animate.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap-select.css" rel="stylesheet" type="text/css">
     <link href="css/index.css" rel="stylesheet" type="text/css">
+    <link href="css/general.css" rel="stylesheet" type="text/css">
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap-notify.min.js"></script>
+    <script src="js/bootstrap-select.min.js"></script>
 </head>
 
 <body>
@@ -150,7 +153,7 @@ require_once "config/config.php";
                         <label class="text-danger">&nbsp
                             <?php echo SessionOperator::getInputErrors( "country" ) ?>
                         </label><br>
-                        <select name="country" class="form-control" >
+                        <select name="country" class="selectpicker form-control" data-dropup-auto="false">
                             <option default>Country</option>
                             <?php
                                 $country = SessionOperator::getFormInput( "country" ); 

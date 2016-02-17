@@ -2,6 +2,19 @@
     Project: Auction System
 */
 
+
+textarea
+{
+    resize: none;
+}
+
+
+a:focus
+{
+    outline: 5px auto #54cfa6;
+}
+
+
 .navbar
 {
     margin-bottom: 0;
@@ -37,9 +50,10 @@
 
 .navbar-top
 {
-    background-color: #273646;
+    background-color: #54cfa6;
     border-bottom: solid 1px #999;
 }
+
 
 .footer
 {
@@ -47,6 +61,66 @@
     margin-top: 90px;
     bottom: 0;
 }
+
+
+.form-control,
+.bootstrap-select > .btn
+{
+    height:48px;
+}
+
+
+.form-control:focus
+{
+    border-color: #54cfa6;
+}
+
+
+.bootstrap-select .btn:focus
+{
+    outline: none !important;
+}
+
+
+.input-group-btn > .btn
+{
+    height: 48px;
+}
+
+
+.image-preview-input
+{
+    position: relative;
+    overflow: hidden;
+    margin: 0px;
+    padding: 12px;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+
+.image-preview-input input[type=file]
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    height:inherit;
+}
+
+
+.image-preview-input-title
+{
+    margin-left:2px;
+}
+
+
 
 
 
