@@ -232,6 +232,28 @@ require_once "../config/config.php";
                             </div>
                         </div>
 
+                        <div class="col-xs-2">
+                            <label>Start price</label>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon1">£</span>
+                                    <input type="text" class="form-control" name="startPrice" placeholder="10.00" maxlength="10"
+                                        <?php echo 'value = "' . SessionOperator::getFormInput( "startPrice" ) . '"'; ?> >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-2">
+                            <label>Reserve price</label>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon1">£</span>
+                                    <input type="text" class="form-control" name="reservePrice" placeholder="100.00" maxlength="10"
+                                        <?php echo 'value = "' . SessionOperator::getFormInput( "reservePrice" ) . '"'; ?> >
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-xs-3">
                             <label>Start Time</label>
                             <div class="form-group">
@@ -254,28 +276,6 @@ require_once "../config/config.php";
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xs-2">
-                            <label>Start price</label>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon1">£</span>
-                                    <input type="text" class="form-control" name="startPrice" placeholder="10.00"
-                                        <?php echo 'value = "' . SessionOperator::getFormInput( "startPrice" ) . '"'; ?> >
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xs-2">
-                            <label>Reserve price</label>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon1">£</span>
-                                    <input type="text" class="form-control" name="reservePrice" placeholder="100.00"
-                                        <?php echo 'value = "' . SessionOperator::getFormInput( "reservePrice" ) . '"'; ?> >
                                 </div>
                             </div>
                         </div>

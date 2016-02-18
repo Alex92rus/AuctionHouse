@@ -21,10 +21,10 @@ $new_auction = [
     "itemCondition"   => $_POST[ "itemCondition" ],
     "itemDescription" => $_POST[ "itemDescription" ],
     "quantity"        => $_POST[ "quantity" ],
-    "startTime"       => $_POST[ "startTime" ],
-    "endTime"         => $_POST[ "endTime" ],
     "startPrice"      => $_POST[ "startPrice" ],
-    "reservePrice"    => $_POST[ "reservePrice" ] ];
+    "reservePrice"    => $_POST[ "reservePrice" ],
+    "startTime"       => $_POST[ "startTime" ],
+    "endTime"         => $_POST[ "endTime" ] ];
 
 
 // Add empty string for default selects
@@ -49,9 +49,52 @@ if ( ValidationOperator::hasEmtpyFields( $new_auction ) ||
     // Redirect back
     redirectTo( "../views/create_auction_view.php" );
 }
-// Form valid
+// Form valid - store auction
 else
 {
+    // Create random image name
+    $newImageName = uniqid( "", true ) . "." . $upload[ "imageExtension" ];
+
+    // Cannot upload image to file system, otherwise, image uploaded
+    if ( !move_uploaded_file( $upload[ "image" ], UPLOAD_ITEM_IMAGE . $newImageName ) )
+    {
+        $error[ "upload" ] = "Image cannot be uploaded ";
+        SessionOperator::setInputErrors( $error );
+        redirectTo( "../views/create_auction_view.php" );
+    }
+
+    // Get item category and condition id
+    $ids = QueryOperator::getItemRelatedIds( $new_auction[ "itemCategory" ], $new_auction[ "itemCondition" ] );
+
+    // Prepare item parameters
+    $item[] = &$new_auction[ "itemName" ];
+    $item[] = &$new_auction[ "itemBrand" ];
+    $item[] = &$ids[ "categoryId" ];
+    $item[] = &$ids[ "conditionId" ];
+    $item[] = &$new_auction[ "itemDescription" ];
+    $item[] = &$newImageName;
+
+    // Prepare user id, start and end time
+    $userId = SessionOperator::getUser() -> getUserId();
+    $startTime = date_create($new_auction[ "startTime" ]) -> format('Y-m-d H:i');
+    $endTime = date_create($new_auction[ "endTime" ]) -> format('Y-m-d H:i');
+
+    // Prepare auction parameters
+    $auction[] = "";
+    $auction[] = &$userId;
+    $auction[] = &$new_auction[ "quantity" ];
+    $auction[] = &$new_auction[ "startPrice" ];
+    $auction[] = &$new_auction[ "reservePrice" ];
+    $auction[] = &$startTime;
+    $auction[] = &$endTime;
+
+    // Store auction in database
+    $itemId = QueryOperator::addAuction( $item, $auction );
+
+    // Store image name in database
+    QueryOperator::uploadImage( $itemId, $newImageName, "items" );
+
+    // Return to auction page
     redirectTo( "../views/dashboard_view.php" );
 }
 

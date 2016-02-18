@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:8889
--- Generation Time: Jan 31, 2016 at 09:57 AM
+-- Generation Time: Feb 18, 2016 at 03:19 PM
 -- Server version: 5.5.42
 -- PHP Version: 7.0.0
 
@@ -13,8 +13,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `auctionsystem`
 --
-CREATE DATABASE IF NOT EXISTS `auctionsystem` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `auctionsystem`;
 
 -- --------------------------------------------------------
 
@@ -22,19 +20,17 @@ USE `auctionsystem`;
 -- Table structure for table `auctions`
 --
 
-DROP TABLE IF EXISTS `auctions`;
-CREATE TABLE IF NOT EXISTS `auctions` (
+CREATE TABLE `auctions` (
   `auctionId` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
   `itemId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
   `bidId` int(11) DEFAULT NULL,
   `quantity` int(11) unsigned NOT NULL DEFAULT '1',
-  `shippingCosts` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
   `startPrice` decimal(10,2) unsigned NOT NULL,
-  `buyNowPrice` decimal(10,2) unsigned DEFAULT NULL,
+  `reservePrice` decimal(10,2) unsigned NOT NULL,
   `startTime` datetime NOT NULL,
   `endTime` datetime NOT NULL,
-  `sold` int(1) unsigned NOT NULL DEFAULT '0'
+  `sold` tinyint(2) unsigned NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -43,8 +39,7 @@ CREATE TABLE IF NOT EXISTS `auctions` (
 -- Table structure for table `auctionvisits`
 --
 
-DROP TABLE IF EXISTS `auctionvisits`;
-CREATE TABLE IF NOT EXISTS `auctionvisits` (
+CREATE TABLE `auctionvisits` (
   `visitId` int(11) NOT NULL,
   `auctionId` int(11) NOT NULL,
   `visitTime` datetime NOT NULL
@@ -56,8 +51,7 @@ CREATE TABLE IF NOT EXISTS `auctionvisits` (
 -- Table structure for table `auctionwatchs`
 --
 
-DROP TABLE IF EXISTS `auctionwatchs`;
-CREATE TABLE IF NOT EXISTS `auctionwatchs` (
+CREATE TABLE `auctionwatchs` (
   `watchId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `auctionId` int(11) NOT NULL
@@ -69,8 +63,7 @@ CREATE TABLE IF NOT EXISTS `auctionwatchs` (
 -- Table structure for table `bids`
 --
 
-DROP TABLE IF EXISTS `bids`;
-CREATE TABLE IF NOT EXISTS `bids` (
+CREATE TABLE `bids` (
   `bidId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `auctionId` int(11) NOT NULL,
@@ -81,27 +74,265 @@ CREATE TABLE IF NOT EXISTS `bids` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categories`
---
-
-DROP TABLE IF EXISTS `categories`;
-CREATE TABLE IF NOT EXISTS `categories` (
-  `categoryId` int(11) NOT NULL,
-  `superCategoryId` int(11) NOT NULL,
-  `categoryName` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `countries`
 --
 
-DROP TABLE IF EXISTS `countries`;
-CREATE TABLE IF NOT EXISTS `countries` (
+CREATE TABLE `countries` (
   `countryId` int(11) NOT NULL,
   `countryName` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=247 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `countries`
+--
+
+INSERT INTO `countries` (`countryId`, `countryName`) VALUES
+(1, 'Afghanistan'),
+(2, 'Albania'),
+(3, 'Algeria'),
+(4, 'American Samoa'),
+(5, 'Andorra'),
+(6, 'Angola'),
+(7, 'Anguilla'),
+(8, 'Antarctica'),
+(9, 'Antigua and Barbuda'),
+(10, 'Argentina'),
+(11, 'Armenia'),
+(12, 'Aruba'),
+(13, 'Australia'),
+(14, 'Austria'),
+(15, 'Azerbaijan'),
+(16, 'Bahamas'),
+(17, 'Bahrain'),
+(18, 'Bangladesh'),
+(19, 'Barbados'),
+(20, 'Belarus'),
+(21, 'Belgium'),
+(22, 'Belize'),
+(23, 'Benin'),
+(24, 'Bermuda'),
+(25, 'Bhutan'),
+(26, 'Bolivia'),
+(27, 'Bosnia and Herzegovina'),
+(28, 'Botswana'),
+(29, 'Bouvet Island'),
+(30, 'Brazil'),
+(31, 'British Indian Ocean Territory'),
+(32, 'Brunei Darussalam'),
+(33, 'Bulgaria'),
+(34, 'Burkina Faso'),
+(35, 'Burundi'),
+(36, 'Cambodia'),
+(37, 'Cameroon'),
+(38, 'Canada'),
+(39, 'Cape Verde'),
+(40, 'Cayman Islands'),
+(41, 'Central African Republic'),
+(42, 'Chad'),
+(43, 'Chile'),
+(44, 'China'),
+(45, 'Christmas Island'),
+(46, 'Cocos (Keeling) Islands'),
+(47, 'Colombia'),
+(48, 'Comoros'),
+(49, 'Congo'),
+(50, 'Cook Islands'),
+(51, 'Costa Rica'),
+(52, 'Croatia (Hrvatska)'),
+(53, 'Cuba'),
+(54, 'Cyprus'),
+(55, 'Czech Republic'),
+(56, 'Denmark'),
+(57, 'Djibouti'),
+(58, 'Dominica'),
+(59, 'Dominican Republic'),
+(60, 'East Timor'),
+(61, 'Ecuador'),
+(62, 'Egypt'),
+(63, 'El Salvador'),
+(64, 'Equatorial Guinea'),
+(65, 'Eritrea'),
+(66, 'Estonia'),
+(67, 'Ethiopia'),
+(68, 'Falkland Islands (Malvinas)'),
+(69, 'Faroe Islands'),
+(70, 'Fiji'),
+(71, 'Finland'),
+(72, 'France'),
+(73, 'France, Metropolitan'),
+(74, 'French Guiana'),
+(75, 'French Polynesia'),
+(76, 'French Southern Territories'),
+(77, 'Gabon'),
+(78, 'Gambia'),
+(79, 'Georgia'),
+(80, 'Germany'),
+(81, 'Ghana'),
+(82, 'Gibraltar'),
+(83, 'Guernsey'),
+(84, 'Greece'),
+(85, 'Greenland'),
+(86, 'Grenada'),
+(87, 'Guadeloupe'),
+(88, 'Guam'),
+(89, 'Guatemala'),
+(90, 'Guinea'),
+(91, 'Guinea-Bissau'),
+(92, 'Guyana'),
+(93, 'Haiti'),
+(94, 'Heard and Mc Donald Islands'),
+(95, 'Honduras'),
+(96, 'Hong Kong'),
+(97, 'Hungary'),
+(98, 'Iceland'),
+(99, 'India'),
+(100, 'Isle of Man'),
+(101, 'Indonesia'),
+(102, 'Iran (Islamic Republic of)'),
+(103, 'Iraq'),
+(104, 'Ireland'),
+(105, 'Israel'),
+(106, 'Italy'),
+(107, 'Ivory Coast'),
+(108, 'Jersey'),
+(109, 'Jamaica'),
+(110, 'Japan'),
+(111, 'Jordan'),
+(112, 'Kazakhstan'),
+(113, 'Kenya'),
+(114, 'Kiribati'),
+(115, 'Korea, Democratic People''s Republic of'),
+(116, 'Korea, Republic of'),
+(117, 'Kosovo'),
+(118, 'Kuwait'),
+(119, 'Kyrgyzstan'),
+(120, 'Lao People''s Democratic Republic'),
+(121, 'Latvia'),
+(122, 'Lebanon'),
+(123, 'Lesotho'),
+(124, 'Liberia'),
+(125, 'Libyan Arab Jamahiriya'),
+(126, 'Liechtenstein'),
+(127, 'Lithuania'),
+(128, 'Luxembourg'),
+(129, 'Macau'),
+(130, 'Macedonia'),
+(131, 'Madagascar'),
+(132, 'Malawi'),
+(133, 'Malaysia'),
+(134, 'Maldives'),
+(135, 'Mali'),
+(136, 'Malta'),
+(137, 'Marshall Islands'),
+(138, 'Martinique'),
+(139, 'Mauritania'),
+(140, 'Mauritius'),
+(141, 'Mayotte'),
+(142, 'Mexico'),
+(143, 'Micronesia, Federated States of'),
+(144, 'Moldova, Republic of'),
+(145, 'Monaco'),
+(146, 'Mongolia'),
+(147, 'Montenegro'),
+(148, 'Montserrat'),
+(149, 'Morocco'),
+(150, 'Mozambique'),
+(151, 'Myanmar'),
+(152, 'Namibia'),
+(153, 'Nauru'),
+(154, 'Nepal'),
+(155, 'Netherlands'),
+(156, 'Netherlands Antilles'),
+(157, 'New Caledonia'),
+(158, 'New Zealand'),
+(159, 'Nicaragua'),
+(160, 'Niger'),
+(161, 'Nigeria'),
+(162, 'Niue'),
+(163, 'Norfolk Island'),
+(164, 'Northern Mariana Islands'),
+(165, 'Norway'),
+(166, 'Oman'),
+(167, 'Pakistan'),
+(168, 'Palau'),
+(169, 'Palestine'),
+(170, 'Panama'),
+(171, 'Papua New Guinea'),
+(172, 'Paraguay'),
+(173, 'Peru'),
+(174, 'Philippines'),
+(175, 'Pitcairn'),
+(176, 'Poland'),
+(177, 'Portugal'),
+(178, 'Puerto Rico'),
+(179, 'Qatar'),
+(180, 'Reunion'),
+(181, 'Romania'),
+(182, 'Russian Federation'),
+(183, 'Rwanda'),
+(184, 'Saint Kitts and Nevis'),
+(185, 'Saint Lucia'),
+(186, 'Saint Vincent and the Grenadines'),
+(187, 'Samoa'),
+(188, 'San Marino'),
+(189, 'Sao Tome and Principe'),
+(190, 'Saudi Arabia'),
+(191, 'Senegal'),
+(192, 'Serbia'),
+(193, 'Seychelles'),
+(194, 'Sierra Leone'),
+(195, 'Singapore'),
+(196, 'Slovakia'),
+(197, 'Slovenia'),
+(198, 'Solomon Islands'),
+(199, 'Somalia'),
+(200, 'South Africa'),
+(201, 'South Georgia South Sandwich Islands'),
+(202, 'Spain'),
+(203, 'Sri Lanka'),
+(204, 'St. Helena'),
+(205, 'St. Pierre and Miquelon'),
+(206, 'Sudan'),
+(207, 'Suriname'),
+(208, 'Svalbard and Jan Mayen Islands'),
+(209, 'Swaziland'),
+(210, 'Sweden'),
+(211, 'Switzerland'),
+(212, 'Syrian Arab Republic'),
+(213, 'Taiwan'),
+(214, 'Tajikistan'),
+(215, 'Tanzania, United Republic of'),
+(216, 'Thailand'),
+(217, 'Togo'),
+(218, 'Tokelau'),
+(219, 'Tonga'),
+(220, 'Trinidad and Tobago'),
+(221, 'Tunisia'),
+(222, 'Turkey'),
+(223, 'Turkmenistan'),
+(224, 'Turks and Caicos Islands'),
+(225, 'Tuvalu'),
+(226, 'Uganda'),
+(227, 'Ukraine'),
+(228, 'United Arab Emirates'),
+(229, 'United Kingdom'),
+(230, 'United States'),
+(231, 'United States minor outlying islands'),
+(232, 'Uruguay'),
+(233, 'Uzbekistan'),
+(234, 'Vanuatu'),
+(235, 'Vatican City State'),
+(236, 'Venezuela'),
+(237, 'Vietnam'),
+(238, 'Virgin Islands (British)'),
+(239, 'Virgin Islands (U.S.)'),
+(240, 'Wallis and Futuna Islands'),
+(241, 'Western Sahara'),
+(242, 'Yemen'),
+(243, 'Yugoslavia'),
+(244, 'Zaire'),
+(245, 'Zambia'),
+(246, 'Zimbabwe');
 
 -- --------------------------------------------------------
 
@@ -109,8 +340,7 @@ CREATE TABLE IF NOT EXISTS `countries` (
 -- Table structure for table `feedbacks`
 --
 
-DROP TABLE IF EXISTS `feedbacks`;
-CREATE TABLE IF NOT EXISTS `feedbacks` (
+CREATE TABLE `feedbacks` (
   `feedbackId` int(11) NOT NULL,
   `auctionId` int(11) NOT NULL,
   `receiverId` int(11) NOT NULL,
@@ -125,16 +355,55 @@ CREATE TABLE IF NOT EXISTS `feedbacks` (
 -- Table structure for table `items`
 --
 
-DROP TABLE IF EXISTS `items`;
-CREATE TABLE IF NOT EXISTS `items` (
+CREATE TABLE `items` (
   `itemId` int(11) NOT NULL,
-  `categoryId` int(11) NOT NULL,
   `itemName` varchar(45) NOT NULL,
   `itemBrand` varchar(45) NOT NULL,
-  `itemCondition` enum('New','Old') NOT NULL,
-  `itemDesciption` varchar(500) NOT NULL,
-  `image` blob
+  `categoryId` int(11) NOT NULL,
+  `conditionId` int(2) NOT NULL,
+  `itemDescription` varchar(2000) NOT NULL,
+  `image` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item_categories`
+--
+
+CREATE TABLE `item_categories` (
+  `categoryId` int(11) NOT NULL,
+  `superCategoryId` int(11) NOT NULL,
+  `categoryName` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `item_categories`
+--
+
+INSERT INTO `item_categories` (`categoryId`, `superCategoryId`, `categoryName`) VALUES
+(1, 1, 'Test Category');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item_conditions`
+--
+
+CREATE TABLE `item_conditions` (
+  `conditionId` int(2) NOT NULL,
+  `conditionName` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `item_conditions`
+--
+
+INSERT INTO `item_conditions` (`conditionId`, `conditionName`) VALUES
+(1, 'Brand New'),
+(2, 'New other'),
+(3, 'Used'),
+(4, 'For parts or not working');
 
 -- --------------------------------------------------------
 
@@ -142,11 +411,17 @@ CREATE TABLE IF NOT EXISTS `items` (
 -- Table structure for table `supercategories`
 --
 
-DROP TABLE IF EXISTS `supercategories`;
-CREATE TABLE IF NOT EXISTS `supercategories` (
+CREATE TABLE `supercategories` (
   `superCategoryId` int(11) NOT NULL,
   `superCategoryName` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `supercategories`
+--
+
+INSERT INTO `supercategories` (`superCategoryId`, `superCategoryName`) VALUES
+(1, '');
 
 -- --------------------------------------------------------
 
@@ -154,11 +429,20 @@ CREATE TABLE IF NOT EXISTS `supercategories` (
 -- Table structure for table `unverified_users`
 --
 
-DROP TABLE IF EXISTS `unverified_users`;
-CREATE TABLE IF NOT EXISTS `unverified_users` (
+CREATE TABLE `unverified_users` (
   `userId` int(11) NOT NULL,
   `confirmCode` varchar(60) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `unverified_users`
+--
+
+INSERT INTO `unverified_users` (`userId`, `confirmCode`) VALUES
+(6, '38007188'),
+(7, '38787806'),
+(8, '84752420'),
+(9, '36464858');
 
 -- --------------------------------------------------------
 
@@ -166,8 +450,7 @@ CREATE TABLE IF NOT EXISTS `unverified_users` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE `users` (
   `userId` int(11) NOT NULL,
   `username` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
@@ -178,8 +461,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   `city` varchar(45) NOT NULL,
   `countryId` int(11) NOT NULL,
   `password` varchar(60) NOT NULL,
-  `verified` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `verified` tinyint(1) DEFAULT '0',
+  `image` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`userId`, `username`, `email`, `firstName`, `lastName`, `address`, `postcode`, `city`, `countryId`, `password`, `verified`, `image`) VALUES
+(1, 'Andy1234', 'xxx', 'Andreas', 'Rauter', 'Flat 23 Prospect House, Donegal Street', 'N19QD', 'London', 229, '$2y$10$VraZBbuk/StYSL3tp261Iu9R3/8YLNVcGaMEN2C8YAFlc6JzMlGpW', 1, ''),
+(5, 'sickAustrian', 'andreas.l.rauter@gmail.com', 'Andreas', 'Rauter', 'Flat 23 Prospect House, Donegal Street', 'N19QA', 'London', 229, '$2y$10$CdMrB2AI5CcpjMdN8bAuK.1c1BMaqKWdUJshPTGHau5iK1BKe0ZTO', 1, '56c4ee12da9e26.43716469.jpg'),
+(6, 'uuu', 'jack roper@gmail.com', 'll', 'll', 'll', 'll', 'ss', 2, '$2y$10$dA1CDqlihaF4mWzJxoTlsOhiJtiWklkaqrPuaWFOCtJVLSVY2RHvG', 0, NULL),
+(7, 'xxxx', 'xxxx@gmail.com', 'kk', 'kk', 'kk', 'kk', 'kk', 2, '$2y$10$UCDfTwtkCpoMF0DVb5F3Leyn639kh1yV0GfL.5JrXOYRPGhZx5cU.', 0, NULL),
+(8, 'all', 'baumhaus@gmail.com', 'll', 'll', 'll', 'll', 'll', 1, '$2y$10$392npKG7jLqZgW3X.Wp.w.iHtweHNqaT/iPalkoNQ1pP8Z5vmDfSC', 0, NULL),
+(9, 'Gea', 'andreas.rauter1@gmx.at', 'll', 'll', 'll', 'll', 'll', 1, '$2y$10$AJ.NCzeHNy8xBsVvwspyluz13HJVq3fleg7tzrlrCLlZRPsSkO0I6', 0, NULL);
 
 --
 -- Indexes for dumped tables
@@ -218,13 +514,6 @@ ALTER TABLE `bids`
   ADD KEY `fk_bids_users1_idx` (`userId`);
 
 --
--- Indexes for table `categories`
---
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`categoryId`),
-  ADD KEY `fk_superCategory_idx` (`superCategoryId`);
-
---
 -- Indexes for table `countries`
 --
 ALTER TABLE `countries`
@@ -244,7 +533,21 @@ ALTER TABLE `feedbacks`
 --
 ALTER TABLE `items`
   ADD PRIMARY KEY (`itemId`),
-  ADD KEY `CategoryID_idx` (`categoryId`);
+  ADD KEY `CategoryID_idx` (`categoryId`),
+  ADD KEY `ConditionNo_idx` (`conditionId`);
+
+--
+-- Indexes for table `item_categories`
+--
+ALTER TABLE `item_categories`
+  ADD PRIMARY KEY (`categoryId`),
+  ADD KEY `fk_superCategory_idx` (`superCategoryId`);
+
+--
+-- Indexes for table `item_conditions`
+--
+ALTER TABLE `item_conditions`
+  ADD PRIMARY KEY (`conditionId`);
 
 --
 -- Indexes for table `supercategories`
@@ -293,15 +596,10 @@ ALTER TABLE `auctionwatchs`
 ALTER TABLE `bids`
   MODIFY `bidId` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `categories`
---
-ALTER TABLE `categories`
-  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT for table `countries`
 --
 ALTER TABLE `countries`
-  MODIFY `countryId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `countryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=247;
 --
 -- AUTO_INCREMENT for table `feedbacks`
 --
@@ -313,20 +611,25 @@ ALTER TABLE `feedbacks`
 ALTER TABLE `items`
   MODIFY `itemId` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `item_categories`
+--
+ALTER TABLE `item_categories`
+  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT for table `supercategories`
 --
 ALTER TABLE `supercategories`
-  MODIFY `superCategoryId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `superCategoryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `unverified_users`
 --
 ALTER TABLE `unverified_users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- Constraints for dumped tables
 --
@@ -360,12 +663,6 @@ ALTER TABLE `bids`
   ADD CONSTRAINT `fk_bids_users1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `categories`
---
-ALTER TABLE `categories`
-  ADD CONSTRAINT `fk_superCategory` FOREIGN KEY (`superCategoryId`) REFERENCES `supercategories` (`superCategoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Constraints for table `feedbacks`
 --
 ALTER TABLE `feedbacks`
@@ -377,7 +674,14 @@ ALTER TABLE `feedbacks`
 -- Constraints for table `items`
 --
 ALTER TABLE `items`
-  ADD CONSTRAINT `CategoryNo` FOREIGN KEY (`categoryId`) REFERENCES `categories` (`categoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `CategoryNo` FOREIGN KEY (`categoryId`) REFERENCES `item_categories` (`categoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `ConditionNo` FOREIGN KEY (`conditionId`) REFERENCES `item_conditions` (`conditionId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `item_categories`
+--
+ALTER TABLE `item_categories`
+  ADD CONSTRAINT `fk_superCategory` FOREIGN KEY (`superCategoryId`) REFERENCES `supercategories` (`superCategoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `unverified_users`
@@ -390,252 +694,3 @@ ALTER TABLE `unverified_users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `fk_country` FOREIGN KEY (`countryId`) REFERENCES `countries` (`countryId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-  
-  
-  
-INSERT INTO `countries` (countryName)  VALUES ( 'Afghanistan');
-INSERT INTO `countries` (countryName)  VALUES ( 'Albania');
-INSERT INTO `countries` (countryName)  VALUES ( 'Algeria');
-INSERT INTO `countries` (countryName)  VALUES ( 'American Samoa');
-INSERT INTO `countries` (countryName)  VALUES ( 'Andorra');
-INSERT INTO `countries` (countryName)  VALUES ( 'Angola');
-INSERT INTO `countries` (countryName)  VALUES ( 'Anguilla');
-INSERT INTO `countries` (countryName)  VALUES ( 'Antarctica');
-INSERT INTO `countries` (countryName)  VALUES ( 'Antigua and Barbuda');
-INSERT INTO `countries` (countryName)  VALUES ( 'Argentina');
-INSERT INTO `countries` (countryName)  VALUES ( 'Armenia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Aruba');
-INSERT INTO `countries` (countryName)  VALUES ( 'Australia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Austria');
-INSERT INTO `countries` (countryName)  VALUES ( 'Azerbaijan');
-INSERT INTO `countries` (countryName)  VALUES ( 'Bahamas');
-INSERT INTO `countries` (countryName)  VALUES ( 'Bahrain');
-INSERT INTO `countries` (countryName)  VALUES ( 'Bangladesh');
-INSERT INTO `countries` (countryName)  VALUES ( 'Barbados');
-INSERT INTO `countries` (countryName)  VALUES ( 'Belarus');
-INSERT INTO `countries` (countryName)  VALUES ( 'Belgium');
-INSERT INTO `countries` (countryName)  VALUES ( 'Belize');
-INSERT INTO `countries` (countryName)  VALUES ( 'Benin');
-INSERT INTO `countries` (countryName)  VALUES ( 'Bermuda');
-INSERT INTO `countries` (countryName)  VALUES ( 'Bhutan');
-INSERT INTO `countries` (countryName)  VALUES ( 'Bolivia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Bosnia and Herzegovina');
-INSERT INTO `countries` (countryName)  VALUES ( 'Botswana');
-INSERT INTO `countries` (countryName)  VALUES ( 'Bouvet Island');
-INSERT INTO `countries` (countryName)  VALUES ( 'Brazil');
-INSERT INTO `countries` (countryName)  VALUES ( 'British Indian Ocean Territory');
-INSERT INTO `countries` (countryName)  VALUES ( 'Brunei Darussalam');
-INSERT INTO `countries` (countryName)  VALUES ( 'Bulgaria');
-INSERT INTO `countries` (countryName)  VALUES ( 'Burkina Faso');
-INSERT INTO `countries` (countryName)  VALUES ( 'Burundi');
-INSERT INTO `countries` (countryName)  VALUES ( 'Cambodia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Cameroon');
-INSERT INTO `countries` (countryName)  VALUES ( 'Canada');
-INSERT INTO `countries` (countryName)  VALUES ( 'Cape Verde');
-INSERT INTO `countries` (countryName)  VALUES ( 'Cayman Islands');
-INSERT INTO `countries` (countryName)  VALUES ( 'Central African Republic');
-INSERT INTO `countries` (countryName)  VALUES ( 'Chad');
-INSERT INTO `countries` (countryName)  VALUES ( 'Chile');
-INSERT INTO `countries` (countryName)  VALUES ( 'China');
-INSERT INTO `countries` (countryName)  VALUES ( 'Christmas Island');
-INSERT INTO `countries` (countryName)  VALUES ( 'Cocos (Keeling) Islands');
-INSERT INTO `countries` (countryName)  VALUES ( 'Colombia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Comoros');
-INSERT INTO `countries` (countryName)  VALUES ( 'Congo');
-INSERT INTO `countries` (countryName)  VALUES ( 'Cook Islands');
-INSERT INTO `countries` (countryName)  VALUES ( 'Costa Rica');
-INSERT INTO `countries` (countryName)  VALUES ( 'Croatia (Hrvatska)');
-INSERT INTO `countries` (countryName)  VALUES ( 'Cuba');
-INSERT INTO `countries` (countryName)  VALUES ( 'Cyprus');
-INSERT INTO `countries` (countryName)  VALUES ( 'Czech Republic');
-INSERT INTO `countries` (countryName)  VALUES ( 'Denmark');
-INSERT INTO `countries` (countryName)  VALUES ( 'Djibouti');
-INSERT INTO `countries` (countryName)  VALUES ( 'Dominica');
-INSERT INTO `countries` (countryName)  VALUES ( 'Dominican Republic');
-INSERT INTO `countries` (countryName)  VALUES ( 'East Timor');
-INSERT INTO `countries` (countryName)  VALUES ( 'Ecuador');
-INSERT INTO `countries` (countryName)  VALUES ( 'Egypt');
-INSERT INTO `countries` (countryName)  VALUES ( 'El Salvador');
-INSERT INTO `countries` (countryName)  VALUES ( 'Equatorial Guinea');
-INSERT INTO `countries` (countryName)  VALUES ( 'Eritrea');
-INSERT INTO `countries` (countryName)  VALUES ( 'Estonia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Ethiopia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Falkland Islands (Malvinas)');
-INSERT INTO `countries` (countryName)  VALUES ( 'Faroe Islands');
-INSERT INTO `countries` (countryName)  VALUES ( 'Fiji');
-INSERT INTO `countries` (countryName)  VALUES ( 'Finland');
-INSERT INTO `countries` (countryName)  VALUES ( 'France');
-INSERT INTO `countries` (countryName)  VALUES ( 'France, Metropolitan');
-INSERT INTO `countries` (countryName)  VALUES ( 'French Guiana');
-INSERT INTO `countries` (countryName)  VALUES ( 'French Polynesia');
-INSERT INTO `countries` (countryName)  VALUES ( 'French Southern Territories');
-INSERT INTO `countries` (countryName)  VALUES ( 'Gabon');
-INSERT INTO `countries` (countryName)  VALUES ( 'Gambia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Georgia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Germany');
-INSERT INTO `countries` (countryName)  VALUES ( 'Ghana');
-INSERT INTO `countries` (countryName)  VALUES ( 'Gibraltar');
-INSERT INTO `countries` (countryName)  VALUES ( 'Guernsey');
-INSERT INTO `countries` (countryName)  VALUES ( 'Greece');
-INSERT INTO `countries` (countryName)  VALUES ( 'Greenland');
-INSERT INTO `countries` (countryName)  VALUES ( 'Grenada');
-INSERT INTO `countries` (countryName)  VALUES ( 'Guadeloupe');
-INSERT INTO `countries` (countryName)  VALUES ( 'Guam');
-INSERT INTO `countries` (countryName)  VALUES ( 'Guatemala');
-INSERT INTO `countries` (countryName)  VALUES ( 'Guinea');
-INSERT INTO `countries` (countryName)  VALUES ( 'Guinea-Bissau');
-INSERT INTO `countries` (countryName)  VALUES ( 'Guyana');
-INSERT INTO `countries` (countryName)  VALUES ( 'Haiti');
-INSERT INTO `countries` (countryName)  VALUES ( 'Heard and Mc Donald Islands');
-INSERT INTO `countries` (countryName)  VALUES ( 'Honduras');
-INSERT INTO `countries` (countryName)  VALUES ( 'Hong Kong');
-INSERT INTO `countries` (countryName)  VALUES ( 'Hungary');
-INSERT INTO `countries` (countryName)  VALUES ( 'Iceland');
-INSERT INTO `countries` (countryName)  VALUES ( 'India');
-INSERT INTO `countries` (countryName)  VALUES ( 'Isle of Man');
-INSERT INTO `countries` (countryName)  VALUES ( 'Indonesia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Iran (Islamic Republic of)');
-INSERT INTO `countries` (countryName)  VALUES ( 'Iraq');
-INSERT INTO `countries` (countryName)  VALUES ( 'Ireland');
-INSERT INTO `countries` (countryName)  VALUES ( 'Israel');
-INSERT INTO `countries` (countryName)  VALUES ( 'Italy');
-INSERT INTO `countries` (countryName)  VALUES ( 'Ivory Coast');
-INSERT INTO `countries` (countryName)  VALUES ( 'Jersey');
-INSERT INTO `countries` (countryName)  VALUES ( 'Jamaica');
-INSERT INTO `countries` (countryName)  VALUES ( 'Japan');
-INSERT INTO `countries` (countryName)  VALUES ( 'Jordan');
-INSERT INTO `countries` (countryName)  VALUES ( 'Kazakhstan');
-INSERT INTO `countries` (countryName)  VALUES ( 'Kenya');
-INSERT INTO `countries` (countryName)  VALUES ( 'Kiribati');
-INSERT INTO `countries` (countryName)  VALUES ( 'Korea, Democratic People''s Republic of');
-INSERT INTO `countries` (countryName)  VALUES ( 'Korea, Republic of');
-INSERT INTO `countries` (countryName)  VALUES ( 'Kosovo');
-INSERT INTO `countries` (countryName)  VALUES ( 'Kuwait');
-INSERT INTO `countries` (countryName)  VALUES ( 'Kyrgyzstan');
-INSERT INTO `countries` (countryName)  VALUES ( 'Lao People''s Democratic Republic');
-INSERT INTO `countries` (countryName)  VALUES ( 'Latvia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Lebanon');
-INSERT INTO `countries` (countryName)  VALUES ( 'Lesotho');
-INSERT INTO `countries` (countryName)  VALUES ( 'Liberia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Libyan Arab Jamahiriya');
-INSERT INTO `countries` (countryName)  VALUES ( 'Liechtenstein');
-INSERT INTO `countries` (countryName)  VALUES ( 'Lithuania');
-INSERT INTO `countries` (countryName)  VALUES ( 'Luxembourg');
-INSERT INTO `countries` (countryName)  VALUES ( 'Macau');
-INSERT INTO `countries` (countryName)  VALUES ( 'Macedonia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Madagascar');
-INSERT INTO `countries` (countryName)  VALUES ( 'Malawi');
-INSERT INTO `countries` (countryName)  VALUES ( 'Malaysia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Maldives');
-INSERT INTO `countries` (countryName)  VALUES ( 'Mali');
-INSERT INTO `countries` (countryName)  VALUES ( 'Malta');
-INSERT INTO `countries` (countryName)  VALUES ( 'Marshall Islands');
-INSERT INTO `countries` (countryName)  VALUES ( 'Martinique');
-INSERT INTO `countries` (countryName)  VALUES ( 'Mauritania');
-INSERT INTO `countries` (countryName)  VALUES ( 'Mauritius');
-INSERT INTO `countries` (countryName)  VALUES ( 'Mayotte');
-INSERT INTO `countries` (countryName)  VALUES ( 'Mexico');
-INSERT INTO `countries` (countryName)  VALUES ( 'Micronesia, Federated States of');
-INSERT INTO `countries` (countryName)  VALUES ( 'Moldova, Republic of');
-INSERT INTO `countries` (countryName)  VALUES ( 'Monaco');
-INSERT INTO `countries` (countryName)  VALUES ( 'Mongolia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Montenegro');
-INSERT INTO `countries` (countryName)  VALUES ( 'Montserrat');
-INSERT INTO `countries` (countryName)  VALUES ( 'Morocco');
-INSERT INTO `countries` (countryName)  VALUES ( 'Mozambique');
-INSERT INTO `countries` (countryName)  VALUES ( 'Myanmar');
-INSERT INTO `countries` (countryName)  VALUES ( 'Namibia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Nauru');
-INSERT INTO `countries` (countryName)  VALUES ( 'Nepal');
-INSERT INTO `countries` (countryName)  VALUES ( 'Netherlands');
-INSERT INTO `countries` (countryName)  VALUES ( 'Netherlands Antilles');
-INSERT INTO `countries` (countryName)  VALUES ( 'New Caledonia');
-INSERT INTO `countries` (countryName)  VALUES ( 'New Zealand');
-INSERT INTO `countries` (countryName)  VALUES ( 'Nicaragua');
-INSERT INTO `countries` (countryName)  VALUES ( 'Niger');
-INSERT INTO `countries` (countryName)  VALUES ( 'Nigeria');
-INSERT INTO `countries` (countryName)  VALUES ( 'Niue');
-INSERT INTO `countries` (countryName)  VALUES ( 'Norfolk Island');
-INSERT INTO `countries` (countryName)  VALUES ( 'Northern Mariana Islands');
-INSERT INTO `countries` (countryName)  VALUES ( 'Norway');
-INSERT INTO `countries` (countryName)  VALUES ( 'Oman');
-INSERT INTO `countries` (countryName)  VALUES ( 'Pakistan');
-INSERT INTO `countries` (countryName)  VALUES ( 'Palau');
-INSERT INTO `countries` (countryName)  VALUES ( 'Palestine');
-INSERT INTO `countries` (countryName)  VALUES ( 'Panama');
-INSERT INTO `countries` (countryName)  VALUES ( 'Papua New Guinea');
-INSERT INTO `countries` (countryName)  VALUES ( 'Paraguay');
-INSERT INTO `countries` (countryName)  VALUES ( 'Peru');
-INSERT INTO `countries` (countryName)  VALUES ( 'Philippines');
-INSERT INTO `countries` (countryName)  VALUES ( 'Pitcairn');
-INSERT INTO `countries` (countryName)  VALUES ( 'Poland');
-INSERT INTO `countries` (countryName)  VALUES ( 'Portugal');
-INSERT INTO `countries` (countryName)  VALUES ( 'Puerto Rico');
-INSERT INTO `countries` (countryName)  VALUES ( 'Qatar');
-INSERT INTO `countries` (countryName)  VALUES ( 'Reunion');
-INSERT INTO `countries` (countryName)  VALUES ( 'Romania');
-INSERT INTO `countries` (countryName)  VALUES ( 'Russian Federation');
-INSERT INTO `countries` (countryName)  VALUES ( 'Rwanda');
-INSERT INTO `countries` (countryName)  VALUES ( 'Saint Kitts and Nevis');
-INSERT INTO `countries` (countryName)  VALUES ( 'Saint Lucia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Saint Vincent and the Grenadines');
-INSERT INTO `countries` (countryName)  VALUES ( 'Samoa');
-INSERT INTO `countries` (countryName)  VALUES ( 'San Marino');
-INSERT INTO `countries` (countryName)  VALUES ( 'Sao Tome and Principe');
-INSERT INTO `countries` (countryName)  VALUES ( 'Saudi Arabia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Senegal');
-INSERT INTO `countries` (countryName)  VALUES ( 'Serbia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Seychelles');
-INSERT INTO `countries` (countryName)  VALUES ( 'Sierra Leone');
-INSERT INTO `countries` (countryName)  VALUES ( 'Singapore');
-INSERT INTO `countries` (countryName)  VALUES ( 'Slovakia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Slovenia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Solomon Islands');
-INSERT INTO `countries` (countryName)  VALUES ( 'Somalia');
-INSERT INTO `countries` (countryName)  VALUES ( 'South Africa');
-INSERT INTO `countries` (countryName)  VALUES ( 'South Georgia South Sandwich Islands');
-INSERT INTO `countries` (countryName)  VALUES ( 'Spain');
-INSERT INTO `countries` (countryName)  VALUES ( 'Sri Lanka');
-INSERT INTO `countries` (countryName)  VALUES ( 'St. Helena');
-INSERT INTO `countries` (countryName)  VALUES ( 'St. Pierre and Miquelon');
-INSERT INTO `countries` (countryName)  VALUES ( 'Sudan');
-INSERT INTO `countries` (countryName)  VALUES ( 'Suriname');
-INSERT INTO `countries` (countryName)  VALUES ( 'Svalbard and Jan Mayen Islands');
-INSERT INTO `countries` (countryName)  VALUES ( 'Swaziland');
-INSERT INTO `countries` (countryName)  VALUES ( 'Sweden');
-INSERT INTO `countries` (countryName)  VALUES ( 'Switzerland');
-INSERT INTO `countries` (countryName)  VALUES ( 'Syrian Arab Republic');
-INSERT INTO `countries` (countryName)  VALUES ( 'Taiwan');
-INSERT INTO `countries` (countryName)  VALUES ( 'Tajikistan');
-INSERT INTO `countries` (countryName)  VALUES ( 'Tanzania, United Republic of');
-INSERT INTO `countries` (countryName)  VALUES ( 'Thailand');
-INSERT INTO `countries` (countryName)  VALUES ( 'Togo');
-INSERT INTO `countries` (countryName)  VALUES ( 'Tokelau');
-INSERT INTO `countries` (countryName)  VALUES ( 'Tonga');
-INSERT INTO `countries` (countryName)  VALUES ( 'Trinidad and Tobago');
-INSERT INTO `countries` (countryName)  VALUES ( 'Tunisia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Turkey');
-INSERT INTO `countries` (countryName)  VALUES ( 'Turkmenistan');
-INSERT INTO `countries` (countryName)  VALUES ( 'Turks and Caicos Islands');
-INSERT INTO `countries` (countryName)  VALUES ( 'Tuvalu');
-INSERT INTO `countries` (countryName)  VALUES ( 'Uganda');
-INSERT INTO `countries` (countryName)  VALUES ( 'Ukraine');
-INSERT INTO `countries` (countryName)  VALUES ( 'United Arab Emirates');
-INSERT INTO `countries` (countryName)  VALUES ( 'United Kingdom');
-INSERT INTO `countries` (countryName)  VALUES ( 'United States');
-INSERT INTO `countries` (countryName)  VALUES ( 'United States minor outlying islands');
-INSERT INTO `countries` (countryName)  VALUES ( 'Uruguay');
-INSERT INTO `countries` (countryName)  VALUES ( 'Uzbekistan');
-INSERT INTO `countries` (countryName)  VALUES ( 'Vanuatu');
-INSERT INTO `countries` (countryName)  VALUES ( 'Vatican City State');
-INSERT INTO `countries` (countryName)  VALUES ( 'Venezuela');
-INSERT INTO `countries` (countryName)  VALUES ( 'Vietnam');
-INSERT INTO `countries` (countryName)  VALUES ( 'Virgin Islands (British)');
-INSERT INTO `countries` (countryName)  VALUES ( 'Virgin Islands (U.S.)');
-INSERT INTO `countries` (countryName)  VALUES ( 'Wallis and Futuna Islands');
-INSERT INTO `countries` (countryName)  VALUES ( 'Western Sahara');
-INSERT INTO `countries` (countryName)  VALUES ( 'Yemen');
-INSERT INTO `countries` (countryName)  VALUES ( 'Yugoslavia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Zaire');
-INSERT INTO `countries` (countryName)  VALUES ( 'Zambia');
-INSERT INTO `countries` (countryName)  VALUES ( 'Zimbabwe');

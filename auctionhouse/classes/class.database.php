@@ -24,7 +24,7 @@ class Database
 
     public function issueQuery( $sql, $insertType = null, $params = null )
     {
-        $result = true;
+        $result = null;
 
         // Determine query type
         $queryType = explode( " ", trim( $sql ) );

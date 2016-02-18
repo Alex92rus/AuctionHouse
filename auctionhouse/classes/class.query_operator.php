@@ -22,12 +22,31 @@ class QueryOperator
 
     public static function getCountryId( $countryName )
     {
+        // SQL retrieving a country Id
         self::getDatabaseInstance();
         $getCountryQuery = "SELECT countryId FROM countries WHERE countryName = '$countryName'";
         $result = self::$database -> issueQuery( $getCountryQuery );
     
         $countryRow = $result -> fetch_assoc();
         return $countryRow[ "countryId" ];
+    }
+
+
+    public static function getItemRelatedIds( $category, $condition )
+    {
+        self::getDatabaseInstance();
+
+        // SQL for retrieving category id
+        $categoryQuery = "SELECT categoryId FROM item_categories WHERE categoryName = '$category'";
+        $categoryResult = self::$database -> issueQuery( $categoryQuery );
+        $categoryRow = $categoryResult -> fetch_assoc();
+
+        // SQL for retrieving condition id
+        $conditionQuery = "SELECT conditionId FROM item_conditions WHERE conditionName = '$condition'";
+        $conditionResult = self::$database -> issueQuery( $conditionQuery );
+        $conditionRow = $conditionResult -> fetch_assoc();
+
+        return [ "categoryId" => $categoryRow[ "categoryId" ], "conditionId" => $conditionRow[ "conditionId" ] ];
     }
 
 
@@ -54,9 +73,9 @@ class QueryOperator
         self::getDatabaseInstance();
         $registerUserQuery  = "INSERT INTO users ( username, email, firstName, lastName, address, postcode, city, countryId, password ) ";
         $registerUserQuery .= "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )";
-        $insertId = self::$database -> issueQuery( $registerUserQuery, "sssssssis", $parameters );
+        $accountId = self::$database -> issueQuery( $registerUserQuery, "sssssssis", $parameters );
 
-        return $insertId;
+        return $accountId;
     }
 
 
@@ -66,6 +85,23 @@ class QueryOperator
         self::getDatabaseInstance();
         $unverifiedAccountQuery = "INSERT INTO unverified_users ( userId, confirmCode ) VALUES ( ?, ? )";
         self::$database -> issueQuery( $unverifiedAccountQuery, "si", $parameters );
+    }
+
+
+    public static function addAuction( $itemParameters, $auctionParameters )
+    {
+        self::getDatabaseInstance();
+
+        // SQL query for inserting item
+        $itemQuery = "INSERT INTO items ( itemName, itemBrand, categoryId, conditionId, itemDescription, image ) VALUES ( ?, ?, ?, ?, ?, ? )";
+        $itemId = self::$database -> issueQuery( $itemQuery, "ssiiss", $itemParameters );
+
+        // SQL query for inserting auction
+        $auctionQuery = "INSERT INTO auctions ( itemId, userId, quantity, startPrice, reservePrice, startTime, endTime ) VALUES ( ?, ?, ?, ?, ?, ?, ? )";
+        $auctionParameters[ 0 ] = &$itemId;
+        self::$database -> issueQuery( $auctionQuery, "iiiddss", $auctionParameters );
+
+        return $itemId;
     }
 
 
@@ -216,11 +252,14 @@ class QueryOperator
      }
 
 
-    public static function uploadImage( $userId, $imageName, $table )
+    public static function uploadImage( $id, $imageName, $table )
     {
         // SQL query for uploading an image
         self::getDatabaseInstance();
-        $uploadImage = "UPDATE {$table} SET image = '{$imageName}' WHERE userId = {$userId}";
+        $uploadImage  = "UPDATE {$table} SET image = '{$imageName}' WHERE ";
+        $uploadImage .= ( $table == "users" ) ? "userId" : "itemId";
+        $uploadImage .= "= {$id}";
+
         self::$database -> issueQuery( $uploadImage );
     }
 }

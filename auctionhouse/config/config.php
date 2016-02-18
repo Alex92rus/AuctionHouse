@@ -25,7 +25,8 @@ defined( "EMAIL_SMTP" ) ? null : define( "EMAIL_SMTP", 587 );
 
 
 // Upload
-defined( "UPLOAD_PROFILE_PATH" ) ? null : define( "UPLOAD_PROFILE_PATH", $root . "/uploads/profile_images/" );
+defined( "UPLOAD_PROFILE_IMAGE" ) ? null : define( "UPLOAD_PROFILE_IMAGE", $root . "/uploads/profile_images/" );
+defined( "UPLOAD_ITEM_IMAGE" ) ? null : define( "UPLOAD_ITEM_IMAGE", $root . "/uploads/item_images/" );
 
 // Arrays
 defined( "COUNTRIES_ARRAY" ) ? null : define( "COUNTRIES_ARRAY", array(
@@ -277,9 +278,7 @@ defined( "COUNTRIES_ARRAY" ) ? null : define( "COUNTRIES_ARRAY", array(
         'Zimbabwe' ) );
 
 defined( "ITEM_CATEGORIES_ARRAY" ) ? null : define( "ITEM_CATEGORIES_ARRAY", array(
-    'Category 1',
-    'Category 2',
-    'Category 3', ) );
+    'Test Category' ) );
 
 defined( "CONDITION_CATEGORIES_ARRAY" ) ? null : define( "CONDITION_CATEGORIES_ARRAY", array(
     'Brand New',
