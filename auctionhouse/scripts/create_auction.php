@@ -94,8 +94,8 @@ else
     // Store image name in database
     QueryOperator::uploadImage( $itemId, $newImageName, "items" );
 
-    // Return to auction page
-    redirectTo( "../views/dashboard_view.php" );
+    // Return to live auctions page
+    redirectTo( "../views/live_auctions_view.php" );
 }
 
 

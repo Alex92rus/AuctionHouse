@@ -131,11 +131,11 @@
                 <a href="../views/dashboard_view.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
 
-            <li>
+            <li <?= isActive()?> >
                 <a href="#"><i class="fa fa-gavel fa-fw"></i> My Auctions<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="#"><i class="fa fa-clock-o fa-fw"></i> Current Auctions</a>
+                        <a href="../views/live_auctions_view.php"><i class="fa fa-clock-o fa-fw"></i> Live Auctions</a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-history fa-fw"></i> Sold Auctions</a>

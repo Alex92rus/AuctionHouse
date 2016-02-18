@@ -15,14 +15,14 @@ require_once "../config/config.php";
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>User Profile</title>
+    <title>Create New Auction</title>
 
     <!-- Font -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
-    <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="../css/animate.css" rel="stylesheet" type="text/css">
     <link href="../css/metisMenu.min.css" rel="stylesheet">
     <link href="../css/sb-admin-2.css" rel="stylesheet">
@@ -42,7 +42,7 @@ require_once "../config/config.php";
     <script src="../js/moment.min.js"></script>
     <script src="../js/bootstrap-datetimepicker.min.js"></script>
     <script src="../js/custom/search.js"></script>
-    <script src="../js/custom/auction.js"></script>
+    <script src="../js/custom/create_auction.js"></script>
 
 </head>
 
@@ -61,7 +61,7 @@ require_once "../config/config.php";
             <!-- profile header start -->
             <div class="row">
                 <div class="col-lg-12">
-                    <h2 class="page-header"><span class="glyphicon glyphicon-plus-sign"></span> Create New Auction</h2>
+                    <h2 class="page-header">Create New Auction</h2>
                 </div>
             </div>
             <!-- profile header end -->

@@ -11,6 +11,7 @@ require_once "../classes/class.session_operator.php";
 
     <!-- CSS -->
     <link href="../css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="../css/index.css" rel="stylesheet" type="text/css">
     <link href="../css/animate.css" rel="stylesheet" type="text/css">
 

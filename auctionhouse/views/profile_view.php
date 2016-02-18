@@ -19,10 +19,10 @@ require_once "../config/config.php";
 
     <!-- Font -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
-    <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="../css/animate.css" rel="stylesheet" type="text/css">
     <link href="../css/metisMenu.min.css" rel="stylesheet">
     <link href="../css/sb-admin-2.css" rel="stylesheet">
@@ -56,7 +56,7 @@ require_once "../config/config.php";
         <div id="page-wrapper">
             <!-- profile header start -->
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-xs-12">
                     <h2 class="page-header"><i class="fa fa-user fa-fw"></i> My Profile</h2>
                 </div>
             </div>

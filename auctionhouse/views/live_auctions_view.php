@@ -14,7 +14,7 @@ require_once "../scripts/user_session.php";
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Home</title>
+    <title>Live Auctions</title>
 
     <!-- Font -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
@@ -33,6 +33,7 @@ require_once "../scripts/user_session.php";
     <script src="../js/bootstrap-notify.min.js"></script>
     <script src="../js/metisMenu.min.js"></script>
     <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/custom/view_auction.js"></script>
 </head>
 
 <body>
@@ -51,10 +52,30 @@ require_once "../scripts/user_session.php";
         <!-- main start -->
         <div id="page-wrapper">
             <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Dashboard</h1>
+                <div class="col-xs-12">
+                    <h1 class="page-header">
+                        My live auctions
+                        <a class="btn btn-lg btn-primary pull-right" href="create_auction_view.php">Create New Auction</a>
+                    </h1>
                 </div>
             </div>
+
+            <div class="row">
+                <?php
+                    for ( $index = 0; $index < 1; $index++ )
+                    {
+                        include "../includes/my_auction.php";
+                    }
+                ?>
+            </div>
+
+            <!-- footer start -->
+            <div class="footer">
+                <div class="container">
+                </div>
+            </div>
+            <!-- footer end -->
+
         </div>
         <!-- main end -->
 
