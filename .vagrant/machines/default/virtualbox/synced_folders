@@ -1,1 +1,0 @@
-{"virtualbox":{"/var/www":{"mount_options":["dmode=777","fmode=666"],"guestpath":"/var/www","hostpath":"/home/mlloyd/Development/scotch.io/COMP3013Databases","disabled":false},"/vagrant":{"guestpath":"/vagrant","hostpath":"/home/mlloyd/Development/scotch.io/COMP3013Databases","disabled":false}}}
