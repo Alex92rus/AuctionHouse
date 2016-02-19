@@ -16,3 +16,12 @@ $(document).ready(function() {
         }
     });
 });
+
+
+
+$(document).ready(function() {
+    $('#dataTables-example').DataTable({
+        "bLengthChange": false,
+        responsive: true
+    });
+});

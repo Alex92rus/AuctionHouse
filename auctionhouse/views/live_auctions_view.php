@@ -25,6 +25,7 @@ require_once "../scripts/user_session.php";
     <link href="../css/animate.css" rel="stylesheet" type="text/css">
     <link href="../css/metisMenu.min.css" rel="stylesheet">
     <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/dataTables.bootstrap.css" rel="stylesheet">
     <link href="../css/main.css" rel="stylesheet">
 
     <!-- JS -->
@@ -33,6 +34,8 @@ require_once "../scripts/user_session.php";
     <script src="../js/bootstrap-notify.min.js"></script>
     <script src="../js/metisMenu.min.js"></script>
     <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/jquery.dataTables.min.js"></script>
+    <script src="../js/dataTables.bootstrap.min.js"></script>
     <script src="../js/custom/view_auction.js"></script>
 </head>
 

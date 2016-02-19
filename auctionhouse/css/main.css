@@ -139,14 +139,36 @@ a:focus
     margin-bottom: 5px;
 }
 
+
 .panel-body hr
 {
     margin-top:5px;
 }
 
+
 .p-title
 {
     color: #627991;
+}
+
+
+.current-bid
+{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    border-radius: 4px;
+}
+
+
+.no-bids
+{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    border-radius: 4px;
 }
 
 
