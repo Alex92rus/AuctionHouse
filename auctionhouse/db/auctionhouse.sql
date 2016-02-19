@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:8889
--- Generation Time: Feb 18, 2016 at 03:19 PM
+-- Generation Time: Feb 19, 2016 at 08:42 PM
 -- Server version: 5.5.42
--- PHP Version: 7.0.0
+-- PHP Version: 5.6.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -13,21 +13,20 @@ SET time_zone = "+00:00";
 --
 -- Database: `auctionsystem`
 --
-DROP DATABASE IF EXISTS `auctionsystem`;
 CREATE DATABASE IF NOT EXISTS `auctionsystem` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `auctionsystem`;
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `auctions`
 --
 
--- DROP TABLE IF EXISTS `auctions`;
-CREATE TABLE IF NOT EXISTS `auctions` (
+DROP TABLE IF EXISTS `auctions`;
+CREATE TABLE `auctions` (
   `auctionId` int(11) NOT NULL,
   `itemId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
-  `bidId` int(11) DEFAULT NULL,
   `quantity` int(11) unsigned NOT NULL DEFAULT '1',
   `startPrice` decimal(10,2) unsigned NOT NULL,
   `reservePrice` decimal(10,2) unsigned NOT NULL,
@@ -39,24 +38,24 @@ CREATE TABLE IF NOT EXISTS `auctions` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `auctionvisits`
+-- Table structure for table `auction_views`
 --
 
--- DROP TABLE IF EXISTS `auctionvisits`;
-CREATE TABLE IF NOT EXISTS `auctionvisits` (
-  `visitId` int(11) NOT NULL,
+DROP TABLE IF EXISTS `auction_views`;
+CREATE TABLE `auction_views` (
+  `viewId` int(11) NOT NULL,
   `auctionId` int(11) NOT NULL,
-  `visitTime` datetime NOT NULL
+  `viewTime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `auctionwatchs`
+-- Table structure for table `auction_watchs`
 --
 
--- DROP TABLE IF EXISTS `auctionwatchs`;
-CREATE TABLE IF NOT EXISTS `auctionwatchs` (
+DROP TABLE IF EXISTS `auction_watchs`;
+CREATE TABLE `auction_watchs` (
   `watchId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `auctionId` int(11) NOT NULL
@@ -68,9 +67,8 @@ CREATE TABLE IF NOT EXISTS `auctionwatchs` (
 -- Table structure for table `bids`
 --
 
-
--- DROP TABLE IF EXISTS `bids`;
-CREATE TABLE IF NOT EXISTS `bids` (
+DROP TABLE IF EXISTS `bids`;
+CREATE TABLE `bids` (
   `bidId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `auctionId` int(11) NOT NULL,
@@ -84,9 +82,8 @@ CREATE TABLE IF NOT EXISTS `bids` (
 -- Table structure for table `countries`
 --
 
-
--- DROP TABLE IF EXISTS `countries`;
-CREATE TABLE IF NOT EXISTS `countries`(
+DROP TABLE IF EXISTS `countries`;
+CREATE TABLE `countries` (
   `countryId` int(11) NOT NULL,
   `countryName` varchar(45) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=247 DEFAULT CHARSET=latin1;
@@ -349,8 +346,8 @@ INSERT INTO `countries` (`countryId`, `countryName`) VALUES
 -- Table structure for table `feedbacks`
 --
 
--- DROP TABLE IF EXISTS `feedbacks`;
-CREATE TABLE IF NOT EXISTS `feedbacks` (
+DROP TABLE IF EXISTS `feedbacks`;
+CREATE TABLE `feedbacks` (
   `feedbackId` int(11) NOT NULL,
   `auctionId` int(11) NOT NULL,
   `receiverId` int(11) NOT NULL,
@@ -365,8 +362,8 @@ CREATE TABLE IF NOT EXISTS `feedbacks` (
 -- Table structure for table `items`
 --
 
--- DROP TABLE IF EXISTS `items`;
-CREATE TABLE IF NOT EXISTS `items` (
+DROP TABLE IF EXISTS `items`;
+CREATE TABLE `items` (
   `itemId` int(11) NOT NULL,
   `itemName` varchar(45) NOT NULL,
   `itemBrand` varchar(45) NOT NULL,
@@ -382,64 +379,54 @@ CREATE TABLE IF NOT EXISTS `items` (
 -- Table structure for table `item_categories`
 --
 
+DROP TABLE IF EXISTS `item_categories`;
 CREATE TABLE `item_categories` (
   `categoryId` int(11) NOT NULL,
   `superCategoryId` int(11) NOT NULL,
   `categoryName` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `item_categories`
 --
 
 INSERT INTO `item_categories` (`categoryId`, `superCategoryId`, `categoryName`) VALUES
-  (1, 1, 'Collectables'),
-  (2, 1, 'Antiques'),
-  (3, 1, 'Sports Memorabilia'),
-  (4, 1, 'Coins'),
-
-  (5, 2, 'Garden'),
-  (6, 2, 'Appliances'),
-  (7, 2, 'DIY Materials'),
-  (8, 2, 'Furniture & Homeware'),
-
-  (9, 3, 'Cycling'),
-  (10, 3, 'Fishing'),
-  (11, 3, 'Fitness, Running & Yoga'),
-  (12, 3, 'Golf'),
-
-  (13, 4, 'Mobile Phones'),
-  (14, 4, 'Sound & Vision'),
-  (15, 4, 'Video Games'),
-  (16, 4, 'Computer & Tables'),
-
-  (17, 5, 'Watches'),
-  (18, 5, 'Costume Jewellery'),
-  (19, 5, 'Vintage & Antique Jewelery'),
-  (20, 5, 'Fine Jewelery'),
-
-  (21, 6, 'Radio Controlled'),
-  (22, 6, 'Construction Toys'),
-  (23, 6, 'Outdoor Toys'),
-  (24, 6, 'Action Figures'),
-
-  (25, 7, 'Women\'s Clothing'),
-  (26, 7, 'Men\'s Clothing'),
-  (27, 7, 'Shoes'),
-  (28, 7, 'Kid\'s Fashion'),
-
-  (29, 8, 'Cars'),
-  (30, 8, 'Car Parts'),
-  (31, 8, 'Motorcycles & Scooters'),
-  (32, 8, 'Motorcycle Parts'),
-
-  (33, 9, 'Books, Comics & Magazines'),
-  (34, 9, 'Health & Beauty'),
-  (35, 9, 'Musical Instruments'),
-  (36, 9, 'Business, Office & Industrial');
-
-
-
+(1, 1, 'Collectables'),
+(2, 1, 'Antiques'),
+(3, 1, 'Sports Memorabilia'),
+(4, 1, 'Coins'),
+(5, 2, 'Garden'),
+(6, 2, 'Appliances'),
+(7, 2, 'DIY Materials'),
+(8, 2, 'Furniture & Homeware'),
+(9, 3, 'Cycling'),
+(10, 3, 'Fishing'),
+(11, 3, 'Fitness, Running & Yoga'),
+(12, 3, 'Golf'),
+(13, 4, 'Mobile Phones'),
+(14, 4, 'Sound & Vision'),
+(15, 4, 'Video Games'),
+(16, 4, 'Computer & Tables'),
+(17, 5, 'Watches'),
+(18, 5, 'Costume Jewellery'),
+(19, 5, 'Vintage & Antique Jewelery'),
+(20, 5, 'Fine Jewelery'),
+(21, 6, 'Radio Controlled'),
+(22, 6, 'Construction Toys'),
+(23, 6, 'Outdoor Toys'),
+(24, 6, 'Action Figures'),
+(25, 7, 'Women''s Clothing'),
+(26, 7, 'Men''s Clothing'),
+(27, 7, 'Shoes'),
+(28, 7, 'Kid''s Fashion'),
+(29, 8, 'Cars'),
+(30, 8, 'Car Parts'),
+(31, 8, 'Motorcycles & Scooters'),
+(32, 8, 'Motorcycle Parts'),
+(33, 9, 'Books, Comics & Magazines'),
+(34, 9, 'Health & Beauty'),
+(35, 9, 'Musical Instruments'),
+(36, 9, 'Business, Office & Industrial');
 
 -- --------------------------------------------------------
 
@@ -447,6 +434,7 @@ INSERT INTO `item_categories` (`categoryId`, `superCategoryId`, `categoryName`) 
 -- Table structure for table `item_conditions`
 --
 
+DROP TABLE IF EXISTS `item_conditions`;
 CREATE TABLE `item_conditions` (
   `conditionId` int(2) NOT NULL,
   `conditionName` varchar(45) NOT NULL
@@ -465,19 +453,20 @@ INSERT INTO `item_conditions` (`conditionId`, `conditionName`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `supercategories`
+-- Table structure for table `super_item_categories`
 --
 
-CREATE TABLE `supercategories` (
+DROP TABLE IF EXISTS `super_item_categories`;
+CREATE TABLE `super_item_categories` (
   `superCategoryId` int(11) NOT NULL,
   `superCategoryName` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `supercategories`
+-- Dumping data for table `super_item_categories`
 --
 
-INSERT INTO `supercategories` (`superCategoryId`, `superCategoryName`) VALUES
+INSERT INTO `super_item_categories` (`superCategoryId`, `superCategoryName`) VALUES
 (1, 'Collectables & Antiques'),
 (2, 'Home & Garden'),
 (3, 'Sporting Goods'),
@@ -494,6 +483,7 @@ INSERT INTO `supercategories` (`superCategoryId`, `superCategoryName`) VALUES
 -- Table structure for table `unverified_users`
 --
 
+DROP TABLE IF EXISTS `unverified_users`;
 CREATE TABLE `unverified_users` (
   `userId` int(11) NOT NULL,
   `confirmCode` varchar(60) NOT NULL
@@ -515,6 +505,7 @@ INSERT INTO `unverified_users` (`userId`, `confirmCode`) VALUES
 -- Table structure for table `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `userId` int(11) NOT NULL,
   `username` varchar(45) NOT NULL,
@@ -552,20 +543,19 @@ INSERT INTO `users` (`userId`, `username`, `email`, `firstName`, `lastName`, `ad
 ALTER TABLE `auctions`
   ADD PRIMARY KEY (`auctionId`),
   ADD KEY `fk_Auctions_Items1_idx` (`itemId`),
-  ADD KEY `fk_Auction_User1_idx` (`userId`),
-  ADD KEY `fk_bid_idx` (`bidId`);
+  ADD KEY `fk_Auction_User1_idx` (`userId`);
 
 --
--- Indexes for table `auctionvisits`
+-- Indexes for table `auction_views`
 --
-ALTER TABLE `auctionvisits`
-  ADD PRIMARY KEY (`visitId`),
+ALTER TABLE `auction_views`
+  ADD PRIMARY KEY (`viewId`),
   ADD KEY `fk_auction_idx` (`auctionId`);
 
 --
--- Indexes for table `auctionwatchs`
+-- Indexes for table `auction_watchs`
 --
-ALTER TABLE `auctionwatchs`
+ALTER TABLE `auction_watchs`
   ADD PRIMARY KEY (`watchId`),
   ADD KEY `AuctionID_idx` (`auctionId`),
   ADD KEY `fk_AuctionWatch_User1_idx` (`userId`);
@@ -615,9 +605,9 @@ ALTER TABLE `item_conditions`
   ADD PRIMARY KEY (`conditionId`);
 
 --
--- Indexes for table `supercategories`
+-- Indexes for table `super_item_categories`
 --
-ALTER TABLE `supercategories`
+ALTER TABLE `super_item_categories`
   ADD PRIMARY KEY (`superCategoryId`);
 
 --
@@ -646,14 +636,14 @@ ALTER TABLE `users`
 ALTER TABLE `auctions`
   MODIFY `auctionId` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `auctionvisits`
+-- AUTO_INCREMENT for table `auction_views`
 --
-ALTER TABLE `auctionvisits`
-  MODIFY `visitId` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `auction_views`
+  MODIFY `viewId` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `auctionwatchs`
+-- AUTO_INCREMENT for table `auction_watchs`
 --
-ALTER TABLE `auctionwatchs`
+ALTER TABLE `auction_watchs`
   MODIFY `watchId` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `bids`
@@ -679,12 +669,12 @@ ALTER TABLE `items`
 -- AUTO_INCREMENT for table `item_categories`
 --
 ALTER TABLE `item_categories`
-  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
 --
--- AUTO_INCREMENT for table `supercategories`
+-- AUTO_INCREMENT for table `super_item_categories`
 --
-ALTER TABLE `supercategories`
-  MODIFY `superCategoryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+ALTER TABLE `super_item_categories`
+  MODIFY `superCategoryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `unverified_users`
 --
@@ -703,20 +693,13 @@ ALTER TABLE `users`
 -- Constraints for table `auctions`
 --
 ALTER TABLE `auctions`
-  ADD CONSTRAINT `fk_bid` FOREIGN KEY (`bidId`) REFERENCES `bids` (`bidId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_item` FOREIGN KEY (`itemId`) REFERENCES `items` (`itemId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_user` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `auctionvisits`
+-- Constraints for table `auction_watchs`
 --
-ALTER TABLE `auctionvisits`
-  ADD CONSTRAINT `fk_auction` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `auctionwatchs`
---
-ALTER TABLE `auctionwatchs`
+ALTER TABLE `auction_watchs`
   ADD CONSTRAINT `AuctionNo` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_AuctionWatch_User1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -746,7 +729,7 @@ ALTER TABLE `items`
 -- Constraints for table `item_categories`
 --
 ALTER TABLE `item_categories`
-  ADD CONSTRAINT `fk_superCategory` FOREIGN KEY (`superCategoryId`) REFERENCES `supercategories` (`superCategoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_superCategory` FOREIGN KEY (`superCategoryId`) REFERENCES `super_item_categories` (`superCategoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `unverified_users`
