@@ -262,4 +262,53 @@ class QueryOperator
 
         self::$database -> issueQuery( $uploadImage );
     }
+
+
+    /**
+     *  get country names as array
+     */
+    public static function getCountriesList()
+    {
+        return self::getStaticColumnList("countries", "countryName");
+    }
+
+    /**
+     *  get item categories (names) as array
+     */
+    public static function getItemCategoriesList()
+    {
+        return self::getStaticColumnList("item_categories", "categoryName");
+    }
+
+    /**
+     *  get item conditions (names) as array
+     */
+    public static function getItemConditionList()
+    {
+        return self::getStaticColumnList("item_conditions", "conditionName" );
+    }
+
+    /**
+     * @param $tableName
+     * @param $columnName
+     * @return array
+     *
+     * gets an array of values from database - intended for a static list on database (countries, categories etc.)
+     * e.g for all country names call
+     * getStaticColumnList("countries", "countryName");
+     * returns ( Afganistan, Syria, Iraq, USA etc...)
+     */
+    private static function getStaticColumnList($tableName, $columnName)
+    {
+        self::getDatabaseInstance();
+        $query = "SELECT `" .$columnName . "` from `" . $tableName . "`"; /* "ORDER BY `id` ASC"*/;
+        $result = self::$database->issueQuery($query);
+        $resultArray = array();
+        while ($row = $result->fetch_row()){
+            $resultArray[] = $row[0];
+        }
+        return $resultArray;
+
+    }
+
 }

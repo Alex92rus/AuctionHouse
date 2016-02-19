@@ -8,7 +8,7 @@ defined( "DB_HOST" ) ? null : define( "DB_HOST", "localhost" );
 defined( "DB_USER" ) ? null : define( "DB_USER", "root" );
 defined( "DB_PASSWORD" ) ? null : define( "DB_PASSWORD", "root" );
 defined( "DB_NAME" ) ? null : define( "DB_NAME", "auctionsystem" );
-defined( "DB_PORT" ) ? null : define( "DB_PORT", 8889 );
+defined( "DB_PORT" ) ? null : define( "DB_PORT", 3306 );
 
 // Email server
 defined( "EMAIL_DEBUG" ) ? null : define( "EMAIL_DEBUG", "html" );
@@ -29,7 +29,7 @@ defined( "UPLOAD_PROFILE_IMAGE" ) ? null : define( "UPLOAD_PROFILE_IMAGE", $root
 defined( "UPLOAD_ITEM_IMAGE" ) ? null : define( "UPLOAD_ITEM_IMAGE", $root . "/uploads/item_images/" );
 
 // Arrays
-defined( "COUNTRIES_ARRAY" ) ? null : define( "COUNTRIES_ARRAY", array(
+/*defined( "COUNTRIES_ARRAY" ) ? null : define( "COUNTRIES_ARRAY", array(
         'Afghanistan',
         'Albania',
         'Algeria',
@@ -275,13 +275,13 @@ defined( "COUNTRIES_ARRAY" ) ? null : define( "COUNTRIES_ARRAY", array(
         'Yugoslavia',
         'Zaire',
         'Zambia',
-        'Zimbabwe' ) );
-
+        'Zimbabwe' ) );*/
+/*
 defined( "ITEM_CATEGORIES_ARRAY" ) ? null : define( "ITEM_CATEGORIES_ARRAY", array(
-    'Test Category' ) );
+    'Test Category' ) );*/
 
-defined( "CONDITION_CATEGORIES_ARRAY" ) ? null : define( "CONDITION_CATEGORIES_ARRAY", array(
+/*defined( "CONDITION_CATEGORIES_ARRAY" ) ? null : define( "CONDITION_CATEGORIES_ARRAY", array(
     'Brand New',
     'New other',
     'Used',
-    'For parts or not working' ) );
+    'For parts or not working' ) );*/

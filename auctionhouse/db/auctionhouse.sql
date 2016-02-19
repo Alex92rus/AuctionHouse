@@ -13,14 +13,17 @@ SET time_zone = "+00:00";
 --
 -- Database: `auctionsystem`
 --
-
+DROP DATABASE IF EXISTS `auctionsystem`;
+CREATE DATABASE IF NOT EXISTS `auctionsystem` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `auctionsystem`;
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `auctions`
 --
 
-CREATE TABLE `auctions` (
+-- DROP TABLE IF EXISTS `auctions`;
+CREATE TABLE IF NOT EXISTS `auctions` (
   `auctionId` int(11) NOT NULL,
   `itemId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
@@ -39,7 +42,8 @@ CREATE TABLE `auctions` (
 -- Table structure for table `auctionvisits`
 --
 
-CREATE TABLE `auctionvisits` (
+-- DROP TABLE IF EXISTS `auctionvisits`;
+CREATE TABLE IF NOT EXISTS `auctionvisits` (
   `visitId` int(11) NOT NULL,
   `auctionId` int(11) NOT NULL,
   `visitTime` datetime NOT NULL
@@ -51,7 +55,8 @@ CREATE TABLE `auctionvisits` (
 -- Table structure for table `auctionwatchs`
 --
 
-CREATE TABLE `auctionwatchs` (
+-- DROP TABLE IF EXISTS `auctionwatchs`;
+CREATE TABLE IF NOT EXISTS `auctionwatchs` (
   `watchId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `auctionId` int(11) NOT NULL
@@ -63,7 +68,9 @@ CREATE TABLE `auctionwatchs` (
 -- Table structure for table `bids`
 --
 
-CREATE TABLE `bids` (
+
+-- DROP TABLE IF EXISTS `bids`;
+CREATE TABLE IF NOT EXISTS `bids` (
   `bidId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `auctionId` int(11) NOT NULL,
@@ -77,7 +84,9 @@ CREATE TABLE `bids` (
 -- Table structure for table `countries`
 --
 
-CREATE TABLE `countries` (
+
+-- DROP TABLE IF EXISTS `countries`;
+CREATE TABLE IF NOT EXISTS `countries`(
   `countryId` int(11) NOT NULL,
   `countryName` varchar(45) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=247 DEFAULT CHARSET=latin1;
@@ -340,7 +349,8 @@ INSERT INTO `countries` (`countryId`, `countryName`) VALUES
 -- Table structure for table `feedbacks`
 --
 
-CREATE TABLE `feedbacks` (
+-- DROP TABLE IF EXISTS `feedbacks`;
+CREATE TABLE IF NOT EXISTS `feedbacks` (
   `feedbackId` int(11) NOT NULL,
   `auctionId` int(11) NOT NULL,
   `receiverId` int(11) NOT NULL,
@@ -355,7 +365,8 @@ CREATE TABLE `feedbacks` (
 -- Table structure for table `items`
 --
 
-CREATE TABLE `items` (
+-- DROP TABLE IF EXISTS `items`;
+CREATE TABLE IF NOT EXISTS `items` (
   `itemId` int(11) NOT NULL,
   `itemName` varchar(45) NOT NULL,
   `itemBrand` varchar(45) NOT NULL,
@@ -382,7 +393,53 @@ CREATE TABLE `item_categories` (
 --
 
 INSERT INTO `item_categories` (`categoryId`, `superCategoryId`, `categoryName`) VALUES
-(1, 1, 'Test Category');
+  (1, 1, 'Collectables'),
+  (2, 1, 'Antiques'),
+  (3, 1, 'Sports Memorabilia'),
+  (4, 1, 'Coins'),
+
+  (5, 2, 'Garden'),
+  (6, 2, 'Appliances'),
+  (7, 2, 'DIY Materials'),
+  (8, 2, 'Furniture & Homeware'),
+
+  (9, 3, 'Cycling'),
+  (10, 3, 'Fishing'),
+  (11, 3, 'Fitness, Running & Yoga'),
+  (12, 3, 'Golf'),
+
+  (13, 4, 'Mobile Phones'),
+  (14, 4, 'Sound & Vision'),
+  (15, 4, 'Video Games'),
+  (16, 4, 'Computer & Tables'),
+
+  (17, 5, 'Watches'),
+  (18, 5, 'Costume Jewellery'),
+  (19, 5, 'Vintage & Antique Jewelery'),
+  (20, 5, 'Fine Jewelery'),
+
+  (21, 6, 'Radio Controlled'),
+  (22, 6, 'Construction Toys'),
+  (23, 6, 'Outdoor Toys'),
+  (24, 6, 'Action Figures'),
+
+  (25, 7, 'Women\'s Clothing'),
+  (26, 7, 'Men\'s Clothing'),
+  (27, 7, 'Shoes'),
+  (28, 7, 'Kid\'s Fashion'),
+
+  (29, 8, 'Cars'),
+  (30, 8, 'Car Parts'),
+  (31, 8, 'Motorcycles & Scooters'),
+  (32, 8, 'Motorcycle Parts'),
+
+  (33, 9, 'Books, Comics & Magazines'),
+  (34, 9, 'Health & Beauty'),
+  (35, 9, 'Musical Instruments'),
+  (36, 9, 'Business, Office & Industrial');
+
+
+
 
 -- --------------------------------------------------------
 
@@ -421,7 +478,15 @@ CREATE TABLE `supercategories` (
 --
 
 INSERT INTO `supercategories` (`superCategoryId`, `superCategoryName`) VALUES
-(1, '');
+(1, 'Collectables & Antiques'),
+(2, 'Home & Garden'),
+(3, 'Sporting Goods'),
+(4, 'Electronics'),
+(5, 'Jewelery & Watches'),
+(6, 'Toys & Games'),
+(7, 'Fashion'),
+(8, 'Motors'),
+(9, 'Everything Else');
 
 -- --------------------------------------------------------
 

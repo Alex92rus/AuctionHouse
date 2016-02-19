@@ -1,6 +1,8 @@
 <?php
 require_once "classes/class.session_operator.php" ;
+require_once "classes/class.query_operator.php" ;
 require_once "config/config.php";
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -157,8 +159,9 @@ require_once "config/config.php";
                         <select name="country" class="selectpicker form-control" data-dropup-auto="false">
                             <option default>Country</option>
                             <?php
-                                $country = SessionOperator::getFormInput( "country" ); 
-                                foreach( COUNTRIES_ARRAY as $value ) {
+                                $country = SessionOperator::getFormInput( "country" );
+                                $countries = QueryOperator::getCountriesList();
+                                foreach( $countries as $value ) {
                                   $selected = "";
                                   if ($value == $country) {
                                     $selected = "selected";

@@ -1,5 +1,6 @@
 <?php
 require_once "../classes/class.session_operator.php";
+require_once "../classes/class.query_operator.php";
 require_once "../scripts/helper_functions.php";
 require_once "../scripts/user_session.php";
 require_once "../config/config.php";
@@ -122,7 +123,8 @@ require_once "../config/config.php";
                                     <option default>Select</option>
                                     <?php
                                     $itemCategory = SessionOperator::getFormInput( "itemCategory" );
-                                    foreach( ITEM_CATEGORIES_ARRAY as $value ) {
+                                    $itemCategories = QueryOperator::getItemCategoriesList();
+                                    foreach( $itemCategories as $value ) {
                                         $value = htmlspecialchars($value);
                                         $selected = "";
                                         if ($value == $itemCategory) {
@@ -142,7 +144,8 @@ require_once "../config/config.php";
                                     <option default>Select</option>
                                     <?php
                                     $itemCondition = SessionOperator::getFormInput( "itemCondition" );
-                                    foreach( CONDITION_CATEGORIES_ARRAY as $value ) {
+                                    $itemConditions = QueryOperator::getItemConditionList();
+                                    foreach( $itemConditions as $value ) {
                                         $value = htmlspecialchars($value);
                                         $selected = "";
                                         if ($value == $itemCondition) {
