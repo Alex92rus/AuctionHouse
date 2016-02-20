@@ -391,42 +391,43 @@ CREATE TABLE `item_categories` (
 --
 
 INSERT INTO `item_categories` (`categoryId`, `superCategoryId`, `categoryName`) VALUES
-  (1, 1, 'Collectables'),
-  (2, 1, 'Antiques'),
-  (3, 1, 'Sports Memorabilia'),
-  (4, 1, 'Coins'),
-  (5, 2, 'Garden'),
-  (6, 2, 'Appliances'),
-  (7, 2, 'DIY Materials'),
-  (8, 2, 'Furniture & Homeware'),
-  (9, 3, 'Cycling'),
-  (10, 3, 'Fishing'),
-  (11, 3, 'Fitness, Running & Yoga'),
-  (12, 3, 'Golf'),
-  (13, 4, 'Mobile Phones'),
-  (14, 4, 'Sound & Vision'),
-  (15, 4, 'Video Games'),
-  (16, 4, 'Computer & Tables'),
-  (17, 5, 'Watches'),
-  (18, 5, 'Costume Jewellery'),
-  (19, 5, 'Vintage & Antique Jewelery'),
-  (20, 5, 'Fine Jewelery'),
-  (21, 6, 'Radio Controlled'),
-  (22, 6, 'Construction Toys'),
-  (23, 6, 'Outdoor Toys'),
-  (24, 6, 'Action Figures'),
-  (25, 7, 'Women''s Clothing'),
-  (26, 7, 'Men''s Clothing'),
-  (27, 7, 'Shoes'),
-  (28, 7, 'Kid''s Fashion'),
-  (29, 8, 'Cars'),
-  (30, 8, 'Car Parts'),
-  (31, 8, 'Motorcycles & Scooters'),
-  (32, 8, 'Motorcycle Parts'),
-  (33, 9, 'Books, Comics & Magazines'),
-  (34, 9, 'Health & Beauty'),
-  (35, 9, 'Musical Instruments'),
-  (36, 9, 'Business, Office & Industrial');
+
+(1, 1, 'Collectables'),
+(2, 1, 'Antiques'),
+(3, 1, 'Sports Memorabilia'),
+(4, 1, 'Coins'),
+(5, 2, 'Garden'),
+(6, 2, 'Appliances'),
+(7, 2, 'DIY Materials'),
+(8, 2, 'Furniture & Homeware'),
+(9, 3, 'Cycling'),
+(10, 3, 'Fishing'),
+(11, 3, 'Fitness, Running & Yoga'),
+(12, 3, 'Golf'),
+(13, 4, 'Mobile Phones'),
+(14, 4, 'Sound & Vision'),
+(15, 4, 'Video Games'),
+(16, 4, 'Computer & Tables'),
+(17, 5, 'Watches'),
+(18, 5, 'Costume Jewellery'),
+(19, 5, 'Vintage & Antique Jewelery'),
+(20, 5, 'Fine Jewelery'),
+(21, 6, 'Radio Controlled'),
+(22, 6, 'Construction Toys'),
+(23, 6, 'Outdoor Toys'),
+(24, 6, 'Action Figures'),
+(25, 7, 'Women''s Clothing'),
+(26, 7, 'Men''s Clothing'),
+(27, 7, 'Shoes'),
+(28, 7, 'Kid''s Fashion'),
+(29, 8, 'Cars'),
+(30, 8, 'Car Parts'),
+(31, 8, 'Motorcycles & Scooters'),
+(32, 8, 'Motorcycle Parts'),
+(33, 9, 'Books, Comics & Magazines'),
+(34, 9, 'Health & Beauty'),
+(35, 9, 'Musical Instruments'),
+(36, 9, 'Business, Office & Industrial');
 
 -- --------------------------------------------------------
 
@@ -467,15 +468,17 @@ CREATE TABLE `super_item_categories` (
 --
 
 INSERT INTO `super_item_categories` (`superCategoryId`, `superCategoryName`) VALUES
-  (1, 'Collectables & Antiques'),
-  (2, 'Home & Garden'),
-  (3, 'Sporting Goods'),
-  (4, 'Electronics'),
-  (5, 'Jewelery & Watches'),
-  (6, 'Toys & Games'),
-  (7, 'Fashion'),
-  (8, 'Motors'),
-  (9, 'Everything Else');
+
+(1, 'Collectables & Antiques'),
+(2, 'Home & Garden'),
+(3, 'Sporting Goods'),
+(4, 'Electronics'),
+(5, 'Jewelery & Watches'),
+(6, 'Toys & Games'),
+(7, 'Fashion'),
+(8, 'Motors'),
+(9, 'Everything Else');
+
 
 -- --------------------------------------------------------
 
@@ -543,7 +546,6 @@ INSERT INTO `users` (`userId`, `username`, `email`, `firstName`, `lastName`, `ad
 ALTER TABLE `auctions`
 ADD PRIMARY KEY (`auctionId`),
 ADD KEY `fk_Auctions_Items1_idx` (`itemId`);
-
 
 --
 -- Indexes for table `auction_views`
@@ -641,11 +643,13 @@ MODIFY `auctionId` int(11) NOT NULL AUTO_INCREMENT;
 --
 ALTER TABLE `auction_views`
 MODIFY `viewId` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `auction_watchs`
 --
 ALTER TABLE `auction_watchs`
 MODIFY `watchId` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `bids`
 --
@@ -676,6 +680,7 @@ MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
 --
 ALTER TABLE `super_item_categories`
 MODIFY `superCategoryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+
 --
 -- AUTO_INCREMENT for table `unverified_users`
 --
@@ -696,13 +701,13 @@ MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 ALTER TABLE `auctions`
 ADD CONSTRAINT `fk_item` FOREIGN KEY (`itemId`) REFERENCES `items` (`itemId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-
 --
 -- Constraints for table `auction_watchs`
 --
 ALTER TABLE `auction_watchs`
 ADD CONSTRAINT `AuctionNo` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_AuctionWatch_User1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 
 --
 -- Constraints for table `bids`
@@ -732,6 +737,7 @@ ADD CONSTRAINT `ConditionNo` FOREIGN KEY (`conditionId`) REFERENCES `item_condit
 --
 ALTER TABLE `item_categories`
 ADD CONSTRAINT `fk_superCategory` FOREIGN KEY (`superCategoryId`) REFERENCES `super_item_categories` (`superCategoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 
 --
 -- Constraints for table `unverified_users`

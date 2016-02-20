@@ -19,7 +19,7 @@ require_once "../config/config.php";
     <title>Create New Auction</title>
 
     <!-- Font -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
     <!-- CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -247,7 +247,7 @@ require_once "../config/config.php";
                         </div>
 
                         <div class="col-xs-2">
-                            <label>Reserve price</label>
+                            <label>Reserve price (optional)</label>
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1">£</span>

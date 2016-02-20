@@ -16,3 +16,13 @@ $(document).ready(function() {
         }
     });
 });
+
+
+
+$(document).ready(function() {
+    $('#dataTables-example').DataTable({
+        "order": [[ 0, "desc" ]],
+        "bLengthChange": false,
+        responsive: true
+    });
+});

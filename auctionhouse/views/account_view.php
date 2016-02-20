@@ -17,7 +17,7 @@ require_once "../scripts/user_session.php";
     <title>Account Settings</title>
 
     <!-- Font -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
     <!-- CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -56,7 +56,6 @@ require_once "../scripts/user_session.php";
             <div class="row">
                 <div class="col-lg-12">
                     <h2 class="page-header"><i class="fa fa-cog fa-fw"></i> Account Settings</h2>
-                    <hr>
                 </div>
             </div>
             <!-- profile header end -->
@@ -100,7 +99,7 @@ require_once "../scripts/user_session.php";
                 <div class="form-group">
                     <div class="pull-right">
                         <br>
-                        <button type="submit" class="btn btn-primary pull-right" name="changePasswordSignedIn" id="changePasswordSignedIn">
+                        <button type="submit" class="btn btn-lg btn-primary pull-right" name="changePasswordSignedIn" id="changePasswordSignedIn">
                             <span class="glyphicon glyphicon-save"></span> Change Password
                         </button>
                     </div>

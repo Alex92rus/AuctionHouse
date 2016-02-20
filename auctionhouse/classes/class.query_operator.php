@@ -22,8 +22,9 @@ class QueryOperator
 
     public static function getCountryId( $countryName )
     {
-        // SQL retrieving a country Id
         self::getDatabaseInstance();
+
+        // SQL retrieving a country Id
         $getCountryQuery = "SELECT countryId FROM countries WHERE countryName = '$countryName'";
         $result = self::$database -> issueQuery( $getCountryQuery );
     
@@ -52,8 +53,9 @@ class QueryOperator
 
     public static function isUnique( $field, $value )
     {
-        // SQL query for retrieving users with a specific username/email
         self::getDatabaseInstance();
+
+        // SQL query for retrieving users with a specific username/email
         $checkFieldQuery = "SELECT " . $field . " FROM users where " . $field . " = '$value' ";
         $result = self::$database -> issueQuery( $checkFieldQuery );
 
@@ -69,8 +71,9 @@ class QueryOperator
 
     public static function addAccount( $parameters )
     {
-        // SQL query for creating a new user record
         self::getDatabaseInstance();
+
+        // SQL query for creating a new user record
         $registerUserQuery  = "INSERT INTO users ( username, email, firstName, lastName, address, postcode, city, countryId, password ) ";
         $registerUserQuery .= "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )";
         $accountId = self::$database -> issueQuery( $registerUserQuery, "sssssssis", $parameters );
@@ -81,8 +84,9 @@ class QueryOperator
 
     public static function addUnverifiedAccount( $parameters )
     {
-        // SQL query for creating unregistered user
         self::getDatabaseInstance();
+
+        // SQL query for creating unregistered user
         $unverifiedAccountQuery = "INSERT INTO unverified_users ( userId, confirmCode ) VALUES ( ?, ? )";
         self::$database -> issueQuery( $unverifiedAccountQuery, "si", $parameters );
     }
@@ -105,10 +109,112 @@ class QueryOperator
     }
 
 
+    private static function getAuctionDetails( $userId )
+    {
+        self::getDatabaseInstance();
+
+        // SQL query for retrieving all live auctions and their details for a specific userId
+        $detailsQuery  = "SELECT a.auctionId, a.quantity, a.startPrice, a.reservePrice, a.startTime, a.endTime, i.itemName, i.itemBrand, i.itemDescription, ";
+        $detailsQuery .= "i.image, cat.categoryName, con.conditionName ";
+        $detailsQuery .= "FROM auctions a, items i, item_categories cat, item_conditions con ";
+        $detailsQuery .= "WHERE a.itemId = i.itemId AND i.categoryId = cat.categoryId AND i.conditionId = con.conditionId AND a.userId = $userId AND a.sold = 0";
+        $result = self::$database -> issueQuery( $detailsQuery );
+
+        $auctions = [];
+        while ( $row = $result -> fetch_row() )
+        {
+            $auctionDetails[ "auctionId" ] = $row[ 0 ];
+            $auctionDetails[ "quantity" ] = $row[ 1 ];
+            $auctionDetails[ "startPrice" ] = $row[ 2 ];
+            $auctionDetails[ "reservePrice" ] = $row[ 3 ];
+            $auctionDetails[ "startTime" ] = $row[ 4 ];
+            $auctionDetails[ "endTime" ] = $row[ 5 ];
+            $auctionDetails[ "itemName" ] = $row[ 6 ];
+            $auctionDetails[ "itemBrand" ] = $row[ 7 ];
+            $auctionDetails[ "itemDescription" ] = $row[ 8 ];
+            $auctionDetails[ "image" ] = $row[ 9 ];
+            $auctionDetails[ "itemCategoryName" ] = $row[ 10 ];
+            $auctionDetails[ "itemConditionName" ] = $row[ 11 ];
+            $auctions[] = $auctionDetails;
+        }
+
+        return $auctions;
+    }
+
+
+    private static function getAuctionViews( $auctionId )
+    {
+        return self::getAuctionTraffic( $auctionId, "auction_views" );
+    }
+
+
+    private static function getAuctionWatches( $auctionId )
+    {
+        return self::getAuctionTraffic( $auctionId, "auction_watches" );
+    }
+
+
+    private static function getAuctionTraffic( $auctionId, $table )
+    {
+        self::getDatabaseInstance();
+
+        // SQL query for calculating number of views or watches for a specific auction
+        $query  = "SELECT COUNT(*)";
+        $query .= "FROM auctions a, $table v ";
+        $query .= "WHERE a.auctionId = v.auctionId AND a.auctionId = $auctionId" ;
+        $result = self::$database -> issueQuery( $query );
+        $row = $result -> fetch_row();
+
+        return $row[ 0 ];
+    }
+
+
+    private static function getAuctionBids( $auctionId )
+    {
+        self::getDatabaseInstance();
+
+        // SQL query for retrieving all bids for a specific auction
+        $bidsQuery  = "SELECT u.username, b.bidTime, b.bidPrice ";
+        $bidsQuery .= "FROM auctions a, bids b, users u ";
+        $bidsQuery .= "WHERE a.auctionId = b.auctionId AND b.userId = u.userId AND a.auctionId = $auctionId ";
+        $bidsQuery .= "ORDER BY b.bidId DESC";
+        $result = self::$database -> issueQuery( $bidsQuery );
+
+        $bids = [];
+        while ( $row = $result -> fetch_row() )
+        {
+            $bid[ "bidderName" ] = $row[ 0 ];
+            $bid[ "bidTime" ] = $row[ 1 ];
+            $bid[ "bidPrice" ] = $row[ 2 ];
+            $bids[] = $bid;
+        }
+
+        return $bids;
+    }
+
+
+    public static function getAuction( $userId )
+    {
+        $auctions = self::getAuctionDetails( $userId );
+
+        for ( $index = 0; $index < count( $auctions ); $index++ )
+        {
+            $auction = $auctions[ $index ];
+            $auction[ "views" ] = self::getAuctionViews( $auction[ "auctionId" ] );
+            $auction[ "watches" ] = self::getAuctionWatches( $auction[ "auctionId" ] );
+            $auction[ "bids" ] = self::getAuctionBids( $auction[ "auctionId" ] );
+            $auctions[ $index ] = $auction;
+        }
+
+        return $auctions;
+    }
+
+
     public static function checkVerificationLink( $email, $confirmCode )
     {
-        // SQL query for retrieving users for the given email
         self::getDatabaseInstance();
+
+        // SQL query for retrieving users for the given email
         $usersQuery = "SELECT userId, firstName, lastName, verified FROM users WHERE email = '$email'";
         $usersQueryResult = self::$database -> issueQuery( $usersQuery );
         $usersRow = $usersQueryResult -> fetch_assoc();
@@ -134,8 +240,9 @@ class QueryOperator
 
     public static function activateAccount( $userId )
     {
-        // SQL query for verify user's account
         self::getDatabaseInstance();
+
+        // SQL query for verify user's account
         $verifyUserQuery = "UPDATE users SET verified = 1 WHERE userId = '$userId'";
         self::$database -> issueQuery( $verifyUserQuery );
 
@@ -147,8 +254,9 @@ class QueryOperator
 
     public static function checkAccount( $email, $password )
     {
-        // SQL query for retrieving a verified user
         self::getDatabaseInstance();
+
+        // SQL query for retrieving a verified user
         $checkAccount  = "SELECT userId, username, email, firstName, lastName, address, postcode, city, countryId, password, image from users ";
         $checkAccount .= "WHERE email='$email' AND verified = 1 ";
         $result = self::$database -> issueQuery( $checkAccount );
@@ -170,8 +278,9 @@ class QueryOperator
 
     public static function checkPassword( $userId, $password )
     {
-        // SQL query for retrieving a user's account password
         self::getDatabaseInstance();
+
+        // SQL query for retrieving a user's account password
         $checkPassword  = "SELECT password from users WHERE userId='$userId'";
         $result = self::$database -> issueQuery( $checkPassword );
 
@@ -191,8 +300,9 @@ class QueryOperator
 
     public static function getAccount( $userId )
     {
-        // SQL query for retrieving account information
         self::getDatabaseInstance();
+
+        // SQL query for retrieving account information
         $getAccount  = "SELECT userId, username, email, firstName, lastName, address, postcode, city, countryId, image from users ";
         $getAccount .= "WHERE userId='$userId'";
         $result = self::$database -> issueQuery( $getAccount );
@@ -203,8 +313,9 @@ class QueryOperator
 
     public static function updateAccount( $userId, $updatedUser )
     {
-        // SQL query for updating user information
         self::getDatabaseInstance();
+
+        // SQL query for updating user information
         $update  = "UPDATE users SET ";
         $update .= "username = '{$updatedUser[ "username" ]}',";
         $update .= "firstName = '{$updatedUser[ "firstName" ]}',";
@@ -220,8 +331,9 @@ class QueryOperator
 
     public static function getAccountFromEmail( $email )
     {
-        // SQL for checking retrieving a user's account through an email
         self::getDatabaseInstance();
+
+        // SQL for checking retrieving a user's account through an email
         $getAccountQuery  = "SELECT firstName, lastName from users ";
         $getAccountQuery .= "WHERE email='{$email}' AND verified = 1";
         $result = self::$database -> issueQuery( $getAccountQuery );
@@ -242,8 +354,9 @@ class QueryOperator
 
     public static function updatePassword( $email, $password )
     {
-        // SQL query for updating a user's password
         self::getDatabaseInstance();
+
+        // SQL query for updating a user's password
         $encryptedPassword = password_hash( $password, PASSWORD_BCRYPT );
         $updateQuery  = "UPDATE users ";
         $updateQuery .= "SET password = '$encryptedPassword' ";
@@ -254,8 +367,9 @@ class QueryOperator
 
     public static function uploadImage( $id, $imageName, $table )
     {
-        // SQL query for uploading an image
         self::getDatabaseInstance();
+
+        // SQL query for uploading an image
         $uploadImage  = "UPDATE {$table} SET image = '{$imageName}' WHERE ";
         $uploadImage .= ( $table == "users" ) ? "userId" : "itemId";
         $uploadImage .= "= {$id}";
@@ -308,7 +422,6 @@ class QueryOperator
             $resultArray[] = $row[0];
         }
         return $resultArray;
-
     }
 
     /**

@@ -33,23 +33,22 @@ class ValidationOperator
         "quantity" => "Please specify the amount of items you want to sell",
         "startTime" => "Please specify your auction's start time",
         "endTime" => "Please specify your auction's end time",
-        "startPrice" => "Please specify your auction's start price",
-        "reservePrice" => "Please specify your auction's reserve price"
+        "startPrice" => "Please specify your auction's start price"
     ];
     const PASSWORD = [
-        ValidationOperator::INVALID_SIZE => "Password needs to be at least 10 characters long!",
-        ValidationOperator::NO_MATCH => "Does not match with the other password field!",
-        ValidationOperator::INCORRECT_PASSWORD => "Please enter your correct current password!"
+        self::INVALID_SIZE => "Password needs to be at least 10 characters long!",
+        self::NO_MATCH => "Does not match with the other password field!",
+        self::INCORRECT_PASSWORD => "Please enter your correct current password!"
     ];
     const IMAGE_UPLOAD = [
-        ValidationOperator::NO_IMAGE => "Please select an image file",
-        ValidationOperator::WRONG_FORMAT => "Please choose a JPEG, JPG or PNG file",
-        ValidationOperator::INVALID_SIZE => "The image size must be less than 500KB"
+        self::NO_IMAGE => "Please select an image file",
+        self::WRONG_FORMAT => "Please choose a JPEG, JPG or PNG file",
+        self::INVALID_SIZE => "The image size must be less than 500KB"
     ];
     const PRICES = [
-        ValidationOperator::WRONG_FORMAT => " must be a decimal number",
-        ValidationOperator::INVALID_SIZE => " must be greater than 0",
-        ValidationOperator::INVALID_PRICES => "The start price must be less than the reserve price"
+        self::WRONG_FORMAT => " must be a decimal number",
+        self::INVALID_SIZE => " must be greater than 0",
+        self::INVALID_PRICES => "The start price must be less than the reserve price"
     ];
 
 
@@ -70,9 +69,9 @@ class ValidationOperator
             $value = is_array( $value ) ? $value : trim( $value );
 
             // Empty field was found, hence store them with their corresponding error message
-            if ( empty( $value ) )
+            if ( empty( $value ) &&  $key != "reservePrice" )
             {
-                $emptyFields[ $key ] = ValidationOperator::EMPTY_FIELDS[ $key ];
+                $emptyFields[ $key ] = self::EMPTY_FIELDS[ $key ];
             }
         }
 
@@ -154,7 +153,7 @@ class ValidationOperator
         }
 
         // Password does not match
-        SessionOperator::setInputErrors( [ "currentPassword" => ValidationOperator::PASSWORD[ ValidationOperator::INCORRECT_PASSWORD ] ] );
+        SessionOperator::setInputErrors( [ "currentPassword" => self::PASSWORD[ self::INCORRECT_PASSWORD ] ] );
         return false;
     }
 
@@ -167,12 +166,12 @@ class ValidationOperator
         // Check if passwords have a minimum length
         if ( strlen( $password1 ) < 10 )
         {
-            $info = ValidationOperator::PASSWORD[ ValidationOperator::INVALID_LENGTH ];
+            $info = self::PASSWORD[ self::INVALID_LENGTH ];
         }
         // Check if the two inputted passwords mismatch
         else if ( strcmp( $password1, $password2 ) != 0 )
         {
-            $info = ValidationOperator::PASSWORD[ ValidationOperator::NO_MATCH ];
+            $info = self::PASSWORD[ self::NO_MATCH ];
         }
 
         // Create a session for the incorrect passwords
@@ -199,13 +198,13 @@ class ValidationOperator
         // No file selected
         if ( $_FILES[ "image" ][ "error" ] != UPLOAD_ERR_OK )
         {
-            $error[ "upload" ] = ValidationOperator::IMAGE_UPLOAD[ ValidationOperator::NO_IMAGE ];
+            $error[ "upload" ] = self::IMAGE_UPLOAD[ self::NO_IMAGE ];
         }
         else
         {
             $image = ( $_FILES[ "image" ][ "tmp_name" ] );
             $image_name = $_FILES[ "image" ][ "name" ];
-            $image_extension = pathinfo( addslashes( $image_name ), PATHINFO_EXTENSION );
+            $image_extension = strtolower( pathinfo( addslashes( $image_name ), PATHINFO_EXTENSION ) );
             $image_dimensions = getimagesize( $image );
             $image_size = $_FILES[ "image" ][ "size" ];
             $extensions = array( "jpeg", "jpg", "png" );
@@ -213,19 +212,19 @@ class ValidationOperator
             // File is not an image
             if ( empty( $error ) && $image_dimensions == False )
             {
-                $error[ "upload" ] = ValidationOperator::IMAGE_UPLOAD[ ValidationOperator::NO_IMAGE ];
+                $error[ "upload" ] = self::IMAGE_UPLOAD[ self::NO_IMAGE ];
             }
 
             // Image has wrong extension
             if ( empty( $error ) &&  in_array( $image_extension, $extensions ) === false )
             {
-                $error[ "upload" ] = ValidationOperator::IMAGE_UPLOAD[ ValidationOperator::WRONG_FORMAT ];
+                $error[ "upload" ] = self::IMAGE_UPLOAD[ self::WRONG_FORMAT ];
             }
 
             // Image size is too large
             if ( $image_size > 512000 )
             {
-                $error[ "upload" ] = ValidationOperator::IMAGE_UPLOAD[ ValidationOperator::INVALID_SIZE ];
+                $error[ "upload" ] = self::IMAGE_UPLOAD[ self::INVALID_SIZE ];
             }
         }
 
@@ -244,8 +243,8 @@ class ValidationOperator
     // Check inputted prices
     public static function checkPrizes( $startPrice, $reservePrice )
     {
-        if ( ValidationOperator::isPositiveNumber( $startPrice, "startPrice", "Start Price" ) &&
-             ValidationOperator::isPositiveNumber( $reservePrice, "reservePrice", "Reserve Price" ) )
+        if ( self::isPositiveNumber( $startPrice, "startPrice", "Start Price" ) &&
+             self::isPositiveNumber( $reservePrice, "reservePrice", "Reserve Price" ) )
         {
             // Valid prices
             if ( $startPrice < $reservePrice )
@@ -255,7 +254,7 @@ class ValidationOperator
             // Invalid prices
             else
             {
-                $error = [ "startPrice" => ValidationOperator::PRICES[ ValidationOperator::INVALID_PRICES ] ];
+                $error = [ "startPrice" => self::PRICES[ self::INVALID_PRICES ] ];
                 SessionOperator::setInputErrors( $error );
             }
         }
@@ -281,13 +280,13 @@ class ValidationOperator
             // Not a number
             else
             {
-                $error[ $fieldName ] = $fieldText . ValidationOperator::PRICES[ ValidationOperator::INVALID_SIZE ];
+                $error[ $fieldName ] = $fieldText . self::PRICES[ self::INVALID_SIZE ];
             }
         }
         // Not decimal
         else
         {
-            $error[ $fieldName ] = $fieldText . ValidationOperator::PRICES[ ValidationOperator::WRONG_FORMAT ];
+            $error[ $fieldName ] = $fieldText . self::PRICES[ self::WRONG_FORMAT ];
         }
 
         // Error

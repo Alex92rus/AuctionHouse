@@ -18,7 +18,7 @@ require_once "../config/config.php";
     <title>User Profile</title>
 
     <!-- Font -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
     <!-- CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -189,7 +189,7 @@ require_once "../config/config.php";
                     <div class="form-group">
                         <div class="col-xs-offset-2 col-xs-10">
                             <br>
-                            <button type="submit" class="btn btn-primary pull-right" name="save"><span class="glyphicon glyphicon-save"></span> Save Changes</button>
+                            <button type="submit" class="btn btn-lg btn-primary pull-right" name="save"><span class="glyphicon glyphicon-save"></span> Save Changes</button>
                         </div>
                     </div>
                 </form>
