@@ -160,8 +160,8 @@ $(document).ready(function(){
             ignoreReadonly: true,
         });
         $('#datetimepickerEnd').datetimepicker({
+            minDate: moment().add( 1, 'm'),
             ignoreReadonly: true,
-            useCurrent: false //Important! See issue #1075
         });
         $("#datetimepickerStart").on("dp.change", function (e) {
             $('#datetimepickerEnd').data("DateTimePicker").minDate(e.date);
