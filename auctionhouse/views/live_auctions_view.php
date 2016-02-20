@@ -1,5 +1,6 @@
 <?php
 require_once "../classes/class.session_operator.php";
+require_once "../classes/class.query_operator.php";
 require_once "../scripts/helper_functions.php";
 require_once "../scripts/user_session.php";
 ?>
@@ -17,7 +18,7 @@ require_once "../scripts/user_session.php";
     <title>Live Auctions</title>
 
     <!-- Font -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
     <!-- CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -36,7 +37,9 @@ require_once "../scripts/user_session.php";
     <script src="../js/sb-admin-2.js"></script>
     <script src="../js/jquery.dataTables.min.js"></script>
     <script src="../js/dataTables.bootstrap.min.js"></script>
-    <script src="../js/custom/view_auction.js"></script>
+    <script src="../js/jquery.countdown.min.js"></script>
+    <script src="../js/custom/live_auction.js"></script>
+
 </head>
 
 <body>
@@ -65,10 +68,14 @@ require_once "../scripts/user_session.php";
 
             <div class="row">
                 <?php
-                    for ( $index = 0; $index < 1; $index++ )
+                    $auctions = QueryOperator::getAuction( SessionOperator::getUser() -> getUserId() );
+
+                    foreach ( $auctions as $auction )
                     {
-                        include "../includes/my_auction.php";
+                        $_ENV[ "auction" ] = $auction;
+                        include "../includes/live_auction.php";
                     }
+                    unset( $_ENV[ "auction" ] );
                 ?>
             </div>
 

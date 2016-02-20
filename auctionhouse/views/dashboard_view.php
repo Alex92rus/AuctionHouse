@@ -17,7 +17,7 @@ require_once "../scripts/user_session.php";
     <title>Home</title>
 
     <!-- Font -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
     <!-- CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
