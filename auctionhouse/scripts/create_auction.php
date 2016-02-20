@@ -67,8 +67,7 @@ else
     $ids = QueryOperator::getItemRelatedIds( $new_auction[ "itemCategory" ], $new_auction[ "itemCondition" ] );
 
     // Prepare item parameters
-    $userId = SessionOperator::getUser() -> getUserId();
-    $item[] = $userId;
+    $item[] = SessionOperator::getUser() -> getUserId();
     $item[] = $new_auction[ "itemName" ];
     $item[] = $new_auction[ "itemBrand" ];
     $item[] = $ids[ "categoryId" ];
@@ -77,14 +76,12 @@ else
     $item[] = $newImageName;
 
     // Prepare auction parameters
-    $startTime = date_create($new_auction[ "startTime" ]) -> format('Y-m-d H:i');
-    $endTime = date_create($new_auction[ "endTime" ]) -> format('Y-m-d H:i');
     $auction[] = "";
     $auction[] = $new_auction[ "quantity" ];
     $auction[] = $new_auction[ "startPrice" ];
     $auction[] = $new_auction[ "reservePrice" ];
-    $auction[] = $startTime;
-    $auction[] = $endTime;
+    $auction[] = date_create($new_auction[ "startTime" ]) -> format('Y-m-d H:i');
+    $auction[] = date_create($new_auction[ "endTime" ]) -> format('Y-m-d H:i');
 
     // Store auction in database
     $itemId = QueryOperator::addAuction( $item, $auction );

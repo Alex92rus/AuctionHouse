@@ -1,17 +1,11 @@
 <?php
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/classes/class.db_entity.php' );
 
-/**
- * Created by PhpStorm.
- * User: mlloyd
- * Date: 20/02/16
- * Time: 11:26
- */
 class QueryBuilder
 {
-
     public $query;
     private $class;
+
 
     public function __construct($query, $class)
     {
@@ -21,10 +15,12 @@ class QueryBuilder
 
     }
 
+
     private function executeQuery()
     {
         return DbEntity::findDbEntityList($this->query);
     }
+
 
     public function get($array = null)
     {
@@ -51,6 +47,7 @@ class QueryBuilder
 
     }
 
+
     public function getAsClasses()
     {
         $this->query = "SELECT * " . $this->query;
@@ -73,7 +70,5 @@ class QueryBuilder
             $values[] = $value[$fieldType];
         }
         return $values;
-
-
     }
 }

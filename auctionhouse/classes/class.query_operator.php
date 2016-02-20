@@ -1,5 +1,8 @@
 <?php
 require_once "class.database.php";
+require_once "class.db_country.php";
+require_once "class.db_category.php";
+require_once "class.db_condition.php";
 
 
 class QueryOperator
@@ -23,11 +26,12 @@ class QueryOperator
     public static function getCountryId( $countryName )
     {
         self::getDatabaseInstance();
+
         // SQL retrieving a country Id
         $getCountryQuery = "SELECT countryId FROM countries WHERE countryName = '$countryName'";
         $result = self::$database -> issueQuery( $getCountryQuery );
-
         $countryRow = $result -> fetch_assoc();
+
         return $countryRow[ "countryId" ];
     }
 
@@ -94,7 +98,6 @@ class QueryOperator
     public static function addAuction( $itemParameters, $auctionParameters )
     {
         self::getDatabaseInstance();
-
         // SQL query for inserting item
         $itemQuery = "INSERT INTO items ( userId, itemName, itemBrand, categoryId, conditionId, itemDescription, image ) VALUES ( ?, ?, ?, ?, ?, ?, ? )";
         $itemId = self::$database -> issueQuery( $itemQuery, "issiiss", $itemParameters );
@@ -103,7 +106,6 @@ class QueryOperator
         $auctionQuery = "INSERT INTO auctions ( itemId, quantity, startPrice, reservePrice, startTime, endTime ) VALUES ( ?, ?, ?, ?, ?, ?)";
         $auctionParameters[ 0 ] = &$itemId;
         self::$database -> issueQuery( $auctionQuery, "iiddss", $auctionParameters );
-
         return $itemId;
     }
 
@@ -116,7 +118,8 @@ class QueryOperator
         $detailsQuery  = "SELECT a.auctionId, a.quantity, a.startPrice, a.reservePrice, a.startTime, a.endTime, i.itemName, i.itemBrand, i.itemDescription, ";
         $detailsQuery .= "i.image, cat.categoryName, con.conditionName ";
         $detailsQuery .= "FROM auctions a, items i, item_categories cat, item_conditions con ";
-        $detailsQuery .= "WHERE a.itemId = i.itemId AND i.categoryId = cat.categoryId AND i.conditionId = con.conditionId AND i.userId = $userId AND a.sold = 0";
+        $detailsQuery .= "WHERE a.itemId = i.itemId AND i.categoryId = cat.categoryId AND i.conditionId = con.conditionId AND i.userId = $userId AND a.endTime > NOW() ";
+        $detailsQuery .= "ORDER BY a.startTime ASC, a.endTime ASC";
         $result = self::$database -> issueQuery( $detailsQuery );
 
         $auctions = [];
@@ -178,8 +181,8 @@ class QueryOperator
         $bidsQuery .= "WHERE a.auctionId = b.auctionId AND b.userId = u.userId AND a.auctionId = $auctionId ";
         $bidsQuery .= "ORDER BY b.bidId DESC";
         $result = self::$database -> issueQuery( $bidsQuery );
-
         $bids = [];
+
         while ( $row = $result -> fetch_row() )
         {
             $bid[ "bidderName" ] = $row[ 0 ];
@@ -192,7 +195,7 @@ class QueryOperator
     }
 
 
-    public static function getAuction( $userId )
+    public static function getLiveAuctions( $userId )
     {
         $auctions = self::getAuctionDetails( $userId );
 
@@ -225,7 +228,7 @@ class QueryOperator
 
         // Email and code matches to a unique unverified user
         if ( $usersQueryResult -> num_rows == 1 && $usersRow[ "verified" ] == 0 &&
-             $unverifiedQueryResult -> num_rows == 1 && $unverifiedRow[ "confirmCode" ] == $confirmCode )
+            $unverifiedQueryResult -> num_rows == 1 && $unverifiedRow[ "confirmCode" ] == $confirmCode )
         {
             return [
                 "userId" => $usersRow[ "userId" ],
@@ -363,7 +366,7 @@ class QueryOperator
         $updateQuery .= "SET password = '$encryptedPassword' ";
         $updateQuery .=  "WHERE email = '$email'  ";
         self::$database -> issueQuery( $updateQuery );
-     }
+    }
 
 
     public static function uploadImage( $id, $imageName, $table )
@@ -374,11 +377,27 @@ class QueryOperator
         $uploadImage  = "UPDATE {$table} SET image = '{$imageName}' WHERE ";
         $uploadImage .= ( $table == "users" ) ? "userId" : "itemId";
         $uploadImage .= "= {$id}";
-
         self::$database -> issueQuery( $uploadImage );
     }
 
 
+    public static function getCountriesList()
+    {
+        // Query for returning all countries stored in the db
+        return DbCountry::withConditions()->getListOfColumn( "countryName" );
+    }
 
 
+    public static function getCategoriesList()
+    {
+        // Query for returning all item categories stored in the db
+        return DbItemCategory::withConditions()->getListOfColumn( "categoryName" );
+    }
+
+
+    public static function getConditionsList()
+    {
+        // Query for returning all item conditions stored in the db
+        return DbItemCondition::withConditions()->getListOfColumn( "conditionName" );
+    }
 }

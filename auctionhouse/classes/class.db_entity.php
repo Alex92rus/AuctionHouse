@@ -2,13 +2,11 @@
 
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/classes/class.query_builder.php' );
 
+
 abstract class DbEntity
 {
-
     public $fieldValues;
-
     public $queryBuilder;
-
     private static $database;
 
     private static function getDatabaseInstance()
@@ -40,6 +38,7 @@ abstract class DbEntity
         }
     }
 
+
     public function getId()
     {
         if(isset($this->fieldValues[static::$primaryKeyName])){
@@ -48,6 +47,7 @@ abstract class DbEntity
         return null;
     }
 
+
     public function setField($fieldName, $fieldValue)
     {
         if(array_key_exists($fieldName, $this->fieldValues)){
@@ -55,12 +55,14 @@ abstract class DbEntity
         }
     }
 
+
     public function setFields($fieldValues)
     {
         foreach($fieldValues as $key => $value){
             $this->setField($key, $value);
         }
     }
+
 
     public function getField($fieldName)
     {
@@ -70,11 +72,13 @@ abstract class DbEntity
         return null;
     }
 
+
     public function toArray()
     {
         return $this->fieldValues;
 
     }
+
 
     public static function withConditions($whereArgs = null)
     {
@@ -83,6 +87,7 @@ abstract class DbEntity
         return new QueryBuilder($query, get_called_class());
 
     }
+
 
     public static function find($id)
     {
@@ -97,6 +102,7 @@ abstract class DbEntity
         return null;
     }
 
+
     public static function listIds()
     {
         $array = self::withConditions(null)->get(array(static::$primaryKeyName));
@@ -106,6 +112,8 @@ abstract class DbEntity
         }
         return $values;
     }
+
+
     public function save()
     {
         //the primary key column
@@ -135,6 +143,7 @@ abstract class DbEntity
 
     }
 
+
     public function create()
     {
         $pkColumn = static::$primaryKeyName;
@@ -157,16 +166,15 @@ abstract class DbEntity
 
     }
 
+
     public function delete()
     {
         $pkColumn = static::$primaryKeyName;
         $tableName = static::$tableName;
         $result = self::deleteDbEntity($pkColumn, $this->getId(), $tableName);
         return $result;
-
-
-
     }
+
 
     private function getTypesString($fieldNames)
     {
@@ -176,8 +184,8 @@ abstract class DbEntity
             $types .= static::$fields[$key];
         }
         return $types;
-
     }
+
 
     /**
      * @param $primaryKeyName
@@ -207,13 +215,12 @@ abstract class DbEntity
 
     }
 
+
     public static function findDbEntityList($query){
         self::getDatabaseInstance();
         $result = self::$database->issueQuery($query);
         return $result;
     }
-
-
     /**
      * @param $primaryKeyName
      * @param $id
@@ -273,5 +280,4 @@ abstract class DbEntity
 
         return self::$database->issueQuery($statement);
     }
-
 }

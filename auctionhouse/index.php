@@ -3,39 +3,6 @@ require_once "classes/class.session_operator.php" ;
 require_once "classes/class.query_operator.php" ;
 require_once "config/config.php";
 require_once "faker/src/autoload.php";
-require_once "classes/class.db_user.php";
-require_once "classes/class.db_item.php";
-require_once "classes/class.db_auction.php";
-require_once "classes/class.db_country.php";
-
-require_once "classes/class.db_bid.php";
-//include_once "scripts/seed_database.php";
-
-//gets all fields
-//$auctions = DbAuction::withConditions("WHERE quantity > 5 AND reservePrice < 10 ORDER BY startTime DESC ")->get();
-//var_dump($auctions);
-
-//gets only endTime and startTime
-//$auctions = DbAuction::withConditions("WHERE quantity > 5 AND reservePrice > 10")->get(array("endTime", "startTime"));
-//var_dump($auctions);
-
-//$auctionIds = DbAuction::listIds();
-//var_dump($auctionIds);
-
-/*$auctions = DbAuction::withConditions("WHERE quantity > 5")->getAsClasses();
-foreach ($auctions as $auction){
-
-    $auction->setField("quantity", 100);
-    $auction->save();
-    //var_dump($auction->getId());
-}*/
-//var_dump($auctions);
-
-//$countryId = DbCountry::withConditions("WHERE countryName = 'Austria'")->get(array("countryId"));
-//var_dump($countryId);
-
-//$countryNames = DbCountry::withConditions()->getListOfColumn("countryName");
-//var_dump($countryNames);
 ?>
 <!DOCTYPE html>
 <html>
@@ -193,7 +160,7 @@ foreach ($auctions as $auction){
                             <option default>Country</option>
                             <?php
                                 $country = SessionOperator::getFormInput( "country" );
-                                $countries = DbCountry::withConditions()->getListOfColumn("countryName");
+                                $countries = QueryOperator::getCountriesList();
                                 foreach( $countries as $value ) {
                                   $selected = "";
                                   if ($value == $country) {

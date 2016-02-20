@@ -1,7 +1,7 @@
 <?php
 require_once "class.db_entity.php";
 
-class DbCategory extends DbEntity
+class DbItemCategory extends DbEntity
 {
     protected static $tableName = "item_categories";
 

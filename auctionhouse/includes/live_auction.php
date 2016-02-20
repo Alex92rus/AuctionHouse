@@ -42,7 +42,7 @@
 
             <!-- item image start -->
             <div class="col-xs-3">
-                <img src="<?= "../uploads/item_images/" . $auction[ "image" ] ?>" class="img-responsive img-rounded">
+                <img src="<?= "../uploads/item_images/" . $auction[ "image" ] ?>" class="img-responsive img-rounded" style="height:200px">
             </div>
             <!-- item image end -->
 
@@ -66,7 +66,7 @@
                         <?php if ( $ready ) : ?>
                             <?php if ( empty( $bids ) ) { ?>
                                 <div class="text-center no-bids">
-                                    <h4 class=text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Nobody made a bid</h4>
+                                    <h4 class=text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> No bids</h4>
                                 </div>
                             <?php } else { ?>
                                 <div class="text-center current-bid">
@@ -97,7 +97,7 @@
                     <div class="col-xs-3"><p class="p-info">
                             <?php
                                 $reservePrice = $auction[ "reservePrice" ];
-                                if ( is_null( $reservePrice ) ) { echo "Not Set"; } else { echo "£" . $reservePrice; };
+                                if ( $reservePrice == 0 ) { echo "Not Set"; } else { echo "£" . $reservePrice; };
                             ?>
                         </p></div>
                 </div>

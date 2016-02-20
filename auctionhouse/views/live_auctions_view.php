@@ -3,7 +3,7 @@ require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../scripts/helper_functions.php";
 require_once "../scripts/user_session.php";
-$auctions = QueryOperator::getAuction( SessionOperator::getUser() -> getUserId() );
+$auctions = QueryOperator::getLiveAuctions( SessionOperator::getUser() -> getUserId() );
 ?>
 <!DOCTYPE html>
 <html lang="en">

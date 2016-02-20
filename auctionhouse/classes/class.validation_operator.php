@@ -162,7 +162,7 @@ class ValidationOperator
         // Check if passwords have a minimum length
         if ( strlen( $password1 ) < 10 )
         {
-            $info = self::PASSWORD[ self::INVALID_LENGTH ];
+            $info = self::PASSWORD[ self::INVALID_SIZE ];
         }
         // Check if the two inputted passwords mismatch
         else if ( strcmp( $password1, $password2 ) != 0 )
@@ -239,19 +239,32 @@ class ValidationOperator
     // Check inputted prices
     public static function checkPrizes( $startPrice, $reservePrice )
     {
-        if ( self::isPositiveNumber( $startPrice, "startPrice", "Start Price" ) &&
-             self::isPositiveNumber( $reservePrice, "reservePrice", "Reserve Price" ) )
+        $isStartNumber = self::isPositiveNumber( $startPrice, "startPrice", "Start Price" );
+
+        // Reserve price specified
+        if ( !empty( $reservePrice ) )
         {
-            // Valid prices
-            if ( $startPrice < $reservePrice )
+            if ( $isStartNumber && self::isPositiveNumber( $reservePrice, "reservePrice", "Reserve Price" ) )
+            {
+                // Valid prices
+                if ( $startPrice < $reservePrice )
+                {
+                    return true;
+                }
+                // Invalid prices
+                else
+                {
+                    $error = [ "startPrice" => self::PRICES[ self::INVALID_PRICES ] ];
+                    SessionOperator::setInputErrors( $error );
+                }
+            }
+        }
+        // No reserve price specified
+        {
+            // Valid start price
+            if ( $isStartNumber )
             {
                 return true;
-            }
-            // Invalid prices
-            else
-            {
-                $error = [ "startPrice" => self::PRICES[ self::INVALID_PRICES ] ];
-                SessionOperator::setInputErrors( $error );
             }
         }
 

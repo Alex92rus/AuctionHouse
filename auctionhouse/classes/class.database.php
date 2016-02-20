@@ -45,9 +45,12 @@ class Database
                 break;
             case "UPDATE":
                 if ( $insertType == null && $params === null )
-                    $result = $this->updateQuery( $sql );
+                    $this->otherQuery( $sql );
                 else
-                    $result = $this->updateQueryMark( $sql, $insertType, $params );
+                    $result = $this->updateQueryAdvanced( $sql, $insertType, $params );
+                break;
+            case "DELETE":
+                $this -> otherQuery( $sql );
                 break;
             default:
                 die( "Unknown query type" );
@@ -57,7 +60,7 @@ class Database
         // Close database connection
         $this -> closeConnection();
 
-        // Return result ( true -> no result, otherwise -> result )
+        // Return result ( null -> no result, otherwise -> result )
         return $result;
     }
 
@@ -120,14 +123,14 @@ class Database
     }
 
 
-    private function updateQuery( $sql )
+    private function otherQuery( $sql )
     {
         $result = $this -> connection -> query( $sql );
         $this -> confirmResult( $result, "Database update query failed." );
     }
 
 
-    private function updateQueryMark( $sql,$type, $params)
+    private function updateQueryAdvanced( $sql,$type, $params)
     {
         $statement = $this -> connection -> prepare( $sql );
         $refs = array();
