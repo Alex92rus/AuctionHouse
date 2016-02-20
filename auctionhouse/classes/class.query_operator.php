@@ -453,6 +453,13 @@ class QueryOperator
 
     }
 
+    public static function findDbEntityList($query){
+        self::getDatabaseInstance();
+        $result = self::$database->issueQuery($query);
+        return $result;
+    }
+
+
     /**
      * @param $primaryKeyName
      * @param $id

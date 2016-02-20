@@ -1,10 +1,14 @@
 <?php
 
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/classes/class.query_builder.php' );
 
 abstract class DbEntity
 {
 
     public $fieldValues;
+
+    public $queryBuilder;
+
 
     public function __construct($initValues = null)
     {
@@ -59,6 +63,14 @@ abstract class DbEntity
     public function toArray()
     {
         return $this->fieldValues;
+
+    }
+
+    public static function withConditions($whereArgs)
+    {
+        $query = " FROM " . static::$tableName . " " . $whereArgs;
+        //var_dump(get_called_class());
+        return new QueryBuilder($query, get_called_class());
 
     }
 
