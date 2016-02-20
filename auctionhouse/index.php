@@ -6,6 +6,8 @@ require_once "config/config.php";
 //require_once "classes/class.db_user.php";
 //require_once "classes/class.db_item.php";
 require_once "classes/class.db_auction.php";
+require_once "classes/class.db_country.php";
+
 //require_once "classes/class.db_bid.php";
 //include_once "scripts/seed_database.php";
 
@@ -20,12 +22,14 @@ require_once "classes/class.db_auction.php";
 //$auctionIds = DbAuction::listIds();
 //var_dump($auctionIds);
 
-$auctions = DbAuction::withConditions("WHERE quantity > 5")->getAsClasses();
-foreach ($auctions as $auction){
-    var_dump($auction->getId());
-}
+//$auctions = DbAuction::withConditions("WHERE quantity > 5")->getAsClasses();
+//foreach ($auctions as $auction){
+//    var_dump($auction->getId());
+//}
 //var_dump($auctions);
 
+$countryId = DbCountry::withConditions("WHERE countryName = 'Austria'")->get(array("countryId"));
+var_dump($countryId);
 ?>
 <!DOCTYPE html>
 <html>
