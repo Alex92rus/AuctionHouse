@@ -11,7 +11,7 @@ Class User
     private $address;
     private $postcode;
     private $city;
-    private $countryId;
+    private $country;
     private $image;
 
     public function __construct( $account )
@@ -24,7 +24,7 @@ Class User
         $this -> address = $account[ "address" ];
         $this -> postcode = $account[ "postcode" ];
         $this -> city = $account[ "city" ];
-        $this -> countryId = $account[ "countryId" ];
+        $this -> country = $account[ "countryName" ];
         $this -> image = $account[ "image" ];
     }
 
@@ -68,9 +68,9 @@ Class User
         return $this -> city;
     }
 
-    public function getCountryId()
+    public function getCountry()
     {
-        return $this -> countryId;
+        return $this -> country;
     }
 
     public function getImage()

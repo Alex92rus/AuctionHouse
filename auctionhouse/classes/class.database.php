@@ -44,10 +44,13 @@ class Database
                 $result = $this -> insertQuery( $sql, $insertType, $params );
                 break;
             case "UPDATE":
-                $result = $this -> updateQuery($sql, $insertType, $params);
+                if ( $insertType == null && $params === null )
+                    $result = $this->updateQuery( $sql );
+                else
+                    $result = $this->updateQueryMark( $sql, $insertType, $params );
                 break;
             default:
-                $this->otherQuery( $sql );
+                die( "Unknown query type" );
                 break;
         }
 
@@ -105,13 +108,26 @@ class Database
     private function insertQuery( $sql, $type, $params )
     {
         $statement = $this -> connection -> prepare( $sql );
-        call_user_func_array( array( $statement, "bind_param" ), array_merge( array( $type ), $params ) );
+        $refs = array();
+        foreach ( $params as $key => $value )
+        {
+            $refs[ $key ] = &$params[ $key ];
+        }
+        call_user_func_array( array( $statement, "bind_param" ), array_merge( array( $type ), $refs ) );
         $result = $statement -> execute();
         $this -> confirmResult( $result, "Database insert query failed." );
         return $statement -> insert_id;
     }
 
-    private function updateQuery( $sql,$type, $params)
+
+    private function updateQuery( $sql )
+    {
+        $result = $this -> connection -> query( $sql );
+        $this -> confirmResult( $result, "Database update query failed." );
+    }
+
+
+    private function updateQueryMark( $sql,$type, $params)
     {
         $statement = $this -> connection -> prepare( $sql );
         $refs = array();
@@ -119,23 +135,8 @@ class Database
         {
             $refs[$key] = &$params[$key];
         }
-
         call_user_func_array( array( $statement, "bind_param" ), array_merge( array( $type ),$refs ));
         return $statement -> execute();
-        //$this -> confirmResult( $success, "Database update query failed." );
-        //return $success ;
-    }
-
-
-    private function otherQuery( $sql )
-    {
-        $result = $this -> connection -> query( $sql );
-        $this -> confirmResult( $result, "Database update query failed." );
-    }
-
-    private function referenceValues($values)
-    {
-
     }
 }
 

@@ -3,6 +3,7 @@ require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../scripts/helper_functions.php";
 require_once "../scripts/user_session.php";
+$auctions = QueryOperator::getAuction( SessionOperator::getUser() -> getUserId() );
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,22 +62,33 @@ require_once "../scripts/user_session.php";
                 <div class="col-xs-12">
                     <h1 class="page-header">
                         My live auctions
-                        <a class="btn btn-lg btn-primary pull-right" href="create_auction_view.php">Create New Auction</a>
+                        <?php if ( !empty( $auctions ) ) : ?>
+                            <a class="btn btn-lg btn-primary pull-right" href="create_auction_view.php">Create New Auction</a>
+                        <?php endif ?>
                     </h1>
                 </div>
             </div>
 
             <div class="row">
-                <?php
-                    $auctions = QueryOperator::getAuction( SessionOperator::getUser() -> getUserId() );
+                <!-- no auctions available start -->
+                <?php if ( empty( $auctions ) ) { ?>
+                    <div class="well text-center">
+                        <h1 class="text-danger">No auctions available</h1>
+                        <h4>You currently sell now auctions. Click on the button below to create a new auction</h4>
+                        <a class="btn btn-lg btn-primary" href="create_auction_view.php">Create New Auction</a>
+                    </div>
+                <!-- no auctions available end -->
 
-                    foreach ( $auctions as $auction )
-                    {
-                        $_ENV[ "auction" ] = $auction;
+                <!-- auctions available start -->
+                <?php } else {
+                    foreach ($auctions as $auction) {
+                        $_ENV["auction"] = $auction;
                         include "../includes/live_auction.php";
                     }
-                    unset( $_ENV[ "auction" ] );
+                    unset($_ENV["auction"]);
+                }
                 ?>
+                <!-- auctions available end -->
             </div>
 
             <!-- footer start -->

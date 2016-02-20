@@ -32,10 +32,17 @@
     <!-- body start -->
     <div class="panel-body">
         <div class="row">
+
+            <!-- item image start -->
             <div class="col-xs-3">
                 <img src="<?= "../uploads/item_images/" . $auction[ "image" ] ?>" class="img-responsive img-rounded">
             </div>
+            <!-- item image end -->
+
+            <!-- auction info start -->
             <div class="col-xs-9">
+
+                <!-- auction unhidden start -->
                 <div class="row">
                     <div class="col-xs-9">
                         <h3>
@@ -51,7 +58,7 @@
                     <div class="col-xs-3">
                         <?php if ( empty( $bids = $auction[ "bids" ] ) ) { ?>
                             <div class="text-center no-bids">
-                                <h3 class=text-danger">Nobody made a bid</h3>
+                                <h4 class=text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Nobody made a bid</h4>
                             </div>
                         <?php } else { ?>
                             <div class="text-center current-bid">
@@ -85,9 +92,10 @@
                             ?>
                         </p></div>
                 </div>
+                <!-- auction unhidden end -->
 
-                <!-- hidden start -->
-                <div id="more-details-1">
+                <!-- auction hidden start -->
+                <div id="<?= "more-details-" . $auction[ "auctionId" ] ?>">
 
                     <!-- item times start -->
                     <div class="row">
@@ -144,18 +152,19 @@
                     <!-- bidding history end -->
 
                 </div>
-                <!-- hidden end -->
+                <!-- auction hidden end -->
 
             </div>
-        </div>
+            <!-- auction info end -->
 
+        </div>
     </div>
     <!-- body end -->
 
     <!-- footer start -->
     <div class="panel-footer">
-        <div class="row toggle text-center" id="more-details" data-toggle="more-details-1">
-        <i id="view-all" class="fa fa-chevron-down fa-2x"></i>
+        <div class="row toggle text-center" id="more-details" data-toggle="<?= "more-details-" . $auction[ "auctionId" ] ?>">
+            <i class="fa fa-chevron-down fa-2x"></i>
         </div>
     </div>
     <!-- footer end -->

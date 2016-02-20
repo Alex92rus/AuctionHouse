@@ -23,11 +23,10 @@ class QueryOperator
     public static function getCountryId( $countryName )
     {
         self::getDatabaseInstance();
-
         // SQL retrieving a country Id
         $getCountryQuery = "SELECT countryId FROM countries WHERE countryName = '$countryName'";
         $result = self::$database -> issueQuery( $getCountryQuery );
-    
+
         $countryRow = $result -> fetch_assoc();
         return $countryRow[ "countryId" ];
     }
@@ -97,13 +96,13 @@ class QueryOperator
         self::getDatabaseInstance();
 
         // SQL query for inserting item
-        $itemQuery = "INSERT INTO items ( itemName, itemBrand, categoryId, conditionId, itemDescription, image ) VALUES ( ?, ?, ?, ?, ?, ? )";
-        $itemId = self::$database -> issueQuery( $itemQuery, "ssiiss", $itemParameters );
+        $itemQuery = "INSERT INTO items ( userId, itemName, itemBrand, categoryId, conditionId, itemDescription, image ) VALUES ( ?, ?, ?, ?, ?, ?, ? )";
+        $itemId = self::$database -> issueQuery( $itemQuery, "issiiss", $itemParameters );
 
         // SQL query for inserting auction
-        $auctionQuery = "INSERT INTO auctions ( itemId, userId, quantity, startPrice, reservePrice, startTime, endTime ) VALUES ( ?, ?, ?, ?, ?, ?, ? )";
+        $auctionQuery = "INSERT INTO auctions ( itemId, quantity, startPrice, reservePrice, startTime, endTime ) VALUES ( ?, ?, ?, ?, ?, ?)";
         $auctionParameters[ 0 ] = &$itemId;
-        self::$database -> issueQuery( $auctionQuery, "iiiddss", $auctionParameters );
+        self::$database -> issueQuery( $auctionQuery, "iiddss", $auctionParameters );
 
         return $itemId;
     }
@@ -117,7 +116,7 @@ class QueryOperator
         $detailsQuery  = "SELECT a.auctionId, a.quantity, a.startPrice, a.reservePrice, a.startTime, a.endTime, i.itemName, i.itemBrand, i.itemDescription, ";
         $detailsQuery .= "i.image, cat.categoryName, con.conditionName ";
         $detailsQuery .= "FROM auctions a, items i, item_categories cat, item_conditions con ";
-        $detailsQuery .= "WHERE a.itemId = i.itemId AND i.categoryId = cat.categoryId AND i.conditionId = con.conditionId AND a.userId = $userId AND a.sold = 0";
+        $detailsQuery .= "WHERE a.itemId = i.itemId AND i.categoryId = cat.categoryId AND i.conditionId = con.conditionId AND i.userId = $userId AND a.sold = 0";
         $result = self::$database -> issueQuery( $detailsQuery );
 
         $auctions = [];
@@ -257,8 +256,9 @@ class QueryOperator
         self::getDatabaseInstance();
 
         // SQL query for retrieving a verified user
-        $checkAccount  = "SELECT userId, username, email, firstName, lastName, address, postcode, city, countryId, password, image from users ";
-        $checkAccount .= "WHERE email='$email' AND verified = 1 ";
+        $checkAccount  = "SELECT u.userId, u.username, u.email, u.firstName, u.lastName, u.address, u.postcode, u.city, c.countryName, u.password, u.image ";
+        $checkAccount .= "FROM users u, countries c ";
+        $checkAccount .= "WHERE u.countryId = c.countryId AND email='$email' AND verified = 1";
         $result = self::$database -> issueQuery( $checkAccount );
 
         // Process result table
@@ -303,8 +303,9 @@ class QueryOperator
         self::getDatabaseInstance();
 
         // SQL query for retrieving account information
-        $getAccount  = "SELECT userId, username, email, firstName, lastName, address, postcode, city, countryId, image from users ";
-        $getAccount .= "WHERE userId='$userId'";
+        $getAccount  = "SELECT u.userId, u.username, u.email, u.firstName, u.lastName, u.address, u.postcode, u.city, c.countryName, u.image ";
+        $getAccount .= "FROM users u, countries c ";
+        $getAccount .= "WHERE u.countryId = c.countryId AND userId='$userId'";
         $result = self::$database -> issueQuery( $getAccount );
 
         return $result -> fetch_assoc();
@@ -316,16 +317,16 @@ class QueryOperator
         self::getDatabaseInstance();
 
         // SQL query for updating user information
-        $update  = "UPDATE users SET ";
-        $update .= "username = '{$updatedUser[ "username" ]}',";
-        $update .= "firstName = '{$updatedUser[ "firstName" ]}',";
-        $update .= "lastName = '{$updatedUser[ "lastName" ]}',";
-        $update .= "address = '{$updatedUser[ "address" ]}',";
-        $update .= "postcode = '{$updatedUser[ "postcode" ]}',";
-        $update .= "city = '{$updatedUser[ "city" ]}',";
-        $update .= "countryId = '{$updatedUser[ "country" ]}' ";
-        $update .= "WHERE userId = $userId";
-        self::$database -> issueQuery( $update );
+        $updateQuery  = "UPDATE users SET ";
+        $updateQuery .= "username = '{$updatedUser[ "username" ]}',";
+        $updateQuery .= "firstName = '{$updatedUser[ "firstName" ]}',";
+        $updateQuery .= "lastName = '{$updatedUser[ "lastName" ]}',";
+        $updateQuery .= "address = '{$updatedUser[ "address" ]}',";
+        $updateQuery .= "postcode = '{$updatedUser[ "postcode" ]}',";
+        $updateQuery .= "city = '{$updatedUser[ "city" ]}',";
+        $updateQuery .= "countryId = '{$updatedUser[ "country" ]}' ";
+        $updateQuery .= "WHERE userId = $userId";
+        self::$database -> issueQuery( $updateQuery );
     }
 
 
@@ -386,6 +387,7 @@ class QueryOperator
         return self::getStaticColumnList("countries", "countryName");
     }
 
+
     /**
      *  get item categories (names) as array
      */
@@ -394,6 +396,7 @@ class QueryOperator
         return self::getStaticColumnList("item_categories", "categoryName");
     }
 
+
     /**
      *  get item conditions (names) as array
      */
@@ -401,6 +404,7 @@ class QueryOperator
     {
         return self::getStaticColumnList("item_conditions", "conditionName" );
     }
+
 
     /**
      * @param $tableName
@@ -424,6 +428,7 @@ class QueryOperator
         return $resultArray;
     }
 
+
     /**
      * @param $primaryKeyName
      * @param $tableName
@@ -438,7 +443,6 @@ class QueryOperator
      * This function is called from a child instance of DbEntity class where $primaryKeyName and
      * $tableName are inferred
      */
-
     public static function findDbEntity($primaryKeyName, $tableName, $id)
     {
         self::getDatabaseInstance();
@@ -452,6 +456,7 @@ class QueryOperator
 
 
     }
+
 
     /**
      * @param $primaryKeyName
@@ -467,8 +472,7 @@ class QueryOperator
      * This method is not intended to be called manually.
      * returns true or false depending on success or failure
      */
-
-    public static function saveDbEntity($primaryKeyName, $id, $tableName, $fieldNames, $fieldTypes, $fieldValues)
+    public static function updateDbEntity($primaryKeyName, $id, $tableName, $fieldNames, $fieldTypes, $fieldValues)
     {
         self::getDatabaseInstance();
         $statement = "UPDATE `" . $tableName . "` SET ";
@@ -486,7 +490,8 @@ class QueryOperator
 
     }
 
-    public static function createDbEntity($tableName, $fieldNames, $fieldTypes, $fieldValues)
+
+    public static function insertDbEntity($tableName, $fieldNames, $fieldTypes, $fieldValues)
     {
         self::getDatabaseInstance();
         $statement = "INSERT INTO `" . $tableName  . "` (";
@@ -499,12 +504,9 @@ class QueryOperator
             $statement .= "?,";
         }
         $statement = substr($statement, 0, -1) . ")";
-        //var_dump($statement);
         return self::$database->issueQuery($statement, $fieldTypes, $fieldValues);
-
-
-
     }
+
 
     public static function deleteDbEntity($primaryKeyName, $id, $tableName)
     {
@@ -515,7 +517,4 @@ class QueryOperator
 
         return self::$database->issueQuery($statement);
     }
-
-
-
 }

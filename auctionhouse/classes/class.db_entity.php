@@ -137,7 +137,8 @@ abstract class DbEntity
 
     }
 
-    private function getTypesString($fieldNames){
+    private function getTypesString($fieldNames)
+    {
         $types = "";
 
         foreach($fieldNames as $key){
@@ -146,8 +147,4 @@ abstract class DbEntity
         return $types;
 
     }
-
-
-
-
 }
