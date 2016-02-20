@@ -19,3 +19,16 @@ function isActive()
         echo 'class="active"';
     }
 }
+
+
+function ref_values($arr)
+{
+    $refs = array();
+
+    foreach ($arr as $key => $value)
+    {
+        $refs[$key] = &$arr[$key];
+    }
+
+    return $refs;
+}

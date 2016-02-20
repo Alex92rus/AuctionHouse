@@ -2,6 +2,14 @@
 require_once "classes/class.session_operator.php" ;
 require_once "classes/class.query_operator.php" ;
 require_once "config/config.php";
+require_once "Faker/src/autoload.php";
+require_once "classes/class.db_user.php";
+require_once "classes/class.db_item.php";
+require_once "classes/class.db_auction.php";
+require_once "classes/class.db_bid.php";
+include_once "scripts/seed_database.php";
+
+
 
 ?>
 <!DOCTYPE html>

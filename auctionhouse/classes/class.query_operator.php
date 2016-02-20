@@ -311,4 +311,98 @@ class QueryOperator
 
     }
 
+    /**
+     * @param $primaryKeyName
+     * @param $tableName
+     * @param $id
+     * @return mixed
+     *
+     * returns the row from the database.
+     *
+     * e.g. find <auction> item with id 1:
+     * findDbEntity("auctionId", "auctions", 1)
+     *
+     * This function is called from a child instance of DbEntity class where $primaryKeyName and
+     * $tableName are inferred
+     */
+
+    public static function findDbEntity($primaryKeyName, $tableName, $id)
+    {
+        self::getDatabaseInstance();
+        $query = "SELECT * from `" . $tableName . "` WHERE "
+            . $primaryKeyName . " = " .$id;
+        $result = self::$database->issueQuery($query);
+        if($result != null) {
+            $result = $result->fetch_assoc();
+        }
+        return $result;
+
+
+    }
+
+    /**
+     * @param $primaryKeyName
+     * @param $id
+     * @param $tableName
+     * @param $fieldNames
+     * @param $fieldTypes
+     * @param $fieldValues
+     * @return mixed
+     *
+     * saves the object instance to database.
+     * This method is called by a child instance of DbEntity class through the save() method e.g. $item->save()
+     * This method is not intended to be called manually.
+     * returns true or false depending on success or failure
+     */
+
+    public static function saveDbEntity($primaryKeyName, $id, $tableName, $fieldNames, $fieldTypes, $fieldValues)
+    {
+        self::getDatabaseInstance();
+        $statement = "UPDATE `" . $tableName . "` SET ";
+        $prepare = "";
+        foreach ($fieldNames as $field){
+            $prepare .= "`".$field. "`=?,";
+        }
+        //remove last 2 characters
+        $prepare = substr($prepare, 0, -1);
+        $statement .= $prepare;
+        $statement .= " WHERE `" . $primaryKeyName . "` = " .$id;
+        $result= self::$database->issueQuery($statement, $fieldTypes, $fieldValues);
+
+        return $result;
+
+    }
+
+    public static function createDbEntity($tableName, $fieldNames, $fieldTypes, $fieldValues)
+    {
+        self::getDatabaseInstance();
+        $statement = "INSERT INTO `" . $tableName  . "` (";
+        foreach ($fieldNames as $name){
+            $statement .= "`". $name . "`," ;
+        }
+        $statement = substr($statement, 0, -1) . ")";
+        $statement .= " VALUES (";
+        for ($i= 0 ; $i < count($fieldNames) ; $i++){
+            $statement .= "?,";
+        }
+        $statement = substr($statement, 0, -1) . ")";
+        //var_dump($statement);
+        return self::$database->issueQuery($statement, $fieldTypes, $fieldValues);
+
+
+
+    }
+
+    public static function deleteDbEntity($primaryKeyName, $id, $tableName)
+    {
+        self::getDatabaseInstance();
+        $statement = "DELETE FROM`" . $tableName . "` WHERE `". $primaryKeyName
+            ."`=" .$id;
+        var_dump($statement);
+
+        return self::$database->issueQuery($statement);
+    }
+
+
+
 }

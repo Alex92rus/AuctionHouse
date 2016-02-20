@@ -1,5 +1,6 @@
 <?php
 require_once( $_SERVER['DOCUMENT_ROOT'] . '/config/config.php' );
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/scripts/helper_functions.php' );
 
 
 class Database
@@ -41,6 +42,9 @@ class Database
                 break;
             case "INSERT":
                 $result = $this -> insertQuery( $sql, $insertType, $params );
+                break;
+            case "UPDATE":
+                $result = $this -> updateQuery($sql, $insertType, $params);
                 break;
             default:
                 $this->otherQuery( $sql );
@@ -107,13 +111,34 @@ class Database
         return $statement -> insert_id;
     }
 
+    private function updateQuery( $sql,$type, $params)
+    {
+        $statement = $this -> connection -> prepare( $sql );
+        $refs = array();
+        foreach ($params as $key => $value)
+        {
+            $refs[$key] = &$params[$key];
+        }
+
+        call_user_func_array( array( $statement, "bind_param" ), array_merge( array( $type ),$refs ));
+        return $statement -> execute();
+        //$this -> confirmResult( $success, "Database update query failed." );
+        //return $success ;
+    }
+
 
     private function otherQuery( $sql )
     {
         $result = $this -> connection -> query( $sql );
         $this -> confirmResult( $result, "Database update query failed." );
     }
+
+    private function referenceValues($values)
+    {
+
+    }
 }
+
 
 
 
