@@ -126,10 +126,6 @@ class ValidationOperator
 
         foreach ( $updated_user as $key => $value )
         {
-            if ( strcmp( $key, "country" ) == 0 )
-            {
-                $key = $key . "Id";
-            }
             $previous_value = call_user_func( array( $user, "get" . ucfirst( $key ) ) );
             if ( strcmp( $previous_value, $value ) != 0 )
             {

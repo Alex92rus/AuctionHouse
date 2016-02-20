@@ -33,6 +33,7 @@ else if ( isset( $_POST[ "save" ] ) )
         $update[ "country" ] = QueryOperator::getCountryId( $update[ "country" ] );
     }
 
+
     // Get changed input fields (if available)
     $changedFields = ValidationOperator::getChangedFields( $update );
 

@@ -1,14 +1,21 @@
-<?php $auction = $_ENV[ "auction" ] ?>
+<?php
+    $auction = $_ENV[ "auction" ];
+    $bids = $auction[ "bids" ];
+    $now = new DateTime("now");
+    $ready = $auction[ "startTime" ] < $now -> format( "Y-m-d H:i" );
+?>
 
 <!-- panel start -->
-<div class="panel panel-info">
+<div class="panel <?php if ( $ready ) { echo "panel-info"; } else { echo "panel-warning"; } ?> ">
 
     <!-- header start -->
     <div class="panel-heading clearfix">
-        <h4 class="pull-left">Time Remaining: <strong><span id="timer<?= $auction[ "auctionId" ]?>"></span></strong></h4>
+        <h4 class="pull-left">
+            <?php if ( $ready ) { echo "Time Remaining: "; } else { echo "Starts In: "; } ?><strong><span id="timer<?= $auction[ "auctionId" ]?>"></span></strong>
+        </h4>
         <script type="text/javascript">
             var timerId = "#timer" + <?= json_encode( $auction[ "auctionId" ] ) ?>;
-            var endTime = <?= json_encode( $auction[ "endTime" ] ) ?>;
+            var endTime = <?php if ( $ready ){ echo json_encode( $auction[ "endTime" ] ); } else { echo json_encode( $auction[ "startTime" ] ); } ?>;
             $(timerId).countdown( endTime, function(event) {
                 $(this).text(
                     event.strftime('%D days %H:%M:%S')
@@ -32,10 +39,17 @@
     <!-- body start -->
     <div class="panel-body">
         <div class="row">
+
+            <!-- item image start -->
             <div class="col-xs-3">
                 <img src="<?= "../uploads/item_images/" . $auction[ "image" ] ?>" class="img-responsive img-rounded">
             </div>
+            <!-- item image end -->
+
+            <!-- auction info start -->
             <div class="col-xs-9">
+
+                <!-- auction unhidden start -->
                 <div class="row">
                     <div class="col-xs-9">
                         <h3>
@@ -49,17 +63,19 @@
                         </p>
                     </div>
                     <div class="col-xs-3">
-                        <?php if ( empty( $bids = $auction[ "bids" ] ) ) { ?>
-                            <div class="text-center no-bids">
-                                <h3 class=text-danger">Nobody made a bid</h3>
-                            </div>
-                        <?php } else { ?>
-                            <div class="text-center current-bid">
-                                <h3 class=text-success">£<?= $bids[ 0 ][ "bidPrice" ] ?></h3>
-                                <small>Current Bid By</small><br>
-                                <small><strong><a href="#"><?= $bids[ 0 ][ "bidderName" ]?></a></strong></small>
-                            </div>
-                        <?php } ?>
+                        <?php if ( $ready ) : ?>
+                            <?php if ( empty( $bids ) ) { ?>
+                                <div class="text-center no-bids">
+                                    <h4 class=text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> Nobody made a bid</h4>
+                                </div>
+                            <?php } else { ?>
+                                <div class="text-center current-bid">
+                                    <h3 class=text-success">£<?= $bids[ 0 ][ "bidPrice" ] ?></h3>
+                                    <small>Current Bid By</small><br>
+                                    <small><strong><a href="#"><?= $bids[ 0 ][ "bidderName" ]?></a></strong></small>
+                                </div>
+                            <?php } ?>
+                        <?php endif ?>
                     </div>
                 </div><hr>
 
@@ -85,9 +101,10 @@
                             ?>
                         </p></div>
                 </div>
+                <!-- auction unhidden end -->
 
-                <!-- hidden start -->
-                <div id="more-details-1">
+                <!-- auction hidden start -->
+                <div id="<?= "more-details-" . $auction[ "auctionId" ] ?>">
 
                     <!-- item times start -->
                     <div class="row">
@@ -103,59 +120,63 @@
                         <div class="col-xs-3"><p class="p-title"><i class="fa fa-eye"></i> <strong>Description</strong></p></div>
                         <div class="col-xs-9"><p class="p-info text-justify"><?= $auction[ "itemDescription" ] ?></p>
                         </div>
-                    </div><hr>
+                    </div>
                     <!-- item description end -->
 
                     <!-- bidding history start -->
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <h4>Bidding History</h4>
+                    <?php if ( count( $bids ) > 0 ) : ?>
+                        <hr>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h4>Bidding History</h4>
+                            </div>
                         </div>
-                    </div>
-                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                        <thead>
-                        <tr>
-                            <th>Bid Price</th>
-                            <th>Increase</th>
-                            <th>Time</th>
-                            <th>User</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                            for ( $index = 0; $index < count( $bids ); $index++ ) {
-                                $bid = $bids[ $index ];
-                                $percent = 0;
-                                if ( $index != ( count( $bids ) - 1 )  ) {
-                                    $previousBid = $bids[ $index + 1 ];
-                                    $percent = round( ( 1 - ( $previousBid[ "bidPrice" ] / $bid[ "bidPrice" ] ) ) * 100, 2 );
-                                }
-
-                                ?>
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
                             <tr>
-                                <td class="col-xs-3"><?= $bid[ "bidPrice" ]?></td>
-                                <td class="col-xs-3">+ <?= $percent ?> %</td>
-                                <td class="col-xs-3"><?= $bid[ "bidTime" ]?></td>
-                                <td class="col-xs-3"><?= $bid[ "bidderName" ]?></td>
+                                <th>Bid Price</th>
+                                <th>Increase</th>
+                                <th>Time</th>
+                                <th>User</th>
                             </tr>
-                        <?php } ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            <?php
+                                for ( $index = 0; $index < count( $bids ); $index++ ) {
+                                    $bid = $bids[ $index ];
+                                    $percent = 0;
+                                    if ( $index != ( count( $bids ) - 1 )  ) {
+                                        $previousBid = $bids[ $index + 1 ];
+                                        $percent = round( ( 1 - ( $previousBid[ "bidPrice" ] / $bid[ "bidPrice" ] ) ) * 100, 2 );
+                                    }
+
+                                    ?>
+                                <tr>
+                                    <td class="col-xs-3"><?= $bid[ "bidPrice" ]?></td>
+                                    <td class="col-xs-3">+ <?= $percent ?> %</td>
+                                    <td class="col-xs-3"><?= $bid[ "bidTime" ]?></td>
+                                    <td class="col-xs-3"><?= $bid[ "bidderName" ]?></td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    <?php endif ?>
                     <!-- bidding history end -->
 
                 </div>
-                <!-- hidden end -->
+                <!-- auction hidden end -->
 
             </div>
-        </div>
+            <!-- auction info end -->
 
+        </div>
     </div>
     <!-- body end -->
 
     <!-- footer start -->
     <div class="panel-footer">
-        <div class="row toggle text-center" id="more-details" data-toggle="more-details-1">
-        <i id="view-all" class="fa fa-chevron-down fa-2x"></i>
+        <div class="row toggle text-center" id="more-details" data-toggle="<?= "more-details-" . $auction[ "auctionId" ] ?>">
+            <i class="fa fa-chevron-down fa-2x"></i>
         </div>
     </div>
     <!-- footer end -->

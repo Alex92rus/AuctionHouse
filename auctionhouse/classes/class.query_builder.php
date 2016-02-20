@@ -16,7 +16,7 @@ class QueryBuilder
     public function __construct($query, $class)
     {
         $this->query = $query;
-        $this->class = get_called_class();
+        $this->class = $class;
         //var_dump($this->class);
 
     }
@@ -50,5 +50,19 @@ class QueryBuilder
     {
         return QueryOperator::findDbEntityList($this->query);
     }
+
+    public function getAsClasses()
+    {
+        $this->query = "SELECT * " . $this->query;
+        $result = $this->executeQuery();
+        $resultArray = array();
+        while ($row = $result->fetch_assoc()){
+            $classInstance = new $this->class($row);
+            $resultArray[] = $classInstance;
+        }
+        return $resultArray;
+
+    }
+
 
 }

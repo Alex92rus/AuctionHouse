@@ -87,6 +87,15 @@ abstract class DbEntity
         return null;
     }
 
+    public static function listIds()
+    {
+        $array = self::withConditions(null)->get(array(static::$primaryKeyName));
+        $values = array();
+        foreach ($array as $value ){
+            $values[] = $value[static::$primaryKeyName];
+        }
+        return $values;
+    }
     public function save()
     {
         //the primary key column
@@ -149,7 +158,8 @@ abstract class DbEntity
 
     }
 
-    private function getTypesString($fieldNames){
+    private function getTypesString($fieldNames)
+    {
         $types = "";
 
         foreach($fieldNames as $key){
@@ -158,8 +168,4 @@ abstract class DbEntity
         return $types;
 
     }
-
-
-
-
 }

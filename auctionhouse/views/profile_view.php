@@ -1,5 +1,6 @@
 <?php
 require_once "../classes/class.session_operator.php";
+require_once "../classes/class.query_operator.php";
 require_once "../scripts/helper_functions.php";
 require_once "../scripts/user_session.php";
 require_once "../config/config.php";
@@ -24,6 +25,7 @@ require_once "../config/config.php";
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link href="../css/animate.css" rel="stylesheet" type="text/css">
+    <link href="../css/bootstrap-select.css" rel="stylesheet" type="text/css">
     <link href="../css/metisMenu.min.css" rel="stylesheet">
     <link href="../css/sb-admin-2.css" rel="stylesheet">
     <link href="../css/main.css" rel="stylesheet">
@@ -34,6 +36,7 @@ require_once "../config/config.php";
     <script src="../js/bootstrap-notify.min.js"></script>
     <script src="../js/metisMenu.min.js"></script>
     <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/bootstrap-select.min.js"></script>
     <script src="../js/bootstrap.file-input.js"></script>
     <script src="../js/custom/search.js"></script>
     <script src="../js/custom/profile.js"></script>
@@ -167,21 +170,21 @@ require_once "../config/config.php";
                     <div class="form-group">
                         <label class="col-xs-2 control-label">Country</label>
                         <div class="col-xs-10">
-                            <select name="country" class="form-control" >
+                            <select name="country" class="selectpicker form-control" data-dropup-auto="false">
                                 <option default>Country</option>
                                 <?php
-                                $countryId = SessionOperator::getUser() -> getCountryId();
-                                foreach ( COUNTRIES_ARRAY as $key => $value )
-                                {
-                                    $selected = "";
-                                    if ( ( $key + 1 ) == $countryId )
-                                    {
-                                        $selected = "selected";
+                                    $country = SessionOperator::getUser() -> getCountry();
+                                    $countries = QueryOperator::getCountriesList();
+                                    print_r($countries);
+                                    foreach( $countries as $value ) {
+                                        $selected = "";
+                                        if ($value == $country) {
+                                            $selected = "selected";
+                                        }
+                                        ?>
+                                        <option value="<?= $value ?>" title="<?= htmlspecialchars($value) ?>" <?= $selected ?> ><?= htmlspecialchars($value) ?></option>
+                                        <?php
                                     }
-                                    ?>
-                                    <option value="<?= $value ?>" title="<?= htmlspecialchars($value) ?>" <?= $selected ?> ><?= htmlspecialchars($value) ?></option>
-                                    <?php
-                                }
                                 ?>
                             </select>
                         </div>

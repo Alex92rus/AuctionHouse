@@ -4,20 +4,19 @@ $(document).ready(function() {
         $input = $( this );
         $target = $('#'+$input.attr('data-toggle'));
         $target.slideToggle();
-        if( $("#view-all").hasClass("fa-chevron-down") )
+        var $icon = $input.find( "i" );
+        if( $icon.hasClass("fa-chevron-down") )
         {
-            $("#view-all").removeClass( "fa-chevron-down" );
-            $("#view-all").addClass( "fa-chevron-up" );
+            $icon.removeClass( "fa-chevron-down" );
+            $icon.addClass( "fa-chevron-up" );
         }
         else
         {
-            $("#view-all").removeClass( "fa-chevron-up" );
-            $("#view-all").addClass( "fa-chevron-down" );
+            $icon.removeClass( "fa-chevron-up" );
+            $icon.addClass( "fa-chevron-down" );
         }
     });
 });
-
-
 
 $(document).ready(function() {
     $('#dataTables-example').DataTable({

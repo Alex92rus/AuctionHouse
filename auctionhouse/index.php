@@ -2,7 +2,7 @@
 require_once "classes/class.session_operator.php" ;
 require_once "classes/class.query_operator.php" ;
 require_once "config/config.php";
-//require_once "faker/src/autoload.php";
+//require_once "Faker/src/autoload.php";
 //require_once "classes/class.db_user.php";
 //require_once "classes/class.db_item.php";
 require_once "classes/class.db_auction.php";
@@ -10,12 +10,21 @@ require_once "classes/class.db_auction.php";
 //include_once "scripts/seed_database.php";
 
 //gets all fields
-$auctions = DbAuction::withConditions("WHERE quantity > 5 AND reservePrice < 10 ORDER BY startTime DESC ")->get();
-var_dump($auctions);
+//$auctions = DbAuction::withConditions("WHERE quantity > 5 AND reservePrice < 10 ORDER BY startTime DESC ")->get();
+//var_dump($auctions);
 
 //gets only endTime and startTime
-$auctions = DbAuction::withConditions("WHERE quantity > 5 AND reservePrice > 10")->get(array("endTime", "startTime"));
-var_dump($auctions);
+//$auctions = DbAuction::withConditions("WHERE quantity > 5 AND reservePrice > 10")->get(array("endTime", "startTime"));
+//var_dump($auctions);
+
+//$auctionIds = DbAuction::listIds();
+//var_dump($auctionIds);
+
+$auctions = DbAuction::withConditions("WHERE quantity > 5")->getAsClasses();
+foreach ($auctions as $auction){
+    var_dump($auction->getId());
+}
+//var_dump($auctions);
 
 ?>
 <!DOCTYPE html>
