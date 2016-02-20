@@ -238,7 +238,7 @@ for ($i =0 ; $i < $numUsers ;$i++){
             ));
             $auction->create();
 
-            if($faker->boolean(80)){
+            /*if($faker->boolean(80)){
                 $numBidsForAuction = $faker->numberBetween(1, $maxBidsPerAuction);
                 $lastBidTime = $faker->dateTimeBetween($startTime, 'now');
                 $lastBidPrice = $faker->randomFloat(2,$startPrice, 200.00);
@@ -260,7 +260,7 @@ for ($i =0 ; $i < $numUsers ;$i++){
                     $lastBidPrice = $faker->randomFloat(2,$lastBidPrice, 200.00);
 
                 }
-            }
+            }*/
 
 
 
@@ -268,5 +268,23 @@ for ($i =0 ; $i < $numUsers ;$i++){
     }
 
 }
+
+
+///create bids
+
+$numBids = 500;
+$userIds = DbUser::listIds();
+
+for ($i =0 ; $i < $numUsers ;$i++){
+
+    $user = DbUser::find($faker->randomElement($userIds));
+    $items = DbItem::withConditions("WHERE userId IS NOT ". $user->getId())->getAsClasses();
+    //pick random item
+    //$item
+    //$auctions = DbAuction::withConditions("WHERE ")
+}
+
+
+
 
 

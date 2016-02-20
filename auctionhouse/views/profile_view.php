@@ -4,6 +4,7 @@ require_once "../classes/class.query_operator.php";
 require_once "../scripts/helper_functions.php";
 require_once "../scripts/user_session.php";
 require_once "../config/config.php";
+require_once "../classes/class.db_country.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -174,7 +175,7 @@ require_once "../config/config.php";
                                 <option default>Country</option>
                                 <?php
                                     $country = SessionOperator::getUser() -> getCountry();
-                                    $countries = QueryOperator::getCountriesList();
+                                    $countries = DbCountry::withConditions()->getListOfColumn("countryName");
                                     print_r($countries);
                                     foreach( $countries as $value ) {
                                         $selected = "";

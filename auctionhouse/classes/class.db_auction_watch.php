@@ -3,7 +3,7 @@ require_once "class.db_entity.php";
 
 class DbAuctionWatch extends DbEntity
 {
-    protected static $tableName = "auction_watchs";
+    protected static $tableName = "auction_watches";
 
     protected static $primaryKeyName = "watchId";
 

@@ -4,6 +4,8 @@ require_once "../classes/class.query_operator.php";
 require_once "../scripts/helper_functions.php";
 require_once "../scripts/user_session.php";
 require_once "../config/config.php";
+require_once "../classes/class.db_category.php";
+require_once "../classes/class.db_condition.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -123,7 +125,7 @@ require_once "../config/config.php";
                                     <option default>Select</option>
                                     <?php
                                     $itemCategory = SessionOperator::getFormInput( "itemCategory" );
-                                    $itemCategories = QueryOperator::getItemCategoriesList();
+                                    $itemCategories = DbCategory::withConditions()->getListOfColumn("categoryName");
                                     foreach( $itemCategories as $value ) {
                                         $value = htmlspecialchars($value);
                                         $selected = "";
@@ -144,7 +146,8 @@ require_once "../config/config.php";
                                     <option default>Select</option>
                                     <?php
                                     $itemCondition = SessionOperator::getFormInput( "itemCondition" );
-                                    $itemConditions = QueryOperator::getItemConditionList();
+                                    $itemConditions = DbItemCondition::withConditions()->getListOfColumn("conditionName");
+
                                     foreach( $itemConditions as $value ) {
                                         $value = htmlspecialchars($value);
                                         $selected = "";

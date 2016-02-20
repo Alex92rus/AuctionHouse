@@ -1,5 +1,5 @@
 <?php
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/classes/class.query_operator.php' );
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/classes/class.db_entity.php' );
 
 /**
  * Created by PhpStorm.
@@ -19,6 +19,11 @@ class QueryBuilder
         $this->class = $class;
         //var_dump($this->class);
 
+    }
+
+    private function executeQuery()
+    {
+        return DbEntity::findDbEntityList($this->query);
     }
 
     public function get($array = null)
@@ -46,11 +51,6 @@ class QueryBuilder
 
     }
 
-    private function executeQuery()
-    {
-        return QueryOperator::findDbEntityList($this->query);
-    }
-
     public function getAsClasses()
     {
         $this->query = "SELECT * " . $this->query;
@@ -65,4 +65,15 @@ class QueryBuilder
     }
 
 
+    public function getListOfColumn($fieldType)
+    {
+        $result = $this->get(array($fieldType));
+        $values = array();
+        foreach ($result as $value ){
+            $values[] = $value[$fieldType];
+        }
+        return $values;
+
+
+    }
 }
