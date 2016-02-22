@@ -40,6 +40,7 @@ require_once "../classes/class.db_condition.php";
     <script src="../js/bootstrap-notify.min.js"></script>
     <script src="../js/metisMenu.min.js"></script>
     <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/custom/search.js"></script>
     <script src="../js/bootstrap.file-input.js"></script>
     <script src="../js/bootstrap-select.min.js"></script>
     <script src="../js/moment.min.js"></script>

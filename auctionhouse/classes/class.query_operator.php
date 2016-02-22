@@ -3,6 +3,7 @@ require_once "class.database.php";
 require_once "class.db_country.php";
 require_once "class.db_category.php";
 require_once "class.db_condition.php";
+require_once "class.db_sort.php";
 
 
 class QueryOperator
@@ -399,5 +400,12 @@ class QueryOperator
     {
         // Query for returning all item conditions stored in the db
         return DbItemCondition::withConditions()->getListOfColumn( "conditionName" );
+    }
+
+
+    public static function getSortOptionsList()
+    {
+        // Query for returning all sort options stored in the db
+        return DbSortOption::withConditions()->getListOfColumn( "sortName" );
     }
 }

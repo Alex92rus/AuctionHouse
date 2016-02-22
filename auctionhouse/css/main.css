@@ -185,7 +185,55 @@ a:focus
 }
 
 
+.a-list
+{
+    margin-bottom: 5px;
+}
 
 
+#current-category
+{
+    color: #54bc91;
+}
 
 
+#search-main
+{
+    padding-top: 10px;
+}
+
+
+#search-header
+{
+    padding-top: 10px;
+    padding-bottom: 6px;
+    border-bottom: solid 1px #e7e7e7;
+    font-size: 15px;
+}
+
+
+#search-total-results
+{
+    padding-top: 10px;
+}
+
+
+#search-header .dropdown-menu
+{
+    left: auto;
+    right: 0;
+}
+
+
+#search-sort
+{
+    padding-right: 10px;
+}
+
+
+#scrollable-menu
+{
+    height: auto;
+    max-height: 500px;
+    overflow-x: hidden;
+}

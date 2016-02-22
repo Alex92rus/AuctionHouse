@@ -36,6 +36,7 @@ $auctions = QueryOperator::getLiveAuctions( SessionOperator::getUser() -> getUse
     <script src="../js/bootstrap-notify.min.js"></script>
     <script src="../js/metisMenu.min.js"></script>
     <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/custom/search.js"></script>
     <script src="../js/jquery.dataTables.min.js"></script>
     <script src="../js/dataTables.bootstrap.min.js"></script>
     <script src="../js/jquery.countdown.min.js"></script>
@@ -83,7 +84,7 @@ $auctions = QueryOperator::getLiveAuctions( SessionOperator::getUser() -> getUse
                 <?php } else {
                     foreach ($auctions as $auction) {
                         $_ENV["auction"] = $auction;
-                        include "../includes/live_auction.php";
+                        include "../includes/live_auction_to_seller.php";
                     }
                     unset($_ENV["auction"]);
                 }

@@ -162,12 +162,13 @@ require_once "faker/src/autoload.php";
                                 $country = SessionOperator::getFormInput( "country" );
                                 $countries = QueryOperator::getCountriesList();
                                 foreach( $countries as $value ) {
-                                  $selected = "";
-                                  if ($value == $country) {
-                                    $selected = "selected";
-                                  }
+                                    $value = htmlspecialchars( $value );
+                                    $selected = "";
+                                    if ($value == $country) {
+                                      $selected = "selected";
+                                    }
                             ?>
-                            <option value="<?= $value ?>" title="<?= htmlspecialchars($value) ?>" <?= $selected ?> ><?= htmlspecialchars($value) ?></option>
+                            <option value="<?= $value ?>" title="<?= $value ?>" <?= $selected ?> ><?= $value ?></option>
                             <?php
                             }
                             ?>

@@ -9,7 +9,7 @@ class DbItemCategory extends DbEntity
 
     protected static $fields = array(
 
-        "superCategoryId"        => "i",
+        "superCategoryId"   => "i",
         "categoryName"      => "s"
 
     );
