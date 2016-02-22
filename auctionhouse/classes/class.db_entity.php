@@ -99,7 +99,7 @@ abstract class DbEntity
 
     public static function listIds()
     {
-        $array = self::withConditions(null)->get(array(static::$primaryKeyName));
+        $array = self::withConditions("ORDER BY ". static::$primaryKeyName . " ASC")->get(array(static::$primaryKeyName));
         $values = array();
         foreach ($array as $value ){
             $values[] = $value[static::$primaryKeyName];

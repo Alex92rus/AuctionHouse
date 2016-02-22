@@ -9,6 +9,7 @@ require_once "classes/class.db_auction.php";
 require_once "classes/class.db_country.php";
 
 require_once "classes/class.db_bid.php";
+require_once "scripts/seed_test.php"
 //include_once "scripts/seed_database.php";
 
 //gets all fields
