@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:8889
--- Generation Time: Feb 20, 2016 at 03:39 PM
+-- Generation Time: Feb 22, 2016 at 10:21 AM
 -- Server version: 5.5.42
 -- PHP Version: 5.6.10
 
@@ -15,6 +15,32 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `auctionsystem` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `auctionsystem`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auction_views`
+--
+
+DROP TABLE IF EXISTS `auction_views`;
+CREATE TABLE `auction_views` (
+  `viewId` int(11) NOT NULL,
+  `auctionId` int(11) NOT NULL,
+  `viewTime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `auction_watches`
+--
+
+DROP TABLE IF EXISTS `auction_watches`;
+CREATE TABLE `auction_watches` (
+  `watchId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `auctionId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -32,7 +58,7 @@ CREATE TABLE `auctions` (
   `startTime` datetime NOT NULL,
   `endTime` datetime NOT NULL,
   `sold` tinyint(2) unsigned NOT NULL DEFAULT '0'
-) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `auctions`
@@ -214,33 +240,12 @@ INSERT INTO `auctions` (`auctionId`, `itemId`, `quantity`, `startPrice`, `reserv
   (173, 179, 3, '39.94', '71.25', '2016-02-18 11:28:45', '2016-03-02 10:07:15', 0),
   (174, 180, 3, '58.75', '96.53', '2016-02-17 16:07:26', '2016-02-25 04:12:25', 0),
   (175, 181, 6, '93.90', '97.79', '2016-02-17 05:35:31', '2016-03-01 16:36:30', 0),
-  (176, 182, 1, '11.00', '100.00', '2016-02-20 15:37:00', '2016-02-17 00:00:00', 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `auction_views`
---
-
-DROP TABLE IF EXISTS `auction_views`;
-CREATE TABLE `auction_views` (
-  `viewId` int(11) NOT NULL,
-  `auctionId` int(11) NOT NULL,
-  `viewTime` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `auction_watches`
---
-
-DROP TABLE IF EXISTS `auction_watches`;
-CREATE TABLE `auction_watches` (
-  `watchId` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `auctionId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  (177, 183, 1, '11.00', '11111.00', '2016-02-20 17:31:00', '2016-02-20 17:32:00', 0),
+  (178, 184, 1, '11.00', '1111.00', '2016-02-20 17:32:00', '2016-03-02 17:33:00', 0),
+  (179, 185, 1, '11.00', '1111.00', '2016-02-20 17:33:00', '2016-03-03 17:34:00', 0),
+  (180, 186, 1, '1.00', '1111.00', '2016-02-20 18:07:00', '2016-02-20 18:17:00', 0),
+  (181, 187, 1, '1.00', '1111.00', '2016-02-27 18:12:00', '2016-03-03 18:12:00', 0),
+  (182, 188, 1, '1.00', '1111.00', '2016-02-20 18:15:00', '2016-03-08 18:25:00', 0);
 
 -- --------------------------------------------------------
 
@@ -1687,6 +1692,83 @@ CREATE TABLE `feedbacks` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `item_categories`
+--
+
+DROP TABLE IF EXISTS `item_categories`;
+CREATE TABLE `item_categories` (
+  `categoryId` int(11) NOT NULL,
+  `superCategoryId` int(11) NOT NULL,
+  `categoryName` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `item_categories`
+--
+
+INSERT INTO `item_categories` (`categoryId`, `superCategoryId`, `categoryName`) VALUES
+  (1, 1, 'Collectables'),
+  (2, 1, 'Antiques'),
+  (3, 1, 'Sports Memorabilia'),
+  (4, 1, 'Coins'),
+  (5, 2, 'Garden'),
+  (6, 2, 'Appliances'),
+  (7, 2, 'DIY Materials'),
+  (8, 2, 'Furniture & Homeware'),
+  (9, 3, 'Cycling'),
+  (10, 3, 'Fishing'),
+  (11, 3, 'Fitness, Running & Yoga'),
+  (12, 3, 'Golf'),
+  (13, 4, 'Mobile Phones'),
+  (14, 4, 'Sound & Vision'),
+  (15, 4, 'Video Games'),
+  (16, 4, 'Computer & Tables'),
+  (17, 5, 'Watches'),
+  (18, 5, 'Costume Jewellery'),
+  (19, 5, 'Vintage & Antique Jewelery'),
+  (20, 5, 'Fine Jewelery'),
+  (21, 6, 'Radio Controlled'),
+  (22, 6, 'Construction Toys'),
+  (23, 6, 'Outdoor Toys'),
+  (24, 6, 'Action Figures'),
+  (25, 7, 'Women''s Clothing'),
+  (26, 7, 'Men''s Clothing'),
+  (27, 7, 'Shoes'),
+  (28, 7, 'Kid''s Fashion'),
+  (29, 8, 'Cars'),
+  (30, 8, 'Car Parts'),
+  (31, 8, 'Motorcycles & Scooters'),
+  (32, 8, 'Motorcycle Parts'),
+  (33, 9, 'Books, Comics & Magazines'),
+  (34, 9, 'Health & Beauty'),
+  (35, 9, 'Musical Instruments'),
+  (36, 9, 'Business, Office & Industrial');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item_conditions`
+--
+
+DROP TABLE IF EXISTS `item_conditions`;
+CREATE TABLE `item_conditions` (
+  `conditionId` int(2) NOT NULL,
+  `conditionName` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `item_conditions`
+--
+
+INSERT INTO `item_conditions` (`conditionId`, `conditionName`) VALUES
+  (1, 'Brand New'),
+  (2, 'New other'),
+  (3, 'Used'),
+  (4, 'For parts or not working');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `items`
 --
 
@@ -1700,7 +1782,7 @@ CREATE TABLE `items` (
   `conditionId` int(2) NOT NULL,
   `itemDescription` varchar(2000) NOT NULL,
   `image` varchar(30) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=189 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `items`
@@ -1888,84 +1970,37 @@ INSERT INTO `items` (`itemId`, `userId`, `itemName`, `itemBrand`, `categoryId`, 
   (179, 107, 'balls', 'Lubowitz Group', 12, 4, 'Nemo perspiciatis saepe fuga tenetur dicta qui saepe. Nam sit sit dolor esse sint excepturi. Nostrum maxime maxime eos modi debitis.', 'http://lorempixel.com/640/480/'),
   (180, 108, 'cupboard', 'Adams and Sons', 8, 1, 'Exercitationem perspiciatis voluptatem aut sit doloribus quo. Quaerat sapiente quidem similique suscipit. Quisquam consequuntur ut sed temporibus.', 'http://lorempixel.com/640/480/'),
   (181, 108, 'cricket set', 'Corkery, Quigley and Lakin', 23, 1, 'Aperiam et perferendis aut et ipsa ipsum enim. Quia quo ea quaerat exercitationem odit accusantium. Harum eos esse nihil tenetur laudantium.', 'http://lorempixel.com/640/480/'),
-  (182, 5, 'Mac Book Pro', 'Apple', 16, 1, 'xxx', '56c88839dfacc5.32288882.jpg');
+  (182, 5, 'Mac Book Pro', 'Apple', 16, 1, 'xxx', '56c88839dfacc5.32288882.jpg'),
+  (183, 5, 'Mac Book Pro', 'Apple', 16, 1, '111', '56c8a30195d982.35672299.jpg'),
+  (184, 5, 'aa', 'aa', 15, 1, 'aaa', '56c8a32be3c108.35240725.jpg'),
+  (185, 5, 'aa', 'aa', 15, 1, 'aaa', '56c8a35d79f964.51585723.jpg'),
+  (186, 5, 'Test', 'Test', 1, 1, 'Test', '56c8abac3fdd84.07529161.png'),
+  (187, 5, 'Test', 'Test', 1, 1, 'Test', '56c8ace130fd72.35918000.png'),
+  (188, 5, 'Test', 'Test', 1, 1, 'Test', '56c8ad535563a1.36455907.png');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `item_categories`
+-- Table structure for table `sort_options`
 --
 
-DROP TABLE IF EXISTS `item_categories`;
-CREATE TABLE `item_categories` (
-  `categoryId` int(11) NOT NULL,
-  `superCategoryId` int(11) NOT NULL,
-  `categoryName` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `sort_options`;
+CREATE TABLE `sort_options` (
+  `sortId` int(11) NOT NULL,
+  `sortName` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `item_categories`
+-- Dumping data for table `sort_options`
 --
 
-INSERT INTO `item_categories` (`categoryId`, `superCategoryId`, `categoryName`) VALUES
-  (1, 1, 'Collectables'),
-  (2, 1, 'Antiques'),
-  (3, 1, 'Sports Memorabilia'),
-  (4, 1, 'Coins'),
-  (5, 2, 'Garden'),
-  (6, 2, 'Appliances'),
-  (7, 2, 'DIY Materials'),
-  (8, 2, 'Furniture & Homeware'),
-  (9, 3, 'Cycling'),
-  (10, 3, 'Fishing'),
-  (11, 3, 'Fitness, Running & Yoga'),
-  (12, 3, 'Golf'),
-  (13, 4, 'Mobile Phones'),
-  (14, 4, 'Sound & Vision'),
-  (15, 4, 'Video Games'),
-  (16, 4, 'Computer & Tables'),
-  (17, 5, 'Watches'),
-  (18, 5, 'Costume Jewellery'),
-  (19, 5, 'Vintage & Antique Jewelery'),
-  (20, 5, 'Fine Jewelery'),
-  (21, 6, 'Radio Controlled'),
-  (22, 6, 'Construction Toys'),
-  (23, 6, 'Outdoor Toys'),
-  (24, 6, 'Action Figures'),
-  (25, 7, 'Women''s Clothing'),
-  (26, 7, 'Men''s Clothing'),
-  (27, 7, 'Shoes'),
-  (28, 7, 'Kid''s Fashion'),
-  (29, 8, 'Cars'),
-  (30, 8, 'Car Parts'),
-  (31, 8, 'Motorcycles & Scooters'),
-  (32, 8, 'Motorcycle Parts'),
-  (33, 9, 'Books, Comics & Magazines'),
-  (34, 9, 'Health & Beauty'),
-  (35, 9, 'Musical Instruments'),
-  (36, 9, 'Business, Office & Industrial');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `item_conditions`
---
-
-DROP TABLE IF EXISTS `item_conditions`;
-CREATE TABLE `item_conditions` (
-  `conditionId` int(2) NOT NULL,
-  `conditionName` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `item_conditions`
---
-
-INSERT INTO `item_conditions` (`conditionId`, `conditionName`) VALUES
-  (1, 'Brand New'),
-  (2, 'New other'),
-  (3, 'Used'),
-  (4, 'For parts or not working');
+INSERT INTO `sort_options` (`sortId`, `sortName`) VALUES
+  (1, 'Best Match'),
+  (2, 'Time: ending soonest'),
+  (3, 'Time: newly listed'),
+  (4, 'Price: lowest first'),
+  (5, 'Price: heighest first'),
+  (6, 'Distance: nearest first');
 
 -- --------------------------------------------------------
 
@@ -2004,7 +2039,7 @@ DROP TABLE IF EXISTS `unverified_users`;
 CREATE TABLE `unverified_users` (
   `userId` int(11) NOT NULL,
   `confirmCode` varchar(60) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `unverified_users`
@@ -2017,7 +2052,11 @@ INSERT INTO `unverified_users` (`userId`, `confirmCode`) VALUES
   (9, '36464858'),
   (110, '64787719'),
   (113, '75368781'),
-  (114, '10022901');
+  (114, '10022901'),
+  (115, '32101785'),
+  (116, '30784045'),
+  (117, '91769063'),
+  (118, '1122468');
 
 -- --------------------------------------------------------
 
@@ -2039,7 +2078,7 @@ CREATE TABLE `users` (
   `password` varchar(60) NOT NULL,
   `verified` tinyint(1) DEFAULT '0',
   `image` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
@@ -2047,7 +2086,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`userId`, `username`, `email`, `firstName`, `lastName`, `address`, `postcode`, `city`, `countryId`, `password`, `verified`, `image`) VALUES
   (1, 'Andy1234', 'xxx', 'Andreas', 'Rauter', 'Flat 23 Prospect House, Donegal Street', 'N19QD', 'London', 229, '$2y$10$VraZBbuk/StYSL3tp261Iu9R3/8YLNVcGaMEN2C8YAFlc6JzMlGpW', 1, ''),
-  (5, 'sickAustrian', 'andreas.l.rauter@gmail.com', 'Andreas Lukas', 'Klingbacher', 'Flat 23 Prospect House, Donegal Street', 'N19QA', 'London', 12, '$2y$10$CdMrB2AI5CcpjMdN8bAuK.1c1BMaqKWdUJshPTGHau5iK1BKe0ZTO', 1, '56c4ee12da9e26.43716469.jpg'),
+  (5, 'sickAustrian', 'andreas.l.rauter@gmail.com', 'Andreas Lukas', 'Rauter', 'Flat 23 Prospect House, Donegal Street', 'N19QA', 'London', 114, '$2y$10$CdMrB2AI5CcpjMdN8bAuK.1c1BMaqKWdUJshPTGHau5iK1BKe0ZTO', 1, '56c4ee12da9e26.43716469.jpg'),
   (6, 'uuu', 'jack roper@gmail.com', 'll', 'll', 'll', 'll', 'ss', 2, '$2y$10$dA1CDqlihaF4mWzJxoTlsOhiJtiWklkaqrPuaWFOCtJVLSVY2RHvG', 0, NULL),
   (7, 'xxxx', 'xxxx@gmail.com', 'kk', 'kk', 'kk', 'kk', 'kk', 2, '$2y$10$UCDfTwtkCpoMF0DVb5F3Leyn639kh1yV0GfL.5JrXOYRPGhZx5cU.', 0, NULL),
   (8, 'all', 'baumhaus@gmail.com', 'll', 'll', 'll', 'll', 'll', 1, '$2y$10$392npKG7jLqZgW3X.Wp.w.iHtweHNqaT/iPalkoNQ1pP8Z5vmDfSC', 0, NULL),
@@ -2154,18 +2193,15 @@ INSERT INTO `users` (`userId`, `username`, `email`, `firstName`, `lastName`, `ad
   (109, 'rwiza', 'damon.bins@yahoo.com', 'Felicity', 'Pollich', '5230 Bogisich Spurs Suite 554\nNew Brandy, NC 00716', '64670', 'Port Meredithburgh', 229, '$2y$10$fTNSszFUl.xQ7ZfFwJo7/OPLvco7CUlmenAvCYHEk8sfXhJpHde0W', 1, 'http://lorempixel.com/640/480/people/?11814'),
   (110, 'sick', 'henry.fuck@gmail.com', 'll', 'll', 'll', 'll', 'll', 4, '$2y$10$E/ilnBdKGUPNnSdY/acXjeEuxZd8k2RNenom8Am1LmFM1gpAW5L6y', 0, NULL),
   (113, 'sickAustrians', 'andreas.l.rauterx@gmail.com', 'dd', 'dd', 'dd', 'dd', 'dd', 2, '$2y$10$EaP4ZJm/GKYEUFbd2KqShuEl6r.6xCTMFED1HfhVN7V14.3t4vABC', 0, NULL),
-  (114, 'xxx', 'kalind.ugly@gmail.com', 'll', 'll', 'll', 'll', 'll', 137, '$2y$10$q.Zma6bKwbTMbYAZSL5D/.jw4O05GxCJZn0oGdFjETq65eRriruiW', 0, NULL);
+  (114, 'xxx', 'kalind.ugly@gmail.com', 'll', 'll', 'll', 'll', 'll', 137, '$2y$10$q.Zma6bKwbTMbYAZSL5D/.jw4O05GxCJZn0oGdFjETq65eRriruiW', 0, NULL),
+  (115, 'sickAustriann', 'andreas.l.rauter@gmail.comm', 'kk', 'kk', 'kk', 'kk', 'kk', 1, '$2y$10$3uoSut4fFlt/lKzqiPlUw.WMJgLjyJk/Zb6BimnRoTyv5TuXvQ3yy', 0, NULL),
+  (116, 'geax', 'gea.m@gmail.com', 'll', 'll', 'll', 'll', 'ss', 97, '$2y$10$NSyXHxsXR88ZruIT5YXyw.8NF.ArE1uMuT4ii9xk9uM1loFNhnpc2', 0, NULL),
+  (117, 'jack', 'jack@gmail.com', 'll', 'll', 'll', 'll', 'll', 2, '$2y$10$2hv9Q1VfCuspG7ZMamcp8.iNZmO88nhjx8dgajxWUKMtUtMYESgAi', 0, NULL),
+  (118, 'xxxxxxxxxx', 'o@gmail.com', 'll', 'll', 'll', 'll', 'll', 1, '$2y$10$69tuh9QTJJ3h6tcH8eNXwOp4OyECuXyzaCkbuYi6ghqQeXKx7XRxy', 0, NULL);
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `auctions`
---
-ALTER TABLE `auctions`
-ADD PRIMARY KEY (`auctionId`),
-ADD KEY `fk_Auctions_Items1_idx` (`itemId`);
 
 --
 -- Indexes for table `auction_views`
@@ -2181,6 +2217,13 @@ ALTER TABLE `auction_watches`
 ADD PRIMARY KEY (`watchId`),
 ADD KEY `AuctionID_idx` (`auctionId`),
 ADD KEY `fk_AuctionWatch_User1_idx` (`userId`);
+
+--
+-- Indexes for table `auctions`
+--
+ALTER TABLE `auctions`
+ADD PRIMARY KEY (`auctionId`),
+ADD KEY `fk_Auctions_Items1_idx` (`itemId`);
 
 --
 -- Indexes for table `bids`
@@ -2206,15 +2249,6 @@ ADD KEY `fk_Feedback_User1_idx` (`creatorId`),
 ADD KEY `fk_feedbacks_auctions1_idx` (`auctionId`);
 
 --
--- Indexes for table `items`
---
-ALTER TABLE `items`
-ADD PRIMARY KEY (`itemId`),
-ADD KEY `fk_Auction_User1_idx` (`userId`),
-ADD KEY `CategoryID_idx` (`categoryId`),
-ADD KEY `ConditionNo_idx` (`conditionId`);
-
---
 -- Indexes for table `item_categories`
 --
 ALTER TABLE `item_categories`
@@ -2226,6 +2260,21 @@ ADD KEY `fk_superCategory_idx` (`superCategoryId`);
 --
 ALTER TABLE `item_conditions`
 ADD PRIMARY KEY (`conditionId`);
+
+--
+-- Indexes for table `items`
+--
+ALTER TABLE `items`
+ADD PRIMARY KEY (`itemId`),
+ADD KEY `fk_Auction_User1_idx` (`userId`),
+ADD KEY `CategoryID_idx` (`categoryId`),
+ADD KEY `ConditionNo_idx` (`conditionId`);
+
+--
+-- Indexes for table `sort_options`
+--
+ALTER TABLE `sort_options`
+ADD PRIMARY KEY (`sortId`);
 
 --
 -- Indexes for table `super_item_categories`
@@ -2254,11 +2303,6 @@ ADD KEY `fk_country_idx` (`countryId`);
 --
 
 --
--- AUTO_INCREMENT for table `auctions`
---
-ALTER TABLE `auctions`
-MODIFY `auctionId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=177;
---
 -- AUTO_INCREMENT for table `auction_views`
 --
 ALTER TABLE `auction_views`
@@ -2268,6 +2312,11 @@ MODIFY `viewId` int(11) NOT NULL AUTO_INCREMENT;
 --
 ALTER TABLE `auction_watches`
 MODIFY `watchId` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `auctions`
+--
+ALTER TABLE `auctions`
+MODIFY `auctionId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=183;
 --
 -- AUTO_INCREMENT for table `bids`
 --
@@ -2284,15 +2333,20 @@ MODIFY `countryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=247;
 ALTER TABLE `feedbacks`
 MODIFY `feedbackId` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `items`
---
-ALTER TABLE `items`
-MODIFY `itemId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=183;
---
 -- AUTO_INCREMENT for table `item_categories`
 --
 ALTER TABLE `item_categories`
 MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
+--
+-- AUTO_INCREMENT for table `items`
+--
+ALTER TABLE `items`
+MODIFY `itemId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=189;
+--
+-- AUTO_INCREMENT for table `sort_options`
+--
+ALTER TABLE `sort_options`
+MODIFY `sortId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `super_item_categories`
 --
@@ -2302,21 +2356,15 @@ MODIFY `superCategoryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 -- AUTO_INCREMENT for table `unverified_users`
 --
 ALTER TABLE `unverified_users`
-MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=115;
+MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=119;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=115;
+MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=119;
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `auctions`
---
-ALTER TABLE `auctions`
-ADD CONSTRAINT `fk_item` FOREIGN KEY (`itemId`) REFERENCES `items` (`itemId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `auction_watches`
@@ -2324,6 +2372,12 @@ ADD CONSTRAINT `fk_item` FOREIGN KEY (`itemId`) REFERENCES `items` (`itemId`) ON
 ALTER TABLE `auction_watches`
 ADD CONSTRAINT `AuctionNo` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_AuctionWatch_User1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `auctions`
+--
+ALTER TABLE `auctions`
+ADD CONSTRAINT `fk_item` FOREIGN KEY (`itemId`) REFERENCES `items` (`itemId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `bids`
@@ -2341,18 +2395,18 @@ ADD CONSTRAINT `fk_Feedback_User1` FOREIGN KEY (`creatorId`) REFERENCES `users` 
 ADD CONSTRAINT `fk_Feedback_Users1` FOREIGN KEY (`receiverId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `items`
---
-ALTER TABLE `items`
-ADD CONSTRAINT `fk_user` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `CategoryNo` FOREIGN KEY (`categoryId`) REFERENCES `item_categories` (`categoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `ConditionNo` FOREIGN KEY (`conditionId`) REFERENCES `item_conditions` (`conditionId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Constraints for table `item_categories`
 --
 ALTER TABLE `item_categories`
 ADD CONSTRAINT `fk_superCategory` FOREIGN KEY (`superCategoryId`) REFERENCES `super_item_categories` (`superCategoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `items`
+--
+ALTER TABLE `items`
+ADD CONSTRAINT `CategoryNo` FOREIGN KEY (`categoryId`) REFERENCES `item_categories` (`categoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `ConditionNo` FOREIGN KEY (`conditionId`) REFERENCES `item_conditions` (`conditionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_user` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `unverified_users`
