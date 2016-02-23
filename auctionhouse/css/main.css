@@ -20,6 +20,21 @@ a:focus
 }
 
 
+hr#categories
+{
+    border-top: 1px dotted #e7e7e7;
+    margin-top: 0;
+    margin-bottom: 7px;
+}
+
+
+h4#super-category
+{
+    color: #5d5d5d;
+    font-weight: bold;
+}
+
+
 .navbar
 {
     margin-bottom: 0;
@@ -155,7 +170,7 @@ a:focus
 
 .panel-body hr
 {
-    margin-top:5px;
+    margin-top: 5px;
 }
 
 
@@ -188,6 +203,12 @@ a:focus
 .a-list
 {
     margin-bottom: 5px;
+}
+
+
+.a-subcategory
+{
+    padding-left: 20px;
 }
 
 

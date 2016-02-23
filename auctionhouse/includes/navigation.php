@@ -1,5 +1,11 @@
 <?php
-$currentCategory = SessionOperator::getSearchSettings( SessionOperator::SEARCH_CATEGORY );
+$all = "All";
+
+$searchCategory = SessionOperator::getSearchSetting( SessionOperator::SEARCH_CATEGORY );
+
+$searchString = SessionOperator::getSearchSetting( SessionOperator::SEARCH_STRING );
+
+$superCategories = QueryOperator::getSuperCategoriesList();
 ?>
 <!-- header start -->
 <nav class="navbar navbar-default navbar-static-top navbar-top" role="navigation">
@@ -23,15 +29,16 @@ $currentCategory = SessionOperator::getSearchSettings( SessionOperator::SEARCH_C
         <div class="input-group input-group-lg" style="width: inherit">
             <div class="input-group-btn search-panel">
                 <button type="button" class="form-control btn btn-default dropdown-toggle" data-toggle="dropdown" name="test">
-                    <span id="search_concept"><?= $currentCategory ?></span> <span class="caret"></span>
+                    <span id="search_concept"><?= $searchCategory ?></span> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" id="scrollable-menu" role="menu">
-                    <li><a href="#All">All</a></li>
+                    <?php if ( !in_array( $searchCategory, $superCategories ) && $searchCategory != $all ) : ?>
+                        <li><a href="#<?= $searchCategory ?>"><?= $searchCategory ?></a></li>
+                    <?php endif ?>
+                    <li><a href="#<?= $all ?>"><?= $all ?></a></li>
                     <li class="divider"></li>
                     <?php
-                    $categories = QueryOperator::getCategoriesList();
-
-                    foreach ( $categories as $category )
+                    foreach ( $superCategories as $category )
                     {
                         $category = htmlspecialchars( $category );
                         ?>
@@ -39,8 +46,8 @@ $currentCategory = SessionOperator::getSearchSettings( SessionOperator::SEARCH_C
                     <?php } ?>
                 </ul>
             </div>
-            <input type="hidden" name="searchCategory" value="<?= $currentCategory ?>" id="searchCategory">
-            <input type="text" class="form-control" style="width: 500px;" placeholder="Search for live auctions" name="searchString">
+            <input type="hidden" name="searchCategory" value="<?= $searchCategory ?>" id="searchCategory">
+            <input type="text" class="form-control" value="<?= $searchString ?>" style="width: 500px;" placeholder="Search for live auctions" name="searchString">
             <span class="input-group-btn">
                  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
             </span>

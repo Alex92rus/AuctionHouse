@@ -2,6 +2,7 @@
 require_once "class.database.php";
 require_once "class.db_country.php";
 require_once "class.db_category.php";
+require_once "class.db_super_category.php";
 require_once "class.db_condition.php";
 require_once "class.db_sort.php";
 
@@ -393,6 +394,13 @@ class QueryOperator
     {
         // Query for returning all item categories stored in the db
         return DbItemCategory::withConditions()->getListOfColumn( "categoryName" );
+    }
+
+
+    public static function getSuperCategoriesList()
+    {
+        // Query for returning all super item categories stored in the db
+        return DbItemSuperCategory::withConditions()->getListOfColumn( "superCategoryName" );
     }
 
 
