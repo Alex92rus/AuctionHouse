@@ -1,5 +1,6 @@
 <?php
-include "class.user.php";
+require_once "class.user.php";
+require_once "class.live_auction.php";
 session_start();
 
 
@@ -9,9 +10,12 @@ class SessionOperator
     const INPUT_ERRORS = "input_errors";
     const USER = "user";
     const EMAIL = "email";
-    const SORT = "sort";
-    const CATEGORY_FILTER = "category_filter";
+
+    const LIVE_AUCTIONS = "live_auctions";
+    const SEARCH_RESULT = "search_result";
+    const SEARCH_STRING = "search_string";
     const SEARCH_CATEGORY = "search_category";
+    const SORT = "sort";
 
     const FEEDBACK = "feedback";
     const TITLE = "title";
@@ -186,17 +190,21 @@ class SessionOperator
     // Login user
     public static function login( $user )
     {
+        // User profile session
         $_SESSION[ self::USER ] = $user;
+
+        // Search related sessions
+        $_SESSION[ self::SEARCH_STRING ] = "";
+        $_SESSION[ self::SEARCH_CATEGORY ] = "All";
+        $_SESSION[ self::SORT ] = "Best Match";
     }
 
 
     // Logout user
     public static function logout()
     {
-        if ( isset( $_SESSION[ self::USER ] ) )
-        {
-            unset( $_SESSION[ self::USER ] );
-        }
+        // Free all session variables
+        session_unset();
     }
 
 
@@ -252,43 +260,54 @@ class SessionOperator
     }
 
 
-    // Set current search settings
-    public static function setSearchSettings( $const, $value )
+    // Set search setting sessions
+    public static function setSearch( $settings )
     {
-        $_SESSION[ $const ] = $value;
-
-        // Set initial search settings (at the beginning of each search)
-        if ( $const == self::SEARCH_CATEGORY )
+        foreach ( $settings as $const => $value )
         {
-            $_SESSION[ self::SORT ] = "Best Match";
-            $_SESSION[ self::CATEGORY_FILTER ] = "All";
+            $_SESSION[ $const ] = $value;
         }
     }
 
 
-    // Get current search settings
-    public static function getSearchSettings( $const )
+    // Get a search setting session
+    public static function getSearchSetting( $const )
     {
         // Search setting session set
         if( isset( $_SESSION[ $const ] ) )
         {
             return $_SESSION[ $const ];
         }
+
         // No session set
+        return null;
+    }
+
+
+    // Set a live auction session for a auction search result
+    public static function setLiveAuction( $auctionId, $liveAuction )
+    {
+        if ( isset( $_SESSION[ self::LIVE_AUCTIONS ] ) )
+        {
+            $liveAuctions = $_SESSION[ self::LIVE_AUCTIONS ];
+            $liveAuctions[ $auctionId ] = $liveAuction;
+            $_SESSION[ self::LIVE_AUCTIONS ] = $liveAuctions;
+        }
         else
         {
-            if ( $const == self::SEARCH_CATEGORY )
-            {
-                $_SESSION[ $const ] = "All";
-            }
-            else if ( $const == self::SORT )
-            {
-                $_SESSION[ $const ] = "Best Match";
-            }
-            else if ( $const == self::CATEGORY_FILTER )
-            {
-                $_SESSION[ $const ] = "All";
-            }
+            $_SESSION[ self::LIVE_AUCTIONS ] = [ $auctionId => $liveAuction ];
         }
+    }
+
+
+    // Get all live auctions from a search
+    public static function getLiveAuction( $auctionId )
+    {
+        if ( isset( $_SESSION[ self::LIVE_AUCTIONS ] ) )
+        {
+            return $_SESSION[ self::LIVE_AUCTIONS ][ $auctionId ];
+        }
+
+        return null;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-require_once "helper_functions.php";
+require_once "../classes/class.helper_operator.php";
 require_once "../classes/class.session_operator.php";
 require_once "../classes/class.user.php";
 
@@ -17,7 +17,7 @@ if ( isset( $_POST[ "signIn" ] ) )
     {
         // Login user and redirect to home page
         SessionOperator::login( new User ( $account ) );
-        redirectTo( "../views/dashboard_view.php" );
+        HelperOperator::redirectTo( "../views/dashboard_view.php" );
     }
     // Login failed
     else
@@ -34,4 +34,4 @@ if ( isset( $_POST[ "signIn" ] ) )
 }
 
 // Sign in button was not clicked or sign in failed
-redirectTo( "../index.php" );
+HelperOperator::redirectTo( "../index.php" );

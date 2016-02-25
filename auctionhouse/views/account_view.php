@@ -1,7 +1,6 @@
 <?php
 require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
-require_once "../scripts/helper_functions.php";
 require_once "../scripts/user_session.php";
 ?>
 <!DOCTYPE html>
@@ -56,7 +55,7 @@ require_once "../scripts/user_session.php";
             <!-- profile header start -->
             <div class="row">
                 <div class="col-lg-12">
-                    <h2 class="page-header"><i class="fa fa-cog fa-fw"></i> Account Settings</h2>
+                    <h3 class="page-header"><i class="fa fa-cog fa-fw"></i> Account Settings</h3>
                 </div>
             </div>
             <!-- profile header end -->
@@ -100,7 +99,7 @@ require_once "../scripts/user_session.php";
                 <div class="form-group">
                     <div class="pull-right">
                         <br>
-                        <button type="submit" class="btn btn-lg btn-primary pull-right" name="changePasswordSignedIn" id="changePasswordSignedIn">
+                        <button type="submit" class="btn btn-primary pull-right" name="changePasswordSignedIn" id="changePasswordSignedIn">
                             <span class="glyphicon glyphicon-save"></span> Change Password
                         </button>
                     </div>

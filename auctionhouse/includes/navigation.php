@@ -1,5 +1,13 @@
 <?php
-$currentCategory = SessionOperator::getSearchSettings( SessionOperator::SEARCH_CATEGORY );
+require_once "../classes/class.helper_operator.php";
+require_once "../classes/class.query_operator.php";
+$all = "All";
+
+$searchCategory = SessionOperator::getSearchSetting( SessionOperator::SEARCH_CATEGORY );
+
+$searchString = SessionOperator::getSearchSetting( SessionOperator::SEARCH_STRING );
+
+$superCategories = QueryOperator::getSuperCategoriesList();
 ?>
 <!-- header start -->
 <nav class="navbar navbar-default navbar-static-top navbar-top" role="navigation">
@@ -23,15 +31,16 @@ $currentCategory = SessionOperator::getSearchSettings( SessionOperator::SEARCH_C
         <div class="input-group input-group-lg" style="width: inherit">
             <div class="input-group-btn search-panel">
                 <button type="button" class="form-control btn btn-default dropdown-toggle" data-toggle="dropdown" name="test">
-                    <span id="search_concept"><?= $currentCategory ?></span> <span class="caret"></span>
+                    <span id="search_concept"><?= $searchCategory ?></span> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" id="scrollable-menu" role="menu">
-                    <li><a href="#All">All</a></li>
+                    <?php if ( !in_array( $searchCategory, $superCategories ) && $searchCategory != $all ) : ?>
+                        <li><a href="#<?= $searchCategory ?>"><?= $searchCategory ?></a></li>
+                    <?php endif ?>
+                    <li><a href="#<?= $all ?>"><?= $all ?></a></li>
                     <li class="divider"></li>
                     <?php
-                    $categories = QueryOperator::getCategoriesList();
-
-                    foreach ( $categories as $category )
+                    foreach ( $superCategories as $category )
                     {
                         $category = htmlspecialchars( $category );
                         ?>
@@ -39,8 +48,8 @@ $currentCategory = SessionOperator::getSearchSettings( SessionOperator::SEARCH_C
                     <?php } ?>
                 </ul>
             </div>
-            <input type="hidden" name="searchCategory" value="<?= $currentCategory ?>" id="searchCategory">
-            <input type="text" class="form-control" style="width: 500px;" placeholder="Search for live auctions" name="searchString">
+            <input type="hidden" name="searchCategory" value="<?= $searchCategory ?>" id="searchCategory">
+            <input type="text" class="form-control" value="<?= $searchString ?>" style="width: 500px;" placeholder="Search for live auctions" name="searchString">
             <span class="input-group-btn">
                  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
             </span>
@@ -50,60 +59,6 @@ $currentCategory = SessionOperator::getSearchSettings( SessionOperator::SEARCH_C
 
     <!-- top menu start -->
     <ul class="nav navbar-top-links navbar-right">
-
-        <!-- notifications start -->
-        <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-alerts">
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa fa-comment fa-fw"></i> New Comment
-                            <span class="pull-right text-muted small">4 minutes ago</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                            <span class="pull-right text-muted small">12 minutes ago</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa fa-envelope fa-fw"></i> Message Sent
-                            <span class="pull-right text-muted small">4 minutes ago</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa fa-tasks fa-fw"></i> New Task
-                            <span class="pull-right text-muted small">4 minutes ago</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                            <span class="pull-right text-muted small">4 minutes ago</span>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <!-- notifications end -->
 
         <!-- account start -->
         <li class="dropdown">
@@ -140,11 +95,11 @@ $currentCategory = SessionOperator::getSearchSettings( SessionOperator::SEARCH_C
                 <a href="../views/dashboard_view.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
 
-            <li <?= isActive()?> >
+            <li <?= HelperOperator::isActive()?> >
                 <a href="#"><i class="fa fa-gavel fa-fw"></i> My Auctions<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="../views/live_auctions_view.php"><i class="fa fa-clock-o fa-fw"></i> Live Auctions</a>
+                        <a href="../views/my_live_auctions_view.php"><i class="fa fa-clock-o fa-fw"></i> Live Auctions</a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-history fa-fw"></i> Sold Auctions</a>

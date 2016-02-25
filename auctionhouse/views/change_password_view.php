@@ -1,10 +1,10 @@
 <?php
-require_once "../scripts/helper_functions.php";
+require_once "../classes/class.helper_operator.php";
 require_once "../classes/class.session_operator.php";
 
 if ( !isset( $_GET[ "email" ] ) )
 {
-    redirectTo( "index.php" );
+    HelperOperator::redirectTo( "index.php" );
 }
 
 SessionOperator::setEmail( $_GET[ "email" ] );

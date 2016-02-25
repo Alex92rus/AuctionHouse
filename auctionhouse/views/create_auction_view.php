@@ -1,9 +1,7 @@
 <?php
 require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
-require_once "../scripts/helper_functions.php";
 require_once "../scripts/user_session.php";
-require_once "../config/config.php";
 require_once "../classes/class.db_category.php";
 require_once "../classes/class.db_condition.php";
 ?>
@@ -65,7 +63,7 @@ require_once "../classes/class.db_condition.php";
             <!-- profile header start -->
             <div class="row">
                 <div class="col-lg-12">
-                    <h2 class="page-header">Create New Auction</h2>
+                    <h3 class="page-header">Create New Auction</h3>
                 </div>
             </div>
             <!-- profile header end -->
@@ -251,7 +249,7 @@ require_once "../classes/class.db_condition.php";
                         </div>
 
                         <div class="col-xs-2">
-                            <label>Reserve price (optional)</label>
+                            <label>Reserve price (opt)</label>
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon1">£</span>
@@ -294,7 +292,7 @@ require_once "../classes/class.db_condition.php";
 
                 <!-- submit auction start -->
                 <div class="form-group">
-                    <button type="submit" class="btn btn-lg btn-primary pull-right" name="startAuction">
+                    <button type="submit" class="btn btn-primary pull-right" name="startAuction">
                         <span class="glyphicon glyphicon-play-circle"></span> Start Auction
                     </button>
                 </div>

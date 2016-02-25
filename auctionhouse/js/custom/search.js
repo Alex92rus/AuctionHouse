@@ -7,14 +7,3 @@ $(document).ready(function(e){
         $('.input-group #searchCategory').val(param);
     });
 });
-
-
-$(document).ready(function(){
-    $("#moreCategories").on("hide.bs.collapse", function(){
-        $("a#showCategories").text( "Show more categories" );
-    });
-    $("#moreCategories").on("show.bs.collapse", function(){
-        $("a#showCategories").text( "Hide categories" );
-    });
-});
-

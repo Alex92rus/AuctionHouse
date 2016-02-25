@@ -3,8 +3,15 @@ require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../scripts/user_session.php";
 
-$currentSort = SessionOperator::getSearchSettings( SessionOperator::SORT );
-$currentCategoryFilter = SessionOperator::getSearchSettings( SessionOperator::CATEGORY_FILTER );
+$search_result = SessionOperator::getSearchSetting( SessionOperator::SEARCH_RESULT );
+$sort = SessionOperator::getSearchSetting( SessionOperator::SORT );
+
+$sortOptions = QueryOperator::getSortOptionsList();
+$subCategories = QueryOperator::getCategoriesList();
+
+$user = SessionOperator::getUser();
+$liveAuctions = QueryOperator::getLiveAuctions( $user -> getUserId(), $user -> getCountry() );
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,14 +43,12 @@ $currentCategoryFilter = SessionOperator::getSearchSettings( SessionOperator::CA
     <script src="../js/bootstrap-notify.min.js"></script>
     <script src="../js/metisMenu.min.js"></script>
     <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/jquery.countdown.min.js"></script>
     <script src="../js/custom/search.js"></script>
+
 </head>
 
 <body>
-    <!-- display feedback (if available) start -->
-    <?php require_once "../includes/feedback.php" ?>
-    <!-- display feedback (if available) end -->
-
 
     <div id="wrapper">
 
@@ -63,25 +68,21 @@ $currentCategoryFilter = SessionOperator::getSearchSettings( SessionOperator::CA
                 <div class="col-xs-4 text-right">
                     <label id="search-sort">Sort by </label>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary"><?= $currentSort ?></button>
+                        <button type="button" class="btn btn-primary"><?= $sort ?></button>
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu">
                             <?php
-                            $sortOptions = QueryOperator::getSortOptionsList();
-
-                            foreach ( $sortOptions as $option )
-                            {
+                            foreach ( $sortOptions as $option ) {
                                 $option = htmlspecialchars( $option );
                                 $active = "";
-                                if ( $option == $currentSort )
-                                {
+                                if ( $option == $sort ) {
                                     $active = "active";
                                 }
                                 ?>
-                                <li class="<?= $active ?>"><a href="../scripts/rearrange_auctions.php?sort=<?= $option ?>"><?= $option ?></a></li>
+                                <li class="<?= $active ?>"><a href="../scripts/search.php?sort=<?= urlencode( $option ) ?>"><?= $option ?></a></li>
                             <?php } ?>
                         </ul>
                     </div>
@@ -94,53 +95,65 @@ $currentCategoryFilter = SessionOperator::getSearchSettings( SessionOperator::CA
             <!-- search main start -->
             <div class="row" id="search-main">
 
-                <!-- filtering menu start -->
+                <!-- categories menu start -->
                 <div class="col-xs-3">
 
-                    <!-- categories filtering start -->
-                    <h4>Categories</h4>
-                    <?php
-                    $itemCategories = QueryOperator::getCategoriesList();
-                    array_unshift( $itemCategories, "All" );
-                    $show = 10;
-
-                    echo "<strong><p><a id='current-category' href=\" ../scripts / rearrange_auctions . php ? categoryFilter = $currentCategoryFilter\">$currentCategoryFilter</a></p></strong>";
-                    foreach ( $itemCategories as $index => $category )
-                    {
-                        $value = htmlspecialchars( $category );
-                        if ( $index < $show ) {
-                            if ( $category != $currentCategoryFilter ) {
-                                echo "<p><a href=\"../scripts/rearrange_auctions.php?categoryFilter=$category\">$category</a></p>";
-                            }
-                        }
-                    }
-                    ?>
-                    <div id="moreCategories" class="collapse">
-                        <?php
-                        $itemCategories = QueryOperator::getCategoriesList();
-
-                        foreach ( $itemCategories as $index => $category )
-                        {
-                            $value = htmlspecialchars( $category );
-                            if ( $index >= $show ) {
-                                if ( $category != $currentCategoryFilter ) {
-                                    echo "<p><a href=\"../scripts/rearrange_auctions.php?categoryFilter=$category\">$category</a></p>";
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h4>Categories</h4>
+                            <hr id="categories">
+                            <?php
+                            if ( !empty( $search_result ) ) {
+                                // Display all super categories
+                                if (in_array("All", $search_result[0])) {
+                                    foreach ($superCategories as $category) {
+                                        $category = htmlspecialchars($category);
+                                        echo "<p><a href=\"../scripts/search.php?searchCategory=" . urlencode($category) . "\">$category</a></p>";
+                                    }
+                                    // Display some super categories
+                                } else if (count($search_result) == 2) {
+                                    $categories = $search_result[0];
+                                    foreach ($categories as $superCategoryId) {
+                                        $category = htmlspecialchars($superCategories[$superCategoryId - 1]);
+                                        echo "<p><a href=\"../scripts/search.php?searchCategory=" . urlencode($category) . "\">$category</a></p>";
+                                    }
+                                    // Display a super category with its sub categories
+                                } else if (count($search_result) == 3) {
+                                    $superCategory = $superCategories[$search_result[0][0] - 1];
+                                    $categories = $search_result[1];
+                                    echo "<h4 id=\"super-category\">" . $superCategory . "</h4>";
+                                    foreach ($categories as $subCategoryId) {
+                                        $category = htmlspecialchars($subCategories[$subCategoryId - 1]);
+                                        $element = "<p><a href=\"../scripts/search.php?searchCategory=" . urlencode($category) . "\">$category</a></p>";
+                                        $element = str_replace("<p>", "<p class=\"a-subcategory\">", $element);
+                                        if ($category == $searchCategory) {
+                                            $element = "<strong>" . $element . "</strong>";
+                                        }
+                                        echo $element;
+                                    }
                                 }
                             }
-                        }
-                        ?>
+                            ?>
+                        </div>
                     </div>
-                    <p><strong><a href="#" data-toggle="collapse" id="showCategories" data-target="#moreCategories">Show more categories</a></strong></p>
-                    <hr>
-                    <!-- categories filtering end -->
 
                 </div>
-                <!-- filtering menu end -->
+                <!-- categories menu end -->
 
 
                 <!-- live auctions list start -->
                 <div class="col-xs-9">
-
+                    <?php
+                    if ( empty( $search_result ) ) {
+                        echo "<h4>No auctions found</h4>";
+                    } else {
+                        //$auctions = $search_result[ count( $search_result ) - 1 ];
+                        foreach ( $liveAuctions as $liveAuction ) {
+                            $_ENV[ "liveAuction" ] = $liveAuction;
+                            include "../includes/live_auction_to_buyer.php";
+                        }
+                    }
+                    ?>
                 </div>
                 <!-- live auctions list end -->
 

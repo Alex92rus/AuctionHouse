@@ -1,5 +1,5 @@
 <?php
-require_once "helper_functions.php";
+require_once "../classes/class.helper_operator.php";
 require_once "../classes/class.session_operator.php";
 require_once "../classes/class.validation_operator.php";
 require_once "../classes/class.query_operator.php";
@@ -8,7 +8,7 @@ require_once "../classes/class.query_operator.php";
 // Only process when start auction button was clicked
 if ( !isset( $_POST[ "startAuction" ] ) )
 {
-    redirectTo( "../views/create_auction_view.php" );
+    HelperOperator::redirectTo( "../views/create_auction_view.php" );
 }
 
 
@@ -47,7 +47,7 @@ if ( ValidationOperator::hasEmtpyFields( $new_auction ) ||
     SessionOperator::setFormInput( $new_auction );
 
     // Redirect back
-    redirectTo( "../views/create_auction_view.php" );
+    HelperOperator::redirectTo( "../views/create_auction_view.php" );
 }
 // Form valid - store auction
 else
@@ -60,7 +60,7 @@ else
     {
         $error[ "upload" ] = "Image cannot be uploaded ";
         SessionOperator::setInputErrors( $error );
-        redirectTo( "../views/create_auction_view.php" );
+        HelperOperator::redirectTo( "../views/create_auction_view.php" );
     }
 
     // Get item category and condition id
@@ -90,7 +90,7 @@ else
     QueryOperator::uploadImage( $itemId, $newImageName, "items" );
 
     // Return to live auctions page
-    redirectTo( "../views/live_auctions_view.php" );
+    HelperOperator::redirectTo( "../views/my_live_auctions_view.php" );
 }
 
 

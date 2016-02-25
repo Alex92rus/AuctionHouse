@@ -20,6 +20,28 @@ a:focus
 }
 
 
+hr#categories
+{
+    border-top: 1px dotted #e7e7e7;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+
+hr#live-auction
+{
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+
+h4#super-category
+{
+    color: #5d5d5d;
+    font-weight: bold;
+}
+
+
 .navbar
 {
     margin-bottom: 0;
@@ -146,7 +168,15 @@ a:focus
 }
 
 
-.panel-body h3
+.panel-heading,
+.panel-footer
+{
+    padding: 2px 15px;
+}
+
+
+.panel-body h3,
+h3#live-auction
 {
     margin-top: 0;
     margin-bottom: 5px;
@@ -155,13 +185,13 @@ a:focus
 
 .panel-body hr
 {
-    margin-top:5px;
+    margin-top: 5px;
 }
 
 
 .p-title
 {
-    color: #337ab7;
+    color: #7a7f82;
 }
 
 
@@ -177,11 +207,18 @@ a:focus
 
 .no-bids
 {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 0;
+    padding-bottom: 0;
     background-color: #f2dede;
     border: 1px solid #ebccd1;
     border-radius: 4px;
+}
+
+
+.no-bids h4
+{
+    margin-top: 7px;
+    margin-bottom: 7px;
 }
 
 
@@ -190,6 +227,67 @@ a:focus
     margin-bottom: 5px;
 }
 
+
+.a-subcategory
+{
+    padding-left: 20px;
+}
+
+
+.panel
+{
+    margin-top: 10px;
+    border-radius: 0px;
+}
+
+
+.live-auction-to-buyer
+{
+    border-bottom: solid 1px #e7e7e7;
+}
+
+
+.auction-img
+{
+    padding-left: 0;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+
+.auction-info
+{
+    padding-top: 10px;
+    padding-left: 0;
+}
+
+
+.well
+{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+.bid-price
+{
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+
+#bid-box,
+.move-in
+{
+    padding-left: 30px;
+}
+
+
+.bid-price small
+{
+    font-size: 60%;
+}
 
 #current-category
 {
@@ -237,3 +335,50 @@ a:focus
     max-height: 500px;
     overflow-x: hidden;
 }
+
+
+#go-back-navigation
+{
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+
+#go-back-navigation a
+{
+    margin-right: 5px;
+}
+
+
+#bid-box
+{
+    padding-top: 15px;
+    padding-bottom: 10px;
+    background-color: #e7e7e7;
+    border: solid 1px #d7d7d7;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    border-radius: 2px;
+}
+
+
+#seller-info
+{
+    margin-top: 0;
+}
+
+
+#seller-info .panel-body
+{
+    padding-top: 2px;
+    padding-bottom: 4px;
+}
+
+
+#seller-info h4
+{
+    margin-bottom: 0;
+}
+
+
+
