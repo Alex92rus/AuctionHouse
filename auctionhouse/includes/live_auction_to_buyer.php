@@ -64,7 +64,7 @@ SessionOperator::setLiveAuction( $auction -> getAuctionId(), $liveAuction );
                 <p><i class="fa fa-eye"></i> Views <?= $views ?> | <i class="fa fa-desktop"></i> Watching <?= $watches ?></p>
             </div>
             <div class="col-xs-6">
-                <p><?= $auction -> getCountry() ?></p>
+                <p><?php // Country plugin ?> United Kingdom (Fake)</p>
             </div>
         </div>
 

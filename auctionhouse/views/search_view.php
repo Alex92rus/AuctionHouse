@@ -3,14 +3,16 @@ require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../scripts/user_session.php";
 
-$search_result = SessionOperator::getSearchSetting( SessionOperator::SEARCH_RESULT );
+$searchString = SessionOperator::getSearchSetting( SessionOperator::SEARCH_STRING );
 $sort = SessionOperator::getSearchSetting( SessionOperator::SORT );
-
 $sortOptions = QueryOperator::getSortOptionsList();
 $subCategories = QueryOperator::getCategoriesList();
 
-$user = SessionOperator::getUser();
-$liveAuctions = QueryOperator::getLiveAuctions( $user -> getUserId(), $user -> getCountry() );
+// Remove this query when correct $search_result is set (i.e. once the search is working)
+$liveAuctions = QueryOperator::getLiveAuctions();
+
+// Search result
+$search_result = SessionOperator::getSearchSetting( SessionOperator::SEARCH_RESULT );
 
 ?>
 <!DOCTYPE html>
@@ -63,7 +65,7 @@ $liveAuctions = QueryOperator::getLiveAuctions( $user -> getUserId(), $user -> g
             <!-- search header start -->
             <div class="row" id="search-header">
 
-                <label class="col-xs-8" id="search-total-results">12 results for <span class="text-danger">"mac book pro"</span></label>
+                <label class="col-xs-8" id="search-total-results"><? //Number of results ?> results for <span class="text-danger">"<?= $searchString ?>"</span></label>
 
                 <div class="col-xs-4 text-right">
                     <label id="search-sort">Sort by </label>

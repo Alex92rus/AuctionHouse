@@ -289,6 +289,13 @@ h3#live-auction
     font-size: 60%;
 }
 
+
+.dataTables_filter input
+{
+    height: 30px
+}
+
+
 #current-category
 {
     color: #54bc91;
@@ -379,6 +386,4 @@ h3#live-auction
 {
     margin-bottom: 0;
 }
-
-
 

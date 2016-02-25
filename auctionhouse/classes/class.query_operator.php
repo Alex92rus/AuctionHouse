@@ -165,24 +165,21 @@ class QueryOperator
     }
 
 
-    public static function getLiveAuctions( $userId, $userCountry )
+    public static function getLiveAuctions()
     {
         self::getDatabaseInstance();
 
         // SQL query for retrieving all live auctions and their details for a specific userId
         $detailsQuery  = "SELECT a.auctionId, a.quantity, a.startPrice, a.reservePrice, a.startTime, a.endTime, i.itemName, i.itemBrand, i.itemDescription, ";
-        $detailsQuery .= "i.image, cat.categoryName, con.conditionName, u.username ";
-        $detailsQuery .= "FROM auctions a, items i, item_categories cat, item_conditions con, users u ";
-        $detailsQuery .= "WHERE a.itemId = i.itemId AND i.categoryId = cat.categoryId AND i.conditionId = con.conditionId AND i.userId = u.userId AND i.userId = $userId ";
-        $detailsQuery .= "AND a.endTime > NOW() ";
+        $detailsQuery .= "i.image, cat.categoryName, con.conditionName ";
+        $detailsQuery .= "FROM auctions a, items i, item_categories cat, item_conditions con ";
+        $detailsQuery .= "WHERE a.itemId = i.itemId AND i.categoryId = cat.categoryId AND i.conditionId = con.conditionId AND a.endTime > NOW() ";
         $detailsQuery .= "ORDER BY a.startTime ASC, a.endTime ASC";
         $result = self::$database -> issueQuery( $detailsQuery );
 
         $liveAuctions = [];
         while ( $row = $result -> fetch_assoc() )
         {
-            $row[ "country" ] = $userCountry;
-
             $auction = new Auction( $row );
             $auctionId = $auction -> getAuctionId();
             $bids = self::getAuctionBids( $auctionId );

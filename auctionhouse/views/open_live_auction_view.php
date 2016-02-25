@@ -16,7 +16,7 @@ if ( isset( $_GET[ "liveAuction" ] ) )
 }
 else
 {
-    redirectTo( "search_view.php" );
+    HelperOperator::redirectTo( "search_view.php" );
 }
 
 $auction = $liveAuction -> getAuction();
@@ -147,7 +147,7 @@ $watches = $liveAuction -> getWatches();
                                         }  ?></p>
                                 </div>
                                 <div class="col-xs-4">
-                                    <p class="p-info" style="padding-top:4px;"><a href="#"><?= count( $bids ) ?> bids</a></p>
+                                    <p class="p-info" style="padding-top:4px;"><a href="#biddings"><?= count( $bids ) ?> bids</a></p>
                                 </div>
                                 <form method="GET" action="">
                                     <div class="col-xs-8">
@@ -167,8 +167,9 @@ $watches = $liveAuction -> getWatches();
                                     <div class="panel-body">
                                         <h4>Seller Information</h4>
                                         <p>
-                                            <a href=""><?= $auction -> getUsername() ?></a><br>
-                                            100% Positive Feedback
+                                            <a href=""><?php // Username Plugin ?> sickAustrian (Fake)</a><br>
+                                            From <?php // Country plugin ?> United Kingdom (Fake)<br>
+                                            <?php // Feedback plugin ?> 100% Positive Feedback (Fake)
                                         </p>
                                     </div>
                                 </div>
@@ -187,9 +188,34 @@ $watches = $liveAuction -> getWatches();
                         </div>
                     </div>
 
-                    <div class="col-xs-3">
+                    <?php if ( count( $bids ) > 0 ) : ?>
+                        <hr>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h4 id="biddings">Bidding History</h4>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th>Bid Price</th>
+                                <th>Time</th>
+                                <th>User</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            foreach( $bids as $bid ) : ?>
+                                <tr>
+                                    <td class="col-xs-3"><?= $bid -> getBidPrice()?></td>
+                                    <td class="col-xs-3"><?= date_create( $bid -> getBidTime() ) -> format( 'd-m-Y h:i' ) ?></td>
+                                    <td class="col-xs-3"><?= $bid -> getBidderName() ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php endif ?>
 
-                    </div>
 
                 </div>
                 <!-- live auction end -->
