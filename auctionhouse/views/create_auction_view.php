@@ -40,6 +40,7 @@ require_once "../classes/class.db_condition.php";
     <script src="../js/bootstrap-notify.min.js"></script>
     <script src="../js/metisMenu.min.js"></script>
     <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/custom/search.js"></script>
     <script src="../js/bootstrap.file-input.js"></script>
     <script src="../js/bootstrap-select.min.js"></script>
     <script src="../js/moment.min.js"></script>
@@ -125,7 +126,7 @@ require_once "../classes/class.db_condition.php";
                                     <option default>Select</option>
                                     <?php
                                     $itemCategory = SessionOperator::getFormInput( "itemCategory" );
-                                    $itemCategories = DbCategory::withConditions()->getListOfColumn("categoryName");
+                                    $itemCategories = QueryOperator::getCategoriesList();
                                     foreach( $itemCategories as $value ) {
                                         $value = htmlspecialchars($value);
                                         $selected = "";
@@ -146,7 +147,7 @@ require_once "../classes/class.db_condition.php";
                                     <option default>Select</option>
                                     <?php
                                     $itemCondition = SessionOperator::getFormInput( "itemCondition" );
-                                    $itemConditions = DbItemCondition::withConditions()->getListOfColumn("conditionName");
+                                    $itemConditions = QueryOperator::getConditionsList();
 
                                     foreach( $itemConditions as $value ) {
                                         $value = htmlspecialchars($value);

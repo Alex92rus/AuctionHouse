@@ -2,12 +2,12 @@
 
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/classes/class.query_builder.php' );
 
+
 abstract class DbEntity
 {
-
     public $fieldValues;
-
     public $queryBuilder;
+    private $extraFields;
 
     private static $database;
 
@@ -26,6 +26,7 @@ abstract class DbEntity
         $array= array_keys(static::$fields);
         $array[] = static::$primaryKeyName;
         $this->fieldValues = array_fill_keys($array, null);
+        $this->extraFields = array();
 
         if($initValues != null){
             //constructing a new object with the initialised values
@@ -34,11 +35,16 @@ abstract class DbEntity
                 if(array_key_exists($key, $initValues)){
 
                     $this->fieldValues[$key] = $initValues[$key];
+                    unset($initValues[$key]);
                 }
+            }
+            foreach ($initValues as $initKey => $initValue){
+                $this->extraFields[$initKey] = $initValue;
             }
 
         }
     }
+
 
     public function getId()
     {
@@ -48,12 +54,17 @@ abstract class DbEntity
         return null;
     }
 
+
     public function setField($fieldName, $fieldValue)
     {
         if(array_key_exists($fieldName, $this->fieldValues)){
             $this->fieldValues [$fieldName] = $fieldValue;
+        }else{
+
+            $this->extraFields[$fieldName] = $fieldValue;
         }
     }
+
 
     public function setFields($fieldValues)
     {
@@ -62,19 +73,24 @@ abstract class DbEntity
         }
     }
 
+
     public function getField($fieldName)
     {
-        if(isset($this->fieldValues [$fieldName])){
+        if(array_key_exists($fieldName, $this->fieldValues)){
             return $this->fieldValues [$fieldName];
+        }elseif( array_key_exists($fieldName, $this->extraFields)){
+            return $this->extraFields[$fieldName];
         }
         return null;
     }
 
+
     public function toArray()
     {
-        return $this->fieldValues;
+        return array_merge($this->fieldValues,$this->extraFields);
 
     }
+
 
     public static function withConditions($whereArgs = null)
     {
@@ -83,6 +99,7 @@ abstract class DbEntity
         return new QueryBuilder($query, get_called_class());
 
     }
+
 
     public static function find($id)
     {
@@ -97,6 +114,7 @@ abstract class DbEntity
         return null;
     }
 
+
     public static function listIds()
     {
         $array = self::withConditions("ORDER BY ". static::$primaryKeyName . " ASC")->get(array(static::$primaryKeyName));
@@ -106,6 +124,8 @@ abstract class DbEntity
         }
         return $values;
     }
+
+
     public function save()
     {
         //the primary key column
@@ -114,7 +134,7 @@ abstract class DbEntity
         $id = $this->getField($pkColumn);
 
         //all information without the primary key and empty values
-        $objToArray = array_filter($this->toArray());
+        $objToArray = array_filter($this->fieldValues);
         unset($objToArray[$pkColumn]);
 
         //the fields Names to update
@@ -135,10 +155,11 @@ abstract class DbEntity
 
     }
 
+
     public function create()
     {
         $pkColumn = static::$primaryKeyName;
-        $objToArray = array_filter($this->toArray());
+        $objToArray = array_filter($this->fieldValues);
         unset($objToArray[$pkColumn]);
         $fieldNames = array_keys($objToArray);
 
@@ -157,16 +178,15 @@ abstract class DbEntity
 
     }
 
+
     public function delete()
     {
         $pkColumn = static::$primaryKeyName;
         $tableName = static::$tableName;
         $result = self::deleteDbEntity($pkColumn, $this->getId(), $tableName);
         return $result;
-
-
-
     }
+
 
     private function getTypesString($fieldNames)
     {
@@ -176,8 +196,8 @@ abstract class DbEntity
             $types .= static::$fields[$key];
         }
         return $types;
-
     }
+
 
     /**
      * @param $primaryKeyName
@@ -207,13 +227,12 @@ abstract class DbEntity
 
     }
 
+
     public static function findDbEntityList($query){
         self::getDatabaseInstance();
         $result = self::$database->issueQuery($query);
         return $result;
     }
-
-
     /**
      * @param $primaryKeyName
      * @param $id
@@ -273,5 +292,4 @@ abstract class DbEntity
 
         return self::$database->issueQuery($statement);
     }
-
 }

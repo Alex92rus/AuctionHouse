@@ -9,6 +9,10 @@ class SessionOperator
     const INPUT_ERRORS = "input_errors";
     const USER = "user";
     const EMAIL = "email";
+    const SORT = "sort";
+    const CATEGORY_FILTER = "category_filter";
+    const SEARCH_CATEGORY = "search_category";
+
     const FEEDBACK = "feedback";
     const TITLE = "title";
     const INFO = "info";
@@ -245,5 +249,46 @@ class SessionOperator
     public static function deleteEmail()
     {
         unset( $_SESSION[ self::EMAIL ] );
+    }
+
+
+    // Set current search settings
+    public static function setSearchSettings( $const, $value )
+    {
+        $_SESSION[ $const ] = $value;
+
+        // Set initial search settings (at the beginning of each search)
+        if ( $const == self::SEARCH_CATEGORY )
+        {
+            $_SESSION[ self::SORT ] = "Best Match";
+            $_SESSION[ self::CATEGORY_FILTER ] = "All";
+        }
+    }
+
+
+    // Get current search settings
+    public static function getSearchSettings( $const )
+    {
+        // Search setting session set
+        if( isset( $_SESSION[ $const ] ) )
+        {
+            return $_SESSION[ $const ];
+        }
+        // No session set
+        else
+        {
+            if ( $const == self::SEARCH_CATEGORY )
+            {
+                $_SESSION[ $const ] = "All";
+            }
+            else if ( $const == self::SORT )
+            {
+                $_SESSION[ $const ] = "Best Match";
+            }
+            else if ( $const == self::CATEGORY_FILTER )
+            {
+                $_SESSION[ $const ] = "All";
+            }
+        }
     }
 }

@@ -18,12 +18,6 @@ defined( "EMAIL_USER" ) ? null : define( "EMAIL_USER", "auction.house.ucl@gmail.
 defined( "EMAIL_PASSWORD" ) ? null : define( "EMAIL_PASSWORD", "Bidder2016!" );
 defined( "EMAIL_SMTP" ) ? null : define( "EMAIL_SMTP", 587 );
 
-// Tables
-
-
-// Table attributes
-
-
 // Upload
 defined( "UPLOAD_PROFILE_IMAGE" ) ? null : define( "UPLOAD_PROFILE_IMAGE", $root . "/uploads/profile_images/" );
 defined( "UPLOAD_ITEM_IMAGE" ) ? null : define( "UPLOAD_ITEM_IMAGE", $root . "/uploads/item_images/" );

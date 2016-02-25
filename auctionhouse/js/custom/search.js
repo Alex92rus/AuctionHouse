@@ -4,6 +4,17 @@ $(document).ready(function(e){
         var param = $(this).attr("href").replace("#","");
         var concept = $(this).text();
         $('.search-panel span#search_concept').text(concept);
-        $('.input-group #search_param').val(param);
+        $('.input-group #searchCategory').val(param);
     });
 });
+
+
+$(document).ready(function(){
+    $("#moreCategories").on("hide.bs.collapse", function(){
+        $("a#showCategories").text( "Show more categories" );
+    });
+    $("#moreCategories").on("show.bs.collapse", function(){
+        $("a#showCategories").text( "Hide categories" );
+    });
+});
+

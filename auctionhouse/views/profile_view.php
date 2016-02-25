@@ -37,6 +37,7 @@ require_once "../classes/class.db_country.php";
     <script src="../js/bootstrap-notify.min.js"></script>
     <script src="../js/metisMenu.min.js"></script>
     <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/custom/search.js"></script>
     <script src="../js/bootstrap-select.min.js"></script>
     <script src="../js/bootstrap.file-input.js"></script>
     <script src="../js/custom/search.js"></script>
@@ -175,7 +176,7 @@ require_once "../classes/class.db_country.php";
                                 <option default>Country</option>
                                 <?php
                                     $country = SessionOperator::getUser() -> getCountry();
-                                    $countries = DbCountry::withConditions()->getListOfColumn("countryName");
+                                    $countries = QueryOperator::getCountriesList();
                                     print_r($countries);
                                     foreach( $countries as $value ) {
                                         $selected = "";

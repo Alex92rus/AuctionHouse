@@ -1,5 +1,6 @@
 <?php
 require_once "../classes/class.session_operator.php";
+require_once "../classes/class.query_operator.php";
 require_once "../scripts/helper_functions.php";
 require_once "../scripts/user_session.php";
 ?>
@@ -33,6 +34,7 @@ require_once "../scripts/user_session.php";
     <script src="../js/bootstrap-notify.min.js"></script>
     <script src="../js/metisMenu.min.js"></script>
     <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/custom/search.js"></script>
 </head>
 
 <body>

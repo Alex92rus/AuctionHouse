@@ -18,7 +18,7 @@ $catsAndItemNames = array(
         "Tijuana Mexico Pesos Coin Card",
         "Antique cast iron eyebolt Barn Pulley",
         "Antique Brass Early 1900's Hand Held Teacher's Bell"
-        ),
+    ),
 
     'Sports Memorabilia'=> array(
         "england football shirt 1980",
@@ -224,7 +224,8 @@ for ($i =0 ; $i < $numUsers ;$i++){
                 $reservePrice   = 0;
             }
             $startTime = $faker->dateTimeBetween('-2 months', '+2 months');
-            $endTime = $startTime->add(date_interval_create_from_date_string("7 days"));
+            $endTime = new DateTime($startTime->format('Y-m-d H:i:s'));
+            $endTime->add(date_interval_create_from_date_string("7 days"));
             //$endTime = $faker->dateTimeBetween('+1 day', '+15 days');
             $auction = new DbAuction(array(
 
@@ -239,76 +240,8 @@ for ($i =0 ; $i < $numUsers ;$i++){
             ));
             $auction->create();
 
-            /*if($faker->boolean(80)){
-                $numBidsForAuction = $faker->numberBetween(1, $maxBidsPerAuction);
-                $lastBidTime = $faker->dateTimeBetween($startTime, 'now');
-                $lastBidPrice = $faker->randomFloat(2,$startPrice, 200.00);
-
-                for($d = 0 ; $d< $numBidsForAuction ; $d++){
-
-
-                    $bid = new DbBid(array(
-
-                        "userId" => $user->getId(),
-                        "auctionId" => $auction->getId(),
-                        "bidTime" => $lastBidTime->format('Y-m-d H:i:s'),
-                        "bidPrice" => $lastBidPrice
-
-
-                    ));
-                    $bid->create();
-                    $lastBidTime = $faker->dateTimeBetween($lastBidTime, 'now');
-                    $lastBidPrice = $faker->randomFloat(2,$lastBidPrice, 200.00);
-
-                }
-            }*/
-
-
 
         }
     }
 
 }
-
-
-///create bids
-
-$numBids = 500;
-$userIds = DbUser::listIds();
-$auctionIds = DbAuction::listIds();
-
-for ($i =0 ; $i < $numUsers ;$i++){
-
-    //get random auction ;
-    $auction = DbAuction::find($faker->randomElement($auctionIds));
-    $user = DbUser::find($faker->randomElement($userIds));
-    $currentBid = $auction->getField("startPrice");
-
-    $user = DbUser::find($faker->randomElement($userIds));
-    $items = DbItem::withConditions("WHERE userId IS NOT ". $user->getId())->getAsClasses();
-    //pick random item
-    //$item
-    //$auctions = DbAuction::withConditions("WHERE ")
-}
-
-
-function makeBidsForAuction($auction, $numBids, $userIds){
-
-    $faker = Faker\Factory::create();
-    $numBids = $faker->numberBetween(1, 20);
-    //make bids evenly spaced apart in time for simplicity.
-    $user = DbUser::find($faker->randomElement($userIds));
-    $price = $auction->getField("startPrice") + $faker->numberBetween(1, 10);
-    $startTime = date_create_from_format('Y-m-d H:i:s',$auction->getField("startTime") );
-    $endTime = date_create_from_format('Y-m-d H:i:s',$auction->getField("endTime") );
-    date_sub($endTime, date_interval_create_from_date_string("5 seconds"));
-    //$endTime->sub("5 seconds");
-
-    $bidInterval = $endTime->diff($startTime)->s;
-    var_dump($bidInterval);
-
-}
-
-
-
-

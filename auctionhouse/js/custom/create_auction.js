@@ -160,7 +160,7 @@ $(document).ready(function(){
             ignoreReadonly: true,
         });
         $('#datetimepickerEnd').datetimepicker({
-            minDate: moment().add( 1, 'm'),
+            minDate: moment().add( 10, 'm'),
             ignoreReadonly: true,
         });
         $("#datetimepickerStart").on("dp.change", function (e) {

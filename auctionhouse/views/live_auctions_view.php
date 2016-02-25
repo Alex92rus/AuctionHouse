@@ -3,7 +3,7 @@ require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../scripts/helper_functions.php";
 require_once "../scripts/user_session.php";
-$auctions = QueryOperator::getAuction( SessionOperator::getUser() -> getUserId() );
+$auctions = QueryOperator::getLiveAuctions( SessionOperator::getUser() -> getUserId() );
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,6 +36,7 @@ $auctions = QueryOperator::getAuction( SessionOperator::getUser() -> getUserId()
     <script src="../js/bootstrap-notify.min.js"></script>
     <script src="../js/metisMenu.min.js"></script>
     <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/custom/search.js"></script>
     <script src="../js/jquery.dataTables.min.js"></script>
     <script src="../js/dataTables.bootstrap.min.js"></script>
     <script src="../js/jquery.countdown.min.js"></script>
@@ -83,7 +84,7 @@ $auctions = QueryOperator::getAuction( SessionOperator::getUser() -> getUserId()
                 <?php } else {
                     foreach ($auctions as $auction) {
                         $_ENV["auction"] = $auction;
-                        include "../includes/live_auction.php";
+                        include "../includes/live_auction_to_seller.php";
                     }
                     unset($_ENV["auction"]);
                 }
