@@ -1,5 +1,5 @@
 <?php
-require_once "helper_functions.php";
+require_once "../classes/class.helper_operator.php";
 require_once "../classes/class.session_operator.php";
 require_once "../classes/class.validation_operator.php";
 require_once "../classes/class.query_operator.php";
@@ -8,7 +8,7 @@ require_once "../classes/class.query_operator.php";
 // Only process when sign up button was clicked
 if ( !isset( $_POST[ "signUp" ] ) )
 {
-    redirectTo( "../index.php" );
+    HelperOperator::redirectTo( "../index.php" );
 }
 
 // Store POST values
@@ -70,4 +70,4 @@ else
 }
 
 // Redirect back
-redirectTo( "../index.php" );
+HelperOperator::redirectTo( "../index.php" );

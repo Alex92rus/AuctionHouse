@@ -1,9 +1,9 @@
 <?php
 require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
-require_once "../scripts/helper_functions.php";
 require_once "../scripts/user_session.php";
-$auctions = QueryOperator::getLiveAuctions( SessionOperator::getUser() -> getUserId() );
+$user = SessionOperator::getUser();
+$liveAuctions = QueryOperator::getLiveAuctions($user -> getUserId(), $user -> getCountry() );
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,10 +36,10 @@ $auctions = QueryOperator::getLiveAuctions( SessionOperator::getUser() -> getUse
     <script src="../js/bootstrap-notify.min.js"></script>
     <script src="../js/metisMenu.min.js"></script>
     <script src="../js/sb-admin-2.js"></script>
-    <script src="../js/custom/search.js"></script>
     <script src="../js/jquery.dataTables.min.js"></script>
     <script src="../js/dataTables.bootstrap.min.js"></script>
     <script src="../js/jquery.countdown.min.js"></script>
+    <script src="../js/custom/search.js"></script>
     <script src="../js/custom/live_auction.js"></script>
 
 </head>
@@ -61,18 +61,20 @@ $auctions = QueryOperator::getLiveAuctions( SessionOperator::getUser() -> getUse
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-xs-12">
-                    <h1 class="page-header">
+                    <h3 class="page-header">
                         My live auctions
-                        <?php if ( !empty( $auctions ) ) : ?>
-                            <a class="btn btn-lg btn-primary pull-right" href="create_auction_view.php">Create New Auction</a>
+                        <?php if ( !empty( $liveAuctions ) ) : ?>
+                            <a class="btn btn-primary pull-right" href="create_auction_view.php">Create New Auction</a>
                         <?php endif ?>
-                    </h1>
+                    </h3>
                 </div>
             </div>
 
             <div class="row">
+                <div class="col-xs-12">
+
                 <!-- no auctions available start -->
-                <?php if ( empty( $auctions ) ) { ?>
+                <?php if ( empty( $liveAuctions ) ) { ?>
                     <div class="well text-center">
                         <h1 class="text-danger">No auctions available</h1>
                         <h4>You currently sell now auctions. Click on the button below to create a new auction</h4>
@@ -81,15 +83,18 @@ $auctions = QueryOperator::getLiveAuctions( SessionOperator::getUser() -> getUse
                 <!-- no auctions available end -->
 
                 <!-- auctions available start -->
-                <?php } else {
-                    foreach ($auctions as $auction) {
-                        $_ENV["auction"] = $auction;
-                        include "../includes/live_auction_to_seller.php";
+
+                    <?php } else {
+                        foreach ($liveAuctions as $liveAuction) {
+                            $_ENV["liveAuction"] = $liveAuction;
+                            include "../includes/live_auction_to_seller.php";
+                        }
+                        unset($_ENV["liveAuction"]);
                     }
-                    unset($_ENV["auction"]);
-                }
-                ?>
+                    ?>
                 <!-- auctions available end -->
+
+                </div>
             </div>
 
             <!-- footer start -->

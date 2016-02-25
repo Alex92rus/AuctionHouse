@@ -1,5 +1,5 @@
 <?php
-require_once "helper_functions.php";
+require_once "../classes/class.helper_operator.php";
 require_once "../classes/class.session_operator.php";
 
 $updated_session = null;
@@ -77,4 +77,4 @@ if ( !is_null( $updated_session ) )
 
 
 // Return back to search page
-redirectTo( "../views/search_view.php" );
+HelperOperator::redirectTo( "../views/search_view.php" );

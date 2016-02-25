@@ -1,5 +1,5 @@
 <?php
-require_once "helper_functions.php";
+require_once "../classes/class.helper_operator.php";
 require_once "../classes/class.validation_operator.php";
 require_once "../classes/class.query_operator.php";
 
@@ -7,7 +7,7 @@ require_once "../classes/class.query_operator.php";
 // Only process when form button was clicked
 if ( !isset( $_POST[ "save" ] ) && !isset( $_POST[ "upload" ] ) )
 {
-    redirectTo( "../views/profile_view.php" );
+    HelperOperator::redirectTo( "../views/profile_view.php" );
 }
 // Update profile
 else if ( isset( $_POST[ "save" ] ) )
@@ -98,4 +98,4 @@ else
 
 
 // Redirect back
-redirectTo( "../views/profile_view.php" );
+HelperOperator::redirectTo( "../views/profile_view.php" );

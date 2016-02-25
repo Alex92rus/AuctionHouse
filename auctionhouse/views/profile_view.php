@@ -1,7 +1,6 @@
 <?php
 require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
-require_once "../scripts/helper_functions.php";
 require_once "../scripts/user_session.php";
 require_once "../config/config.php";
 require_once "../classes/class.db_country.php";
@@ -62,7 +61,7 @@ require_once "../classes/class.db_country.php";
             <!-- profile header start -->
             <div class="row">
                 <div class="col-xs-12">
-                    <h2 class="page-header"><i class="fa fa-user fa-fw"></i> My Profile</h2>
+                    <h3 class="page-header"><i class="fa fa-user fa-fw"></i> My Profile</h3>
                 </div>
             </div>
             <!-- profile header end -->

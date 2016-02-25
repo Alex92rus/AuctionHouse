@@ -1,10 +1,9 @@
 <?php
-require_once "helper_functions.php";
+require_once "../classes/class.helper_operator.php";
 require_once "../classes/class.email.php";
 require_once "../classes/class.query_operator.php";
 require_once "../classes/class.validation_operator.php";
 require_once "../classes/class.session_operator.php";
-
 
 // Reset password (if user cannot remember)
 if ( isset( $_POST[ "resetPassword" ] ) )
@@ -18,13 +17,13 @@ if ( isset( $_POST[ "resetPassword" ] ) )
         $mail->prepareResetEmail();
         $mail->sentEmail();
         SessionOperator::setFeedback(SessionOperator::RESET_PASSWORD);
-        redirectTo("../index.php");
+        HelperOperator::redirectTo("../index.php");
     } else {
         // Create a session for not found email
         SessionOperator::setInputErrors(["email" => "Email could not be found in our records"]);
         // Create a session for the inputted email so that it can be recovered after the page reloads
         SessionOperator::setFormInput(["email" => $_POST["email"]]);
-        redirectTo("../views/forgot_password_view.php");
+        HelperOperator::redirectTo("../views/forgot_password_view.php");
     }
 }
 // Change password after password was reset
@@ -48,7 +47,7 @@ else if ( isset( $_POST[ "changePassword" ] ) )
         $mail -> preparePasswordConfirmEmail();
         $mail -> sentEmail();
 
-        redirectTo( "../index.php" );
+        HelperOperator::redirectTo( "../index.php" );
     }
     // Invalid password inputs
     else
@@ -56,7 +55,7 @@ else if ( isset( $_POST[ "changePassword" ] ) )
         SessionOperator::setFormInput( $passwordFields );
     }
 
-    redirectTo( "../views/change_password_view.php?email=" . $email );
+    HelperOperator::redirectTo( "../views/change_password_view.php?email=" . $email );
 }
 // Change password from when signed in into account
 else if ( isset( $_POST[ "changePasswordSignedIn" ] ) )
@@ -90,6 +89,6 @@ else if ( isset( $_POST[ "changePasswordSignedIn" ] ) )
         SessionOperator::setFormInput( $passwordFields );
     }
 
-    redirectTo( "../views/account_view.php" );
+    HelperOperator::redirectTo( "../views/account_view.php" );
 }
 

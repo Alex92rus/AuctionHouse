@@ -1,6 +1,8 @@
 <?php
+require_once "../classes/class.session_operator.php";
+require_once "../classes/class.helper_operator.php";
 
 if ( !SessionOperator::isLoggedIn() )
 {
-    redirectTo( "../index.php" );
+    HelperOperator::redirectTo( "../index.php" );
 }

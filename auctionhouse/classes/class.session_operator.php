@@ -1,5 +1,6 @@
 <?php
-include "class.user.php";
+require_once "class.user.php";
+require_once "class.live_auction.php";
 session_start();
 
 
@@ -10,6 +11,7 @@ class SessionOperator
     const USER = "user";
     const EMAIL = "email";
 
+    const LIVE_AUCTIONS = "live_auctions";
     const SEARCH_RESULT = "search_result";
     const SEARCH_STRING = "search_string";
     const SEARCH_CATEGORY = "search_category";
@@ -258,7 +260,6 @@ class SessionOperator
     }
 
 
-
     // Set search setting sessions
     public static function setSearch( $settings )
     {
@@ -279,6 +280,34 @@ class SessionOperator
         }
 
         // No session set
+        return null;
+    }
+
+
+    // Set a live auction session for a auction search result
+    public static function setLiveAuction( $auctionId, $liveAuction )
+    {
+        if ( isset( $_SESSION[ self::LIVE_AUCTIONS ] ) )
+        {
+            $liveAuctions = $_SESSION[ self::LIVE_AUCTIONS ];
+            $liveAuctions[ $auctionId ] = $liveAuction;
+            $_SESSION[ self::LIVE_AUCTIONS ] = $liveAuctions;
+        }
+        else
+        {
+            $_SESSION[ self::LIVE_AUCTIONS ] = [ $auctionId => $liveAuction ];
+        }
+    }
+
+
+    // Get all live auctions from a search
+    public static function getLiveAuction( $auctionId )
+    {
+        if ( isset( $_SESSION[ self::LIVE_AUCTIONS ] ) )
+        {
+            return $_SESSION[ self::LIVE_AUCTIONS ][ $auctionId ];
+        }
+
         return null;
     }
 }

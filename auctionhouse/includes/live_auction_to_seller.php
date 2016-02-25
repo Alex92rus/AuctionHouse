@@ -1,8 +1,17 @@
 <?php
-    $auction = $_ENV[ "auction" ];
-    $bids = $auction[ "bids" ];
-    $now = new DateTime("now");
-    $ready = $auction[ "startTime" ] < $now -> format( "Y-m-d H:i" );
+require_once "../classes/class.auction.php";
+require_once "../classes/class.bid.php";
+require_once "../classes/class.live_auction.php";
+
+$liveAuction = $_ENV[ "liveAuction" ];
+
+$auction = $liveAuction -> getAuction();
+$bids = $liveAuction -> getBids();
+$views = $liveAuction -> getViews();
+$watches = $liveAuction -> getWatches();
+
+$now = new DateTime("now");
+$ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i" );
 ?>
 
 <!-- panel start -->
@@ -11,11 +20,11 @@
     <!-- header start -->
     <div class="panel-heading clearfix">
         <h4 class="pull-left">
-            <?php if ( $ready ) { echo "Time Remaining: "; } else { echo "Starts In: "; } ?><strong><span id="timer<?= $auction[ "auctionId" ]?>"></span></strong>
+            <?php if ( $ready ) { echo "Time Remaining: "; } else { echo "Starts In: "; } ?><strong><span id="timer<?= $auction -> getAuctionId() ?>"></span></strong>
         </h4>
         <script type="text/javascript">
-            var timerId = "#timer" + <?= json_encode( $auction[ "auctionId" ] ) ?>;
-            var endTime = <?php if ( $ready ){ echo json_encode( $auction[ "endTime" ] ); } else { echo json_encode( $auction[ "startTime" ] ); } ?>;
+            var timerId = "#timer" + <?= json_encode( $auction -> getAuctionId() ) ?>;
+            var endTime = <?php if ( $ready ){ echo json_encode( $auction -> getEndTime() ); } else { echo json_encode( $auction -> getStartTime() ); } ?>;
             $(timerId).countdown( endTime, function(event) {
                 $(this).text(
                     event.strftime('%D days %H:%M:%S')
@@ -42,7 +51,7 @@
 
             <!-- item image start -->
             <div class="col-xs-3">
-                <img src="<?= "../uploads/item_images/" . $auction[ "image" ] ?>" class="img-responsive img-rounded" style="height:200px">
+                <img src="<?= "../uploads/item_images/" . $auction -> getImage() ?>" class="img-responsive img-rounded" style="height:160px">
             </div>
             <!-- item image end -->
 
@@ -53,26 +62,26 @@
                 <div class="row">
                     <div class="col-xs-9">
                         <h3>
-                            <?= $auction[ "itemName" ] ?><br>
-                            <small><?= $auction[ "itemBrand" ] ?></small>
+                            <?= $auction -> getItemName() ?><br>
+                            <small><?= $auction -> getItemBrand() ?></small>
                         </h3>
                         <p class="text-danger">
-                            <i class="fa fa-money"></i> <strong>Bids <?= count( $auction[ "bids" ] ) ?></strong> |
-                            <i class="fa fa-eye"></i> <strong>Views <?= $auction[ "views" ] ?></strong> |
-                            <i class="fa fa-desktop"></i> <strong>Watching <?= $auction[ "watches" ] ?></strong>
+                            <strong>Bids <?= count( $bids) ?></strong> |
+                            <i class="fa fa-eye"></i> <strong>Views <?= $views ?></strong> |
+                            <i class="fa fa-desktop"></i> <strong>Watching <?= $watches ?></strong>
                         </p>
                     </div>
                     <div class="col-xs-3">
                         <?php if ( $ready ) : ?>
                             <?php if ( empty( $bids ) ) { ?>
                                 <div class="text-center no-bids">
-                                    <h4 class=text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> No bids</h4>
+                                    <h5 class=text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> No bids</h5>
                                 </div>
                             <?php } else { ?>
                                 <div class="text-center current-bid">
-                                    <h3 class=text-success">£<?= $bids[ 0 ][ "bidPrice" ] ?></h3>
+                                    <h3 class=text-success">£<?= $bids[ 0 ] -> getBidPrice() ?></h3>
                                     <small>Current Bid By</small><br>
-                                    <small><strong><a href="#"><?= $bids[ 0 ][ "bidderName" ]?></a></strong></small>
+                                    <small><strong><a href="#"><?= $bids[ 0 ] -> getBidderName() ?></a></strong></small>
                                 </div>
                             <?php } ?>
                         <?php endif ?>
@@ -80,45 +89,50 @@
                 </div><hr>
 
                 <div class="row">
-                    <div class="col-xs-3"><p class="p-title"><i class="fa fa-shopping-cart"></i> <strong>Quantity</strong></p></div>
-                    <div class="col-xs-3"><p class="p-info"><?= $auction[ "quantity" ] ?></p></div>
+                    <div class="col-xs-3"><p class="p-title"><i class="fa fa-shopping-cart"></i> Quantity</p></div>
+                    <div class="col-xs-3"><p class="p-info"><?= $auction -> getQuantity() ?></p></div>
                 </div>
 
                 <div class="row">
-                    <div class="col-xs-3"><p class="p-title"><i class="fa fa-tags"></i> <strong>Category</strong></p></div>
-                    <div class="col-xs-3"><p class="p-info"><?= $auction[ "itemCategoryName" ] ?></p></div>
-                    <div class="col-xs-3"><p class="p-title"><i class="fa fa-plus-square"></i> <strong>Condition</strong></p></div>
-                    <div class="col-xs-3"><p class="p-info"><?= $auction[ "itemConditionName" ] ?></p></div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-3"><p class="p-title"><i class="fa fa-thumbs-up"></i> <strong>Start Price</strong></p></div>
-                    <div class="col-xs-3"><p class="p-info">£<?= $auction[ "startPrice" ] ?></p></div>
-                    <div class="col-xs-3"><p class="p-title"><i class="fa fa-hand-paper-o"></i> <strong>Reserve Price</strong></p></div>
-                    <div class="col-xs-3"><p class="p-info">
-                            <?php
-                                $reservePrice = $auction[ "reservePrice" ];
-                                if ( $reservePrice == 0 ) { echo "Not Set"; } else { echo "£" . $reservePrice; };
-                            ?>
-                        </p></div>
+                    <div class="col-xs-3"><p class="p-title"><i class="fa fa-tags"></i> Category</p></div>
+                    <div class="col-xs-3"><p class="p-info"><?= $auction -> getCategoryName() ?></p></div>
+                    <div class="col-xs-3"><p class="p-title"><i class="fa fa-plus-square"></i> Condition</p></div>
+                    <div class="col-xs-3"><p class="p-info"><?= $auction -> getConditionName() ?></p></div>
                 </div>
                 <!-- auction unhidden end -->
 
                 <!-- auction hidden start -->
-                <div id="<?= "more-details-" . $auction[ "auctionId" ] ?>">
+                <div id="<?= "more-details-" . $auction -> getAuctionId() ?>">
+
+                    <!-- item prices start -->
+                    <div class="row">
+                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-thumbs-up"></i> Start Price</p></div>
+                        <div class="col-xs-3"><p class="p-info">£<?= $auction -> getStartPrice() ?></p></div>
+                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-hand-paper-o"></i> Reserve Price</p></div>
+                        <div class="col-xs-3">
+                            <p class="p-info">
+                                <?php
+                                $reservePrice = $auction -> getReservePrice();
+                                if ( $reservePrice == 0 ) { echo "Not Set"; } else { echo "£" . $reservePrice; };
+                                ?>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- item prices end -->
 
                     <!-- item times start -->
                     <div class="row">
-                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-calendar-check-o"></i> <strong>Start Time</strong></p></div>
-                        <div class="col-xs-3"><p class="p-info"><?= date_create( $auction[ "startTime" ] ) -> format( 'd-m-Y h:i' ) ?></p></div>
-                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-calendar-times-o"></i> <strong>End Time</strong></p></div>
-                        <div class="col-xs-3"><p class="p-info"><?= date_create( $auction[ "endTime" ] ) -> format( 'd-m-Y H:i' ) ?></p></div>
+                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-calendar-check-o"></i> Start Time</p></div>
+                        <div class="col-xs-3"><p class="p-info"><?= date_create( $auction -> getStartTime() ) -> format( 'd-m-Y h:i' ) ?></p></div>
+                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-calendar-times-o"></i> End Time</p></div>
+                        <div class="col-xs-3"><p class="p-info"><?= date_create( $auction -> getEndTime() ) -> format( 'd-m-Y H:i' ) ?></p></div>
                     </div>
                     <!-- item times end -->
 
                     <!-- item description start -->
                     <div class="row">
-                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-eye"></i> <strong>Description</strong></p></div>
-                        <div class="col-xs-9"><p class="p-info text-justify"><?= $auction[ "itemDescription" ] ?></p>
+                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-list"></i>Description</p></div>
+                        <div class="col-xs-9"><p class="p-info text-justify"><?= $auction -> getItemDescription() ?></p>
                         </div>
                     </div>
                     <!-- item description end -->
@@ -147,15 +161,15 @@
                                     $percent = 0;
                                     if ( $index != ( count( $bids ) - 1 )  ) {
                                         $previousBid = $bids[ $index + 1 ];
-                                        $percent = round( ( 1 - ( $previousBid[ "bidPrice" ] / $bid[ "bidPrice" ] ) ) * 100, 2 );
+                                        $percent = round( ( 1 - ( $previousBid -> getBidPrice() / $bid -> getBidPrice() ) ) * 100, 2 );
                                     }
 
                                     ?>
                                 <tr>
-                                    <td class="col-xs-3"><?= $bid[ "bidPrice" ]?></td>
+                                    <td class="col-xs-3"><?= $bid -> getBidPrice()?></td>
                                     <td class="col-xs-3">+ <?= $percent ?> %</td>
-                                    <td class="col-xs-3"><?= $bid[ "bidTime" ]?></td>
-                                    <td class="col-xs-3"><?= $bid[ "bidderName" ]?></td>
+                                    <td class="col-xs-3"><?= $bid -> getBidTime()?></td>
+                                    <td class="col-xs-3"><?= $bid -> getBidderName() ?></td>
                                 </tr>
                             <?php } ?>
                             </tbody>
@@ -175,8 +189,8 @@
 
     <!-- footer start -->
     <div class="panel-footer">
-        <div class="row toggle text-center" id="more-details" data-toggle="<?= "more-details-" . $auction[ "auctionId" ] ?>">
-            <i class="fa fa-chevron-down fa-2x"></i>
+        <div class="row toggle text-center" id="more-details" data-toggle="<?= "more-details-" . $auction -> getAuctionId() ?>">
+            <i class="fa fa-chevron-down"></i>
         </div>
     </div>
     <!-- footer end -->
