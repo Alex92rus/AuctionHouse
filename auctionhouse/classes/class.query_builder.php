@@ -3,7 +3,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/classes/class.db_entity.php' );
 
 class QueryBuilder
 {
-    public $query;
+    private $query;
     private $class;
 
 
@@ -38,7 +38,9 @@ class QueryBuilder
 
             $this->query = "SELECT " . $fieldList . $this->query;
         }
+
         $result = $this->executeQuery();
+
         $resultArray = array();
         while ($row = $result->fetch_assoc()){
             $resultArray[] = $row;

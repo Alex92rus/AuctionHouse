@@ -10,9 +10,16 @@ require_once ($_SERVER['DOCUMENT_ROOT'] ."/classes/class.db_bid.php");
 require_once ($_SERVER['DOCUMENT_ROOT'] ."/classes/class.db_auction_watch.php");
 require_once ($_SERVER['DOCUMENT_ROOT'] ."/classes/class.db_feedback.php");
 
+set_time_limit(300);
 
+$csvFile = $_SERVER['DOCUMENT_ROOT'] ."/scripts/db_seed/items.csv";
+$itemData = parse_csv_file($csvFile);
+//var_dump($itemData);
+
+//return;
 
 $faker = Faker\Factory::create();
+
 
 
 seedUsersItemsAndAuctions();
@@ -22,17 +29,11 @@ seedUsersItemsAndAuctions();
 $userIds = DbUser::listIds();
 $auctions = DbAuction::withConditions()->getAsClasses();
 
-//make bids first as the number of views depends a bit
-//on the the number of bids : as in the real world
-//...same for watches
 seedAuctionBids();
-
 
 editAuctionsAsSold();
 
-
-seedAuctionViews();
-
+//seedAuctionViews();
 
 seedAuctionWatches();
 
@@ -41,7 +42,34 @@ seedFeedbacks();
 
 
 
-
+function parse_csv_file($csvfile) {
+    $csv = Array();
+    $rowcount = 0;
+    if (($handle = fopen($csvfile, "r")) !== FALSE) {
+        $max_line_length = defined('MAX_LINE_LENGTH') ? MAX_LINE_LENGTH : 10000;
+        $header = fgetcsv($handle, $max_line_length);
+        $header_colcount = count($header);
+        while (($row = fgetcsv($handle, $max_line_length)) !== FALSE) {
+            $row_colcount = count($row);
+            if ($row_colcount == $header_colcount) {
+                $entry = array_combine($header, $row);
+                $csv[] = $entry;
+            }
+            else {
+                error_log("csvreader: Invalid number of columns at line " . ($rowcount + 2) . " (row " . ($rowcount + 1) . "). Expected=$header_colcount Got=$row_colcount");
+                return null;
+            }
+            $rowcount++;
+        }
+        //echo "Totally $rowcount rows found\n";
+        fclose($handle);
+    }
+    else {
+        error_log("csvreader: Could not read CSV \"$csvfile\"");
+        return null;
+    }
+    return $csv;
+}
 
 
 function seedUsersItemsAndAuctions(){

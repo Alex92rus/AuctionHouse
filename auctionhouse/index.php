@@ -3,8 +3,11 @@ require_once "classes/class.session_operator.php" ;
 require_once "classes/class.query_operator.php" ;
 require_once "config/config.php";
 
+
 //uncomment to seed database ; either run delete_table_data in db dir or reload schema first
 //include_once "scripts/db_seed/seed_database.php";
+
+
 
 
 

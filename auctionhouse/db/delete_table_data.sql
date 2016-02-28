@@ -10,8 +10,6 @@ WHERE TRUE;
 DELETE FROM `auctionsystem`.`bids`
 WHERE TRUE;
 
-DELETE FROM `auctionsystem`.`auction_views`
-WHERE TRUE;
 
 DELETE FROM `auctionsystem`.`auctions`
 WHERE TRUE;

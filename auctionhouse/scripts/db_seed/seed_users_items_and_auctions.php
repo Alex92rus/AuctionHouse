@@ -1,7 +1,9 @@
 <?php
 
+global $faker;
+global $itemData;
 
-$faker = Faker\Factory::create();
+
 
 
 $catsAndItemNames = array(
@@ -76,14 +78,30 @@ $catsAndItemNames = array(
     ),
     'Fitness, Running & Yoga' => array (
         "weights",
-        "yoga mat"
+        "yoga mat",
+        "pullup bar",
+        "exercise book",
+        "bicycle trainer",
+        "treadmill"
     ),
     'Golf' =>array(
+        "7 iron club",
+        "6 iron club",
+        "5 iron club",
+        "2 iron club",
+        "3 iron club",
+        "4 iron club",
+        "driver",
+        "pitching wedge",
+        "putter",
         "balls",
         "clubs"
     ),
     'Mobile Phones'=>array(
-        "samgung phone",
+        "samsung phone",
+        "samsung s4",
+        "samsung s5",
+        "samsung s2",
         "iphone",
         "sony phone"
     ),
@@ -93,7 +111,12 @@ $catsAndItemNames = array(
     ),
     'Video Games'=>array(
         "super mario kart",
-        "halo"
+        "halo",
+        "grand theft auto 5",
+        "need for speed",
+        "tetris",
+        "Zelda"
+
     ),
     'Computer & Tables'=>array(
         "Apple iPad",
@@ -174,15 +197,36 @@ $catsAndItemNames = array(
     )
 );
 
-$numUsers = 100;
-$maxItemsPerUser = 5;
-$maxAuctionsPerItem = 3;
-$maxBidsPerAuction = 15;
+$numUsers = 500;
+$maxItemsPerUser = 20;
+$maxAuctionsPerItem = 6;
+
+
+
+$dir    = $_SERVER['DOCUMENT_ROOT'] ."/images/item_images";
+$itemImages = scandir($dir);
+unset($itemImages[0]);
+unset($itemImages[1]);
+
+foreach($itemImages as &$itemImage){
+    $itemImage = "/images/item_images/". $itemImage;
+}
+
+$dir    = $_SERVER['DOCUMENT_ROOT'] ."/images/profile_images";
+$profileImages = scandir($dir);
+unset($profileImages[0]);
+unset($profileImages[1]);
+
+foreach($profileImages as &$profileImage){
+    $profileImage = "/images/profile_images/". $profileImage;
+}
+
+
 for ($i =0 ; $i < $numUsers ;$i++){
 
     $user = new DbUser(array(
 
-        "username" => $faker->userName,
+        "username" => $faker->userName . $faker->numberBetween(0,100),
         "email"    => $faker->email,
         "firstName"=> $faker->firstName,
         "lastName" => $faker->lastName,
@@ -192,7 +236,7 @@ for ($i =0 ; $i < $numUsers ;$i++){
         "countryId" => $faker->randomElement(array(229, 14, 33 )),
         "password" => password_hash( "1111111111", PASSWORD_BCRYPT ),
         "verified" => 1,
-        "image"     =>$faker->imageUrl($width = 640, $height = 480, 'people')
+        "image"     =>$faker->randomElement($profileImages)
 
     ));
     $user->create();
@@ -202,40 +246,58 @@ for ($i =0 ; $i < $numUsers ;$i++){
 
         $catName = $faker->randomElement(array_keys($catsAndItemNames));
         $itemCatId =  array_search($catName,array_keys($catsAndItemNames)) +1;
-        $itemName = $faker->randomElement($catsAndItemNames[$catName]);
+
+        /*if($faker->boolean(1)){
+
+            $itemName = $faker->randomElement($catsAndItemNames[$catName]);
+        }else{*/
+        $itemName = $faker->randomElement($itemData)["Name"];
+        //}
         $item = new DbItem(array(
             "userId" =>$user->getId(),
             "itemName" => $itemName,
-            "itemBrand" =>$faker->company,
+            "itemBrand" =>$faker->randomElement($itemData)["Brand Name"],
             "categoryId" =>$itemCatId,
             "conditionId" => $faker->numberBetween(1,4),
             "itemDescription" => $faker->sentences(3, true),
-            "image" => $faker->imageUrl()
+            "image" => $faker->randomElement($itemImages)
 
         ));
         $item->create();
         $numAuctionForItem = $faker->numberBetween(0, $maxAuctionsPerItem -1);
         for ($x = 0 ; $x< $numAuctionForItem; $x++){
 
-            $startPrice = $faker->randomFloat(2, 0.00, 99.00);
+            $startPrice = 0.5 * $faker->numberBetween(1,200);
             if($faker->boolean($chanceOfGettingTrue = 80)){
-                $reservePrice   = $faker->randomFloat(2,$startPrice, 100.00 );
+                $reservePrice   =  $startPrice + 0.5 *$faker->numberBetween(1, 50);
             }else{
                 $reservePrice   = 0;
             }
-            $startTime = $faker->dateTimeBetween('-2 months', '+2 months');
+            $startTime = $faker->dateTimeBetween('-2 weeks', '+2 weeks');
             $endTime = new DateTime($startTime->format('Y-m-d H:i:s'));
             $endTime->add(date_interval_create_from_date_string("7 days"));
             //$endTime = $faker->dateTimeBetween('+1 day', '+15 days');
+            if($faker->boolean(20)){
+                $quantity = $faker->numberBetween(1, 10);
+            }else{
+                $quantity = 1;
+            }
+            $now = new DateTime();
+            if($now > $startTime ){
+                $numViews = $faker->numberBetween(100, 10000);
+            }else{
+                $numViews = 0;
+            }
             $auction = new DbAuction(array(
 
                 "itemId" => $item->getId(),
-                "quantity" => $faker->numberBetween(1, 10),
+                "quantity" => $quantity,
                 "startPrice" => $startPrice,
                 "reservePrice" => $reservePrice,
                 "startTime" => $startTime->format('Y-m-d H:i:s'),
                 "endTime"   => $endTime->format('Y-m-d H:i:s'),
-                "sold"      => 0
+                "sold"      => 0,
+                "views"     =>$numViews
 
             ));
             $auction->create();

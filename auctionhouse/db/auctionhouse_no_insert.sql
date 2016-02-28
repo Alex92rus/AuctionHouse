@@ -16,18 +16,6 @@ SET time_zone = "+00:00";
 CREATE DATABASE IF NOT EXISTS `auctionsystem` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `auctionsystem`;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `auction_views`
---
-
-DROP TABLE IF EXISTS `auction_views`;
-CREATE TABLE `auction_views` (
-  `viewId` int(11) NOT NULL,
-  `auctionId` int(11) NOT NULL,
-  `viewTime` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -57,7 +45,8 @@ CREATE TABLE `auctions` (
   `reservePrice` decimal(10,2) unsigned NOT NULL,
   `startTime` datetime NOT NULL,
   `endTime` datetime NOT NULL,
-  `sold` tinyint(2) unsigned NOT NULL DEFAULT '0'
+  `sold` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  `views` int(11) unsigned NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=latin1;
 
 
@@ -445,7 +434,7 @@ CREATE TABLE `items` (
   `categoryId` int(11) NOT NULL,
   `conditionId` int(2) NOT NULL,
   `itemDescription` varchar(2000) NOT NULL,
-  `image` varchar(30) DEFAULT NULL
+  `image` varchar(300) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=189 DEFAULT CHARSET=latin1;
 
 
@@ -468,7 +457,7 @@ INSERT INTO `sort_options` (`sortId`, `sortName`) VALUES
   (2, 'Time: ending soonest'),
   (3, 'Time: newly listed'),
   (4, 'Price: lowest first'),
-  (5, 'Price: heighest first'),
+  (5, 'Price: highest first'),
   (6, 'Distance: nearest first');
 
 -- --------------------------------------------------------
@@ -561,12 +550,6 @@ INSERT INTO `users` (`userId`, `username`, `email`, `firstName`, `lastName`, `ad
   (8, 'all', 'baumhaus@gmail.com', 'll', 'll', 'll', 'll', 'll', 1, '$2y$10$392npKG7jLqZgW3X.Wp.w.iHtweHNqaT/iPalkoNQ1pP8Z5vmDfSC', 0, NULL),
   (9, 'Gea', 'andreas.rauter1@gmx.at', 'll', 'll', 'll', 'll', 'll', 1, '$2y$10$AJ.NCzeHNy8xBsVvwspyluz13HJVq3fleg7tzrlrCLlZRPsSkO0I6', 0, NULL);
 
---
--- Indexes for table `auction_views`
---
-ALTER TABLE `auction_views`
-ADD PRIMARY KEY (`viewId`),
-ADD KEY `fk_auction_idx` (`auctionId`);
 
 --
 -- Indexes for table `auction_watches`
@@ -661,10 +644,6 @@ ADD KEY `fk_country_idx` (`countryId`);
 --
 
 --
--- AUTO_INCREMENT for table `auction_views`
---
-ALTER TABLE `auction_views`
-MODIFY `viewId` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `auction_watches`
 --
@@ -764,7 +743,8 @@ ADD CONSTRAINT `fk_superCategory` FOREIGN KEY (`superCategoryId`) REFERENCES `su
 ALTER TABLE `items`
 ADD CONSTRAINT `CategoryNo` FOREIGN KEY (`categoryId`) REFERENCES `item_categories` (`categoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
 ADD CONSTRAINT `ConditionNo` FOREIGN KEY (`conditionId`) REFERENCES `item_conditions` (`conditionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_user` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ADD CONSTRAINT `fk_user` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+MODIFY COLUMN itemName VARCHAR(45) CHARACTER SET UTF8 COLLATE UTF8_GENERAL_CI;
 
 --
 -- Constraints for table `unverified_users`

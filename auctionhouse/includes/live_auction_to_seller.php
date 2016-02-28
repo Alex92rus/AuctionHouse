@@ -51,7 +51,7 @@ $ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i" );
 
             <!-- item image start -->
             <div class="col-xs-3">
-                <img src="<?= "../uploads/item_images/" . $auction -> getImage() ?>" class="img-responsive img-rounded" style="height:160px">
+                <img src="<?= $auction->getImage() ?>" class="img-responsive img-rounded" style="height:160px">
             </div>
             <!-- item image end -->
 

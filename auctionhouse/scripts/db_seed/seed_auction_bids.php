@@ -4,7 +4,9 @@ global $faker;
 global $auctions;
 global $userIds;
 
-$auctionsWithBids = $faker->randomElements($auctions, count($auctions) / 2);
+
+$auctionsWithBids = DbAuction::withConditions("WHERE startTime < now()")->getAsClasses();
+$auctionsWithBids = $faker->randomElements($auctionsWithBids, count($auctionsWithBids) / 5);
 
 foreach ($auctionsWithBids as $auctionWithBid) {
 
@@ -38,7 +40,7 @@ function makeBidsForAuction($auction, $numBids, $userIds)
     for ($i = 0; $i < $numBids; $i++) {
 
         $time = new DateTime('@' . ($startTime->getTimestamp() + ($bidInterval * ($i + 1))));
-        $price = $price + $faker->randomFloat(2, 1.00, 10.00);
+        $price = $price + 0.5* $faker->numberBetween(1, 10);
 
         $bid = new DbBid(array(
             "userId" => $faker->randomElement($userIds),

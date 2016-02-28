@@ -5,12 +5,25 @@ require_once "../scripts/user_session.php";
 
 $search_result = SessionOperator::getSearchSetting( SessionOperator::SEARCH_RESULT );
 $sort = SessionOperator::getSearchSetting( SessionOperator::SORT );
+$searchString = SessionOperator::getSearchSetting(SessionOperator::SEARCH_STRING);
+
+$searchCategory = SessionOperator::getSearchSetting(SessionOperator::SEARCH_CATEGORY);
 
 $sortOptions = QueryOperator::getSortOptionsList();
 $subCategories = QueryOperator::getCategoriesList();
 
 $user = SessionOperator::getUser();
-$liveAuctions = QueryOperator::getLiveAuctions( $user -> getUserId(), $user -> getCountry() );
+
+
+$liveAuctions = $search_result["auctions"];
+$categories = $search_result["categories"];
+
+
+//var_dump($search_result);
+
+//$liveAuctions = QueryOperator::getLiveAuctions( $user -> getUserId(), $user -> getCountry() );
+//$liveAuctions = SessionOperator::getSearchSetting(SessionOperator::SEARCH_RESULT)[1];
+//var_dump($liveAuctions);
 
 ?>
 <!DOCTYPE html>
@@ -63,7 +76,7 @@ $liveAuctions = QueryOperator::getLiveAuctions( $user -> getUserId(), $user -> g
             <!-- search header start -->
             <div class="row" id="search-header">
 
-                <label class="col-xs-8" id="search-total-results">12 results for <span class="text-danger">"mac book pro"</span></label>
+                <label class="col-xs-8" id="search-total-results"><? echo count($liveAuctions)?> results for <span class="text-danger">"<? echo $searchString?>"</span></label>
 
                 <div class="col-xs-4 text-right">
                     <label id="search-sort">Sort by </label>
@@ -103,7 +116,7 @@ $liveAuctions = QueryOperator::getLiveAuctions( $user -> getUserId(), $user -> g
                             <h4>Categories</h4>
                             <hr id="categories">
                             <?php
-                            if ( !empty( $search_result ) ) {
+                            /*if ( !empty( $search_result ) ) {
                                 // Display all super categories
                                 if (in_array("All", $search_result[0])) {
                                     foreach ($superCategories as $category) {
@@ -119,8 +132,10 @@ $liveAuctions = QueryOperator::getLiveAuctions( $user -> getUserId(), $user -> g
                                     }
                                     // Display a super category with its sub categories
                                 } else if (count($search_result) == 3) {
-                                    $superCategory = $superCategories[$search_result[0][0] - 1];
+                                    //$superCategory = $superCategories[$search_result[0][0] - 1];
+                                    $superCategory = "everyhing";
                                     $categories = $search_result[1];
+                                    $categories = array(2,3,4);
                                     echo "<h4 id=\"super-category\">" . $superCategory . "</h4>";
                                     foreach ($categories as $subCategoryId) {
                                         $category = htmlspecialchars($subCategories[$subCategoryId - 1]);
@@ -131,6 +146,23 @@ $liveAuctions = QueryOperator::getLiveAuctions( $user -> getUserId(), $user -> g
                                         }
                                         echo $element;
                                     }
+                                }
+                            }*/
+                            if(!empty($categories)){
+                                foreach ($categories as $superCatId => $subCats) {
+
+                                    $superCategoryName = $superCategories[$superCatId - 1];
+                                    echo "<h4 id=\"super-category\">" . $superCategoryName . "</h4>";
+                                    foreach ($subCats as $subCatId) {
+                                        $category = htmlspecialchars($subCategories[$subCatId - 1]);
+                                        $element = "<p><a href=\"../scripts/search.php?searchCategory=" . urlencode($category) . "\">$category</a></p>";
+                                        $element = str_replace("<p>", "<p class=\"a-subcategory\">", $element);
+                                        if ($category == $searchCategory) {
+                                            $element = "<strong>" . $element . "</strong>";
+                                        }
+                                        echo $element;
+                                    }
+
                                 }
                             }
                             ?>
@@ -150,7 +182,7 @@ $liveAuctions = QueryOperator::getLiveAuctions( $user -> getUserId(), $user -> g
                         //$auctions = $search_result[ count( $search_result ) - 1 ];
                         foreach ( $liveAuctions as $liveAuction ) {
                             $_ENV[ "liveAuction" ] = $liveAuction;
-                            include "../includes/live_auction_to_buyer.php";
+                            include "../includes/live_auction_to_buyer__edit.php";
                         }
                     }
                     ?>

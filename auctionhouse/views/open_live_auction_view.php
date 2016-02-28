@@ -6,23 +6,30 @@ require_once "../scripts/user_session.php";
 require_once "../classes/class.auction.php";
 require_once "../classes/class.bid.php";
 require_once "../classes/class.live_auction.php";
+require_once "../classes/class.db_auction.php";
+require_once "../classes/class.db_item.php";
+require_once "../classes/class.db_bid.php";
+require_once "../classes/class.db_auction_watch.php";
 
 
 $liveAuction = null;
 
 if ( isset( $_GET[ "liveAuction" ] ) )
 {
-    $liveAuction = SessionOperator::getLiveAuction( $_GET[ "liveAuction" ] );
+
+    $auctionId = $_GET[ "liveAuction" ];
 }
 else
 {
     redirectTo( "search_view.php" );
+    return;
 }
 
-$auction = $liveAuction -> getAuction();
-$bids = $liveAuction -> getBids();
-$views = $liveAuction -> getViews();
-$watches = $liveAuction -> getWatches();
+$auction = QueryOperator::getLiveAuction($auctionId);
+$bids = QueryOperator::getAuctionBids($auction->getAuctionId());
+$views = $auction -> getViews();
+$watches = QueryOperator::getAuctionWatches($auction->getAuctionId());
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,7 +100,7 @@ $watches = $liveAuction -> getWatches();
 
                 <!-- item image start -->
                 <div class="col-xs-3">
-                    <img src="<?= "../uploads/profile_images/blank_profile.png" ?>" class="img-responsive img-rounded">
+                    <img src="<?= $auction->getImage() ?>" class="img-responsive img-rounded">
                 </div>
                 <!-- item image end -->
 
