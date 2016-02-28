@@ -8,36 +8,6 @@ require_once "config/config.php";
 //include_once "scripts/db_seed/seed_database.php";
 
 
-
-
-
-
-//gets all fields
-//$auctions = DbAuction::withConditions("WHERE quantity > 5 AND reservePrice < 10 ORDER BY startTime DESC ")->get();
-//var_dump($auctions);
-
-//gets only endTime and startTime
-//$auctions = DbAuction::withConditions("WHERE quantity > 5 AND reservePrice > 10")->get(array("endTime", "startTime"));
-//var_dump($auctions);
-
-//$auctionIds = DbAuction::listIds();
-//var_dump($auctionIds);
-
-/*$auctions = DbAuction::withConditions("WHERE quantity > 5")->getAsClasses();
-foreach ($auctions as $auction){
-
-    $auction->setField("quantity", 100);
-    $auction->save();
-    //var_dump($auction->getId());
-}*/
-//var_dump($auctions);
-
-//$countryId = DbCountry::withConditions("WHERE countryName = 'Austria'")->get(array("countryId"));
-//var_dump($countryId);
-
-//$countryNames = DbCountry::withConditions()->getListOfColumn("countryName");
-//var_dump($countryNames);
-
 ?>
 <!DOCTYPE html>
 <html>

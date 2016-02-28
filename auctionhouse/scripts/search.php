@@ -139,7 +139,6 @@ function buildQuery($searchString, $searchCategory, $sortOption ){
     }
     switch ($sortOption){
         case "Best Match":
-            var_dump("BEST MATCH");
             $orderBy = "ORDER BY CASE WHEN items.itemName = '__ss__' THEN 0
                                       WHEN items.itemName LIKE '__ss__ %' THEN 1
                                       WHEN items.itemName LIKE '% __ss__ %' THEN 2

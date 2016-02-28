@@ -14,16 +14,9 @@ $subCategories = QueryOperator::getCategoriesList();
 
 $user = SessionOperator::getUser();
 
-
 $liveAuctions = $search_result["auctions"];
 $categories = $search_result["categories"];
 
-
-//var_dump($search_result);
-
-//$liveAuctions = QueryOperator::getLiveAuctions( $user -> getUserId(), $user -> getCountry() );
-//$liveAuctions = SessionOperator::getSearchSetting(SessionOperator::SEARCH_RESULT)[1];
-//var_dump($liveAuctions);
 
 ?>
 <!DOCTYPE html>
@@ -116,38 +109,6 @@ $categories = $search_result["categories"];
                             <h4>Categories</h4>
                             <hr id="categories">
                             <?php
-                            /*if ( !empty( $search_result ) ) {
-                                // Display all super categories
-                                if (in_array("All", $search_result[0])) {
-                                    foreach ($superCategories as $category) {
-                                        $category = htmlspecialchars($category);
-                                        echo "<p><a href=\"../scripts/search.php?searchCategory=" . urlencode($category) . "\">$category</a></p>";
-                                    }
-                                    // Display some super categories
-                                } else if (count($search_result) == 2) {
-                                    $categories = $search_result[0];
-                                    foreach ($categories as $superCategoryId) {
-                                        $category = htmlspecialchars($superCategories[$superCategoryId - 1]);
-                                        echo "<p><a href=\"../scripts/search.php?searchCategory=" . urlencode($category) . "\">$category</a></p>";
-                                    }
-                                    // Display a super category with its sub categories
-                                } else if (count($search_result) == 3) {
-                                    //$superCategory = $superCategories[$search_result[0][0] - 1];
-                                    $superCategory = "everyhing";
-                                    $categories = $search_result[1];
-                                    $categories = array(2,3,4);
-                                    echo "<h4 id=\"super-category\">" . $superCategory . "</h4>";
-                                    foreach ($categories as $subCategoryId) {
-                                        $category = htmlspecialchars($subCategories[$subCategoryId - 1]);
-                                        $element = "<p><a href=\"../scripts/search.php?searchCategory=" . urlencode($category) . "\">$category</a></p>";
-                                        $element = str_replace("<p>", "<p class=\"a-subcategory\">", $element);
-                                        if ($category == $searchCategory) {
-                                            $element = "<strong>" . $element . "</strong>";
-                                        }
-                                        echo $element;
-                                    }
-                                }
-                            }*/
                             if(!empty($categories)){
                                 foreach ($categories as $superCatId => $subCats) {
 
