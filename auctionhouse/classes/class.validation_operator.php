@@ -260,6 +260,7 @@ class ValidationOperator
             }
         }
         // No reserve price specified
+        else
         {
             // Valid start price
             if ( $isStartNumber )

@@ -145,33 +145,23 @@ $ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i" );
                                 <h4>Bidding History</h4>
                             </div>
                         </div>
-                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <table class="table table-striped table-bordered table-hover"  cellspacing="0" id="dataTables-example">
                             <thead>
                             <tr>
                                 <th>Bid Price</th>
-                                <th>Increase</th>
                                 <th>Time</th>
                                 <th>User</th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php
-                                for ( $index = 0; $index < count( $bids ); $index++ ) {
-                                    $bid = $bids[ $index ];
-                                    $percent = 0;
-                                    if ( $index != ( count( $bids ) - 1 )  ) {
-                                        $previousBid = $bids[ $index + 1 ];
-                                        $percent = round( ( 1 - ( $previousBid -> getBidPrice() / $bid -> getBidPrice() ) ) * 100, 2 );
-                                    }
-
-                                    ?>
-                                <tr>
-                                    <td class="col-xs-3"><?= $bid -> getBidPrice()?></td>
-                                    <td class="col-xs-3">+ <?= $percent ?> %</td>
-                                    <td class="col-xs-3"><?= $bid -> getBidTime()?></td>
-                                    <td class="col-xs-3"><?= $bid -> getBidderName() ?></td>
-                                </tr>
-                            <?php } ?>
+                                foreach( $bids as $bid ) : ?>
+                                    <tr>
+                                        <td class="col-xs-3"><?= $bid -> getBidPrice()?></td>
+                                        <td class="col-xs-3"><?= date_create( $bid -> getBidTime() ) -> format( 'd-m-Y h:i' ) ?></td>
+                                        <td class="col-xs-3"><?= $bid -> getBidderName() ?></td>
+                                    </tr>
+                            <?php endforeach; ?>
                             </tbody>
                         </table>
                     <?php endif ?>
