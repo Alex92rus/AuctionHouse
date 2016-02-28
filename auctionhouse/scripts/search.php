@@ -37,8 +37,8 @@ $result = array();
 if ( isset( $_GET[ "searchString" ] ) && isset( $_GET[ "searchCategory" ] )
         && strlen($_GET[ "searchString" ] ) >= 3 )
 {
-    $searchString = urldecode($_GET[ "searchString" ]);
-    $searchCategory = urldecode($_GET[ "searchCategory" ]);
+    $searchString = trim(htmlspecialchars_decode($_GET[ "searchString" ]));
+    $searchCategory = htmlspecialchars_decode($_GET[ "searchCategory" ]);
     $sort = SessionOperator::getSearchSetting( SessionOperator::SORT );
 
     // Set search sessions
