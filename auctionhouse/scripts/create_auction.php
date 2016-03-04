@@ -24,7 +24,9 @@ $new_auction = [
     "startPrice"      => $_POST[ "startPrice" ],
     "reservePrice"    => $_POST[ "reservePrice" ],
     "startTime"       => $_POST[ "startTime" ],
-    "endTime"         => $_POST[ "endTime" ] ];
+    "endTime"         => $_POST[ "endTime" ],
+    "reportFrequency" => $_POST[ "reportFrequency"]
+];
 
 
 // Add empty string for default selects
@@ -36,6 +38,11 @@ if ( $new_auction[ "itemCondition" ] == "Select" )
 {
     $new_auction[ "itemCondition" ]  = "";
 }
+if ( $new_auction[ "reportFrequency" ] == null )
+{
+    $new_auction[ "reportFrequency" ]  = 24;
+}
+
 
 
 // Check inputs
@@ -82,6 +89,7 @@ else
     $auction[] = $new_auction[ "reservePrice" ];
     $auction[] = date_create($new_auction[ "startTime" ]) -> format('Y-m-d H:i');
     $auction[] = date_create($new_auction[ "endTime" ]) -> format('Y-m-d H:i');
+    $auction[] = $new_auction["reportFrequency"];
 
     // Store auction in database
     $itemId = QueryOperator::addAuction( $item, $auction );

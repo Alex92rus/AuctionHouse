@@ -141,9 +141,10 @@ $categories = $search_result["categories"];
                         echo "<h4>No auctions found</h4>";
                     } else {
                         //$auctions = $search_result[ count( $search_result ) - 1 ];
-                        foreach ( $liveAuctions as $liveAuction ) {
-                            $_ENV[ "liveAuction" ] = $liveAuction;
-                            include "../includes/live_auction_to_buyer__edit.php";
+                        foreach ( $liveAuctions as $auction ) {
+                            //$_ENV[ "liveAuction" ] = $liveAuction;
+                            $origin = "search";
+                            include "../includes/live_auction_to_buyer.php";
                         }
                     }
                     ?>

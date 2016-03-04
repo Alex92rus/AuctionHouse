@@ -46,7 +46,8 @@ CREATE TABLE `auctions` (
   `startTime` datetime NOT NULL,
   `endTime` datetime NOT NULL,
   `sold` tinyint(2) unsigned NOT NULL DEFAULT '0',
-  `views` int(11) unsigned NOT NULL DEFAULT '0'
+  `views` int(11) unsigned NOT NULL DEFAULT '0',
+  `reportFrequency` tinyint(4) unsigned DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=latin1;
 
 
@@ -707,7 +708,7 @@ MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=119;
 -- Constraints for table `auction_watches`
 --
 ALTER TABLE `auction_watches`
-ADD CONSTRAINT `AuctionNo` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `AuctionNo` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`) ON DELETE CASCADE ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_AuctionWatch_User1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
@@ -720,16 +721,17 @@ ADD CONSTRAINT `fk_item` FOREIGN KEY (`itemId`) REFERENCES `items` (`itemId`) ON
 -- Constraints for table `bids`
 --
 ALTER TABLE `bids`
-ADD CONSTRAINT `fk_bids_auctions1` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_bids_auctions1` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`) ON DELETE CASCADE ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_bids_users1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `feedbacks`
 --
 ALTER TABLE `feedbacks`
-ADD CONSTRAINT `fk_feedbacks_auctions1` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_Feedback_User1` FOREIGN KEY (`creatorId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_Feedback_Users1` FOREIGN KEY (`receiverId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- ADD CONSTRAINT `fk_feedbacks_auctions1` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
 
 --
 -- Constraints for table `item_categories`

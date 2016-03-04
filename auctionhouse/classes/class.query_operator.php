@@ -108,9 +108,9 @@ class QueryOperator
         $itemId = self::$database -> issueQuery( $itemQuery, "issiiss", $itemParameters );
 
         // SQL query for inserting auction
-        $auctionQuery = "INSERT INTO auctions ( itemId, quantity, startPrice, reservePrice, startTime, endTime ) VALUES ( ?, ?, ?, ?, ?, ?)";
+        $auctionQuery = "INSERT INTO auctions ( itemId, quantity, startPrice, reservePrice, startTime, endTime, reportFrequency ) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
         $auctionParameters[ 0 ] = &$itemId;
-        self::$database -> issueQuery( $auctionQuery, "iiddss", $auctionParameters );
+        self::$database -> issueQuery( $auctionQuery, "iiddssi", $auctionParameters );
         return $itemId;
     }
 
@@ -187,6 +187,50 @@ class QueryOperator
             "auctions"         => $auctions
         );
     }
+
+
+    public static function getWatchedAuctions($userId)
+    {
+        $query = "SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime, sold,
+		endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
+        item_categories.categoryName as subCategoryName, superCategoryName,
+        item_categories.superCategoryId, item_categories.categoryId,
+        conditionName, countryName, auction_watches.watchId, COUNT(bids.bidId) AS numBids,
+        COUNT(auction_watches.auctionId) AS numWatches,
+        MAX(bids.bidPrice) AS highestBid,
+        case
+			when MAX(bids.bidPrice)is not null THEN MAX(bids.bidPrice)
+            else startPrice
+		end as currentPrice
+
+
+        FROM auctions
+            LEFT OUTER JOIN bids ON bids.auctionId = auctions.auctionId
+            LEFT OUTER JOIN auction_watches ON auction_watches.auctionId = auctions.auctionId
+            JOIN items ON items.itemId = auctions.itemId
+            JOIN users ON items.userId = users.userId
+            JOIN item_categories ON items.categoryId = item_categories.categoryId
+            JOIN super_item_categories ON  item_categories.superCategoryId = super_item_categories.superCategoryId
+            JOIN item_conditions ON items.conditionId = item_conditions.conditionId
+            JOIN countries ON users.countryId = countries.countryId
+
+
+        WHERE auction_watches.userId = __userId__
+        GROUP BY auctions.auctionId
+        ORDER BY CASE WHEN auctions.endTime > now() THEN 0 ELSE 1 END ASC, auctions.endTime ASC
+        ";
+
+        $query = str_replace("__userId__", $userId, $query);
+        self::getDatabaseInstance();
+        $result = self::$database -> issueQuery( $query );
+        $auctions = array();
+        while ($row = $result->fetch_assoc()) {
+            $auctions[] = new Auction($row);
+        }
+        return $auctions;
+
+    }
+
 
     public static function getLiveAuctions( $userId, $userCountry )
     {

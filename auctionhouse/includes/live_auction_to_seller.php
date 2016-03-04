@@ -2,6 +2,7 @@
 require_once "../classes/class.auction.php";
 require_once "../classes/class.bid.php";
 require_once "../classes/class.live_auction.php";
+/* @var Auction $auction */
 
 $liveAuction = $_ENV[ "liveAuction" ];
 
@@ -13,6 +14,7 @@ $watches = $liveAuction -> getWatches();
 $now = new DateTime("now");
 $ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i" );
 ?>
+
 
 <!-- panel start -->
 <div class="panel <?php if ( $ready ) { echo "panel-info"; } else { echo "panel-warning"; } ?> ">
@@ -37,8 +39,11 @@ $ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i" );
                     <span class="glyphicon glyphicon-cog"></span>
                 </button>
                 <ul class="dropdown-menu slidedown">
-                    <li><a href="#"><span class="glyphicon glyphicon-pencil"></span>Edit</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-trash"></span>Delete</a></li>
+                    <li><a href="#" ><span class="glyphicon glyphicon-pencil"></span>Edit</a></li>
+
+
+                    <li><a href="#" data-href="../scripts/delete_auction.php?id=<?php echo $auction->getAuctionId()?>"
+                           data-toggle="modal" data-target="#confirm-delete"><span class="glyphicon glyphicon-trash"></span>Delete</a></li>
                 </ul>
             </div>
         </div>

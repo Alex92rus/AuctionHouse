@@ -25,6 +25,15 @@ else
     return;
 }
 
+
+// to send the user back to the correct page (depending if the got here by search page or watch list)
+$refer = array(null, null);
+if(isset( $_GET["s"])){
+    $refer = array("search_view.php", "Back to Search Results");
+}elseif (isset($_GET["w"])){
+    $refer = array("my_watch_list_view.php", "Back to My Watched Auctions");
+}
+
 $auction = QueryOperator::getLiveAuction($auctionId);
 $bids = QueryOperator::getAuctionBids($auction->getAuctionId());
 $views = $auction -> getViews();
@@ -89,8 +98,8 @@ $watches = QueryOperator::getAuctionWatches($auction->getAuctionId());
             <!-- back start -->
             <div class="row">
                 <div class="col-xs-12" id="go-back-navigation">
-                    <a href="search_view.php" class="btn btn-primary"><i class="fa fa-chevron-left"></i></a>
-                    <a href="search_view.php"> Back to search results</a>
+                    <a href="<?=$refer[0]?>" class="btn btn-primary"><i class="fa fa-chevron-left"></i></a>
+                    <a href="<?=$refer[0]?>"> <?=$refer[1]?></a>
                 </div>
             </div>
             <!-- back end -->

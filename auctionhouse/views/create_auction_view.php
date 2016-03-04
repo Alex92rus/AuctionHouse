@@ -4,6 +4,7 @@ require_once "../classes/class.query_operator.php";
 require_once "../scripts/user_session.php";
 require_once "../classes/class.db_category.php";
 require_once "../classes/class.db_condition.php";
+require_once "../config/env_variables.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -155,6 +156,29 @@ require_once "../classes/class.db_condition.php";
                                         }
                                         ?>
                                         <option value="<?= $value ?>" title="<?= $value ?>" <?= $selected ?> ><?= $value ?></option>
+                                        <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Email me an auction report: </label>
+                                <select class="selectpicker form-control" name="reportFrequency"  data-dropup-auto="false">
+
+                                    <?php
+                                    $frequency= SessionOperator::getFormInput( "reportFrequency" );
+                                    $frequencies = $_env_reportFrequencies ;
+
+                                    foreach( $frequencies as $key => $value ) {
+                                        $name = htmlspecialchars($key);
+                                        $selected = "";
+                                        if ($frequency === $value) {
+
+                                            $selected = "selected";
+                                        }
+                                        ?>
+                                        <option value="<?= $value ?>" title="<?= $name ?>" <?= $selected ?> ><?= $name ?></option>
                                         <?php
                                     }
                                     ?>

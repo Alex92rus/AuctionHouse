@@ -13,12 +13,14 @@ class Auction
     private $itemBrand;
     private $itemDescription;
     private $image;
+    private $sold;
     private $categoryName;
     private $superCategoryName;
     private $conditionName;
     private $country;
     private $views;
     private $numBids;
+    private $watchId; //for a watched Auction
     private $numWatches;
     private $highestBid;
 
@@ -99,6 +101,23 @@ class Auction
     {
         $this->startPrice = $startPrice;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSold()
+    {
+        return $this->sold;
+    }
+
+    /**
+     * @param mixed $sold
+     */
+    public function setSold($sold)
+    {
+        $this->sold = $sold;
+    }
+
 
     /**
      * @return mixed
@@ -246,6 +265,24 @@ class Auction
     {
         $this->superCategoryName = $superCategoryName;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getWatchId()
+    {
+        return $this->watchId;
+    }
+
+    /**
+     * @param mixed $watchId
+     */
+    public function setWatchId($watchId)
+    {
+        $this->watchId = $watchId;
+    }
+
+
 
 
     /**

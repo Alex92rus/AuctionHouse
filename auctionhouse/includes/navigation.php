@@ -113,7 +113,7 @@ $superCategories = QueryOperator::getSuperCategoriesList();
             </li>
 
             <li>
-                <a href="#"><i class="fa fa-eye fa-fw"></i> My Watch List</a>
+                <a href="../views/my_watch_list_view.php"><i class="fa fa-eye fa-fw"></i> My Watch List</a>
             </li>
 
         </ul>

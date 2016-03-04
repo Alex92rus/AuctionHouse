@@ -288,7 +288,7 @@ abstract class DbEntity
         self::getDatabaseInstance();
         $statement = "DELETE FROM`" . $tableName . "` WHERE `". $primaryKeyName
             ."`=" .$id;
-        var_dump($statement);
+        //var_dump($statement);
 
         return self::$database->issueQuery($statement);
     }
