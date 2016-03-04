@@ -9,6 +9,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] ."/classes/class.db_auction_view.php");
 require_once ($_SERVER['DOCUMENT_ROOT'] ."/classes/class.db_bid.php");
 require_once ($_SERVER['DOCUMENT_ROOT'] ."/classes/class.db_auction_watch.php");
 require_once ($_SERVER['DOCUMENT_ROOT'] ."/classes/class.db_feedback.php");
+include     ($_SERVER['DOCUMENT_ROOT'] ."/config/env_variables.php");
 
 set_time_limit(300);
 
@@ -16,13 +17,20 @@ $csvFile = $_SERVER['DOCUMENT_ROOT'] ."/scripts/db_seed/items.csv";
 $itemData = parse_csv_file($csvFile);
 //var_dump($itemData);
 
-//return;
+/*$a = DbAuction::find(195);
+$a->setField("numBids", 100);
+
+/*return;*/
 
 $faker = Faker\Factory::create();
 
+$reportFrequencies = $_env_reportFrequencies;
 
 
-seedUsersItemsAndAuctions();
+
+
+
+seedUsersItemsAndAuctions(500, 20, 5);
 
 
 //now get the userIds and auctions for next steps
@@ -32,6 +40,7 @@ $auctions = DbAuction::withConditions()->getAsClasses();
 seedAuctionBids();
 
 editAuctionsAsSold();
+
 
 //seedAuctionViews();
 
@@ -72,7 +81,7 @@ function parse_csv_file($csvfile) {
 }
 
 
-function seedUsersItemsAndAuctions(){
+function seedUsersItemsAndAuctions($numUsers =500, $maxItemsPerUser = 20, $maxAuctionsPerItem =5){
     include_once($_SERVER['DOCUMENT_ROOT'] . "/scripts/db_seed/seed_users_items_and_auctions.php");
 }
 
@@ -105,10 +114,12 @@ function editAuctionsAsSold(){
         $numBids =$auction->getField("numBids");
         $highestBid = $auction->getField("highestBid");
         if ($now > $endTime){
-            if( $numBids
-                && $numBids > 0
+            var_dump("ended");
+            ?> <pre><?php echo var_dump($auction) ?></pre> <?php
+            if( $numBids > 0
                 && $highestBid > $auction->getField("reservePrice")){
 
+                    var_dump("sold");
                     $auction->setField("sold", 1);
                     $auction->save();
             }

@@ -3,17 +3,30 @@
 global $faker;
 global $auctions;
 global $userIds;
+global $reportFrequencies;
 
 
-$auctionsWithBids = DbAuction::withConditions("WHERE startTime < now()")->getAsClasses();
+/*$auctionsWithBids = DbAuction::withConditions("WHERE startTime < now()")->getAsClasses();
 $auctionsWithBids = $faker->randomElements($auctionsWithBids, count($auctionsWithBids) / 5);
 
 foreach ($auctionsWithBids as $auctionWithBid) {
 
     $userIdsWithoutOwner = listUserIdsWithoutAuctionOwner($auctionWithBid, $userIds);
     makeBidsForAuction($auctionWithBid, $faker->numberBetween(1, 20), $userIdsWithoutOwner);
-}
+}*/
 
+$now = new DateTime();
+foreach ($auctions as $auction) {
+
+    $start = new DateTime($auction->getField("startTime"));
+    if($start < $now){
+        if($faker->boolean(40)){
+            $userIdsWithoutOwner = listUserIdsWithoutAuctionOwner($auction, $userIds);
+            makeBidsForAuction($auction, $faker->numberBetween(1, 20), $userIdsWithoutOwner);
+        }
+    }
+
+}
 
 
 

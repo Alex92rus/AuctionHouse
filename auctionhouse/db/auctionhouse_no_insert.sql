@@ -729,9 +729,8 @@ ADD CONSTRAINT `fk_bids_users1` FOREIGN KEY (`userId`) REFERENCES `users` (`user
 --
 ALTER TABLE `feedbacks`
 ADD CONSTRAINT `fk_Feedback_User1` FOREIGN KEY (`creatorId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_Feedback_Users1` FOREIGN KEY (`receiverId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- ADD CONSTRAINT `fk_feedbacks_auctions1` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_Feedback_Users1` FOREIGN KEY (`receiverId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+ADD CONSTRAINT `fk_feedbacks_auctions1` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `item_categories`

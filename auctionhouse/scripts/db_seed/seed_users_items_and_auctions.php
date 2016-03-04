@@ -2,7 +2,7 @@
 
 global $faker;
 global $itemData;
-
+global $reportFrequencies;
 
 
 
@@ -197,9 +197,7 @@ $catsAndItemNames = array(
     )
 );
 
-$numUsers = 500;
-$maxItemsPerUser = 20;
-$maxAuctionsPerItem = 6;
+
 
 
 
@@ -297,7 +295,8 @@ for ($i =0 ; $i < $numUsers ;$i++){
                 "startTime" => $startTime->format('Y-m-d H:i:s'),
                 "endTime"   => $endTime->format('Y-m-d H:i:s'),
                 "sold"      => 0,
-                "views"     =>$numViews
+                "views"     =>$numViews,
+                "reportFrequency" => $faker->randomElement(array_values($reportFrequencies))
 
             ));
             $auction->create();
