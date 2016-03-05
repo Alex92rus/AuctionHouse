@@ -12,7 +12,7 @@ require_once "../classes/class.db_bid.php";
 require_once "../classes/class.db_auction_watch.php";
 
 
-$liveAuction = null;
+$auctionId = null;
 
 if ( isset( $_GET[ "liveAuction" ] ) )
 {
@@ -21,8 +21,7 @@ if ( isset( $_GET[ "liveAuction" ] ) )
 }
 else
 {
-    redirectTo( "search_view.php" );
-    return;
+    HelperOperator::redirectTo( "search_view.php" );
 }
 
 
@@ -201,10 +200,6 @@ $watches = QueryOperator::getAuctionWatches($auction->getAuctionId());
                             <div class="col-xs-3"><p class="p-title"><i class="fa fa-list"></i> Description</p></div>
                             <div class="col-xs-9"><p class="p-info text-justify"><?= $auction -> getItemDescription() ?></p></div>
                         </div>
-                    </div>
-
-                    <div class="col-xs-3">
-
                     </div>
 
                 </div>

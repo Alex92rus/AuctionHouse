@@ -33,7 +33,6 @@ class Auction
 
                 call_user_func( "Auction::" . "set" . ucfirst( $field ), $value );
             }
-            //call_user_func(array($this, "set" . ucfirst( $field )), $value);
         }
     }
 

@@ -60,10 +60,10 @@ if ( ValidationOperator::hasEmtpyFields( $new_auction ) ||
 else
 {
     // Create random image name
-    $newImageName = uniqid( "", true ) . "." . $upload[ "imageExtension" ];
+    $newImageName = UPLOAD_ITEM_IMAGE . uniqid( "", true ) . "." . $upload[ "imageExtension" ];
 
     // Cannot upload image to file system, otherwise, image uploaded
-    if ( !move_uploaded_file( $upload[ "image" ], UPLOAD_ITEM_IMAGE . $newImageName ) )
+    if ( !move_uploaded_file( $upload[ "image" ], ROOT . $newImageName ) )
     {
         $error[ "upload" ] = "Image cannot be uploaded ";
         SessionOperator::setInputErrors( $error );

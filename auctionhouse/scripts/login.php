@@ -17,7 +17,7 @@ if ( isset( $_POST[ "signIn" ] ) )
     {
         // Login user and redirect to home page
         SessionOperator::login( new User ( $account ) );
-        HelperOperator::redirectTo( "../views/dashboard_view.php" );
+        HelperOperator::redirectTo( "../views/my_live_auctions_view.php" );
     }
     // Login failed
     else

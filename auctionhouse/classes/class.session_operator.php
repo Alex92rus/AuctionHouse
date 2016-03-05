@@ -1,6 +1,7 @@
 <?php
 require_once "class.user.php";
 require_once "class.live_auction.php";
+require_once "class.pagination.php";
 session_start();
 
 
@@ -16,6 +17,7 @@ class SessionOperator
     const SEARCH_STRING = "search_string";
     const SEARCH_CATEGORY = "search_category";
     const SORT = "sort";
+    const SEARCH_PAGINATION = "search_pagination";
 
     const FEEDBACK = "feedback";
     const TITLE = "title";

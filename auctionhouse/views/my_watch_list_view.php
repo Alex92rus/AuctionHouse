@@ -5,7 +5,6 @@ require_once "../scripts/user_session.php";
 $user = SessionOperator::getUser();
 
 $watchedAuctions = QueryOperator::getWatchedAuctions($user->getUserId());
-//var_dump($watchedAuctions);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -87,10 +86,9 @@ $watchedAuctions = QueryOperator::getWatchedAuctions($user->getUserId());
                 if ( count( $watchedAuctions ) == 0 ) {
                     echo "<h4>No Watched Auctions</h4>";
                 } else {
-                    //$auctions = $search_result[ count( $search_result ) - 1 ];
                     foreach ( $watchedAuctions as $auction ) {
-                        $origin = "watches";
-                        //$_ENV[ "liveAuction" ] = $watchedAuction;
+                        $_ENV[ "auction" ] = $auction;
+                        $_ENV[ "origin" ] = "watches";
                         include "../includes/live_auction_to_buyer.php";
                     }
                 }

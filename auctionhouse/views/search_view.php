@@ -2,12 +2,13 @@
 require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../scripts/user_session.php";
+require_once "../classes/class.pagination.php";
 
 $search_result = SessionOperator::getSearchSetting( SessionOperator::SEARCH_RESULT );
 $sort = SessionOperator::getSearchSetting( SessionOperator::SORT );
 $searchString = SessionOperator::getSearchSetting(SessionOperator::SEARCH_STRING);
-
 $searchCategory = SessionOperator::getSearchSetting(SessionOperator::SEARCH_CATEGORY);
+$pagination = SessionOperator::getSearchSetting( SessionOperator::SEARCH_PAGINATION );
 
 $sortOptions = QueryOperator::getSortOptionsList();
 $subCategories = QueryOperator::getCategoriesList();
@@ -16,7 +17,6 @@ $user = SessionOperator::getUser();
 
 $liveAuctions = $search_result["auctions"];
 $categories = $search_result["categories"];
-
 
 ?>
 <!DOCTYPE html>
@@ -69,7 +69,9 @@ $categories = $search_result["categories"];
             <!-- search header start -->
             <div class="row" id="search-header">
 
-                <label class="col-xs-8" id="search-total-results"><? echo count($liveAuctions)?> results for <span class="text-danger">"<? echo $searchString?>"</span></label>
+                <label class="col-xs-8" id="search-total-results">
+                    <?= $pagination -> fromTo(); ?> of <?= $pagination -> getTotalCount(); ?> results for <span class="text-danger">"<?= $searchString ?>"</span>
+                </label>
 
                 <div class="col-xs-4 text-right">
                     <label id="search-sort">Sort by </label>
@@ -113,7 +115,7 @@ $categories = $search_result["categories"];
                                 foreach ($categories as $superCatId => $subCats) {
 
                                     $superCategoryName = $superCategories[$superCatId - 1];
-                                    echo "<h4 id=\"super-category\">" . $superCategoryName . "</h4>";
+                                    echo "<h5 id=\"super-category\">" . $superCategoryName . "</h5>";
                                     foreach ($subCats as $subCatId) {
                                         $category = htmlspecialchars($subCategories[$subCatId - 1]);
                                         $element = "<p><a href=\"../scripts/search.php?searchCategory=" . urlencode($category) . "\">$category</a></p>";
@@ -134,26 +136,68 @@ $categories = $search_result["categories"];
                 <!-- categories menu end -->
 
 
-                <!-- live auctions list start -->
+                <!-- list view start -->
                 <div class="col-xs-9">
+
+                    <!-- live auctions start -->
                     <?php
                     if ( empty( $search_result ) ) {
                         echo "<h4>No auctions found</h4>";
                     } else {
-                        //$auctions = $search_result[ count( $search_result ) - 1 ];
                         foreach ( $liveAuctions as $auction ) {
-                            //$_ENV[ "liveAuction" ] = $liveAuction;
-                            $origin = "search";
+                            $_ENV[ "auction" ] = $auction;
+                            $_ENV[ "origin" ] = "search";
                             include "../includes/live_auction_to_buyer.php";
                         }
                     }
                     ?>
+                    <!-- live auctions end -->
+
+                    <!-- pagination start -->
+                    <?php if ( $pagination -> totalPages() > 1 ) {
+                        $href = "../scripts/search.php?searchCategory=" . urlencode($searchCategory) . "&page=";
+                        ?>
+                        <nav class="text-center">
+                            <ul class="pagination">
+
+                                <?php if ( $pagination -> hasPreviousPage() ) : ?>
+                                    <li>
+                                        <a href="<?= $href . $pagination -> previousPage() ?>" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                <?php endif ?>
+
+                                <?php for ( $index = 1; $index <= $pagination -> totalPages(); $index++ ) : ?>
+                                    <li class="<? if ( $pagination -> getCurrentPage() == $index ) echo "active" ?>">
+                                        <a href="<?= $href . $index ?>"><?= $index ?></a>
+                                    </li>
+                                <?php endfor ?>
+
+                                <?php if ( $pagination -> hasNextPage() ) : ?>
+                                    <li>
+                                        <a href="<?= $href . $pagination -> nextPage() ?>" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                <?php endif ?>
+
+                            </ul>
+                        </nav>
+                    <?php } ?>
+                    <!-- pagination end -->
+
                 </div>
-                <!-- live auctions list end -->
-
-
+                <!-- list view end -->
             </div>
             <!-- search main end -->
+
+            <!-- footer start -->
+            <div class="footer">
+                <div class="container">
+                </div>
+            </div>
+            <!-- footer end -->
 
 
         </div>

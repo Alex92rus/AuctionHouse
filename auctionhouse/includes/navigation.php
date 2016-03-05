@@ -91,10 +91,6 @@ $superCategories = QueryOperator::getSuperCategoriesList();
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
 
-            <li>
-                <a href="../views/dashboard_view.php"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-            </li>
-
             <li <?= HelperOperator::isActive()?> >
                 <a href="#"><i class="fa fa-gavel fa-fw"></i> My Auctions<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">

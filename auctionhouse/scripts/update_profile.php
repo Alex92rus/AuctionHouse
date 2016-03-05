@@ -65,15 +65,15 @@ else
         if ( !is_null( $user = SessionOperator::getUser() ) )
         {
             // Create random image name
-            $newImageName = uniqid( "", true ) . "." . $upload[ "imageExtension" ];
+            $newImageName = UPLOAD_PROFILE_IMAGE . uniqid( "", true ) . "." . $upload[ "imageExtension" ];
 
             // Upload new profile picture to file system
-            if ( move_uploaded_file( $upload[ "image" ], UPLOAD_PROFILE_IMAGE . $newImageName ) )
+            if ( move_uploaded_file( $upload[ "image" ], ROOT . $newImageName ) )
             {
                 // Delete old profile pic (if exists)
                 if ( !empty( $imageName = $user -> getImage() ) )
                 {
-                    unlink( UPLOAD_PROFILE_IMAGE . $imageName );
+                    unlink( ROOT . $imageName );
                 }
 
                 // Store image name in database

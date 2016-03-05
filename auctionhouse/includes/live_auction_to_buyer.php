@@ -3,13 +3,9 @@ require_once "../classes/class.auction.php";
 require_once "../classes/class.bid.php";
 require_once "../classes/class.live_auction.php";
 
-/* @var Auction $auction */
-//$auction = $_ENV[ "liveAuction" ];
 
-/*$auction = $liveAuction -> getAuction();
-$bids = $liveAuction -> getBids();
-$views = $liveAuction -> getViews();
-$watches = $liveAuction -> getWatches();*/
+$auction = $_ENV[ "auction" ];
+$origin = $_ENV[ "origin" ];
 
 if ($origin == "watches"){
     $refer = "&w=1";
@@ -18,7 +14,6 @@ if ($origin == "watches"){
 }else{
     $refer= "";
 }
-
 ?>
 
 <div class="row live-auction-to-buyer">
@@ -30,7 +25,6 @@ if ($origin == "watches"){
     <div class="col-xs-9 auction-info">
 
         <?php
-
             if($origin == "watches"){
                 include "../includes/remove_watch.php";
             }
@@ -41,7 +35,6 @@ if ($origin == "watches"){
             <div class="col-xs-12">
                 <h4>
                     <?php
-
                     if (new DateTime($auction->getEndTime()) > new DateTime()){
                         echo ('<a href="../views/open_live_auction_view.php?liveAuction='
                             . $auction -> getAuctionId() .$refer.'">'.$auction->getItemName().'</a><br>');
@@ -72,9 +65,19 @@ if ($origin == "watches"){
             <div class="col-xs-6">
 
                 <?php
-                    if (new DateTime($auction->getEndTime()) > new DateTime()){
-                        include "../includes/timer_countdown.php";
-                    }else{
+                if (new DateTime($auction->getEndTime()) > new DateTime()) { ?>
+                    <h5 class="text-danger"><span id="timer<?= $auction ->getAuctionId()?>"></span> left</h5>
+
+                    <script type="text/javascript">
+                        var timerId = "#timer" + <?= json_encode( $auction -> getAuctionId() ) ?>;
+                                    var endTime = <?= json_encode( $auction -> getEndTime() ) ?>;
+                                    $(timerId).countdown( endTime, function(event) {
+                                    $(this).text(
+                                    event.strftime('%D days %H:%M:%S')
+                                    );
+                                    });
+                    </script>
+                    <?php }else{
                         if($auction->getSold() == 1){
                             echo ('<h5 >SOLD</h5>');
                         }else{

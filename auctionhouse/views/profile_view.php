@@ -73,9 +73,9 @@ require_once "../classes/class.db_country.php";
                     <br><img src="
                         <?php
                     if ( empty( $imageName = SessionOperator::getUser() -> getImage() ) )
-                        echo "../uploads/profile_images/blank_profile.png";
+                        echo "../images/profile_images/blank_profile.png";
                     else
-                        echo "../uploads/profile_images/" . $imageName; ?>" class="img-responsive img-rounded">
+                        echo ".." . $imageName; ?>" class="img-responsive img-rounded">
                     <!-- image end -->
 
                     <!-- menu start -->

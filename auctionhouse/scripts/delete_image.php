@@ -7,7 +7,7 @@ require_once "../classes/class.session_operator.php";
 
 // Delete profile image from file system and image name from database
 $user = SessionOperator::getUser();
-unlink( UPLOAD_PROFILE_IMAGE . $user -> getImage() );
+unlink( ROOT . $user -> getImage() );
 QueryOperator::uploadImage( $user -> getUserId(), null, "users" );
 
 // Update user session

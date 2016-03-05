@@ -10,7 +10,6 @@ $auctionId = $_GET["id"];
 
 if(!is_numeric($auctionId)){ // at least no sql injection
     HelperOperator::redirectTo("../views/my_live_auctions_view.php");
-    return;
 }
 
 /* @var User $user */
@@ -23,10 +22,10 @@ $item = DbItem::find($auction->getField("itemId"));
 
 //check user owns auction;
 if($item->getField("userId") == $userId){
-    var_dump($auction->delete());
+    $auction->delete();
 }
+
 HelperOperator::redirectTo("../views/my_live_auctions_view.php");
-return;
 
 
 

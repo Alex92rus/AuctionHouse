@@ -115,13 +115,6 @@ class QueryOperator
     }
 
 
-
-    private static function getAuctionViews( $auctionId )
-    {
-        return self::getAuctionTraffic( $auctionId, "auction_views" );
-    }
-
-
     public static function getAuctionWatches( $auctionId )
     {
         return self::getAuctionTraffic( $auctionId, "auction_watches" );
@@ -164,6 +157,15 @@ class QueryOperator
         return $bids;
     }
 
+
+    public static function countFoundAuctions( $query )
+    {
+        self::getDatabaseInstance();
+        $result = self::$database -> issueQuery( $query );
+        return  $result -> num_rows;
+    }
+
+
     public static function searchAuctions($query){
         self::getDatabaseInstance();
         $result = self::$database -> issueQuery( $query );
@@ -175,7 +177,6 @@ class QueryOperator
                 $categories[$row["superCategoryId"]] = array();
                 $categories[$row["superCategoryId"]][] = $row["categoryId"];
             }else{
-
                 $subCats =  $categories[$row["superCategoryId"]];
                 if(!in_array($row["categoryId"], $subCats)){
                     $categories[$row["superCategoryId"]][] = $row["categoryId"];
@@ -184,7 +185,7 @@ class QueryOperator
         }
         return array(
             "categories" => $categories,
-            "auctions"         => $auctions
+            "auctions"   => $auctions
         );
     }
 
@@ -253,7 +254,6 @@ class QueryOperator
             $auction = new Auction( $row );
             $auctionId = $auction -> getAuctionId();
             $bids = self::getAuctionBids( $auctionId );
-            //$views = self::getAuctionViews( $auctionId );
             $views = $auction->getViews();
             $watches = self::getAuctionWatches( $auctionId );
 

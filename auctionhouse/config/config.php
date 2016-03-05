@@ -1,8 +1,5 @@
 <?php
 
-// Root directory
-$root = $_SERVER['DOCUMENT_ROOT'];
-
 // Database
 defined( "DB_HOST" ) ? null : define( "DB_HOST", "localhost" );
 defined( "DB_USER" ) ? null : define( "DB_USER", "root" );
@@ -19,5 +16,6 @@ defined( "EMAIL_PASSWORD" ) ? null : define( "EMAIL_PASSWORD", "Bidder2016!" );
 defined( "EMAIL_SMTP" ) ? null : define( "EMAIL_SMTP", 587 );
 
 // Upload
-defined( "UPLOAD_PROFILE_IMAGE" ) ? null : define( "UPLOAD_PROFILE_IMAGE", $root . "/uploads/profile_images/" );
-defined( "UPLOAD_ITEM_IMAGE" ) ? null : define( "UPLOAD_ITEM_IMAGE", $root . "/uploads/item_images/" );
+defined( "ROOT" ) ? null : define( "ROOT", $_SERVER['DOCUMENT_ROOT'] );
+defined( "UPLOAD_PROFILE_IMAGE" ) ? null : define( "UPLOAD_PROFILE_IMAGE", "/images/profile_images/" );
+defined( "UPLOAD_ITEM_IMAGE" ) ? null : define( "UPLOAD_ITEM_IMAGE", "/images/item_images/" );
