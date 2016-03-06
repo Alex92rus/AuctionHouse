@@ -19,7 +19,7 @@ $liveAuctions = QueryOperator::getLiveAuctions($user->getUserId(), $user->getCou
     <title>Live Auctions</title>
 
     <!-- Font -->
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
     <!-- CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -61,12 +61,12 @@ $liveAuctions = QueryOperator::getLiveAuctions($user->getUserId(), $user->getCou
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-xs-12">
-                    <h3 class="page-header">
-                        My live auctions
+                    <h4 class="page-header">
+                        You are currently selling <span class="text-danger"><?= count( $liveAuctions ) ?> auctions</span>
                         <?php if ( !empty( $liveAuctions ) ) : ?>
                             <a class="btn btn-primary pull-right" href="create_auction_view.php">Create New Auction</a>
                         <?php endif ?>
-                    </h3>
+                    </h4>
                 </div>
             </div>
 
@@ -86,10 +86,8 @@ $liveAuctions = QueryOperator::getLiveAuctions($user->getUserId(), $user->getCou
 
                     <?php } else {
                         foreach ($liveAuctions as $liveAuction) {
-                            $_ENV["liveAuction"] = $liveAuction;
                             include "../includes/live_auction_to_seller.php";
                         }
-                        unset($_ENV["liveAuction"]);
                     }
                     ?>
                 <!-- auctions available end -->
@@ -107,40 +105,17 @@ $liveAuctions = QueryOperator::getLiveAuctions($user->getUserId(), $user->getCou
         </div>
         <!-- main end -->
 
-
-
-
     </div>
     <!-- /#wrapper -->
 
-    <!--for deletion confirmation popup-->
 
-    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    Delete Auction
-                </div>
-                <div class="modal-body">
-                    this cannot be undone, are you absolutely sure?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-danger btn-ok">Delete</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <!-- modal start -->
+    <?php
+    $header = "Delete Auction";
+    include "../includes/delete_confirmation.php"
+    ?>
+    <!-- modal end -->
 
 </body>
-
-
-<!-- fire href on confirm delete -->
-<script>
-    $('#confirm-delete').on('show.bs.modal', function(e) {
-        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-    });
-</script>
 
 </html>

@@ -1,5 +1,6 @@
 <?php
 require_once "class.database.php";
+require_once "class.db_bid.php";
 require_once "class.db_country.php";
 require_once "class.db_category.php";
 require_once "class.db_super_category.php";
@@ -172,6 +173,10 @@ class QueryOperator
         $auctions = array();
         $categories = array();
         while ($row = $result->fetch_assoc()){
+            /*foreach( $row as $key => $value )
+            {
+                echo $key . "    " . $value . "<br>";
+            }*/
             $auctions[] = new Auction($row);
             if(!array_key_exists($row["superCategoryId"], $categories )){
                 $categories[$row["superCategoryId"]] = array();
@@ -448,6 +453,20 @@ class QueryOperator
         $uploadImage .= ( $table == "users" ) ? "userId" : "itemId";
         $uploadImage .= "= {$id}";
         self::$database -> issueQuery( $uploadImage );
+    }
+
+
+    public static function placeBid( $auctionId, $userId, $bidPrice )
+    {
+        $date = new DateTime();
+
+        $bid = new DbBid( array(
+            "userId" => $userId,
+            "auctionId" => $auctionId,
+            "bidTime" => $date -> format('Y-m-d H:i:s'),
+            "bidPrice" => $bidPrice
+        ) );
+        $bid -> create();
     }
 
 

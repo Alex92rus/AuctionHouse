@@ -115,7 +115,7 @@ function buildQuery($searchString, $searchCategory, $sortOption, $limit = null, 
     else
     {
         $query =
-            "SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
+            "SELECT auctions.auctionId, quantity, startPrice, reservePrice, startTime,
             endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
             item_categories.categoryName as subCategoryName, superCategoryName,
             item_categories.superCategoryId, item_categories.categoryId,
@@ -196,8 +196,3 @@ function getCatIdAndType($catName){
         "type"  => $type
     );
 }
-
-
-
-
-

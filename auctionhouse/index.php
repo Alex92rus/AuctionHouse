@@ -26,7 +26,6 @@ require_once "config/config.php";
     <link href="css/animate.css" rel="stylesheet" type="text/css">
     <link href="css/bootstrap-select.css" rel="stylesheet" type="text/css">
     <link href="css/index.css" rel="stylesheet" type="text/css">
-    <link href="css/general.css" rel="stylesheet" type="text/css">
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

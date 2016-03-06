@@ -1,5 +1,6 @@
 <?php
 require_once "class.session_operator.php";
+require_once "class.bid.php";
 
 
 class ValidationOperator
@@ -8,6 +9,7 @@ class ValidationOperator
     const WRONG_FORMAT = "wrong_format";
     const INVALID_SIZE = "invalid_size";
     const INVALID_PRICES = "invalid_prices";
+    const INVALID_BID = "invalid_bid";
     const INCORRECT_PASSWORD = "incorrect_password";
     const NO_IMAGE = "no_image";
 
@@ -48,7 +50,8 @@ class ValidationOperator
     const PRICES = [
         self::WRONG_FORMAT => " must be a decimal number",
         self::INVALID_SIZE => " must be greater than 0",
-        self::INVALID_PRICES => "The start price must be less than the reserve price"
+        self::INVALID_PRICES => "The start price must be less than the reserve price",
+        self::INVALID_BID => "Your bid price must be greater or equal to "
     ];
 
 
@@ -239,12 +242,12 @@ class ValidationOperator
     // Check inputted prices
     public static function checkPrizes( $startPrice, $reservePrice )
     {
-        $isStartNumber = self::isPositiveNumber( $startPrice, "startPrice", "Start Price" );
+        $isStartNumber = self::isPositiveNumber( $startPrice, "startPrice" );
 
         // Reserve price specified
         if ( !empty( $reservePrice ) )
         {
-            if ( $isStartNumber && self::isPositiveNumber( $reservePrice, "reservePrice", "Reserve Price" ) )
+            if ( $isStartNumber && self::isPositiveNumber( $reservePrice, "reservePrice" ) )
             {
                 // Valid prices
                 if ( $startPrice < $reservePrice )
@@ -274,8 +277,25 @@ class ValidationOperator
     }
 
 
+    // Check inputted bid price
+    public static function checkBidPrice( $input, $auctionId )
+    {
+        $currentHighestBid = QueryOperator::getAuctionBids( $auctionId )[ 0 ] -> getBidPrice();
+
+        // Invalid bid price
+        if ( $input < $currentHighestBid )
+        {
+            SessionOperator::setInputErrors( [ "bidPrice" => self::PRICES[ self::INVALID_BID ] . $currentHighestBid ] );
+            return false;
+        }
+
+        // No error
+        return true;
+    }
+
+
     // Check input is number
-    private static function isPositiveNumber( $fieldValue, $fieldName, $fieldText )
+    public static function isPositiveNumber( $fieldValue, $fieldName )
     {
         $error = [];
 
@@ -290,13 +310,13 @@ class ValidationOperator
             // Not a number
             else
             {
-                $error[ $fieldName ] = $fieldText . self::PRICES[ self::INVALID_SIZE ];
+                $error[ $fieldName ] = $fieldName . self::PRICES[ self::INVALID_SIZE ];
             }
         }
         // Not decimal
         else
         {
-            $error[ $fieldName ] = $fieldText . self::PRICES[ self::WRONG_FORMAT ];
+            $error[ $fieldName ] = $fieldName . self::PRICES[ self::WRONG_FORMAT ];
         }
 
         // Error

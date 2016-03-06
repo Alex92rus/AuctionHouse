@@ -16,6 +16,7 @@ $subCategories = QueryOperator::getCategoriesList();
 $user = SessionOperator::getUser();
 
 $liveAuctions = $search_result["auctions"];
+
 $categories = $search_result["categories"];
 
 ?>
@@ -145,8 +146,7 @@ $categories = $search_result["categories"];
                         echo "<h4>No auctions found</h4>";
                     } else {
                         foreach ( $liveAuctions as $auction ) {
-                            $_ENV[ "auction" ] = $auction;
-                            $_ENV[ "origin" ] = "search";
+                            $origin = "search";
                             include "../includes/live_auction_to_buyer.php";
                         }
                     }

@@ -2,9 +2,8 @@
 require_once "../classes/class.auction.php";
 require_once "../classes/class.bid.php";
 require_once "../classes/class.live_auction.php";
-/* @var Auction $auction */
 
-$liveAuction = $_ENV[ "liveAuction" ];
+/* @var LiveAuction $liveAuction */
 
 $auction = $liveAuction -> getAuction();
 $bids = $liveAuction -> getBids();
@@ -21,9 +20,9 @@ $ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i" );
 
     <!-- header start -->
     <div class="panel-heading clearfix">
-        <h4 class="pull-left">
+        <h5 class="pull-left">
             <?php if ( $ready ) { echo "Time Remaining: "; } else { echo "Starts In: "; } ?><strong><span id="timer<?= $auction -> getAuctionId() ?>"></span></strong>
-        </h4>
+        </h5>
         <script type="text/javascript">
             var timerId = "#timer" + <?= json_encode( $auction -> getAuctionId() ) ?>;
             var endTime = <?php if ( $ready ){ echo json_encode( $auction -> getEndTime() ); } else { echo json_encode( $auction -> getStartTime() ); } ?>;
@@ -65,10 +64,10 @@ $ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i" );
                 <!-- auction unhidden start -->
                 <div class="row">
                     <div class="col-xs-9">
-                        <h3>
+                        <h4>
                             <?= $auction -> getItemName() ?><br>
                             <small><?= $auction -> getItemBrand() ?></small>
-                        </h3>
+                        </h4>
                         <p class="text-danger">
                             <strong>Bids <?= count( $bids) ?></strong> |
                             <i class="fa fa-eye"></i> <strong>Views <?= $views ?></strong> |
@@ -83,7 +82,7 @@ $ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i" );
                                 </div>
                             <?php } else { ?>
                                 <div class="text-center current-bid">
-                                    <h3 class=text-success">£<?= $bids[ 0 ] -> getBidPrice() ?></h3>
+                                    <h4 class=text-success">£<?= $bids[ 0 ] -> getBidPrice() ?></h4>
                                     <small>Current Bid By</small><br>
                                     <small><strong><a href="#"><?= $bids[ 0 ] -> getBidderName() ?></a></strong></small>
                                 </div>

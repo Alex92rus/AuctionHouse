@@ -20,7 +20,7 @@ $watchedAuctions = QueryOperator::getWatchedAuctions($user->getUserId());
     <title>Watched Auctions</title>
 
     <!-- Font -->
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
     <!-- CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -59,23 +59,11 @@ $watchedAuctions = QueryOperator::getWatchedAuctions($user->getUserId());
 
         <div class="row">
             <div class="col-xs-12">
-                <h3 class="page-header">
-                    My Watched Auctions
-
-                </h3>
+                <h4 class="page-header">
+                    You are currently watching <span class="text-danger"><?= count($watchedAuctions) ?> auctions</span>
+                </h4>
             </div>
         </div>
-
-
-        <!-- search header start -->
-        <div class="row" id="search-header">
-
-            <label class="col-xs-8" id="search-total-results">watching <? echo count($watchedAuctions)?> auctions </label>
-
-
-        </div>
-        <!-- search header end -->
-
 
         <!-- search main start -->
         <div class="row" id="search-main">
@@ -87,8 +75,7 @@ $watchedAuctions = QueryOperator::getWatchedAuctions($user->getUserId());
                     echo "<h4>No Watched Auctions</h4>";
                 } else {
                     foreach ( $watchedAuctions as $auction ) {
-                        $_ENV[ "auction" ] = $auction;
-                        $_ENV[ "origin" ] = "watches";
+                        $origin = "watches";
                         include "../includes/live_auction_to_buyer.php";
                     }
                 }
@@ -96,13 +83,41 @@ $watchedAuctions = QueryOperator::getWatchedAuctions($user->getUserId());
             </div>
             <!-- live auctions list end -->
 
+            <!-- recommendations start -->
+            <div class="col-xs-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h5>
+                            Popular on AuctionHouse
+                        </h5>
+                    </div>
+                    <div class="panel-body">
+                        Recommendations
+                    </div>
+                </div>
+            </div>
+            <!-- recommendations end -->
 
         </div>
         <!-- search main end -->
 
+        <!-- footer start -->
+        <div class="footer">
+            <div class="container">
+            </div>
+        </div>
+        <!-- footer end -->
 
     </div>
     <!-- main end -->
+
+
+    <!-- modal start -->
+    <?php
+    $header = "Delete Auction from Watch List";
+    include "../includes/delete_confirmation.php"
+    ?>
+    <!-- modal end -->
 
 
 </div>
@@ -110,12 +125,5 @@ $watchedAuctions = QueryOperator::getWatchedAuctions($user->getUserId());
 
 </body>
 
-
-<!-- fire href on confirm delete -->
-<script>
-    $('#confirm-delete').on('show.bs.modal', function(e) {
-        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-    });
-</script>
 
 </html>

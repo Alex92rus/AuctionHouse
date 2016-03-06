@@ -20,7 +20,7 @@ require_once "../config/env_variables.php";
     <title>Create New Auction</title>
 
     <!-- Font -->
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
     <!-- CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -31,7 +31,6 @@ require_once "../config/env_variables.php";
     <link href="../css/bootstrap-select.css" rel="stylesheet">
     <link href="../css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
     <link href="../css/main.css" rel="stylesheet">
-    <link href="../css/general.css" rel="stylesheet" type="text/css">
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

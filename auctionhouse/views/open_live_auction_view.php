@@ -53,7 +53,7 @@ $watches = QueryOperator::getAuctionWatches($auction->getAuctionId());
     <title><?= $auction -> getItemName() . " | AuctionHouse" ?></title>
 
     <!-- Font -->
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
     <!-- CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -102,6 +102,17 @@ $watches = QueryOperator::getAuctionWatches($auction->getAuctionId());
                 </div>
             </div>
             <!-- back end -->
+
+
+            <!-- display item related input errors (if available) start -->
+            <?php if ( ( $error = SessionOperator::getInputErrors( "bidPrice" ) ) != null ) :  ?>
+                <div class="alert alert-danger fade in">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Input error!</strong> <?= $error ?>
+                </div>
+            <?php endif ?>
+            <!-- display item related input errors (if available) end -->
+
 
             <!-- live auction start -->
             <div class="row">
@@ -162,14 +173,17 @@ $watches = QueryOperator::getAuctionWatches($auction->getAuctionId());
                                         }  ?></p>
                                 </div>
                                 <div class="col-xs-4">
-                                    <p class="p-info" style="padding-top:4px;"><a href="#"><?= count( $bids ) ?> bids</a></p>
+                                    <p class="p-info text-info" style="padding-top:4px;"><?= count( $bids ) ?> bids</p>
                                 </div>
-                                <form method="GET" action="">
+                                <form method="GET" action="../scripts/place_bid.php">
                                     <div class="col-xs-8">
-                                        <input type="text" class="form-control" name="bidPrice" maxlength="11" style="height: 30px"><br>
+                                        <input type="hidden" name="auctionId" value="<?= $auction -> getAuctionId() ?>">
+                                        <input type="hidden" name="userId" value="<?= SessionOperator::getUser() -> getUserId() ?>">
+                                        <input type="text" class="form-control" name="bidPrice" maxlength="11" style="height: 30px"
+                                            <?php echo 'value = "' . SessionOperator::getFormInput( "bidPrice" ) . '"'; ?> ><br>
                                     </div>
                                     <div class="col-xs-4">
-                                        <button type="submit" class="btn btn-primary" name="placeBid" style="height: 30px; padding: 4px 12px">Place Bid</button>
+                                        <button type="submit" class="btn btn-primary" style="height: 30px; padding: 4px 12px">Place Bid</button>
                                     </div>
                                 </form>
                                 <div class="col-xs-12">
@@ -195,6 +209,8 @@ $watches = QueryOperator::getAuctionWatches($auction->getAuctionId());
                             <div class="col-xs-9"><p class="p-info"><?= $auction -> getQuantity() ?></p></div>
                             <div class="col-xs-3"><p class="p-title"><i class="fa fa-tags"></i> Category</p></div>
                             <div class="col-xs-9"><p class="p-info"><?= $auction -> getCategoryName() ?></p></div>
+                            <div class="col-xs-3"><p class="p-title"><i class="fa fa-money"></i> Start Price</p></div>
+                            <div class="col-xs-9"><p class="p-info"><?= $auction -> getStartPrice() ?></p></div>
                             <div class="col-xs-3"><p class="p-title"><i class="fa fa-calendar-check-o"></i> Start Time</p></div>
                             <div class="col-xs-9"><p class="p-info"><?= date_create( $auction -> getStartTime() ) -> format( 'd-m-Y h:i' ) ?></p></div>
                             <div class="col-xs-3"><p class="p-title"><i class="fa fa-list"></i> Description</p></div>

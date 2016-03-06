@@ -19,7 +19,7 @@ require_once "../classes/class.db_country.php";
     <title>User Profile</title>
 
     <!-- Font -->
-    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
     <!-- CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -84,7 +84,8 @@ require_once "../classes/class.db_country.php";
                             <?php echo SessionOperator::getInputErrors( "upload" ) ?>
                         </label>
                         <?php if ( !empty( SessionOperator::getUser() -> getImage() ) ) : ?>
-                            <a href="../scripts/delete_image.php" class="btn btn-danger col-xs-12" style="margin-bottom: 5px"><span class="glyphicon glyphicon-remove"></span> Delete Profile Picture</a>
+                            <a href="#" data-href="../scripts/delete_image.php" data-toggle="modal" data-target="#confirm-delete"
+                               class="btn btn-danger col-xs-12" style="margin-bottom: 5px"><span class="glyphicon glyphicon-trash"></span> Delete Profile Image</a>
                         <?php endif ?>
                         <input class="col-xs-12" type="file" data-filename-placement="inside" name="image" accept="image/png, image/jpeg">
                         <button type="submit" class="btn btn-primary col-xs-12" name="upload" style="margin-top: 5px"><span class="glyphicon glyphicon-upload"></span> Upload</button>
@@ -193,7 +194,7 @@ require_once "../classes/class.db_country.php";
                     <div class="form-group">
                         <div class="col-xs-offset-2 col-xs-10">
                             <br>
-                            <button type="submit" class="btn btn-lg btn-primary pull-right" name="save"><span class="glyphicon glyphicon-save"></span> Save Changes</button>
+                            <button type="submit" class="btn btn-primary pull-right" name="save"><span class="glyphicon glyphicon-save"></span> Save Changes</button>
                         </div>
                     </div>
                 </form>
@@ -212,6 +213,13 @@ require_once "../classes/class.db_country.php";
 
     </div>
     <!-- /#wrapper -->
+
+    <!-- modal start -->
+    <?php
+    $header = "Delete Profile Image";
+    include "../includes/delete_confirmation.php"
+    ?>
+    <!-- modal end -->
 
 </body>
 

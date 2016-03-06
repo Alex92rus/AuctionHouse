@@ -4,7 +4,7 @@
 
 body
 {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
 }
 
 
@@ -20,6 +20,12 @@ a:focus
 }
 
 
+h5
+{
+    font-size: 16px;
+}
+
+
 hr#categories
 {
     border-top: 1px dotted #e7e7e7;
@@ -28,17 +34,11 @@ hr#categories
 }
 
 
-hr#live-auction
-{
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-
-
-h4#super-category
+h5#super-category
 {
     color: #5d5d5d;
     font-weight: bold;
+    margin-bottom: 5px;
 }
 
 
@@ -175,8 +175,8 @@ h4#super-category
 }
 
 
-.panel-body h3,
-h3#live-auction
+.panel-body h4,
+h4#live-auction
 {
     margin-top: 0;
     margin-bottom: 5px;
@@ -231,6 +231,7 @@ h3#live-auction
 .a-subcategory
 {
     padding-left: 20px;
+    margin-bottom: 1px;
 }
 
 
@@ -277,6 +278,12 @@ h3#live-auction
 }
 
 
+.dropdown-menu>li>a
+{
+    line-height: 2.5;
+}
+
+
 #bid-box,
 .move-in
 {
@@ -293,6 +300,13 @@ h3#live-auction
 .dataTables_filter input
 {
     height: 30px
+}
+
+
+.modal-header
+{
+    font-size: 18px;
+    color: #337ab7;
 }
 
 
@@ -377,7 +391,7 @@ h3#live-auction
 
 #seller-info .panel-body
 {
-    padding-top: 2px;
+    padding-top: 8px;
     padding-bottom: 4px;
 }
 
@@ -385,5 +399,12 @@ h3#live-auction
 #seller-info h4
 {
     margin-bottom: 0;
+}
+
+
+#live-auction
+{
+    margin-top: 0;
+    margin-bottom: 15px;
 }
 

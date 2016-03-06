@@ -4,8 +4,8 @@ require_once "../classes/class.bid.php";
 require_once "../classes/class.live_auction.php";
 
 
-$auction = $_ENV[ "auction" ];
-$origin = $_ENV[ "origin" ];
+/* @var Auction $auction */
+/* @var String $origin */
 
 if ($origin == "watches"){
     $refer = "&w=1";
@@ -24,15 +24,8 @@ if ($origin == "watches"){
 
     <div class="col-xs-9 auction-info">
 
-        <?php
-            if($origin == "watches"){
-                include "../includes/remove_watch.php";
-            }
-        ?>
-
-
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-8">
                 <h4>
                     <?php
                     if (new DateTime($auction->getEndTime()) > new DateTime()){
@@ -40,32 +33,47 @@ if ($origin == "watches"){
                             . $auction -> getAuctionId() .$refer.'">'.$auction->getItemName().'</a><br>');
 
                     }else{
-                        //idea is so that you can't click on sold auction and do stupid things like bid
-                        echo ('<h4>'.$auction->getItemName().'</h4><br>');
+                        echo ( $auction->getItemName().'<br>');
                     }
                     ?>
                     <small><?= $auction -> getItemBrand() ?></small>
                 </h4>
             </div>
+            <?php
+            if($origin == "watches"){
+                include "../includes/remove_watch.php";
+            }
+            ?>
         </div>
 
         <div class="row clearfix">
+
             <div class="col-xs-6">
                 <h4>
-                    <strong>£
+                    <strong>
                         <?php
+                        $currentPrice = "£";
                         if ( empty( $auction->getHighestBid() ) ) {
-                            echo $auction -> getStartPrice();
+                            $currentPrice .= $auction -> getStartPrice();
                         } else {
-                            echo $auction->getHighestBid(); /*$bids[ 0 ] -> getBidPrice()*/
-                        }  ?></strong><br>
+                            $currentPrice .= $auction->getHighestBid();
+                        }
+
+                        if($auction->getSold() == 1){
+                            echo "<span class='text-success'>SOLD FOR " . $currentPrice . "</span>";
+                        } else if(new DateTime($auction->getEndTime()) < new DateTime() ) {
+                            echo "<span class='text-danger'>UNSOLD - LAST PRICE " . $currentPrice . "</span>";
+                        } else {
+                            echo $currentPrice;
+                        }
+                        ?>
+                    </strong><br>
                     <small> <?= $auction->getNumBids() ?> Bids</small>
                 </h4>
             </div>
-            <div class="col-xs-6">
 
-                <?php
-                if (new DateTime($auction->getEndTime()) > new DateTime()) { ?>
+            <div class="col-xs-6">
+                <?php if (new DateTime($auction->getEndTime()) > new DateTime()) : ?>
                     <h5 class="text-danger"><span id="timer<?= $auction ->getAuctionId()?>"></span> left</h5>
 
                     <script type="text/javascript">
@@ -77,15 +85,7 @@ if ($origin == "watches"){
                                     );
                                     });
                     </script>
-                    <?php }else{
-                        if($auction->getSold() == 1){
-                            echo ('<h5 >SOLD</h5>');
-                        }else{
-                            echo ('<h5 >UNSOLD</h5>');
-                        }
-                    }
-                ?>
-
+                <?php endif ?>
             </div>
 
         </div>
