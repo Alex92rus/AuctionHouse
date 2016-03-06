@@ -1,4 +1,4 @@
-<!-- delete confirmation modal -->
+<!-- confirmation modal -->
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -16,7 +16,7 @@
     </div>
 </div>
 
-<!-- fire href on confirm delete -->
+<!-- fire href on confirm -->
 <script>
     $('#confirm-delete').on('show.bs.modal', function(e) {
         $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));

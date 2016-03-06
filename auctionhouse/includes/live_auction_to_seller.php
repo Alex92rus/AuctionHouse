@@ -82,7 +82,7 @@ $ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i" );
                                 </div>
                             <?php } else { ?>
                                 <div class="text-center current-bid">
-                                    <h4 class=text-success">£<?= $bids[ 0 ] -> getBidPrice() ?></h4>
+                                    <h class=text-success">£<?= $bids[ 0 ] -> getBidPrice() ?></h>
                                     <small>Current Bid By</small><br>
                                     <small><strong><a href="#"><?= $bids[ 0 ] -> getBidderName() ?></a></strong></small>
                                 </div>

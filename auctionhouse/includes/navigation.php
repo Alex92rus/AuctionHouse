@@ -73,7 +73,9 @@ $superCategories = QueryOperator::getSuperCategoriesList();
                     <a href="../views/account_view.php"><i class="fa fa-cog fa-fw"></i> Account Settings</a>
                 </li>
                 <li>
-                    <a href="../scripts/logout.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                    <a href="#" data-href="../scripts/logout.php" data-toggle="modal" data-target="#logout">
+                        <i class="fa fa-sign-out fa-fw"></i> Logout
+                    </a>
                 </li>
             </ul>
         </li>
@@ -116,6 +118,31 @@ $superCategories = QueryOperator::getSuperCategoriesList();
     </div>
 </div>
 <!-- side menu end -->
+
+
+<!-- logout modal start -->
+<div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Logout
+            </div>
+            <div class="modal-body">
+                Are you sure you want to sign out?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger btn-ok">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#logout').on('show.bs.modal', function(e) {
+        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+    });
+</script>
+<!-- logout modal end -->
 
 
 
