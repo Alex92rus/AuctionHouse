@@ -74,8 +74,31 @@ HelperOperator::redirectTo( "../views/search_view.php" );
 
 function buildQuery($searchString, $searchCategory, $sortOption, $limit = null, $offset = null )
 {
-    // Default query
-    $query =
+    $query = null;
+
+    // Prepare count query
+    if ( is_null( $limit ) && is_null( $offset ) )
+    {
+        $query = "SELECT COUNT(*) ";
+    }
+    // Prepare list search results query
+    else
+    {
+        $query =
+            "SELECT auctions.auctionId, quantity, startPrice, reservePrice, startTime,
+            endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
+            item_categories.categoryName as subCategoryName, superCategoryName,
+            item_categories.superCategoryId, item_categories.categoryId,
+            conditionName, countryName, COUNT(bids.bidId) AS numBids,
+            COUNT(auction_watches.auctionId) AS numWatches,
+            MAX(bids.bidPrice) AS highestBid,
+            case
+                when MAX(bids.bidPrice)is not null THEN MAX(bids.bidPrice)
+                else startPrice
+            end AS currentPrice ";
+    }
+
+    $query .=
         "FROM auctions
             LEFT OUTER JOIN bids ON bids.auctionId = auctions.auctionId
             LEFT OUTER JOIN auction_watches ON auction_watches.auctionId = auctions.auctionId
@@ -106,61 +129,41 @@ function buildQuery($searchString, $searchCategory, $sortOption, $limit = null, 
         $query = str_replace("__cc__", "", $query);
     }
 
-    // Transform default query to count query
-    if ( is_null( $limit ) && is_null( $offset ) )
+    switch ($sortOption)
     {
-        $query = "SELECT COUNT(*) " . $query;
+        case "Best Match":
+            $orderBy = "ORDER BY CASE WHEN items.itemName = '__ss__' THEN 0
+                                  WHEN items.itemName LIKE '__ss__ %' THEN 1
+                                  WHEN items.itemName LIKE '% __ss__ %' THEN 2
+                                  WHEN items.itemName LIKE '% __ss__' THEN 3
+                                  WHEN items.itemName LIKE '__ss__%' THEN 4
+                                  WHEN items.itemName LIKE '%__ss__%' THEN 5
+                                  WHEN items.itemName LIKE '%__ss__' THEN 6
+                                  ELSE 7
+                            END ASC";
+            $orderBy = str_replace("__ss__", $searchString, $orderBy);
+            $query .= $orderBy;
+            break;
+        case "Time: ending soonest":
+            $orderBy = "ORDER BY auctions.endTime ASC";
+            $query .= $orderBy;
+            break;
+        case "Time: newly listed":
+            $orderBy = "ORDER BY auctions.endTime DESC";
+            $query .= $orderBy;
+            break;
+        case "Price: lowest first":
+            $orderBy = "ORDER BY currentPrice ASC";
+            $query .= $orderBy;
+            break;
+        case "Price: highest first":
+            $orderBy = "ORDER BY currentPrice DESC";
+            $query .= $orderBy;
+            break;
     }
-    // Transform default query to list search results query
-    else
+
+    if ( !is_null( $limit ) && !is_null( $offset ) )
     {
-        $query =
-            "SELECT auctions.auctionId, quantity, startPrice, reservePrice, startTime,
-            endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
-            item_categories.categoryName as subCategoryName, superCategoryName,
-            item_categories.superCategoryId, item_categories.categoryId,
-            conditionName, countryName, COUNT(bids.bidId) AS numBids,
-            COUNT(auction_watches.auctionId) AS numWatches,
-            MAX(bids.bidPrice) AS highestBid,
-            case
-                when MAX(bids.bidPrice)is not null THEN MAX(bids.bidPrice)
-                else startPrice
-            end AS currentPrice "
-            . $query;
-
-        switch ($sortOption)
-        {
-            case "Best Match":
-                $orderBy = "ORDER BY CASE WHEN items.itemName = '__ss__' THEN 0
-                                      WHEN items.itemName LIKE '__ss__ %' THEN 1
-                                      WHEN items.itemName LIKE '% __ss__ %' THEN 2
-                                      WHEN items.itemName LIKE '% __ss__' THEN 3
-                                      WHEN items.itemName LIKE '__ss__%' THEN 4
-                                      WHEN items.itemName LIKE '%__ss__%' THEN 5
-                                      WHEN items.itemName LIKE '%__ss__' THEN 6
-                                      ELSE 7
-                                END ASC";
-                $orderBy = str_replace("__ss__", $searchString, $orderBy);
-                $query .= $orderBy;
-                break;
-            case "Time: ending soonest":
-                $orderBy = "ORDER BY auctions.endTime ASC";
-                $query .= $orderBy;
-                break;
-            case "Time: newly listed":
-                $orderBy = "ORDER BY auctions.endTime DESC";
-                $query .= $orderBy;
-                break;
-            case "Price: lowest first":
-                $orderBy = "ORDER BY currentPrice ASC";
-                $query .= $orderBy;
-                break;
-            case "Price: highest first":
-                $orderBy = "ORDER BY currentPrice DESC";
-                $query .= $orderBy;
-                break;
-        }
-
         $query .= " LIMIT {$limit} OFFSET {$offset}";
     }
 
@@ -196,3 +199,4 @@ function getCatIdAndType($catName){
         "type"  => $type
     );
 }
+
