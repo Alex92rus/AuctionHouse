@@ -31,6 +31,8 @@ class SessionOperator
     const UPDATED_PROFILE_INFO = "updated_profile_info";
     const UPLOADED_PROFILE_PHOTO = "uploaded_profile_photo";
     const DELETED_PROFILE_PHOTO = "deleted_profile_photo";
+    const DELETED_AUCTION = "deleted_auction";
+    const DELETED_WATCH = "deleted_watch";
 
     const SUCCESS = "success";
     const WARNING = "warning";
@@ -121,43 +123,46 @@ class SessionOperator
     // Create a feedback session
     public static function setFeedback( $status )
     {
+        $type = self::SUCCESS;
+
         switch ( $status )
         {
             case self::SUBMITTED_REGISTRATION:
                 $title = "Registration submitted!";
                 $info  = "Before accessing your account, you have to follow the verification ";
                 $info .= "link we sent you to your email address.";
-                $type = self::SUCCESS;
                 break;
             case self::COMPLETED_REGISTRATION:
                 $title = "Registration completed!";
                 $info  = "Thank you for joining us. Your account is now ready for signing in.";
-                $type = self::SUCCESS;
                 break;
             case self::RESET_PASSWORD:
                 $title = "Password reset!";
                 $info  = "We sent you a link to change your password.";
-                $type = self::SUCCESS;
                 break;
             case self::CHANGED_PASSWORD:
                 $title = "Password changed!";
-                $info  = "User your new password to login next time.";
-                $type = self::SUCCESS;
+                $info  = "User your new password to login next time.";;
                 break;
             case self::UPDATED_PROFILE_INFO:
                 $title = "Profile updated!";
                 $info  = "Your new profile information was saved.";
-                $type = self::SUCCESS;
                 break;
             case self::UPLOADED_PROFILE_PHOTO:
                 $title = "Profile photo uploaded!";
                 $info  = "Your have a new profile image.";
-                $type = self::SUCCESS;
                 break;
             case self::DELETED_PROFILE_PHOTO:
                 $title = "Profile photo deleted!";
                 $info  = "You have currently no profile image.";
-                $type = self::DANGER;
+                break;
+            case self::DELETED_AUCTION:
+                $title = "Auction deleted!";
+                $info  = "The current highest bidder (if existing) was also notified about your auction termination.";
+                break;
+            case self::DELETED_WATCH:
+                $title = "Watch deleted!";
+                $info  = "";
                 break;
             default:
                 $title = $info = $type = null;

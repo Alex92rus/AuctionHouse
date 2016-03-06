@@ -8,7 +8,8 @@ require_once( $_SERVER['DOCUMENT_ROOT'] . '/classes/class.db_item.php' );
 
 $auctionId = $_GET["id"];
 
-if(!is_numeric($auctionId)){ // at least no sql injection
+// Prevent sql injection
+if(!is_numeric($auctionId)){
     HelperOperator::redirectTo("../views/my_live_auctions_view.php");
 }
 
@@ -20,9 +21,12 @@ $userId = $user->getUserId();
 $auction = DbAuction::find($auctionId);
 $item = DbItem::find($auction->getField("itemId"));
 
-//check user owns auction;
-if($item->getField("userId") == $userId){
+// User owns auction
+if($item->getField("userId") == $userId) {
+    // Delete auction
     $auction->delete();
+    // Set feedback session
+    SessionOperator::setFeedback( SessionOperator::DELETED_AUCTION );
 }
 
 HelperOperator::redirectTo("../views/my_live_auctions_view.php");
