@@ -17,10 +17,10 @@ $ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i" );
 
 <!-- panel start -->
 <div class="panel <?php if ( $ready ) { echo "panel-info"; } else { echo "panel-warning"; } ?> ">
-
     <!-- header start -->
     <div class="panel-heading clearfix">
         <h5 class="pull-left">
+            <section id="auction<?= $auction -> getAuctionId() ?>">
             <?php if ( $ready ) { echo "Time Remaining: "; } else { echo "Starts In: "; } ?><strong><span id="timer<?= $auction -> getAuctionId() ?>"></span></strong>
         </h5>
         <script type="text/javascript">
@@ -82,7 +82,7 @@ $ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i" );
                                 </div>
                             <?php } else { ?>
                                 <div class="text-center current-bid">
-                                    <h class=text-success">£<?= $bids[ 0 ] -> getBidPrice() ?></h>
+                                    <h4 class=text-success">£<?= $bids[ 0 ] -> getBidPrice() ?></h4>
                                     <small>Current Bid By</small><br>
                                     <small><strong><a href="#"><?= $bids[ 0 ] -> getBidderName() ?></a></strong></small>
                                 </div>

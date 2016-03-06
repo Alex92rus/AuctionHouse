@@ -38,6 +38,8 @@ $bids = QueryOperator::getAuctionBids($auction->getAuctionId());
 $views = $auction -> getViews();
 $watches = QueryOperator::getAuctionWatches($auction->getAuctionId());
 
+$isMyAuction = $auction -> getUsername() == SessionOperator::getUser() -> getUsername();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -164,31 +166,45 @@ $watches = QueryOperator::getAuctionWatches($auction->getAuctionId());
                             <div class="col-xs-5">
                                 <div class="col-xs-8"><p class="p-info bid-price" style="margin-top: 0">£
                                         <?php
+                                        $bid = null;
                                         if ( empty( $bids ) ) {
-                                            echo $auction -> getStartPrice() . "<br><small>Enter £" . $auction -> getStartPrice() . " or more</small>";
+                                            $bid  = $auction -> getStartPrice();
+                                            if ( !$isMyAuction ) {
+                                                $bid .= "<br><small>Enter £" . $auction->getStartPrice() . " or more</small>";
+                                            }
                                         } else {
                                             $bid  = $bids[ 0 ] -> getBidPrice();
-                                            $bid .= "<br><small>Enter £ " . ( $bid + HelperOperator::getIncrement( $bid ) ) . " or more</small>";
-                                            echo $bid;
-                                        }  ?></p>
+                                            if( !$isMyAuction ) {
+                                                $bid .= "<br><small>Enter £ " . ($bid + HelperOperator::getIncrement($bid)) . " or more</small>";
+                                            }
+                                        }
+                                        echo $bid
+                                        ?></p>
                                 </div>
                                 <div class="col-xs-4">
                                     <p class="p-info text-info" style="padding-top:4px;"><?= count( $bids ) ?> bids</p>
                                 </div>
-                                <form method="GET" action="../scripts/place_bid.php">
-                                    <div class="col-xs-8">
-                                        <input type="hidden" name="auctionId" value="<?= $auction -> getAuctionId() ?>">
-                                        <input type="hidden" name="userId" value="<?= SessionOperator::getUser() -> getUserId() ?>">
-                                        <input type="text" class="form-control" name="bidPrice" maxlength="11" style="height: 30px"
-                                            <?php echo 'value = "' . SessionOperator::getFormInput( "bidPrice" ) . '"'; ?> ><br>
+                                <?php if( !$isMyAuction ) { ?>
+                                    <form method="GET" action="../scripts/place_bid.php">
+                                        <div class="col-xs-8">
+                                            <input type="hidden" name="auctionId" value="<?= $auction -> getAuctionId() ?>">
+                                            <input type="hidden" name="userId" value="<?= SessionOperator::getUser() -> getUserId() ?>">
+                                            <input type="text" class="form-control" name="bidPrice" maxlength="11" style="height: 30px"
+                                                <?php echo 'value = "' . SessionOperator::getFormInput( "bidPrice" ) . '"'; ?> ><br>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <button type="submit" class="btn btn-primary" style="height: 30px; padding: 4px 12px">Place Bid</button>
+                                        </div>
+                                    </form>
+
+                                    <div class="col-xs-12">
+                                        <a href=""><i class="fa fa-eye"></i> Add to watch list</a>
                                     </div>
-                                    <div class="col-xs-4">
-                                        <button type="submit" class="btn btn-primary" style="height: 30px; padding: 4px 12px">Place Bid</button>
+                                <?php } else { ?>
+                                    <div class="col-xs-12">
+                                        <a href="my_live_auctions_view.php#auction<?= $auction -> getAuctionId() ?>">This is your auction</a>
                                     </div>
-                                </form>
-                                <div class="col-xs-12">
-                                    <a href=""><i class="fa fa-eye"></i> Add to watch list</a>
-                                </div>
+                                <?php } ?>
                             </div>
 
                             <div class="col-xs-4">

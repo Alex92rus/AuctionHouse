@@ -23,8 +23,10 @@ if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "userId" ] ) && isset( $_GET
     // Correct inputs
     else
     {
-        echo "make bid";
-        //QueryOperator::placeBid( $auctionId, $userId, $bidPrice );
+        // Place bid
+        QueryOperator::placeBid( $auctionId, $userId, $bidPrice );
+        // Set feedback session
+        SessionOperator::setFeedback( SessionOperator::PLACED_BID );
     }
 }
 

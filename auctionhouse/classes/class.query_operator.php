@@ -173,10 +173,10 @@ class QueryOperator
         $auctions = array();
         $categories = array();
         while ($row = $result->fetch_assoc()){
-            foreach( $row as $key => $value )
+            /*foreach( $row as $key => $value )
             {
                 echo $key . "    " . $value . "<br>";
-            }
+            }*/
             $auctions[] = new Auction($row);
             if(!array_key_exists($row["superCategoryId"], $categories )){
                 $categories[$row["superCategoryId"]] = array();

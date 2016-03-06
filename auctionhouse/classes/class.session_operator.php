@@ -33,6 +33,8 @@ class SessionOperator
     const DELETED_PROFILE_PHOTO = "deleted_profile_photo";
     const DELETED_AUCTION = "deleted_auction";
     const DELETED_WATCH = "deleted_watch";
+    const PLACED_BID = "placed_bid";
+    const CREATED_AUCTION = "created_auction";
 
     const SUCCESS = "success";
     const WARNING = "warning";
@@ -163,6 +165,14 @@ class SessionOperator
             case self::DELETED_WATCH:
                 $title = "Watch deleted!";
                 $info  = "";
+                break;
+            case self::PLACED_BID:
+                $title = "Bid successfully placed!";
+                $info  = "You are now the highest bidder.";
+                break;
+            case self::CREATED_AUCTION:
+                $title = "Auction successfully created!";
+                $info  = "You auction is now live and visible to buyers";
                 break;
             default:
                 $title = $info = $type = null;
