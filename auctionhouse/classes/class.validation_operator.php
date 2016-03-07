@@ -35,7 +35,8 @@ class ValidationOperator
         "quantity" => "Please specify the amount of items you want to sell",
         "startTime" => "Please specify your auction's start time",
         "endTime" => "Please specify your auction's end time",
-        "startPrice" => "Please specify your auction's start price"
+        "startPrice" => "Please specify your auction's start price",
+        "bidPrice" => "Please specify a bid price"
     ];
     const PASSWORD = [
         self::INVALID_SIZE => "Password needs to be at least 10 characters long!",
@@ -280,7 +281,8 @@ class ValidationOperator
     // Check inputted bid price
     public static function checkBidPrice( $input, $auctionId )
     {
-        $currentHighestBid = QueryOperator::getAuctionBids( $auctionId )[ 0 ] -> getBidPrice();
+        $currentHighestBid = QueryOperator::getAuctionBids( $auctionId, 1 ) -> getBidPrice();
+        $currentHighestBid += HelperOperator::getIncrement( $currentHighestBid );
 
         // Invalid bid price
         if ( $input < $currentHighestBid )

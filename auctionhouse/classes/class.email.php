@@ -133,6 +133,11 @@ class Email
         $this -> email -> IsHTML( true );
     }
 
+    public function prepareOutbidEmail( $bidPrice, $bidder, $auction )
+    {
+
+    }
+
     public function sentEmail()
     {
         // Set who the message is to be sent from
