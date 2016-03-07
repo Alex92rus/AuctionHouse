@@ -137,7 +137,7 @@ class QueryOperator
     }
 
 
-    public static function getAuctionBids( $auctionId )
+    public static function getAuctionBids( $auctionId, $limit = null )
     {
         self::getDatabaseInstance();
 
@@ -146,6 +146,7 @@ class QueryOperator
         $bidsQuery .= "FROM auctions a, bids b, users u ";
         $bidsQuery .= "WHERE a.auctionId = b.auctionId AND b.userId = u.userId AND a.auctionId = $auctionId ";
         $bidsQuery .= "ORDER BY b.bidId DESC";
+        $bidsQuery .= ( is_null( $limit ) ) ? "" : " LIMIT " . $limit;
         $result = self::$database -> issueQuery( $bidsQuery );
         $bids = [];
 
@@ -153,6 +154,11 @@ class QueryOperator
         {
             $bid = new Bid( $row );
             $bids[] = $bid;
+        }
+
+        if ( count( $bids ) == 1 )
+        {
+            return $bids[ 0 ];
         }
 
         return $bids;

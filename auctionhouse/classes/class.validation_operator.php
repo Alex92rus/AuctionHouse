@@ -280,7 +280,8 @@ class ValidationOperator
     // Check inputted bid price
     public static function checkBidPrice( $input, $auctionId )
     {
-        $currentHighestBid = QueryOperator::getAuctionBids( $auctionId )[ 0 ] -> getBidPrice();
+        $currentHighestBid = QueryOperator::getAuctionBids( $auctionId, 1 ) -> getBidPrice();
+        $currentHighestBid += HelperOperator::getIncrement( $currentHighestBid );
 
         // Invalid bid price
         if ( $input < $currentHighestBid )

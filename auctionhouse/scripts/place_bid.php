@@ -25,6 +25,10 @@ if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "userId" ] ) && isset( $_GET
     {
         // Place bid
         QueryOperator::placeBid( $auctionId, $userId, $bidPrice );
+
+        // Send emails
+        //$auction = QueryOperator::getLiveAuction( $auctionId );
+
         // Set feedback session
         SessionOperator::setFeedback( SessionOperator::PLACED_BID );
     }
