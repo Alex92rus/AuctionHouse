@@ -146,6 +146,7 @@ $categories = $search_result["categories"];
                         echo "<h4>No auctions found</h4>";
                     } else {
                         foreach ( $liveAuctions as $auction ) {
+
                             $origin = "search";
                             include "../includes/live_auction_to_buyer.php";
                         }

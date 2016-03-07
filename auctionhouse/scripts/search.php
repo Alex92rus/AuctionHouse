@@ -89,8 +89,8 @@ function buildQuery($searchString, $searchCategory, $sortOption, $limit = null, 
             endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
             item_categories.categoryName as subCategoryName, superCategoryName,
             item_categories.superCategoryId, item_categories.categoryId,
-            conditionName, countryName, COUNT(bids.bidId) AS numBids,
-            COUNT(auction_watches.auctionId) AS numWatches,
+            conditionName, countryName, COUNT(DISTINCT (bids.bidId)) AS numBids,
+            COUNT(DISTINCT (auction_watches.watchId)) AS numWatches,
             MAX(bids.bidPrice) AS highestBid,
             case
                 when MAX(bids.bidPrice)is not null THEN MAX(bids.bidPrice)
