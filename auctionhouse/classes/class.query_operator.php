@@ -201,8 +201,8 @@ class QueryOperator
 		endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
         item_categories.categoryName as subCategoryName, superCategoryName,
         item_categories.superCategoryId, item_categories.categoryId,
-        conditionName, countryName, auction_watches.watchId, COUNT(bids.bidId) AS numBids,
-        COUNT(auction_watches.auctionId) AS numWatches,
+        conditionName, countryName, auction_watches.watchId, COUNT(DISTINCT (bids.bidId)) AS numBids,
+        COUNT(DISTINCT (auction_watches.watchId)) AS numWatches,
         MAX(bids.bidPrice) AS highestBid,
         case
 			when MAX(bids.bidPrice)is not null THEN MAX(bids.bidPrice)
@@ -212,7 +212,7 @@ class QueryOperator
 
         FROM auctions
             LEFT OUTER JOIN bids ON bids.auctionId = auctions.auctionId
-            LEFT OUTER JOIN auction_watches ON auction_watches.auctionId = auctions.auctionId
+            JOIN auction_watches ON auction_watches.auctionId = auctions.auctionId
             JOIN items ON items.itemId = auctions.itemId
             JOIN users ON items.userId = users.userId
             JOIN item_categories ON items.categoryId = item_categories.categoryId
@@ -221,8 +221,12 @@ class QueryOperator
             JOIN countries ON users.countryId = countries.countryId
 
 
-        WHERE auction_watches.userId = __userId__
+        WHERE auctions.auctionId IN( SELECT DISTINCT( auctions.auctionId)
+                                      FROM auctions JOIN auction_watches ON auctions.auctionId = auction_watches.auctionId
+                                       WHERE auction_watches.userId = __userId__ )
+
         GROUP BY auctions.auctionId
+
         ORDER BY CASE WHEN auctions.endTime > now() THEN 0 ELSE 1 END ASC, auctions.endTime ASC
         ";
 
