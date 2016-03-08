@@ -100,7 +100,10 @@ $superCategories = QueryOperator::getSuperCategoriesList();
                         <a href="../views/my_live_auctions_view.php"><i class="fa fa-clock-o fa-fw"></i> Live Auctions</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-history fa-fw"></i> Sold Auctions</a>
+                        <a href="../views/my_sold_auctions_view.php"><i class="fa fa-history fa-fw"></i> Sold Auctions</a>
+                    </li>
+                    <li>
+                        <a href="../views/my_unsold_auctions_view.php"><i class="fa fa-minus-circle fa-fw"></i> Unsold Auctions</a>
                     </li>
                 </ul>
 

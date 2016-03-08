@@ -3,7 +3,7 @@ require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../scripts/user_session.php";
 $user = SessionOperator::getUser();
-$liveAuctions = QueryOperator::getSellerAuctions( $user->getUserId(), QueryOperator::SELLER_LIVE_AUCTIONS );
+$soldAuctions = QueryOperator::getSellerAuctions( $user->getUserId(), QueryOperator::SELLER_SOLD_AUCTIONS );
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +16,7 @@ $liveAuctions = QueryOperator::getSellerAuctions( $user->getUserId(), QueryOpera
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Live Auctions</title>
+    <title>Sold Auctions</title>
 
     <!-- Font -->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
@@ -45,10 +45,6 @@ $liveAuctions = QueryOperator::getSellerAuctions( $user->getUserId(), QueryOpera
 </head>
 
 <body>
-    <!-- display feedback (if available) start -->
-    <?php require_once "../includes/feedback.php" ?>
-    <!-- display feedback (if available) end -->
-
 
     <div id="wrapper">
 
@@ -62,8 +58,8 @@ $liveAuctions = QueryOperator::getSellerAuctions( $user->getUserId(), QueryOpera
             <div class="row">
                 <div class="col-xs-12">
                     <h4 class="page-header">
-                        You are currently selling <span class="text-danger"><?= count( $liveAuctions ) ?> auctions</span>
-                        <?php if ( !empty( $liveAuctions ) ) : ?>
+                        You have <span class="text-danger"><?= count( $soldAuctions ) ?> sold auctions</span>
+                        <?php if ( !empty( $soldAuctions ) ) : ?>
                             <a class="btn btn-primary pull-right" href="create_auction_view.php">Create New Auction</a>
                         <?php endif ?>
                     </h4>
@@ -74,18 +70,18 @@ $liveAuctions = QueryOperator::getSellerAuctions( $user->getUserId(), QueryOpera
                 <div class="col-xs-12">
 
                 <!-- no auctions available start -->
-                <?php if ( empty( $liveAuctions ) ) { ?>
+                <?php if ( empty( $soldAuctions ) ) { ?>
                     <div class="well text-center">
-                        <h1 class="text-danger">No auctions available</h1>
-                        <h4>You currently sell now auctions. Click on the button below to create a new auction</h4>
+                        <h1 class="text-danger">You have not sold any auctions yet</h1>
+                        <h4>Click on the button below to create a new auction</h4>
                         <a class="btn btn-lg btn-primary" href="create_auction_view.php">Create New Auction</a>
                     </div>
                 <!-- no auctions available end -->
 
                 <!-- auctions available start -->
                 <?php } else {
-                    foreach ($liveAuctions as $advancedAuction) {
-                        $option = "live";
+                    foreach ( $soldAuctions as $advancedAuction ) {
+                        $option = "sold";
                         include "../includes/auction_to_seller.php";
                     }
                 }
@@ -107,14 +103,6 @@ $liveAuctions = QueryOperator::getSellerAuctions( $user->getUserId(), QueryOpera
 
     </div>
     <!-- /#wrapper -->
-
-
-    <!-- modal start -->
-    <?php
-    $header = "Delete Auction";
-    include "../includes/delete_confirmation.php"
-    ?>
-    <!-- modal end -->
 
 </body>
 

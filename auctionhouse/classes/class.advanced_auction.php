@@ -3,7 +3,7 @@ require_once "class.auction.php";
 require_once "class.bid.php";
 
 
-class LiveAuction
+class AdvancedAuction
 {
     private $auction;
     private $bids;

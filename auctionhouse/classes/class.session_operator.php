@@ -1,6 +1,6 @@
 <?php
 require_once "class.user.php";
-require_once "class.live_auction.php";
+require_once "class.advanced_auction.php";
 require_once "class.pagination.php";
 session_start();
 

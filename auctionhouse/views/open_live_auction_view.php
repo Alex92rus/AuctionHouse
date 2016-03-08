@@ -5,7 +5,7 @@ require_once "../classes/class.helper_operator.php";
 require_once "../scripts/user_session.php";
 require_once "../classes/class.auction.php";
 require_once "../classes/class.bid.php";
-require_once "../classes/class.live_auction.php";
+require_once "../classes/class.advanced_auction.php";
 require_once "../classes/class.db_auction.php";
 require_once "../classes/class.db_item.php";
 require_once "../classes/class.db_bid.php";

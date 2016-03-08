@@ -87,8 +87,8 @@ else
     $auction[] = $new_auction[ "quantity" ];
     $auction[] = $new_auction[ "startPrice" ];
     $auction[] = $new_auction[ "reservePrice" ];
-    $auction[] = date_create($new_auction[ "startTime" ]) -> format('Y-m-d H:i');
-    $auction[] = date_create($new_auction[ "endTime" ]) -> format('Y-m-d H:i');
+    $auction[] = date_create($new_auction[ "startTime" ]) -> format('Y-m-d H:i:s');
+    $auction[] = date_create($new_auction[ "endTime" ]) -> format('Y-m-d H:i:s');
     $auction[] = $new_auction["reportFrequency"];
 
     // Store auction in database

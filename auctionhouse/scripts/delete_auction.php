@@ -25,6 +25,10 @@ $item = DbItem::find($auction->getField("itemId"));
 if($item->getField("userId") == $userId) {
     // Delete auction
     $auction->delete();
+    if ( !empty( $imageName = $item -> getField( "image" ) ) )
+    {
+        unlink( ROOT . $imageName );
+    }
     // Set feedback session
     SessionOperator::setFeedback( SessionOperator::DELETED_AUCTION );
 }

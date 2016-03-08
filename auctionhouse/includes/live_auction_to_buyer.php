@@ -1,7 +1,7 @@
 <?php
 require_once "../classes/class.auction.php";
 require_once "../classes/class.bid.php";
-require_once "../classes/class.live_auction.php";
+require_once "../classes/class.advanced_auction.php";
 
 
 /* @var Auction $auction */

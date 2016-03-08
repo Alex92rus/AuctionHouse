@@ -1,52 +1,86 @@
 <?php
 require_once "../classes/class.auction.php";
 require_once "../classes/class.bid.php";
-require_once "../classes/class.live_auction.php";
+require_once "../classes/class.advanced_auction.php";
 
-/* @var LiveAuction $liveAuction */
+/* @var AdvancedAuction $advancedAuction */
+/* @var string $option */
 
-$auction = $liveAuction -> getAuction();
-$bids = $liveAuction -> getBids();
-$views = $liveAuction -> getViews();
-$watches = $liveAuction -> getWatches();
+$auction = $advancedAuction -> getAuction();
+$bids = $advancedAuction -> getBids();
+$views = $advancedAuction -> getViews();
+$watches = $advancedAuction -> getWatches();
 
 $now = new DateTime("now");
-$ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i" );
+$ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i:s" );
+
+// Determine panel type
+$panelType =  null;
+if ( $option == "live" ) {
+    if ( $ready ) {
+        $panelType = "panel-info";
+    } else {
+        $panelType = "panel-default";
+    }
+} else if ( $option == "sold" ) {
+    $panelType = "panel-success";
+} else {
+    if ( empty( $bids ) ) {
+        $panelType = "panel-danger";
+    } else {
+        $panelType = "panel-warning";
+    }
+}
+
 ?>
 
 
 <!-- panel start -->
-<div class="panel <?php if ( $ready ) { echo "panel-info"; } else { echo "panel-warning"; } ?> ">
+<div class="panel <?= $panelType ?>">
+
+
     <!-- header start -->
     <div class="panel-heading clearfix">
-        <h5 class="pull-left">
-            <section id="auction<?= $auction -> getAuctionId() ?>">
-            <?php if ( $ready ) { echo "Time Remaining: "; } else { echo "Starts In: "; } ?><strong><span id="timer<?= $auction -> getAuctionId() ?>"></span></strong>
-        </h5>
-        <script type="text/javascript">
-            var timerId = "#timer" + <?= json_encode( $auction -> getAuctionId() ) ?>;
-            var endTime = <?php if ( $ready ){ echo json_encode( $auction -> getEndTime() ); } else { echo json_encode( $auction -> getStartTime() ); } ?>;
-            $(timerId).countdown( endTime, function(event) {
-                $(this).text(
-                    event.strftime('%D days %H:%M:%S')
-                );
-            });
-        </script>
-        <div class="pull-right auction-navigation">
-            <div class="btn-group pull-right">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-cog"></span>
-                </button>
-                <ul class="dropdown-menu slidedown">
-                    <li>
-                        <a href="#" data-href="../scripts/delete_auction.php?id=<?php echo $auction->getAuctionId()?>"
-                           data-toggle="modal" data-target="#confirm-delete"><span class="glyphicon glyphicon-trash"></span>Delete</a>
-                    </li>
-                </ul>
+
+        <?php if ( $option == "live" ) { ?>
+            <h5 class="pull-left">
+                <section id="auction<?= $auction -> getAuctionId() ?>">
+                <?php if ( $ready ) { echo "Time Remaining: "; } else { echo "Starts In: "; } ?><strong><span id="timer<?= $auction -> getAuctionId() ?>"></span></strong>
+            </h5>
+            <script type="text/javascript">
+                var timerId = "#timer" + <?= json_encode( $auction -> getAuctionId() ) ?>;
+                var endTime = <?php if ( $ready ){ echo json_encode( $auction -> getEndTime() ); } else { echo json_encode( $auction -> getStartTime() ); } ?>;
+                $(timerId).countdown( endTime, function(event) {
+                    $(this).text(
+                        event.strftime('%D days %H:%M:%S')
+                    );
+                });
+            </script>
+            <div class="pull-right auction-navigation">
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-cog"></span>
+                    </button>
+                    <ul class="dropdown-menu slidedown">
+                        <li>
+                            <a href="#" data-href="../scripts/delete_auction.php?id=<?php echo $auction->getAuctionId()?>"
+                               data-toggle="modal" data-target="#confirm-delete"><span class="glyphicon glyphicon-trash"></span>Delete</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
+        <?php } else if ( $option == "sold" ) { ?>
+            <h5 class="text-success">Sold to <a href=""><?= $bids[ 0 ] -> getBidderName() ?></a> for <strong>£<?= $bids[ 0 ] -> getBidPrice() ?></strong></h5>
+        <?php } else { ?>
+            <h5 class="text-danger">
+                <?php if( empty( $bids ) ) { echo "Nobody placed a bid"; } else { echo "Reserve price was not reached. Last bid was <strong>£ " .  $bids[ 0 ] -> getBidPrice() . "</strong>"; } ?>
+            </h5>
+        <?php } ?>
+
     </div>
+
     <!-- header end -->
+
 
     <!-- body start -->
     <div class="panel-body">
@@ -68,27 +102,29 @@ $ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i" );
                             <?= $auction -> getItemName() ?><br>
                             <small><?= $auction -> getItemBrand() ?></small>
                         </h4>
-                        <p class="text-danger">
+                        <p class="<?php if ( $option == "live" ) { echo "text-danger"; } else { echo "text-info"; }?>">
                             <strong>Bids <?= count( $bids) ?></strong> |
                             <i class="fa fa-eye"></i> <strong>Views <?= $views ?></strong> |
                             <i class="fa fa-desktop"></i> <strong>Watching <?= $watches ?></strong>
                         </p>
                     </div>
-                    <div class="col-xs-3">
-                        <?php if ( $ready ) : ?>
-                            <?php if ( empty( $bids ) ) { ?>
-                                <div class="text-center no-bids">
-                                    <h5 class=text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> No bids</h5>
-                                </div>
-                            <?php } else { ?>
-                                <div class="text-center current-bid">
-                                    <h4 class=text-success">£<?= $bids[ 0 ] -> getBidPrice() ?></h4>
-                                    <small>Current Bid By</small><br>
-                                    <small><strong><a href="#"><?= $bids[ 0 ] -> getBidderName() ?></a></strong></small>
-                                </div>
-                            <?php } ?>
-                        <?php endif ?>
-                    </div>
+                    <?php if( $option == "live" ) : ?>
+                        <div class="col-xs-3">
+                            <?php if ( $ready ) : ?>
+                                <?php if ( empty( $bids ) ) { ?>
+                                    <div class="text-center no-bids">
+                                        <h5 class=text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> No bids</h5>
+                                    </div>
+                                <?php } else { ?>
+                                    <div class="text-center current-bid">
+                                        <h4 class="text-success">£<?= $bids[ 0 ] -> getBidPrice() ?></h4>
+                                        <small>Current Bid By</small><br>
+                                        <small><strong><a href="#"><?= $bids[ 0 ] -> getBidderName() ?></a></strong></small>
+                                    </div>
+                                <?php } ?>
+                            <?php endif ?>
+                        </div>
+                    <?php endif ?>
                 </div><hr>
 
                 <div class="row">
