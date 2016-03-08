@@ -63,7 +63,6 @@ class QueryBuilder
 
     }
 
-
     public function getListOfColumn($fieldType)
     {
         $result = $this->get(array($fieldType));
@@ -72,5 +71,17 @@ class QueryBuilder
             $values[] = $value[$fieldType];
         }
         return $values;
+    }
+
+    public function count()
+    {
+        $this->query = "SELECT COUNT(*) AS num_rows " . $this->query;
+        return $this->executeQuery()->fetch_assoc()["num_rows"];
+
+    }
+
+    public function exists()
+    {
+        return $this->count() > 0 ? true:false;
     }
 }

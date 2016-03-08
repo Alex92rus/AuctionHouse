@@ -35,10 +35,18 @@ if(isset( $_GET["s"])){
 
 $auction = QueryOperator::getLiveAuction($auctionId);
 $bids = QueryOperator::getAuctionBids($auction->getAuctionId());
-$views = $auction -> getViews();
+
 $watches = QueryOperator::getAuctionWatches($auction->getAuctionId());
 
 $isMyAuction = $auction -> getUsername() == SessionOperator::getUser() -> getUsername();
+
+//increment num_views of auction on database
+$dbAuction = DbAuction::find($auctionId);
+$dbAuction->setField("views", $dbAuction->getField("views") +1);
+$dbAuction->save();
+
+//increment views displayed on page
+$views = $auction -> getViews() +1;
 
 ?>
 <!DOCTYPE html>
@@ -197,7 +205,19 @@ $isMyAuction = $auction -> getUsername() == SessionOperator::getUser() -> getUse
                                     </form>
 
                                     <div class="col-xs-12">
-                                        <a href=""><i class="fa fa-eye"></i> Add to watch list</a>
+                                    <?php
+                                        $user= SessionOperator::getUser();
+                                        $alreadyWatching = DbAuctionWatch::withConditions("WHERE userId = ".$user->getUserId(). " AND auctionId =".$auctionId)
+                                            ->exists() ? true: false;
+
+                                        if(!$alreadyWatching){
+                                            $href = '"../scripts/create_watch.php?'.$_SERVER['QUERY_STRING'].'"';
+                                            echo '<a href='.$href.'><i class="fa fa-eye"></i> Add to watch list</a>';
+                                        }else{
+                                            echo '<h5>Watching</h5>';
+                                        }
+                                    ?>
+
                                     </div>
                                 <?php } else { ?>
                                     <div class="col-xs-12">
