@@ -188,7 +188,6 @@ $isMyAuction = $auction -> getUsername() == SessionOperator::getUser() -> getUse
                                     <form method="GET" action="../scripts/place_bid.php">
                                         <div class="col-xs-8">
                                             <input type="hidden" name="auctionId" value="<?= $auction -> getAuctionId() ?>">
-                                            <input type="hidden" name="userId" value="<?= SessionOperator::getUser() -> getUserId() ?>">
                                             <input type="text" class="form-control" name="bidPrice" maxlength="11" style="height: 30px"
                                                 <?php echo 'value = "' . SessionOperator::getFormInput( "bidPrice" ) . '"'; ?> ><br>
                                         </div>

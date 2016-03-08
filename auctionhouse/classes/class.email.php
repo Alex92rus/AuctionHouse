@@ -116,6 +116,7 @@ class Email
         $this -> email -> IsHTML( true );
     }
 
+
     public function preparePasswordConfirmEmail()
     {
         // Set subject
@@ -133,10 +134,27 @@ class Email
         $this -> email -> IsHTML( true );
     }
 
-    public function prepareOutbidEmail( $bidPrice, $bidder, $auction )
-    {
 
+    public function prepareOutbidEmail( $bidPrice, $newHighestBidder, $itemName, $itemBrand, $itemImage )
+    {
+        // Set subject
+        $subject  = "You were outbid on an auction";
+        $this -> email -> Subject = $subject;
+
+        // Set message
+        $plugin = "You were outbid on the following auction:";
+        $message  = $this -> buildBody( 0 );
+        $message .= "<h3>Hello {$this -> firstName} {$this -> lastName}</h3>";
+        $message .= "<p>{$plugin}<br><br></p>";
+        $message .= "<div><img src=\"cid:itemImage\" style=\"float:left; margin-right:20px; height: 100px; width: inherit\"><p><b>{$itemName}</b><br>{$itemBrand}</p></div>";
+        $message .= "<p style='clear:left'><br><br>New highest bid is £{$bidPrice} by <b>{$newHighestBidder}</b></p>";
+        $message .= $this -> buildBody( 1 );
+
+        $this -> email -> AddEmbeddedImage( "..{$itemImage}", "itemImage" );
+        $this -> email -> Body = $message;
+        $this -> email -> IsHTML( true );
     }
+
 
     public function sentEmail()
     {

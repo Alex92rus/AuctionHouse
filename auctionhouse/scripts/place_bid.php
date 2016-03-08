@@ -2,15 +2,18 @@
 require_once "../classes/class.helper_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../classes/class.validation_operator.php";
+require_once "../classes/class.email.php";
 
 $auctionId = null;
 
-
-if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "userId" ] ) && isset( $_GET[ "bidPrice" ] ) )
+if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "bidPrice" ] ) )
 {
     $auctionId = ( int ) $_GET[ "auctionId" ];
-    $userId = ( int ) $_GET[ "userId" ];
     $bidPrice = $_GET[ "bidPrice" ];
+
+    $auction = QueryOperator::getLiveAuction( $auctionId );
+    $user = SessionOperator::getUser();
+    $userId = ( int ) $user -> getUserId();
 
     // Incorrect inputs
     if ( ValidationOperator::hasEmtpyFields( $_GET ) ||
@@ -23,11 +26,22 @@ if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "userId" ] ) && isset( $_GET
     // Correct inputs
     else
     {
+        // Send email to outbidded user
+        $highestBid = QueryOperator::getAuctionBids( $auctionId, 1 )[ 0 ];
+        if ( !empty( $highestBid ) && ( $email = $highestBid -> getBidderEmail() ) != $user -> getEmail() )
+        {
+            $outbidEmail = new Email( $email, $highestBid -> getBidderFirstName(), $highestBid -> getBidderLastName() );
+            $outbidEmail -> prepareOutbidEmail(
+                $bidPrice,
+                $user -> getUserName(),
+                $auction -> getItemName(),
+                $auction -> getItemBrand(),
+                $auction -> getImage() );
+            $outbidEmail -> sentEmail();
+        }
+
         // Place bid
         QueryOperator::placeBid( $auctionId, $userId, $bidPrice );
-
-        // Send emails
-        //$auction = QueryOperator::getLiveAuction( $auctionId );
 
         // Set feedback session
         SessionOperator::setFeedback( SessionOperator::PLACED_BID );
@@ -36,4 +50,4 @@ if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "userId" ] ) && isset( $_GET
 
 
 // Return back to page
-HelperOperator::redirectTo( "../views/open_live_auction_view.php?liveAuction=" . $auctionId );
+HelperOperator::redirectTo( "../views/open_live_auction_view.php?liveAuction=" . $auctionId . "&s=1" );

@@ -69,6 +69,7 @@ class Auction
         $this->username = $username;
     }
 
+
     /**
      * @return mixed
      */
@@ -126,6 +127,7 @@ class Auction
         return $this->reservePrice;
     }
 
+
     /**
      * @param mixed $reservePrice
      */
@@ -133,6 +135,7 @@ class Auction
     {
         $this->reservePrice = $reservePrice;
     }
+
 
     /**
      * @return mixed
@@ -142,6 +145,7 @@ class Auction
         return $this->startTime;
     }
 
+
     /**
      * @param mixed $startTime
      */
@@ -149,6 +153,7 @@ class Auction
     {
         $this->startTime = $startTime;
     }
+
 
     /**
      * @return mixed
@@ -158,6 +163,7 @@ class Auction
         return $this->endTime;
     }
 
+
     /**
      * @param mixed $endTime
      */
@@ -165,6 +171,7 @@ class Auction
     {
         $this->endTime = $endTime;
     }
+
 
     /**
      * @return mixed
@@ -174,6 +181,7 @@ class Auction
         return $this->itemName;
     }
 
+
     /**
      * @param mixed $itemName
      */
@@ -181,6 +189,7 @@ class Auction
     {
         $this->itemName = $itemName;
     }
+
 
     /**
      * @return mixed
@@ -190,6 +199,7 @@ class Auction
         return $this->itemBrand;
     }
 
+
     /**
      * @param mixed $itemBrand
      */
@@ -197,6 +207,7 @@ class Auction
     {
         $this->itemBrand = $itemBrand;
     }
+
 
     /**
      * @return mixed
@@ -206,6 +217,7 @@ class Auction
         return $this->itemDescription;
     }
 
+
     /**
      * @param mixed $itemDescription
      */
@@ -213,6 +225,7 @@ class Auction
     {
         $this->itemDescription = $itemDescription;
     }
+
 
     /**
      * @return mixed
@@ -222,6 +235,7 @@ class Auction
         return $this->image;
     }
 
+
     /**
      * @param mixed $image
      */
@@ -230,6 +244,7 @@ class Auction
         $this->image = $image;
     }
 
+
     /**
      * @return mixed
      */
@@ -237,6 +252,7 @@ class Auction
     {
         return $this->categoryName;
     }
+
 
     /**
      * @param mixed $categoryName
@@ -247,8 +263,6 @@ class Auction
     }
 
 
-
-
     /**
      * @return mixed
      */
@@ -256,6 +270,7 @@ class Auction
     {
         return $this->superCategoryName;
     }
+
 
     /**
      * @param mixed $superCategoryName
@@ -265,6 +280,7 @@ class Auction
         $this->superCategoryName = $superCategoryName;
     }
 
+
     /**
      * @return mixed
      */
@@ -272,6 +288,7 @@ class Auction
     {
         return $this->watchId;
     }
+
 
     /**
      * @param mixed $watchId
@@ -282,8 +299,6 @@ class Auction
     }
 
 
-
-
     /**
      * @return mixed
      */
@@ -291,6 +306,7 @@ class Auction
     {
         return $this->conditionName;
     }
+
 
     /**
      * @param mixed $conditionName
@@ -300,6 +316,7 @@ class Auction
         $this->conditionName = $conditionName;
     }
 
+
     /**
      * @return mixed
      */
@@ -308,6 +325,7 @@ class Auction
         return $this->country;
     }
 
+
     /**
      * @param mixed $country
      */
@@ -315,9 +333,6 @@ class Auction
     {
         $this->country = $country;
     }
-
-
-
 
 
     /**
@@ -336,6 +351,7 @@ class Auction
         $this->numBids = $numBids;
     }
 
+
     /**
      * @return mixed
      */
@@ -343,6 +359,7 @@ class Auction
     {
         return $this->views;
     }
+
 
     /**
      * @param mixed $views
@@ -353,7 +370,6 @@ class Auction
     }
 
 
-
     /**
      * @return mixed
      */
@@ -361,6 +377,7 @@ class Auction
     {
         return $this->highestBid;
     }
+
 
     /**
      * @param mixed $highestBid
@@ -370,6 +387,7 @@ class Auction
         $this->highestBid = $highestBid;
     }
 
+
     /**
      * @return mixed
      */
@@ -378,6 +396,7 @@ class Auction
         return $this->numWatches;
     }
 
+
     /**
      * @param mixed $numWatches
      */
@@ -385,9 +404,4 @@ class Auction
     {
         $this->numWatches = $numWatches;
     }
-
-
-
-
-
    }

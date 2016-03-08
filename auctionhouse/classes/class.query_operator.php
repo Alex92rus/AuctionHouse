@@ -142,23 +142,19 @@ class QueryOperator
         self::getDatabaseInstance();
 
         // SQL query for retrieving all bids for a specific auction
-        $bidsQuery  = "SELECT u.username AS bidderName, b.bidTime, b.bidPrice ";
+        $bidsQuery  = "SELECT u.username AS bidderName, u.email AS bidderEmail, u.firstName AS bidderFirstName, u.lastName AS bidderLastName, ";
+        $bidsQuery .= "b.bidTime, b.bidPrice ";
         $bidsQuery .= "FROM auctions a, bids b, users u ";
         $bidsQuery .= "WHERE a.auctionId = b.auctionId AND b.userId = u.userId AND a.auctionId = $auctionId ";
         $bidsQuery .= "ORDER BY b.bidId DESC";
         $bidsQuery .= ( is_null( $limit ) ) ? "" : " LIMIT " . $limit;
         $result = self::$database -> issueQuery( $bidsQuery );
-        $bids = [];
 
+        $bids = [];
         while ( $row = $result -> fetch_assoc() )
         {
             $bid = new Bid( $row );
             $bids[] = $bid;
-        }
-
-        if ( count( $bids ) == 1 )
-        {
-            return $bids[ 0 ];
         }
 
         return $bids;
@@ -169,20 +165,16 @@ class QueryOperator
     {
         self::getDatabaseInstance();
         $result = self::$database -> issueQuery( $query );
-        return  $result -> num_rows;
+        return $result -> num_rows;
     }
 
 
-    public static function searchAuctions($query){
+    public static function searchAuctions($query) {
         self::getDatabaseInstance();
         $result = self::$database -> issueQuery( $query );
         $auctions = array();
         $categories = array();
         while ($row = $result->fetch_assoc()){
-            /*foreach( $row as $key => $value )
-            {
-                echo $key . "    " . $value . "<br>";
-            }*/
             $auctions[] = new Auction($row);
             if(!array_key_exists($row["superCategoryId"], $categories )){
                 $categories[$row["superCategoryId"]] = array();
@@ -198,6 +190,22 @@ class QueryOperator
             "categories" => $categories,
             "auctions"   => $auctions
         );
+    }
+
+
+    public static function getWatchEmails( $auctionId )
+    {
+        self::getDatabaseInstance();
+        $query = "SELECT u.email FROM users u, auction_watches w WHERE w.userId = u.userId AND auctionId = {$auctionId}";
+        $result = self::$database -> issueQuery( $query );
+
+        $emails = [];
+        while ( $row = $result -> fetch_row() )
+        {
+            $emails[] = $row[ 0 ];
+        }
+
+        return $emails;
     }
 
 
@@ -279,6 +287,7 @@ class QueryOperator
         return $liveAuctions;
     }
 
+
     public static function getLiveAuction( $auctionId )
     {
         self::getDatabaseInstance();
@@ -287,13 +296,12 @@ class QueryOperator
         $detailsQuery  = "SELECT a.auctionId, a.quantity, a.startPrice, a.reservePrice, a.startTime, a.endTime, i.itemName, i.itemBrand, i.itemDescription, ";
         $detailsQuery .= "i.image, cat.categoryName, con.conditionName, u.username, a.views ";
         $detailsQuery .= "FROM auctions a, items i, item_categories cat, item_conditions con, users u ";
-        $detailsQuery .= "WHERE a.itemId = i.itemId AND i.categoryId = cat.categoryId AND i.conditionId = con.conditionId AND i.userId = u.userId AND a.auctionId = ".$auctionId . " ";
+        $detailsQuery .= "WHERE a.itemId = i.itemId AND i.categoryId = cat.categoryId AND i.conditionId = con.conditionId AND i.userId = u.userId AND a.auctionId = " .$auctionId . " ";
         $detailsQuery .= "AND a.endTime > NOW() ";
         $detailsQuery .= "ORDER BY a.startTime ASC, a.endTime ASC";
         $result = self::$database -> issueQuery( $detailsQuery );
 
-        return  new Auction( $result -> fetch_assoc() );
-
+        return new Auction( $result -> fetch_assoc() );
     }
 
 
