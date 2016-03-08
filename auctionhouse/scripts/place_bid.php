@@ -28,10 +28,9 @@ if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "bidPrice" ] ) )
     {
         // Send email to outbidded user (only if it is not the same user)
         $highestBid = QueryOperator::getAuctionBids( $auctionId, 1 );
-        if ( !empty( $highestBid ) && ( $email = $highestBid -> getBidderEmail() ) != $user -> getEmail() )
+        if ( !empty( $highestBid ) && ( $email = $highestBid[ 0 ] -> getBidderEmail() ) != $user -> getEmail() )
         {
-            $highestBid = $highestBid[ 0 ];
-            $outbidEmail = new Email( $email, $highestBid -> getBidderFirstName(), $highestBid -> getBidderLastName() );
+            $outbidEmail = new Email( $email, $highestBid[ 0 ] -> getBidderFirstName(), $highestBid[ 0 ] -> getBidderLastName() );
             $outbidEmail -> prepareOutbidEmail(
                 $bidPrice,
                 $user -> getUserName(),

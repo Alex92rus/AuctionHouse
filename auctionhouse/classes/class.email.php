@@ -10,6 +10,8 @@ class Email
     private $to;
     private $firstName;
     private $lastName;
+    private $subject;
+    private $message;
 
     function __construct( $to, $firstName, $lastName )
     {
@@ -50,12 +52,11 @@ class Email
 
         //Password to use for SMTP authentication
         $this -> email -> Password = EMAIL_PASSWORD;
+
+        //Set message beginning
+        $this -> message  = "<h3>Hello {$this -> firstName} {$this -> lastName},</h3>";
     }
 
-    private function buildBody( $position )
-    {
-        return ( $position == 0 ) ? "<html><body><div>" : "</div></body></html>";
-    }
 
     private function confirmResult( $result )
     {
@@ -69,88 +70,103 @@ class Email
     public function prepareVerificationEmail( $confirmCode )
     {
         // Set subject
-        $subject  = "Email Verification";
-        $this -> email -> Subject = $subject;
+        $this -> subject  = "Email Verification";
 
         // Set message
-        $message  = $this -> buildBody( 0 );
-        $message .= "<h3>Hello {$this -> firstName} {$this -> lastName},</h3>";
+        $message  = $this -> message;
         $message .= "<h4>We are ready to activate your account. All we need to do is make sure this is your email address.</h4>";
         $message .= "<a href='http://localhost:8888/scripts/confirmation.php?email={$this -> to}&confirm_code=$confirmCode'>Verify Address</a>";
         $message .= "<p>If you did not create a AuctionHouse account, just delete this email and everything will go back to the way it was.</p>";
-        $message .= $this -> buildBody( 1 );
-        $this -> email -> Body = $message;
-        $this -> email -> IsHTML( true );
+
+        $this -> message = $message;
     }
 
     public function prepareResetEmail()
     {
         // Set subject
-        $subject  = "Password Reset";
-        $this -> email -> Subject = $subject;
+        $this -> subject  ="Password Reset";
 
         // Set message
-        $message  = $this -> buildBody( 0 );
-        $message .= "<h3>Hello {$this -> firstName} {$this -> lastName},</h3>";
+        $message  = $this -> message;
         $message .= "<h4>Please follow the given link  to change your password</h4>";
         $message .= "<a href='http://localhost:8888/views/change_password_view.php?email={$this -> to}'>Change Password</a>";
-        $message .= $this -> buildBody( 1 );
-        $this -> email -> Body = $message;
-        $this -> email -> IsHTML( true );
+
+        $this -> message = $message;
     }
 
     public function prepareRegistrationConfirmEmail()
     {
         // Set subject
-        $subject  = "Registration confirmation";
-        $this -> email -> Subject = $subject;
+        $this -> subject = "Registration confirmation";
 
         // Set message
-        $message  = $this -> buildBody( 0 );
-        $message .= "<h3>Hello {$this -> firstName} {$this -> lastName}</h3>";
+        $message  = $this -> message;
         $message .= "<h4>Your registration was successful. You are now ready to access your account and start buying and selling auctions.</h4>";
         $message .= "<p>If you did not create a AuctionHouse account, please contact us on this email address <a href='mailto:{$this -> username}'>";
         $message .= "{$this -> username}</a></p>";
-        $message .= $this -> buildBody( 1 );
-        $this -> email -> Body = $message;
-        $this -> email -> IsHTML( true );
+
+        $this -> message = $message;
     }
 
 
     public function preparePasswordConfirmEmail()
     {
         // Set subject
-        $subject  = "Password confirmation";
-        $this -> email -> Subject = $subject;
+        $this -> subject = "Password confirmation";
 
         // Set message
-        $message  = $this -> buildBody( 0 );
-        $message .= "<h3>Hello {$this -> firstName} {$this -> lastName}</h3>";
+        $message  = $this -> message;
         $message .= "<h4>You successfully changed your password.</h4>";
         $message .= "<p>If you did not create a AuctionHouse account, please contact us on this email address <a href='mailto:{$this -> username}'>";
         $message .= "{$this -> username}</a></p>";
-        $message .= $this -> buildBody( 1 );
-        $this -> email -> Body = $message;
-        $this -> email -> IsHTML( true );
+        $this -> message = $message;
     }
 
 
     public function prepareOutbidEmail( $bidPrice, $newHighestBidder, $itemName, $itemBrand, $itemImage )
     {
         // Set subject
-        $subject  = "You were outbid on an auction";
-        $this -> email -> Subject = $subject;
+        $this -> subject = "You were outbid on an auction";
 
         // Set message
-        $plugin = "You were outbid on the following auction:";
-        $message  = $this -> buildBody( 0 );
-        $message .= "<h3>Hello {$this -> firstName} {$this -> lastName}</h3>";
-        $message .= "<p>{$plugin}<br><br></p>";
+        $message  = $this -> message;
+        $message .= "<p>You were outbid on the following auction:<br><br></p>";
         $message .= "<div><img src=\"cid:itemImage\" style=\"float:left; margin-right:20px; height: 100px; width: inherit\"><p><b>{$itemName}</b><br>{$itemBrand}</p></div>";
         $message .= "<p style='clear:left'><br><br>New highest bid is £{$bidPrice} by <b>{$newHighestBidder}</b></p>";
-        $message .= $this -> buildBody( 1 );
+        $this -> message = $message;
 
-        $this -> email -> AddEmbeddedImage( "..{$itemImage}", "itemImage" );
+        // Set attachment
+        $this -> setAttachment( $itemImage );
+    }
+
+
+    public function prepareAuctionDeletedEmail( $itemName, $itemBrand, $itemImage )
+    {
+        // Set subject
+        $this -> subject = "Auction deleted";
+
+        // Set message
+        $message  = $this -> message;
+        $message .= "<p>Unfortunately, the following auction was deleted by the seller:<br><br></p>";
+        $message .= "<div><img src=\"cid:itemImage\" style=\"float:left; margin-right:20px; height: 100px; width: inherit\"><p><b>{$itemName}</b><br>{$itemBrand}</p></div>";
+        $message .= "<p style='clear:left'><br><br>We were told to inform you that the seller apologies sincerely.</b></p>";
+        $this -> message = $message;
+
+        // Set attachment
+        $this -> setAttachment( $itemImage );
+    }
+
+
+    private function setAttachment( $image )
+    {
+        $this -> email -> AddEmbeddedImage( "..{$image}", "itemImage" );
+    }
+
+
+    private function prepareBody()
+    {
+        $message = $this -> message;
+        $message = "<html><body><div>" . $message . "</div></body></html>";
         $this -> email -> Body = $message;
         $this -> email -> IsHTML( true );
     }
@@ -158,6 +174,10 @@ class Email
 
     public function sentEmail()
     {
+        // Set email contents
+        $this -> email -> Subject = $this -> subject;
+        $this -> prepareBody();
+
         // Set who the message is to be sent from
         $this -> email -> setFrom( "auctionhouse@gmail.com", "AuctionHouse Service Team" );
 
