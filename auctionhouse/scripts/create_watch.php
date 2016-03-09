@@ -8,12 +8,9 @@ require_once "../classes/class.db_auction_watch.php";
 /* @var User $user*/
 $user = SessionOperator::getUser();
 $auctionId = $_GET["liveAuction"];
-/*var_dump($_SERVER['QUERY_STRING']);
-die();*/
 
 if(!is_numeric($auctionId)){
     HelperOperator::redirectTo("../views/open_live_auction_view.php?".$_SERVER['QUERY_STRING']);
-    return;
 }
 
 //check user hasn't already watched
@@ -23,11 +20,9 @@ $alreadyWatching =
 
 if($alreadyWatching){
     HelperOperator::redirectTo("../views/open_live_auction_view.php?".$_SERVER['QUERY_STRING']);
-    return;
 }
 
 //create an auction_watch
-
 $watch = new DbAuctionWatch(array(
     "userId" => $user->getUserId(),
     "auctionId" =>$auctionId

@@ -3,7 +3,6 @@ require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../scripts/user_session.php";
 $user = SessionOperator::getUser();
-
 $watchedAuctions = QueryOperator::getWatchedAuctions($user->getUserId());
 ?>
 <!DOCTYPE html>
@@ -79,6 +78,7 @@ $watchedAuctions = QueryOperator::getWatchedAuctions($user->getUserId());
                     echo "<h4>No Watched Auctions</h4>";
                 } else {
                     foreach ( $watchedAuctions as $auction ) {
+                        echo $auction -> getUsername();
                         $origin = "watches";
                         include "../includes/live_auction_to_buyer.php";
                     }
