@@ -10,15 +10,15 @@ require_once( $_SERVER['DOCUMENT_ROOT'] . '/classes/class.db_auction_watch.php' 
 $watchId = $_GET["id"];
 
 // Prevent sql injection
-if(!is_numeric($watchId)){
+if(!is_numeric($watchId))
+{
     HelperOperator::redirectTo("../views/my_watch_list_view.php");
 }
 
 /* @var User $user */
-$user = SessionOperator::getUser();
-$userId = $user->getUserId();
+$userId = SessionOperator::getUser() -> getUserId();
 
-/* @var DbAuction $auction */
+/* @var DbAuctionWatch $auction */
 $watch = DbAuctionWatch::find($watchId);
 
 // User owns watch

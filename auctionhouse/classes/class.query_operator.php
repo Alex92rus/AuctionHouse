@@ -214,7 +214,7 @@ class QueryOperator
 
     public static function getWatchedAuctions($userId)
     {
-        $query = "SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime, sold,
+        $query = "SELECT auctions.auctionId, quantity, startPrice, reservePrice, startTime, sold,
 		endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
         item_categories.categoryName as subCategoryName, superCategoryName,
         item_categories.superCategoryId, item_categories.categoryId,
@@ -238,9 +238,9 @@ class QueryOperator
             JOIN countries ON users.countryId = countries.countryId
 
 
-        WHERE auctions.auctionId IN( SELECT DISTINCT( auctions.auctionId)
-                                      FROM auctions JOIN auction_watches ON auctions.auctionId = auction_watches.auctionId
-                                       WHERE auction_watches.userId = __userId__ )
+        WHERE auction_watches.watchId IN( SELECT auction_watches.watchId
+                                          FROM auctions JOIN auction_watches ON auctions.auctionId = auction_watches.auctionId
+                                          WHERE auction_watches.userId = __userId__ )
 
         GROUP BY auctions.auctionId
 
