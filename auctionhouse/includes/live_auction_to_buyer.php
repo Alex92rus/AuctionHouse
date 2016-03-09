@@ -14,9 +14,13 @@ if ($origin == "watches"){
 }else{
     $refer= "";
 }
+
 ?>
 
 <div class="row live-auction-to-buyer">
+    <?php if( $origin == "watches" ) : ?>
+        <section id="auction<?= $auction -> getAuctionId() ?>">
+     <?php endif ?>
 
     <div class="col-xs-3 auction-img">
         <img src="<?= $auction->getImage() ?>" class="img-responsive" style="height:150px">

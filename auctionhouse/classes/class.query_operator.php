@@ -219,7 +219,6 @@ class QueryOperator
         item_categories.categoryName as subCategoryName, superCategoryName,
         item_categories.superCategoryId, item_categories.categoryId,
         conditionName, countryName, auction_watches.watchId, COUNT(DISTINCT (bids.bidId)) AS numBids,
-        COUNT(DISTINCT (auction_watches.watchId)) AS numWatches,
         MAX(bids.bidPrice) AS highestBid,
         case
 			when MAX(bids.bidPrice)is not null THEN MAX(bids.bidPrice)
@@ -252,6 +251,7 @@ class QueryOperator
         $result = self::$database -> issueQuery( $query );
         $auctions = array();
         while ($row = $result->fetch_assoc()) {
+            $row[ "numWatches" ] = self::getAuctionWatches( $row[ "auctionId" ] );
             $auctions[] = new Auction($row);
         }
         return $auctions;

@@ -217,7 +217,7 @@ $alreadyWatching = DbAuctionWatch::withConditions("WHERE userId = ".$user->getUs
                                             $href = '"../scripts/create_watch.php?'.$_SERVER['QUERY_STRING'].'"';
                                             echo '<a href='.$href.'><i class="fa fa-eye"></i> Add to watch list</a>';
                                         }else{
-                                            echo '<h5>Watching</h5>';
+                                            echo "<a class=\"text-success\" href=\"my_watch_list_view.php#auction{$auction -> getAuctionId()}\"><i class=\"fa fa-eye\"></i> Watching</a>";
                                         }
                                     ?>
 

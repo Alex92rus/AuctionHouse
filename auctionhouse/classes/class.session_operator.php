@@ -35,6 +35,7 @@ class SessionOperator
     const DELETED_WATCH = "deleted_watch";
     const PLACED_BID = "placed_bid";
     const CREATED_AUCTION = "created_auction";
+    const CREATED_WATCH = "created_watch";
 
     const SUCCESS = "success";
     const WARNING = "warning";
@@ -172,7 +173,11 @@ class SessionOperator
                 break;
             case self::CREATED_AUCTION:
                 $title = "Auction successfully created!";
-                $info  = "You auction is now live and visible to buyers";
+                $info  = "You auction is now live and visible to buyers.";
+                break;
+            case self::CREATED_WATCH:
+                $title = "Auction added to watch list!";
+                $info  = "You can now track this auction underneath the 'My Watch List' section.";
                 break;
             default:
                 $title = $info = $type = null;
