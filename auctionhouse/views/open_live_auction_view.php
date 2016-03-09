@@ -48,6 +48,11 @@ $dbAuction->save();
 //increment views displayed on page
 $views = $auction -> getViews() +1;
 
+//is user watching this auction
+$user= SessionOperator::getUser();
+$alreadyWatching = DbAuctionWatch::withConditions("WHERE userId = ".$user->getUserId(). " AND auctionId =".$auctionId)
+    ->exists();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -206,9 +211,7 @@ $views = $auction -> getViews() +1;
 
                                     <div class="col-xs-12">
                                     <?php
-                                        $user= SessionOperator::getUser();
-                                        $alreadyWatching = DbAuctionWatch::withConditions("WHERE userId = ".$user->getUserId(). " AND auctionId =".$auctionId)
-                                            ->exists() ? true: false;
+
 
                                         if(!$alreadyWatching){
                                             $href = '"../scripts/create_watch.php?'.$_SERVER['QUERY_STRING'].'"';
