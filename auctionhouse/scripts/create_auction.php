@@ -78,12 +78,13 @@ else
     $item[] = $newImageName;
 
     // Prepare auction parameters
+    $startTime = date_create($new_auction[ "startTime" ]) -> format('Y-m-d H:i:s');
     $endTime = date_create($new_auction[ "endTime" ]) -> format('Y-m-d H:i:s');
     $auction[] = "";
     $auction[] = $new_auction[ "quantity" ];
     $auction[] = $new_auction[ "startPrice" ];
     $auction[] = $new_auction[ "reservePrice" ];
-    $auction[] = date_create($new_auction[ "startTime" ]) -> format('Y-m-d H:i:s');
+    $auction[] = $startTime;
     $auction[] = $endTime;
 
     // Store auction in database

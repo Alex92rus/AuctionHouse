@@ -131,9 +131,30 @@ class QueryOperator
         self::getDatabaseInstance();
 
         // SQL query for creating auction event
-        $query = "CREATE EVENT auction_$auctionId
+        $query = "CREATE EVENT auction_%__a__%
                   ON SCHEDULE AT '$endTime'
-                  DO INSERT INTO notifications(userId, auctionId, categoryId) VALUES($userId, $auctionId, 1)";
+                  DO BEGIN
+                      DECLARE sold int default -1;
+                      DECLARE bidderId int;
+
+                      SELECT userId, reservePrice < bidPrice INTO bidderId, sold
+                      FROM
+                          auctions,(SELECT userId, bidPrice
+                                    FROM auctions a, bids b
+                                    WHERE a.auctionId = b.auctionId AND a.auctionId = %__a__%
+                                    ORDER BY bidPrice DESC
+                                    LIMIT 1) AS highestBid
+                      WHERE auctionId = %__a__%;
+                      IF sold = 0 THEN
+                          INSERT INTO notifications(userId, auctionId, categoryId) VALUES(%__u__%, %__a__%, 4);
+                          INSERT INTO notifications(userId, auctionId, categoryId) VALUES(bidderId, %__a__%, 4);
+                      ELSE
+                          INSERT INTO notifications(userId, auctionId, categoryId) VALUES(%__u__%, %__a__%, 3);
+                          INSERT INTO notifications(userId, auctionId, categoryId) VALUES(bidderId, %__a__%, 2);
+                      END IF;
+                  END";
+        $query = str_replace( "%__a__%" , $auctionId, $query);
+        $query = str_replace( "%__u__%" , $userId, $query);
         self::$database -> issueQuery( $query );
     }
 
