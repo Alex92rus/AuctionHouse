@@ -44,7 +44,7 @@ if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "bidPrice" ] ) )
         QueryOperator::placeBid( $auctionId, $userId, $bidPrice );
 
         // Set feedback session
-        SessionOperator::setFeedback( SessionOperator::PLACED_BID );
+        SessionOperator::setNotification( SessionOperator::PLACED_BID );
     }
 }
 

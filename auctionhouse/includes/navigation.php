@@ -92,7 +92,6 @@ $superCategories = QueryOperator::getSuperCategoriesList();
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
-
             <li <?= HelperOperator::isActive()?> >
                 <a href="#"><i class="fa fa-gavel fa-fw"></i> My Auctions<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -106,17 +105,18 @@ $superCategories = QueryOperator::getSuperCategoriesList();
                         <a href="../views/my_unsold_auctions_view.php"><i class="fa fa-minus-circle fa-fw"></i> Unsold Auctions</a>
                     </li>
                 </ul>
-
             </li>
-
             <li>
                 <a href="#"><i class="fa fa-money fa-fw"></i> My Biddings</a>
             </li>
-
             <li>
                 <a href="../views/my_watch_list_view.php"><i class="fa fa-eye fa-fw"></i> My Watch List</a>
             </li>
-
+            <li>
+                <a href="../views/my_feedbacks_view.php?username=me">
+                    <i class="fa fa-envelope fa-fw"></i> My Feedbacks
+                </a>
+            </li>
         </ul>
     </div>
 </div>

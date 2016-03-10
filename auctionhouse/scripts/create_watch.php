@@ -32,7 +32,7 @@ $watch = new DbAuctionWatch(array(
 $watch->create();
 
 // Set feedback session
-SessionOperator::setFeedback( SessionOperator::CREATED_WATCH );
+SessionOperator::setNotification( SessionOperator::CREATED_WATCH );
 
 HelperOperator::redirectTo("../views/open_live_auction_view.php?".$_SERVER['QUERY_STRING']);
 

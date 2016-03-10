@@ -4,7 +4,6 @@ require_once "../classes/class.query_operator.php";
 require_once "../scripts/user_session.php";
 require_once "../classes/class.db_category.php";
 require_once "../classes/class.db_condition.php";
-require_once "../config/env_variables.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">

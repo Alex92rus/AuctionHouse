@@ -1,5 +1,7 @@
 <?php
 require_once "class.database.php";
+require_once "class.db_user.php";
+require_once "class.db_feedback.php";
 require_once "class.db_bid.php";
 require_once "class.db_country.php";
 require_once "class.db_category.php";
@@ -8,7 +10,9 @@ require_once "class.db_condition.php";
 require_once "class.db_sort.php";
 require_once "class.bid.php";
 require_once "class.auction.php";
+require_once "class.feedback.php";
 require_once "class.advanced_auction.php";
+require_once "class.advanced_feedback.php";
 
 
 class QueryOperator
@@ -16,6 +20,8 @@ class QueryOperator
     const SELLER_LIVE_AUCTIONS = "live";
     const SELLER_SOLD_AUCTIONS = "sold";
     const SELLER_UNSOLD_AUCTIONS = "unsold";
+    const ROLE_SELLER = "seller";
+    const ROLE_BUYER = "buyer";
     private static $database;
 
 
@@ -488,6 +494,61 @@ class QueryOperator
             "bidPrice" => $bidPrice
         ) );
         $bid -> create();
+    }
+
+
+    public static function getUserImage( $username )
+    {
+        return DbUser::withConditions( "WHERE username = '$username'" ) ->get( array( "image" ) )[ 0 ][ "image" ];
+    }
+
+
+    private static function getFeedbackScores( $userId, $score )
+    {
+        $count = DbFeedback::withConditions( "WHERE receiverId = $userId AND score = $score" ) -> count();
+        return ( $count > 0 ) ? $count : 0;
+    }
+
+
+    private static function getFeedbacks( $userId, $role )
+    {
+        self::getDatabaseInstance();
+
+        $query  = "SELECT feedbackId, time AS feedbackTime, itemName, itemBrand, u.image AS creatorImage, username AS creatorUsername, score, comment ";
+        $query .= "FROM feedbacks f, auctions a, items i, users u ";
+        $query .= "WHERE f.auctionId = a.auctionId AND a.itemId = i.itemId AND f.creatorId = u.userId AND ";
+        $query .= "f.receiverId = $userId AND i.userId";
+        $query .= ( $role == self:: ROLE_SELLER ) ? " = " : " != ";
+        $query .= "$userId";
+        $result = self::$database -> issueQuery( $query );
+
+        $feedbacks = [];
+        while ( $row = $result -> fetch_assoc() )
+        {
+            $feedbacks[] = new Feedback( $row );
+        }
+
+        return $feedbacks;
+    }
+
+
+    public static function getFeedback( $username )
+    {
+        // Retrieve user feedback statistics
+        $userId = DbUser::withConditions( "WHERE username = '$username'" ) -> get( array( "userId" ) )[ 0 ][ "userId" ];
+        $scores = [];
+        for ( $index = 1; $index <= 5; $index++ )
+        {
+            $scores[] = self::getFeedbackScores( $userId, $index );
+        }
+
+        // Retrieve feedbacks
+        $feedbackAsSeller = self::getFeedbacks( $userId, self::ROLE_SELLER );
+        $feedbackAsBuyer = self::getFeedbacks( $userId, self::ROLE_BUYER );
+
+        $advancedFeedback =  new AdvancedFeedback( $scores, $feedbackAsSeller, $feedbackAsBuyer );
+        //var_dump($advancedFeedback);
+        return $advancedFeedback;
     }
 
 

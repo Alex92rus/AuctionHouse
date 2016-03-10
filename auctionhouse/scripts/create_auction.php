@@ -98,7 +98,7 @@ else
     QueryOperator::uploadImage( $itemId, $newImageName, "items" );
 
     // Set feedback session
-    SessionOperator::setFeedback( SessionOperator::CREATED_AUCTION );
+    SessionOperator::setNotification( SessionOperator::CREATED_AUCTION );
 
     // Return to live auctions page
     HelperOperator::redirectTo( "../views/my_live_auctions_view.php" );

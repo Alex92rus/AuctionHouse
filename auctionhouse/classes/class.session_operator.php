@@ -19,7 +19,7 @@ class SessionOperator
     const SORT = "sort";
     const SEARCH_PAGINATION = "search_pagination";
 
-    const FEEDBACK = "feedback";
+    const NOTIFICATION = "notification";
     const TITLE = "title";
     const INFO = "info";
     const TYPE = "type";
@@ -124,7 +124,7 @@ class SessionOperator
 
 
     // Create a feedback session
-    public static function setFeedback( $status )
+    public static function setNotification( $status )
     {
         $type = self::SUCCESS;
 
@@ -184,23 +184,23 @@ class SessionOperator
                 break;
         }
 
-        $_SESSION[ self::FEEDBACK ] = [ self::TITLE => $title, self::INFO => $info, self::TYPE => $type ];
+        $_SESSION[ self::NOTIFICATION ] = [ self::TITLE => $title, self::INFO => $info, self::TYPE => $type ];
     }
 
 
     // Check if a feedback has to be displayed
-    public static function getFeedback()
+    public static function getNotification()
     {
-        if ( isset( $_SESSION[ self::FEEDBACK ] ) )
+        if ( isset( $_SESSION[ self::NOTIFICATION ] ) )
         {
             // Retrieve status
-            $status = $_SESSION[ self::FEEDBACK ];
+            $status = $_SESSION[ self::NOTIFICATION ];
             $title = "<strong>" . $status[ self::TITLE ] . "</strong>";
             $info = $status[ self::INFO ];
             $type = $status[ self::TYPE ];
 
             // Delete session
-            unset( $_SESSION[ self::FEEDBACK ] );
+            unset( $_SESSION[ self::NOTIFICATION ] );
 
             return array( $title, $info, $type );
         }

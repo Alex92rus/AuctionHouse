@@ -15,6 +15,6 @@ $user = QueryOperator::getAccount( SessionOperator::getUser() -> getUserId() );
 SessionOperator::updateUser( new User( $user ) );
 
 // Set feedback session
-SessionOperator::setFeedback( SessionOperator::DELETED_PROFILE_PHOTO );
+SessionOperator::setNotification( SessionOperator::DELETED_PROFILE_PHOTO );
 
 HelperOperator::redirectTo(  "../views/profile_view.php" );

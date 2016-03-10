@@ -60,7 +60,7 @@ else
     QueryOperator::addUnverifiedAccount( array( $insertId, $confirmCode ) );
 
     // Create a session for the successfully submitted registration (account not verified yet)
-    SessionOperator::setFeedback( SessionOperator::SUBMITTED_REGISTRATION );
+    SessionOperator::setNotification( SessionOperator::SUBMITTED_REGISTRATION );
 
     // Email a verification link to the user - must be verified before accessing the new account
     require_once "../classes/class.email.php";

@@ -46,7 +46,7 @@ if($item->getField("userId") == $userId) {
     }
 
     // Set feedback session
-    SessionOperator::setFeedback( SessionOperator::DELETED_AUCTION );
+    SessionOperator::setNotification( SessionOperator::DELETED_AUCTION );
 }
 
 HelperOperator::redirectTo("../views/my_live_auctions_view.php");

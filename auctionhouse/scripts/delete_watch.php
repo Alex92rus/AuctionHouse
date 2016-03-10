@@ -26,7 +26,7 @@ if($watch->getField("userId") == $userId){
     // Delete watch
     $watch->delete();
     // Set feedback session
-    SessionOperator::setFeedback( SessionOperator::DELETED_WATCH );
+    SessionOperator::setNotification( SessionOperator::DELETED_WATCH );
 }
 
 

@@ -46,7 +46,7 @@ $liveAuctions = QueryOperator::getSellerAuctions( $user->getUserId(), QueryOpera
 
 <body>
     <!-- display feedback (if available) start -->
-    <?php require_once "../includes/feedback.php" ?>
+    <?php require_once "../includes/notification.php" ?>
     <!-- display feedback (if available) end -->
 
 
