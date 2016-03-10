@@ -3,18 +3,20 @@ include_once "../classes/class.session_operator.php";
 include_once "../classes/class.query_operator.php";
 require_once "../scripts/user_session.php";
 
+
 $username = null;
 $userImage = null;
 
-if ( isset ( $_GET[ "username" ] ) && $_GET[ "username" ] != "me" ) {
+if ( isset ( $_GET[ "username" ] ) && $_GET[ "username" ] != SessionOperator::getUser() -> getUsername() ) {
     $username = $_GET[ "username" ];
     $userImage = QueryOperator::getUserImage( $username );
 } else {
-    $username = SessionOperator::getUser() -> getUsername();
+    $username =  SessionOperator::getUser() -> getUsername();
     $userImage = SessionOperator::getUser() -> getImage();
 }
 
 $advancedFeedback = QueryOperator::getFeedback( $username );
+$buyerActive = ( empty( $advancedFeedback -> getFeedbackAsSeller() ) && !empty( $advancedFeedback -> getFeedbackAsBuyer() ) ) ? true : false;
 
 ?>
 
@@ -69,7 +71,9 @@ $advancedFeedback = QueryOperator::getFeedback( $username );
                 <!-- feedback header start -->
                 <div class="row feedbacks-header">
                     <div class="col-xs-12">
-                        <h4 class="text-primary"><?php if ( $_GET[ "username" ] == "me" ) { $username = "Me (" . $username . ")"; } echo $username ?></h4>
+                        <h4 class="text-primary">
+                            <?php if ( $_GET[ "username" ] == SessionOperator::getUser() -> getUsername() ) { $username = "Me (" . $username . ")"; } echo $username ?>
+                        </h4>
                     </div>
                     <div class="col-xs-6">
                         <div class="col-xs-5 no-padding-left">
@@ -122,7 +126,7 @@ $advancedFeedback = QueryOperator::getFeedback( $username );
                                 <div class="pull-left" style="width:180px;">
                                     <div class="progress" style="height:9px; margin:8px 0;">
                                         <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="5"
-                                             style="width: <?php echo round( ( $advancedFeedback -> getFourStars() / $advancedFeedback -> getTotal() ) * 100 ) . "%" ?>">">
+                                             style="width: <?php echo round( ( $advancedFeedback -> getFourStars() / $advancedFeedback -> getTotal() ) * 100 ) . "%" ?>">
                                             <span class="sr-only">80% Complete (danger)</span>
                                         </div>
                                     </div>
@@ -185,25 +189,33 @@ $advancedFeedback = QueryOperator::getFeedback( $username );
 
                 <!-- feedback navigation start -->
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#seller">As Seller</a></li>
-                    <li><a data-toggle="tab" href="#buyer">As Buyer</a></li>
+                    <li class="<?php if ( !$buyerActive ) { echo "active"; } ?>"><a data-toggle="tab" href="#seller">As Seller</a></li>
+                    <li class="<?php if ( $buyerActive ) { echo "active"; } ?>"><a data-toggle="tab" href="#buyer">As Buyer</a></li>
                 </ul>
                 <!-- feedback navigation end -->
 
 
                 <!-- feedbacks start -->
                 <div class="tab-content">
-                    <div id="seller" class="tab-pane fade in active">
+                    <div id="seller" class="tab-pane fade<?php if ( !$buyerActive ) { echo " in active"; } ?>" >
                         <?php
-                        foreach ( $advancedFeedback -> getFeedbackAsSeller() as $feedback ) {
-                            include "../includes/feedback.php";
+                        if ( !empty( $advancedFeedback -> getFeedbackAsSeller() ) ) {
+                            foreach ($advancedFeedback->getFeedbackAsSeller() as $feedback) {
+                                include "../includes/feedback.php";
+                            }
+                        } else {
+                            echo "<br><h5>Nobody gave you a seller feedback!</h5>";
                         }
                         ?>
                     </div>
-                    <div id="buyer" class="tab-pane fade">
+                    <div id="buyer" class="tab-pane fade<?php if ( $buyerActive ) { echo " in active"; } ?>">
                         <?php
-                        foreach ( $advancedFeedback -> getFeedbackAsBuyer() as $feedback ) {
-                            include "../includes/feedback.php";
+                        if ( !empty( $advancedFeedback -> getFeedbackAsBuyer() ) ) {
+                            foreach ($advancedFeedback->getFeedbackAsBuyer() as $feedback) {
+                                include "../includes/feedback.php";
+                            }
+                        } else {
+                            echo "<br><h5>Nobody gave you a buyer feedback!</h5>";
                         }
                         ?>
                     </div>

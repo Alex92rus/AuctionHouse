@@ -113,7 +113,7 @@ $superCategories = QueryOperator::getSuperCategoriesList();
                 <a href="../views/my_watch_list_view.php"><i class="fa fa-eye fa-fw"></i> My Watch List</a>
             </li>
             <li>
-                <a href="../views/my_feedbacks_view.php?username=me">
+                <a href="../views/my_feedbacks_view.php?username=<?= SessionOperator::getUser() -> getUsername() ?>">
                     <i class="fa fa-envelope fa-fw"></i> My Feedbacks
                 </a>
             </li>

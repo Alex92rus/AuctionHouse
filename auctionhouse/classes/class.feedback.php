@@ -108,7 +108,7 @@ class Feedback
 
 
     /**
-     * @param mixed $creator
+     * @param mixed $creatorUsername
      */
     public function setCreatorUsername($creatorUsername)
     {
@@ -126,7 +126,7 @@ class Feedback
 
 
     /**
-     * @param mixed $itemBrand
+     * @param mixed $creatorImage
      */
     public function setCreatorImage($creatorImage)
     {

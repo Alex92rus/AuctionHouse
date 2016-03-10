@@ -4,6 +4,7 @@ $feedbackTime = new DateTime( $feedback -> getFeedbackTime() );
 $month = substr( $feedbackTime -> format( 'F' ), 0, 3 );
 $day = $feedbackTime -> format( 'd' );
 $year = $feedbackTime -> format( 'Y' );
+
 ?>
 
 <div class="row">
@@ -13,7 +14,9 @@ $year = $feedbackTime -> format( 'Y' );
             <div class="row">
                 <div class="col-xs-2">
                     <img src="<?= $feedback -> getCreatorImage()?>" class="img-rounded img-responsive" style="height: 100px">
-                    <div class="review-block-name"><a href="#"><?= $feedback -> getCreatorUsername()?></a></div>
+                    <div class="review-block-name">
+                        <a href="<?php echo '../views/my_feedbacks_view.php?username=' . $feedback -> getCreatorUsername() ?>"><?= $feedback -> getCreatorUsername()?></a>
+                    </div>
                     <div class="review-block-date"><?= $month . " " . $day . ", " . $year ?><br/><?= $feedbackTime -> format( "h:i A" ) ?></div>
                 </div>
                 <div class="col-xs-10">
