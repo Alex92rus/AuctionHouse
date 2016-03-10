@@ -52,7 +52,7 @@ class Database
                 $this -> otherQuery( $sql );
                 break;
             default:
-                die( "Unknown query type" );
+                $this -> otherQuery( $sql );
                 break;
         }
 

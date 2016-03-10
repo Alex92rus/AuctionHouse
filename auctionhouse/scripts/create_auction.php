@@ -25,7 +25,6 @@ $new_auction = [
     "reservePrice"    => $_POST[ "reservePrice" ],
     "startTime"       => $_POST[ "startTime" ],
     "endTime"         => $_POST[ "endTime" ],
-    "reportFrequency" => $_POST[ "reportFrequency"]
 ];
 
 
@@ -37,10 +36,6 @@ if ( $new_auction[ "itemCategory" ] == "Select" )
 if ( $new_auction[ "itemCondition" ] == "Select" )
 {
     $new_auction[ "itemCondition" ]  = "";
-}
-if ( $new_auction[ "reportFrequency" ] == null )
-{
-    $new_auction[ "reportFrequency" ]  = 24;
 }
 
 
@@ -83,19 +78,22 @@ else
     $item[] = $newImageName;
 
     // Prepare auction parameters
+    $endTime = date_create($new_auction[ "endTime" ]) -> format('Y-m-d H:i:s');
     $auction[] = "";
     $auction[] = $new_auction[ "quantity" ];
     $auction[] = $new_auction[ "startPrice" ];
     $auction[] = $new_auction[ "reservePrice" ];
     $auction[] = date_create($new_auction[ "startTime" ]) -> format('Y-m-d H:i:s');
-    $auction[] = date_create($new_auction[ "endTime" ]) -> format('Y-m-d H:i:s');
-    $auction[] = $new_auction["reportFrequency"];
+    $auction[] = $endTime;
 
     // Store auction in database
-    $itemId = QueryOperator::addAuction( $item, $auction );
+    $ids = QueryOperator::addAuction( $item, $auction );
+
+    // Set event timer
+    QueryOperator::addAuctionEvent( $endTime, SessionOperator::getUser() -> getUserId(), $ids[ "auctionId" ] );
 
     // Store image name in database
-    QueryOperator::uploadImage( $itemId, $newImageName, "items" );
+    QueryOperator::uploadImage( $ids[ "itemId" ], $newImageName, "items" );
 
     // Set feedback session
     SessionOperator::setNotification( SessionOperator::CREATED_AUCTION );

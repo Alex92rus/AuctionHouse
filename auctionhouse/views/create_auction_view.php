@@ -159,29 +159,6 @@ require_once "../classes/class.db_condition.php";
                                     ?>
                                 </select>
                             </div>
-
-                            <div class="form-group">
-                                <label>Email me an auction report: </label>
-                                <select class="selectpicker form-control" name="reportFrequency"  data-dropup-auto="false">
-
-                                    <?php
-                                    $frequency= SessionOperator::getFormInput( "reportFrequency" );
-                                    $frequencies = $_env_reportFrequencies ;
-
-                                    foreach( $frequencies as $key => $value ) {
-                                        $name = htmlspecialchars($key);
-                                        $selected = "";
-                                        if ($frequency === $value) {
-
-                                            $selected = "selected";
-                                        }
-                                        ?>
-                                        <option value="<?= $value ?>" title="<?= $name ?>" <?= $selected ?> ><?= $name ?></option>
-                                        <?php
-                                    }
-                                    ?>
-                                </select>
-                            </div>
                             <!-- left column end -->
 
                             <!-- right column start -->

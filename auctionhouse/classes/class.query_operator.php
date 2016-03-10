@@ -118,10 +118,33 @@ class QueryOperator
         $itemId = self::$database -> issueQuery( $itemQuery, "issiiss", $itemParameters );
 
         // SQL query for inserting auction
-        $auctionQuery = "INSERT INTO auctions ( itemId, quantity, startPrice, reservePrice, startTime, endTime, reportFrequency ) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+        $auctionQuery = "INSERT INTO auctions ( itemId, quantity, startPrice, reservePrice, startTime, endTime ) VALUES ( ?, ?, ?, ?, ?, ? )";
         $auctionParameters[ 0 ] = &$itemId;
-        self::$database -> issueQuery( $auctionQuery, "iiddssi", $auctionParameters );
-        return $itemId;
+        $auctionId = self::$database -> issueQuery( $auctionQuery, "iiddss", $auctionParameters );
+        return [ "auctionId" => $auctionId, "itemId" => $itemId ];
+    }
+
+
+
+    public static function addAuctionEvent( $endTime, $userId, $auctionId )
+    {
+        self::getDatabaseInstance();
+
+        // SQL query for creating auction event
+        $query = "CREATE EVENT auction_$auctionId
+                  ON SCHEDULE AT '$endTime'
+                  DO INSERT INTO notifications(userId, auctionId, categoryId) VALUES($userId, $auctionId, 1)";
+        self::$database -> issueQuery( $query );
+    }
+
+
+    public static function dropAuctionEvent( $auctionId )
+    {
+        self::getDatabaseInstance();
+
+        // SQL query for dropping auction event
+        $query = "DROP EVENT IF EXIST 'auction_$auctionId'";
+        self::$database -> issueQuery( $query );
     }
 
 
