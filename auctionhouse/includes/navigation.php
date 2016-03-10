@@ -8,6 +8,8 @@ $searchCategory = SessionOperator::getSearchSetting( SessionOperator::SEARCH_CAT
 $searchString = SessionOperator::getSearchSetting( SessionOperator::SEARCH_STRING );
 
 $superCategories = QueryOperator::getSuperCategoriesList();
+
+$pushNotifications = QueryOperator::getNotifications( SessionOperator::getUser() -> getUserId(), "seen" );
 ?>
 <!-- header start -->
 <nav class="navbar navbar-default navbar-static-top navbar-top" role="navigation">
@@ -63,54 +65,35 @@ $superCategories = QueryOperator::getSuperCategoriesList();
         <!-- notifications start -->
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                <span class="badge"><?= count($pushNotifications) ?></span><i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-alerts">
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa fa-comment fa-fw"></i> New Comment
-                            <span class="pull-right text-muted small">4 minutes ago</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                            <span class="pull-right text-muted small">12 minutes ago</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa fa-envelope fa-fw"></i> Message Sent
-                            <span class="pull-right text-muted small">4 minutes ago</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa fa-tasks fa-fw"></i> New Task
-                            <span class="pull-right text-muted small">4 minutes ago</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="#">
-                        <div>
-                            <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                            <span class="pull-right text-muted small">4 minutes ago</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="divider"></li>
+                <?php
+                foreach ( $pushNotifications as $pushNotification ) {
+                    $time = new DateTime( $pushNotification -> getTime() );
+                    $now = new DateTime();
+                    $interval = $now->diff( $time );
+                    $category = $pushNotification -> getCategoryName(); ?>
+                    <li>
+                        <a href=
+                           <?php
+                           $href = "#";
+                           if ( !preg_match( '/Sold/', $category ) ) {
+                               $href = "../views/open_live_auction_view.php?liveAuction=" . $pushNotification -> getAuctionId();
+                           }
+                           echo $href;
+                           ?>
+                          >
+                            <div>
+                                <i class="<?= $pushNotification -> getCategoryIcon() ?>"></i> <span style="padding-left: 10px"><?= $category ?></span>
+                                <span class="pull-right text-muted small"><?= $interval->format('%h h %i min ago') ?></span><br>
+                                <span style="padding-left: 28px; color: #253b52;"><?= $pushNotification -> getItemName() . " - " . $pushNotification -> getItemBrand() ?>
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                <?php } ?>
                 <li>
                     <a class="text-center" href="#">
                         <strong>See All Alerts</strong>

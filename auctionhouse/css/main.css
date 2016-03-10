@@ -284,6 +284,12 @@ h4#live-auction
 }
 
 
+.dropdown-alerts >li>a
+{
+    line-height: inherit;
+}
+
+
 #bid-box,
 .move-in
 {

@@ -89,7 +89,7 @@ class AdvancedFeedback
         $sum += 3 * $this -> threeStars;
         $sum += 4 * $this -> fourStars;
         $sum += 5 * $this -> fiveStars;
-        return ( $this -> total > 0 ) ? $sum / $this -> total : -1;
+        return ( $this -> total > 0 ) ? round( $sum / $this -> total, 2 ) : -1;
     }
 
 

@@ -13,6 +13,7 @@ require_once "class.auction.php";
 require_once "class.feedback.php";
 require_once "class.advanced_auction.php";
 require_once "class.advanced_feedback.php";
+require_once "class.notification.php";
 
 
 class QueryOperator
@@ -146,15 +147,16 @@ class QueryOperator
                                     LIMIT 1) AS highestBid
                       WHERE auctionId = %__a__%;
                       IF sold = 0 THEN
-                          INSERT INTO notifications(userId, auctionId, categoryId) VALUES(%__u__%, %__a__%, 4);
-                          INSERT INTO notifications(userId, auctionId, categoryId) VALUES(bidderId, %__a__%, 4);
+                          INSERT INTO notifications(userId, auctionId, categoryId, time) VALUES(%__u__%, %__a__%, 4, %__t__%);
+                          INSERT INTO notifications(userId, auctionId, categoryId, time) VALUES(bidderId, %__a__%, 4, %__t__%);
                       ELSE
-                          INSERT INTO notifications(userId, auctionId, categoryId) VALUES(%__u__%, %__a__%, 3);
-                          INSERT INTO notifications(userId, auctionId, categoryId) VALUES(bidderId, %__a__%, 2);
+                          INSERT INTO notifications(userId, auctionId, categoryId, time) VALUES(%__u__%, %__a__%, 3, %__t__%);
+                          INSERT INTO notifications(userId, auctionId, categoryId, time) VALUES(bidderId, %__a__%, 2, %__t__%);
                       END IF;
                   END";
         $query = str_replace( "%__a__%" , $auctionId, $query);
         $query = str_replace( "%__u__%" , $userId, $query);
+        $query = str_replace( "%__t__%" , "NOW()", $query);
         self::$database -> issueQuery( $query );
     }
 
@@ -593,6 +595,28 @@ class QueryOperator
         $advancedFeedback =  new AdvancedFeedback( $scores, $feedbackAsSeller, $feedbackAsBuyer );
         //var_dump($advancedFeedback);
         return $advancedFeedback;
+    }
+
+
+    public static function getNotifications( $userId, $seen = null )
+    {
+        self::getDatabaseInstance();
+
+        // SQL for retrieving all unseen notifications
+        $query  = "SELECT a.auctionId, time, categoryName, categoryIcon, itemName, itemBrand ";
+        $query .= "FROM auctions a, items i, notifications n, notification_categories ncat ";
+        $query .= "WHERE a.itemId = i.itemId AND a.auctionId = n.auctionId AND n.categoryId = ncat.categoryId AND n.userId = $userId ";
+        $query .= ( is_null( $seen ) ) ? "" : "AND seen = 0 ";
+        $query .= "ORDER BY time DESC";
+        $result = self::$database -> issueQuery( $query );
+
+        $notifications = [];
+        while ( $row = $result -> fetch_assoc() )
+        {
+            $notifications[] = new Notification( $row );
+        }
+
+        return $notifications;
     }
 
 
