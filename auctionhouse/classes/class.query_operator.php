@@ -143,7 +143,7 @@ class QueryOperator
         self::getDatabaseInstance();
 
         // SQL query for dropping auction event
-        $query = "DROP EVENT IF EXIST 'auction_$auctionId'";
+        $query = "DROP EVENT IF EXISTS auction_$auctionId";
         self::$database -> issueQuery( $query );
     }
 
