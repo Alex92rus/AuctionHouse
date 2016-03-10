@@ -9,7 +9,11 @@ $searchString = SessionOperator::getSearchSetting( SessionOperator::SEARCH_STRIN
 
 $superCategories = QueryOperator::getSuperCategoriesList();
 
-$pushNotifications = QueryOperator::getNotifications( SessionOperator::getUser() -> getUserId(), "seen" );
+$userId = SessionOperator::getUser() -> getUserId();
+
+$allNotifications = QueryOperator::getNotifications( $userId );
+$alerts = QueryOperator::getNotifications( $userId, "seen" );
+$newAlerts = count($alerts);
 ?>
 <!-- header start -->
 <nav class="navbar navbar-default navbar-static-top navbar-top" role="navigation">
@@ -64,42 +68,43 @@ $pushNotifications = QueryOperator::getNotifications( SessionOperator::getUser()
 
         <!-- notifications start -->
         <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <span class="badge"><?= count($pushNotifications) ?></span><i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                <?php if( $newAlerts > 0 ) : ?><span class="badge"><?= $newAlerts ?></span><?php endif ?><i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-alerts">
                 <?php
-                foreach ( $pushNotifications as $pushNotification ) {
-                    $time = new DateTime( $pushNotification -> getTime() );
+                foreach ( $alerts as $alert ) {
+                    $time = new DateTime( $alert -> getTime() );
                     $now = new DateTime();
                     $interval = $now->diff( $time );
-                    $category = $pushNotification -> getCategoryName(); ?>
+                    $category = $alert -> getCategoryName(); ?>
                     <li>
-                        <a href=
-                           <?php
-                           $href = "#";
-                           if ( !preg_match( '/Sold/', $category ) ) {
-                               $href = "../views/open_live_auction_view.php?liveAuction=" . $pushNotification -> getAuctionId();
-                           }
-                           echo $href;
-                           ?>
-                          >
+                        <a href="#">
                             <div>
-                                <i class="<?= $pushNotification -> getCategoryIcon() ?>"></i> <span style="padding-left: 10px"><?= $category ?></span>
+                                <i class="<?= $alert -> getCategoryIcon() ?>"></i> <span style="padding-left: 10px"><?= $category ?></span>
                                 <span class="pull-right text-muted small"><?= $interval->format('%h h %i min ago') ?></span><br>
-                                <span style="padding-left: 28px; color: #253b52;"><?= $pushNotification -> getItemName() . " - " . $pushNotification -> getItemBrand() ?>
+                                <span style="padding-left: 28px; color: #253b52;"><?= $alert -> getItemName() . " - " . $alert -> getItemBrand() ?>
                                 </span>
                             </div>
                         </a>
                     </li>
                     <li class="divider"></li>
+                <?php
+                }
+                if ( $newAlerts > 0 ) { ?>
+                    <li>
+                        <a class="text-center" href="../views/my_notifications_view.php">
+                            <strong>See All Alerts</strong>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                <?php } else { ?>
+                    <li class="divider"></li>
+                    <li class="text-center">
+                        <strong>No Alerts Available</strong>
+                    </li>
+                    <li class="divider"></li>
                 <?php } ?>
-                <li>
-                    <a class="text-center" href="#">
-                        <strong>See All Alerts</strong>
-                        <i class="fa fa-angle-right"></i>
-                    </a>
-                </li>
             </ul>
         </li>
         <!-- notifications end -->
