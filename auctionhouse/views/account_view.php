@@ -39,7 +39,7 @@ require_once "../scripts/user_session.php";
 
 <body>
     <!-- display feedback (if available) start -->
-    <?php require_once "../includes/feedback.php" ?>
+    <?php require_once "../includes/notification.php" ?>
     <!-- display feedback (if available) end -->
 
 

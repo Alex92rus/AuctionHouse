@@ -16,9 +16,13 @@ if ($origin == "watches"){
 }else{
     $refer= "";
 }
+
 ?>
 
 <div class="row live-auction-to-buyer">
+    <?php if( $origin == "watches" ) : ?>
+        <section id="auction<?= $auction -> getAuctionId() ?>">
+     <?php endif ?>
 
     <?php
     //TODO Can we make this a nice header with a green or red background?

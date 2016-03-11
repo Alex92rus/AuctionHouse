@@ -21,7 +21,7 @@ if ( isset( $_GET[ "email" ] ) && isset( $_GET[ "confirm_code" ] ) )
         QueryOperator::activateAccount( $result[ "userId" ] );
 
         // Create a session for completed registration
-        SessionOperator::setFeedback( SessionOperator::COMPLETED_REGISTRATION );
+        SessionOperator::setNotification( SessionOperator::COMPLETED_REGISTRATION );
 
         // Email a registration confirmation to the user
         require_once "../classes/class.email.php";

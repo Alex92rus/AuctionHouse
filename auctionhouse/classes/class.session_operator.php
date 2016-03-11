@@ -19,7 +19,7 @@ class SessionOperator
     const SORT = "sort";
     const SEARCH_PAGINATION = "search_pagination";
 
-    const FEEDBACK = "feedback";
+    const NOTIFICATION = "notification";
     const TITLE = "title";
     const INFO = "info";
     const TYPE = "type";
@@ -35,6 +35,7 @@ class SessionOperator
     const DELETED_WATCH = "deleted_watch";
     const PLACED_BID = "placed_bid";
     const CREATED_AUCTION = "created_auction";
+    const CREATED_WATCH = "created_watch";
 
     const SUCCESS = "success";
     const WARNING = "warning";
@@ -123,7 +124,7 @@ class SessionOperator
 
 
     // Create a feedback session
-    public static function setFeedback( $status )
+    public static function setNotification( $status )
     {
         $type = self::SUCCESS;
 
@@ -172,30 +173,34 @@ class SessionOperator
                 break;
             case self::CREATED_AUCTION:
                 $title = "Auction successfully created!";
-                $info  = "You auction is now live and visible to buyers";
+                $info  = "You auction is now live and visible to buyers.";
+                break;
+            case self::CREATED_WATCH:
+                $title = "Auction added to watch list!";
+                $info  = "You can now track this auction underneath the 'My Watch List' section.";
                 break;
             default:
                 $title = $info = $type = null;
                 break;
         }
 
-        $_SESSION[ self::FEEDBACK ] = [ self::TITLE => $title, self::INFO => $info, self::TYPE => $type ];
+        $_SESSION[ self::NOTIFICATION ] = [ self::TITLE => $title, self::INFO => $info, self::TYPE => $type ];
     }
 
 
     // Check if a feedback has to be displayed
-    public static function getFeedback()
+    public static function getNotification()
     {
-        if ( isset( $_SESSION[ self::FEEDBACK ] ) )
+        if ( isset( $_SESSION[ self::NOTIFICATION ] ) )
         {
             // Retrieve status
-            $status = $_SESSION[ self::FEEDBACK ];
+            $status = $_SESSION[ self::NOTIFICATION ];
             $title = "<strong>" . $status[ self::TITLE ] . "</strong>";
             $info = $status[ self::INFO ];
             $type = $status[ self::TYPE ];
 
             // Delete session
-            unset( $_SESSION[ self::FEEDBACK ] );
+            unset( $_SESSION[ self::NOTIFICATION ] );
 
             return array( $title, $info, $type );
         }

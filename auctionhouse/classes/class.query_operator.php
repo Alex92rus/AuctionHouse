@@ -1,5 +1,7 @@
 <?php
 require_once "class.database.php";
+require_once "class.db_user.php";
+require_once "class.db_feedback.php";
 require_once "class.db_bid.php";
 require_once "class.db_country.php";
 require_once "class.db_category.php";
@@ -8,7 +10,10 @@ require_once "class.db_condition.php";
 require_once "class.db_sort.php";
 require_once "class.bid.php";
 require_once "class.auction.php";
+require_once "class.feedback.php";
 require_once "class.advanced_auction.php";
+require_once "class.advanced_feedback.php";
+require_once "class.notification.php";
 
 
 class QueryOperator
@@ -16,6 +21,8 @@ class QueryOperator
     const SELLER_LIVE_AUCTIONS = "live";
     const SELLER_SOLD_AUCTIONS = "sold";
     const SELLER_UNSOLD_AUCTIONS = "unsold";
+    const ROLE_SELLER = "seller";
+    const ROLE_BUYER = "buyer";
     private static $database;
 
 
@@ -112,10 +119,55 @@ class QueryOperator
         $itemId = self::$database -> issueQuery( $itemQuery, "issiiss", $itemParameters );
 
         // SQL query for inserting auction
-        $auctionQuery = "INSERT INTO auctions ( itemId, quantity, startPrice, reservePrice, startTime, endTime, reportFrequency ) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+        $auctionQuery = "INSERT INTO auctions ( itemId, quantity, startPrice, reservePrice, startTime, endTime ) VALUES ( ?, ?, ?, ?, ?, ? )";
         $auctionParameters[ 0 ] = &$itemId;
-        self::$database -> issueQuery( $auctionQuery, "iiddssi", $auctionParameters );
-        return $itemId;
+        $auctionId = self::$database -> issueQuery( $auctionQuery, "iiddss", $auctionParameters );
+        return [ "auctionId" => $auctionId, "itemId" => $itemId ];
+    }
+
+
+
+    public static function addAuctionEvent( $endTime, $userId, $auctionId )
+    {
+        self::getDatabaseInstance();
+
+        // SQL query for creating auction event
+        $query = "CREATE EVENT auction_%__a__%
+                  ON SCHEDULE AT '$endTime'
+                  DO BEGIN
+                      DECLARE sold int default -1;
+                      DECLARE bidderId int;
+
+                      SELECT userId, reservePrice < bidPrice INTO bidderId, sold
+                      FROM
+                          auctions,(SELECT userId, bidPrice
+                                    FROM auctions a, bids b
+                                    WHERE a.auctionId = b.auctionId AND a.auctionId = %__a__%
+                                    ORDER BY bidPrice DESC
+                                    LIMIT 1) AS highestBid
+                      WHERE auctionId = %__a__%;
+                      IF sold = 0 THEN
+                          INSERT INTO notifications(userId, auctionId, categoryId, time) VALUES(%__u__%, %__a__%, 4, %__t__%);
+                          INSERT INTO notifications(userId, auctionId, categoryId, time) VALUES(bidderId, %__a__%, 4, %__t__%);
+                      ELSE
+                          INSERT INTO notifications(userId, auctionId, categoryId, time) VALUES(%__u__%, %__a__%, 3, %__t__%);
+                          INSERT INTO notifications(userId, auctionId, categoryId, time) VALUES(bidderId, %__a__%, 2, %__t__%);
+                      END IF;
+                  END";
+        $query = str_replace( "%__a__%" , $auctionId, $query);
+        $query = str_replace( "%__u__%" , $userId, $query);
+        $query = str_replace( "%__t__%" , "NOW()", $query);
+        self::$database -> issueQuery( $query );
+    }
+
+
+    public static function dropAuctionEvent( $auctionId )
+    {
+        self::getDatabaseInstance();
+
+        // SQL query for dropping auction event
+        $query = "DROP EVENT IF EXISTS auction_$auctionId";
+        self::$database -> issueQuery( $query );
     }
 
 
@@ -247,7 +299,6 @@ class QueryOperator
         item_categories.categoryName as subCategoryName, superCategoryName,
         item_categories.superCategoryId, item_categories.categoryId,
         conditionName, countryName, auction_watches.watchId, COUNT(DISTINCT (bids.bidId)) AS numBids,
-        COUNT(DISTINCT (auction_watches.watchId)) AS numWatches,
         MAX(bids.bidPrice) AS highestBid,
         case
 			when MAX(bids.bidPrice)is not null THEN MAX(bids.bidPrice)
@@ -731,6 +782,83 @@ class QueryOperator
             "bidPrice" => $bidPrice
         ) );
         $bid -> create();
+    }
+
+
+    public static function getUserImage( $username )
+    {
+        return DbUser::withConditions( "WHERE username = '$username'" ) ->get( array( "image" ) )[ 0 ][ "image" ];
+    }
+
+
+    private static function getFeedbackScores( $userId, $score )
+    {
+        $count = DbFeedback::withConditions( "WHERE receiverId = $userId AND score = $score" ) -> count();
+        return ( $count > 0 ) ? $count : 0;
+    }
+
+
+    private static function getFeedbacks( $userId, $role )
+    {
+        self::getDatabaseInstance();
+
+        $query  = "SELECT feedbackId, time AS feedbackTime, itemName, itemBrand, u.image AS creatorImage, username AS creatorUsername, score, comment ";
+        $query .= "FROM feedbacks f, auctions a, items i, users u ";
+        $query .= "WHERE f.auctionId = a.auctionId AND a.itemId = i.itemId AND f.creatorId = u.userId AND ";
+        $query .= "f.receiverId = $userId AND i.userId";
+        $query .= ( $role == self:: ROLE_SELLER ) ? " = " : " != ";
+        $query .= "$userId";
+        $result = self::$database -> issueQuery( $query );
+
+        $feedbacks = [];
+        while ( $row = $result -> fetch_assoc() )
+        {
+            $feedbacks[] = new Feedback( $row );
+        }
+
+        return $feedbacks;
+    }
+
+
+    public static function getFeedback( $username )
+    {
+        // Retrieve user feedback statistics
+        $userId = DbUser::withConditions( "WHERE username = '$username'" ) -> get( array( "userId" ) )[ 0 ][ "userId" ];
+        $scores = [];
+        for ( $index = 1; $index <= 5; $index++ )
+        {
+            $scores[] = self::getFeedbackScores( $userId, $index );
+        }
+
+        // Retrieve feedbacks
+        $feedbackAsSeller = self::getFeedbacks( $userId, self::ROLE_SELLER );
+        $feedbackAsBuyer = self::getFeedbacks( $userId, self::ROLE_BUYER );
+
+        $advancedFeedback =  new AdvancedFeedback( $scores, $feedbackAsSeller, $feedbackAsBuyer );
+        //var_dump($advancedFeedback);
+        return $advancedFeedback;
+    }
+
+
+    public static function getNotifications( $userId, $seen = null )
+    {
+        self::getDatabaseInstance();
+
+        // SQL for retrieving all unseen notifications
+        $query  = "SELECT a.auctionId, time, categoryName, categoryIcon, itemName, itemBrand ";
+        $query .= "FROM auctions a, items i, notifications n, notification_categories ncat ";
+        $query .= "WHERE a.itemId = i.itemId AND a.auctionId = n.auctionId AND n.categoryId = ncat.categoryId AND n.userId = $userId ";
+        $query .= ( is_null( $seen ) ) ? "" : "AND seen = 0 ";
+        $query .= "ORDER BY time DESC";
+        $result = self::$database -> issueQuery( $query );
+
+        $notifications = [];
+        while ( $row = $result -> fetch_assoc() )
+        {
+            $notifications[] = new Notification( $row );
+        }
+
+        return $notifications;
     }
 
 

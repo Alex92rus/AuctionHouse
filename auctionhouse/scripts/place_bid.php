@@ -48,7 +48,7 @@ if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "bidPrice" ] ) )
         $dbAuction->save();
 
         // Set feedback session
-        SessionOperator::setFeedback( SessionOperator::PLACED_BID );
+        SessionOperator::setNotification( SessionOperator::PLACED_BID );
     }
 }
 

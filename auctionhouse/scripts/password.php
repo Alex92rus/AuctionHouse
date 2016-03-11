@@ -16,7 +16,7 @@ if ( isset( $_POST[ "resetPassword" ] ) )
         $mail = new Email($_POST["email"], $userInfo["firstName"], $userInfo["lastName"]);
         $mail->prepareResetEmail();
         $mail->sentEmail();
-        SessionOperator::setFeedback(SessionOperator::RESET_PASSWORD);
+        SessionOperator::setNotification(SessionOperator::RESET_PASSWORD);
         HelperOperator::redirectTo("../index.php");
     } else {
         // Create a session for not found email
@@ -40,7 +40,7 @@ else if ( isset( $_POST[ "changePassword" ] ) )
     {
         QueryOperator::updatePassword( $email, $passwordFields[ "password2" ] );
         SessionOperator::deleteEmail();
-        SessionOperator::setFeedback( SessionOperator::CHANGED_PASSWORD );
+        SessionOperator::setNotification( SessionOperator::CHANGED_PASSWORD );
 
         // Send a password changed confirmation email to the user
         $mail = new Email( $email, $userDetails[ "firstName" ], $userDetails[ "lastName" ] );
@@ -76,7 +76,7 @@ else if ( isset( $_POST[ "changePasswordSignedIn" ] ) )
         ValidationOperator::validPasswords( $passwordFields[ "password1" ], $passwordFields[ "password2" ] ) )
     {
         QueryOperator::updatePassword( $user -> getEmail(), $passwordFields[ "password2" ] );
-        SessionOperator::setFeedback( SessionOperator::CHANGED_PASSWORD );
+        SessionOperator::setNotification( SessionOperator::CHANGED_PASSWORD );
 
         // Send a password changed confirmation email to the user
         $mail = new Email( $user -> getEmail(), $user -> getFirstName(), $user -> getLastName() );

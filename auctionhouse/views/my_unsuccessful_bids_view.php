@@ -46,7 +46,7 @@ $didNotWinAuctions = QueryOperator::getEndedAuctionsWhereBuyerHasLost($user->get
 
 <body>
 <!-- display feedback (if available) start -->
-<?php require_once "../includes/feedback.php" ?>
+<?php // require_once "../includes/feedback.php" ?>
 <!-- display feedback (if available) end -->
 
 

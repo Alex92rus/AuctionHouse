@@ -52,8 +52,7 @@ $views = $auction -> getViews() +1;
 
 //is user watching this auction
 $user= SessionOperator::getUser();
-$alreadyWatching = DbAuctionWatch::withConditions("WHERE userId = ".$user->getUserId(). " AND auctionId =".$auctionId)
-    ->exists();
+$alreadyWatching = DbAuctionWatch::withConditions("WHERE userId = ".$user->getUserId(). " AND auctionId =".$auctionId)->exists();
 
 ?>
 <!DOCTYPE html>
@@ -97,7 +96,7 @@ $alreadyWatching = DbAuctionWatch::withConditions("WHERE userId = ".$user->getUs
 
 <body>
     <!-- display feedback (if available) start -->
-    <?php require_once "../includes/feedback.php" ?>
+    <?php require_once "../includes/notification.php" ?>
     <!-- display feedback (if available) end -->
 
 
@@ -113,10 +112,12 @@ $alreadyWatching = DbAuctionWatch::withConditions("WHERE userId = ".$user->getUs
 
             <!-- back start -->
             <div class="row">
-                <div class="col-xs-12" id="go-back-navigation">
-                    <a href="<?=$refer[0]?>" class="btn btn-primary"><i class="fa fa-chevron-left"></i></a>
-                    <a href="<?=$refer[0]?>"> <?=$refer[1]?></a>
-                </div>
+                <?php if ( !empty( $refer ) ) : ?>
+                    <div class="col-xs-12" id="go-back-navigation">
+                        <a href="<?=$refer[0]?>" class="btn btn-primary"><i class="fa fa-chevron-left"></i></a>
+                        <a href="<?=$refer[0]?>"> <?=$refer[1]?></a>
+                    </div>
+                <?php endif ?>
             </div>
             <!-- back end -->
 
@@ -218,7 +219,7 @@ $alreadyWatching = DbAuctionWatch::withConditions("WHERE userId = ".$user->getUs
                                             $href = '"../scripts/create_watch.php?'.$_SERVER['QUERY_STRING'].'"';
                                             echo '<a href='.$href.'><i class="fa fa-eye"></i> Add to watch list</a>';
                                         }else{
-                                            echo '<h5>Watching</h5>';
+                                            echo "<a class=\"text-success\" href=\"my_watch_list_view.php#auction{$auction -> getAuctionId()}\"><i class=\"fa fa-eye\"></i> Watching</a>";
                                         }
                                     ?>
 

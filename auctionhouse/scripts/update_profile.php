@@ -51,7 +51,7 @@ else if ( isset( $_POST[ "save" ] ) )
         SessionOperator::updateUser( new User( $user ) );
 
         // Set feedback session
-        SessionOperator::setFeedback( SessionOperator::UPDATED_PROFILE_INFO );
+        SessionOperator::setNotification( SessionOperator::UPDATED_PROFILE_INFO );
     }
 }
 // Upload profile image
@@ -84,7 +84,7 @@ else
                 SessionOperator::updateUser( new User( $user ) );
 
                 // Set feedback session
-                SessionOperator::setFeedback( SessionOperator::UPLOADED_PROFILE_PHOTO );
+                SessionOperator::setNotification( SessionOperator::UPLOADED_PROFILE_PHOTO );
             }
             // Error - image cannot be uploaded
             else

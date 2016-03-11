@@ -46,7 +46,7 @@ $wonAuctions = QueryOperator::getEndedAuctionsWhereBuyerHasWon($user->getUserId(
 
 <body>
 <!-- display feedback (if available) start -->
-<?php require_once "../includes/feedback.php" ?>
+<?php //require_once "../includes/feedback.php" ?>
 <!-- display feedback (if available) end -->
 
 
@@ -63,7 +63,7 @@ $wonAuctions = QueryOperator::getEndedAuctionsWhereBuyerHasWon($user->getUserId(
         <div class="row">
             <div class="col-xs-12">
                 <h4 class="page-header">
-                    Your have won these auctions!
+                    Auctions you have won:
                 </h4>
             </div>
         </div>

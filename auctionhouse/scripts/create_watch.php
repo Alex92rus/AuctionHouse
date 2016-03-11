@@ -13,7 +13,7 @@ if(!is_numeric($auctionId)){
     HelperOperator::redirectTo("../views/open_live_auction_view.php?".$_SERVER['QUERY_STRING']);
 }
 
-//check user hasn't already watched
+// Check user hasn't already watched
 $alreadyWatching =
     DbAuctionWatch::withConditions("WHERE userId = ".$user->getUserId(). " AND auctionId =".$auctionId)
         ->exists() ? true: false;
@@ -22,12 +22,17 @@ if($alreadyWatching){
     HelperOperator::redirectTo("../views/open_live_auction_view.php?".$_SERVER['QUERY_STRING']);
 }
 
-//create an auction_watch
+// Create an auction_watch
 $watch = new DbAuctionWatch(array(
     "userId" => $user->getUserId(),
     "auctionId" =>$auctionId
 ));
+
+// Add to watch list
 $watch->create();
+
+// Set feedback session
+SessionOperator::setNotification( SessionOperator::CREATED_WATCH );
 
 HelperOperator::redirectTo("../views/open_live_auction_view.php?".$_SERVER['QUERY_STRING']);
 

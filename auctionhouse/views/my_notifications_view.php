@@ -2,8 +2,8 @@
 require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../scripts/user_session.php";
-$user = SessionOperator::getUser();
-$liveAuctions = QueryOperator::getSellersLiveAuctions( $user->getUserId());
+
+$allNotifications = QueryOperator::getNotifications( SessionOperator::getUser() -> getUserId() );
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +16,7 @@ $liveAuctions = QueryOperator::getSellersLiveAuctions( $user->getUserId());
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Live Auctions</title>
+    <title>Notifications</title>
 
     <!-- Font -->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
@@ -38,17 +38,12 @@ $liveAuctions = QueryOperator::getSellersLiveAuctions( $user->getUserId());
     <script src="../js/sb-admin-2.js"></script>
     <script src="../js/jquery.dataTables.min.js"></script>
     <script src="../js/dataTables.bootstrap.min.js"></script>
-    <script src="../js/jquery.countdown.min.js"></script>
     <script src="../js/custom/search.js"></script>
-    <script src="../js/custom/live_auction.js"></script>
+    <script src="../js/custom/notification.js"></script>
 
 </head>
 
 <body>
-    <!-- display feedback (if available) start -->
-    <?php require_once "../includes/notification.php" ?>
-    <!-- display feedback (if available) end -->
-
 
     <div id="wrapper">
 
@@ -62,38 +57,39 @@ $liveAuctions = QueryOperator::getSellersLiveAuctions( $user->getUserId());
             <div class="row">
                 <div class="col-xs-12">
                     <h4 class="page-header">
-                        You are currently selling <span class="text-danger"><?= count( $liveAuctions ) ?> auctions</span>
-                        <?php if ( !empty( $liveAuctions ) ) : ?>
-                            <a class="btn btn-primary pull-right" href="create_auction_view.php">Create New Auction</a>
-                        <?php endif ?>
+                        All Notifications <span class="text-danger">(<?= count( $allNotifications ) ?>)</span>
                     </h4>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-xs-12">
-
-                <!-- no auctions available start -->
-                <?php if ( empty( $liveAuctions ) ) { ?>
-                    <div class="well text-center">
-                        <h1 class="text-danger">No auctions available</h1>
-                        <h4>You currently sell now auctions. Click on the button below to create a new auction</h4>
-                        <a class="btn btn-lg btn-primary" href="create_auction_view.php">Create New Auction</a>
-                    </div>
-                <!-- no auctions available end -->
-
-                <!-- auctions available start -->
-                <?php } else {
-                    foreach ($liveAuctions as $advancedAuction) {
-                        $option = "live";
-                        include "../includes/auction_to_seller.php";
-                    }
-                }
-                ?>
-                <!-- auctions available end -->
-
-                </div>
-            </div>
+            <!-- notifications start -->
+            <table class="table table-striped table-bordered table-hover"  cellspacing="0" id="dataTables-notifications">
+                <thead>
+                <tr>
+                    <th>Notification Type</th>
+                    <th>Auction</th>
+                    <th>Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                foreach( $allNotifications as $alerts ) : ?>
+                    <tr>
+                        <td class="col-xs-3"><i class="<?= $alerts -> getCategoryIcon() ?>"></i> <span style="padding-left: 10px"><?= $alerts -> getCategoryName() ?></span></td>
+                        <td class="col-xs-3"><?= $alerts -> getItemName() . " - " . $alerts -> getItemBrand() ?></td>
+                        <td class="col-xs-3">
+                            <?php
+                            $time = new DateTime( $alerts -> getTime() );
+                            $now = new DateTime();
+                            $interval = $now->diff( $time );
+                            echo $interval->format('%h h %i min ago');
+                            ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            <!-- notifications end -->
 
             <!-- footer start -->
             <div class="footer">
@@ -107,14 +103,6 @@ $liveAuctions = QueryOperator::getSellersLiveAuctions( $user->getUserId());
 
     </div>
     <!-- /#wrapper -->
-
-
-    <!-- modal start -->
-    <?php
-    $header = "Delete Auction";
-    include "../includes/delete_confirmation.php"
-    ?>
-    <!-- modal end -->
 
 </body>
 

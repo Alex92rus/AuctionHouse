@@ -8,6 +8,12 @@ $searchCategory = SessionOperator::getSearchSetting( SessionOperator::SEARCH_CAT
 $searchString = SessionOperator::getSearchSetting( SessionOperator::SEARCH_STRING );
 
 $superCategories = QueryOperator::getSuperCategoriesList();
+
+$userId = SessionOperator::getUser() -> getUserId();
+
+$allNotifications = QueryOperator::getNotifications( $userId );
+$alerts = QueryOperator::getNotifications( $userId, "seen" );
+$newAlerts = count($alerts);
 ?>
 <!-- header start -->
 <nav class="navbar navbar-default navbar-static-top navbar-top" role="navigation">
@@ -60,6 +66,49 @@ $superCategories = QueryOperator::getSuperCategoriesList();
     <!-- top menu start -->
     <ul class="nav navbar-top-links navbar-right">
 
+        <!-- notifications start -->
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                <?php if( $newAlerts > 0 ) : ?><span class="badge"><?= $newAlerts ?></span><?php endif ?><i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-alerts">
+                <?php
+                foreach ( $alerts as $alert ) {
+                    $time = new DateTime( $alert -> getTime() );
+                    $now = new DateTime();
+                    $interval = $now->diff( $time );
+                    $category = $alert -> getCategoryName(); ?>
+                    <li>
+                        <a href="#">
+                            <div>
+                                <i class="<?= $alert -> getCategoryIcon() ?>"></i> <span style="padding-left: 10px"><?= $category ?></span>
+                                <span class="pull-right text-muted small"><?= $interval->format('%h h %i min ago') ?></span><br>
+                                <span style="padding-left: 28px; color: #253b52;"><?= $alert -> getItemName() . " - " . $alert -> getItemBrand() ?>
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                <?php
+                }
+                if ( $newAlerts > 0 ) { ?>
+                    <li>
+                        <a class="text-center" href="../views/my_notifications_view.php">
+                            <strong>See All Alerts</strong>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                <?php } else { ?>
+                    <li class="divider"></li>
+                    <li class="text-center">
+                        <strong>No Alerts Available</strong>
+                    </li>
+                    <li class="divider"></li>
+                <?php } ?>
+            </ul>
+        </li>
+        <!-- notifications end -->
+
         <!-- account start -->
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -92,7 +141,6 @@ $superCategories = QueryOperator::getSuperCategoriesList();
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
-
             <li <?= HelperOperator::isActive()?> >
                 <a href="#"><i class="fa fa-gavel fa-fw"></i> My Auctions<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -106,9 +154,7 @@ $superCategories = QueryOperator::getSuperCategoriesList();
                         <a href="../views/my_unsold_auctions_view.php"><i class="fa fa-minus-circle fa-fw"></i> Unsold Auctions</a>
                     </li>
                 </ul>
-
             </li>
-
             <li>
                 <a href="#"><i class="fa fa-money fa-fw"></i> My Biddings</a>
                 <ul class="nav nav-second-level">
@@ -124,11 +170,14 @@ $superCategories = QueryOperator::getSuperCategoriesList();
 
                 </ul>
             </li>
-
             <li>
                 <a href="../views/my_watch_list_view.php"><i class="fa fa-eye fa-fw"></i> My Watch List</a>
             </li>
-
+            <li>
+                <a href="../views/my_feedbacks_view.php?username=<?= SessionOperator::getUser() -> getUsername() ?>">
+                    <i class="fa fa-envelope fa-fw"></i> My Feedbacks
+                </a>
+            </li>
         </ul>
     </div>
 </div>

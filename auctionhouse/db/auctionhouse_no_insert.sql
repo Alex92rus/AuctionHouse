@@ -63,7 +63,7 @@ CREATE TABLE `bids` (
   `auctionId` int(11) NOT NULL,
   `bidTime` datetime NOT NULL,
   `bidPrice` decimal(10,2) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1141 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
 --
@@ -74,7 +74,7 @@ DROP TABLE IF EXISTS `countries`;
 CREATE TABLE `countries` (
   `countryId` int(11) NOT NULL,
   `countryName` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=247 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `countries`
@@ -342,7 +342,7 @@ CREATE TABLE `feedbacks` (
   `creatorId` int(11) NOT NULL,
   `score` int(11) NOT NULL,
   `comment` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -355,7 +355,7 @@ CREATE TABLE `item_categories` (
   `categoryId` int(11) NOT NULL,
   `superCategoryId` int(11) NOT NULL,
   `categoryName` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `item_categories`
@@ -437,7 +437,7 @@ CREATE TABLE `items` (
   `conditionId` int(2) NOT NULL,
   `itemDescription` varchar(2000) NOT NULL,
   `image` varchar(300) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=189 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
 --
@@ -448,7 +448,7 @@ DROP TABLE IF EXISTS `sort_options`;
 CREATE TABLE `sort_options` (
   `sortId` int(11) NOT NULL,
   `sortName` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `sort_options`
@@ -463,16 +463,38 @@ INSERT INTO `sort_options` (`sortId`, `sortName`) VALUES
   (6, 'Distance: nearest first');
 
 -- --------------------------------------------------------
+DROP TABLE IF EXISTS `notification_categories`;
+CREATE TABLE `notification_categories` (
+  `categoryId` int(2) NOT NULL,
+  `categoryName` varchar(45) NOT NULL,
+  `categoryIcon` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
+INSERT INTO `notification_categories` (`categoryId`, `categoryName`, `categoryIcon`) VALUES
+  (1, 'Outbid', 'fa-thumbs-down'),
+  (2, 'Won Auction', 'fa fa-thumbs-up'),
+  (3, 'Sold Auction', 'fa fa-gavel'),
+  (4, 'Reserve Price not met', 'fa fa-meh-o'),
+  (5, 'Auction deleted', 'fa fa-times');
+
+
+DROP TABLE IF EXISTS `notifications`;
+CREATE TABLE `notifications` (
+  `notificationId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `auctionId` int(11) NOT NULL,
+  `categoryId` int(2) NOT NULL,
+  `time` datetime NOT NULL,
+  `seen` int(2) DEFAULT 0
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 --
 -- Table structure for table `super_item_categories`
 --
-
 DROP TABLE IF EXISTS `super_item_categories`;
 CREATE TABLE `super_item_categories` (
   `superCategoryId` int(11) NOT NULL,
   `superCategoryName` varchar(45) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `super_item_categories`
@@ -499,24 +521,8 @@ DROP TABLE IF EXISTS `unverified_users`;
 CREATE TABLE `unverified_users` (
   `userId` int(11) NOT NULL,
   `confirmCode` varchar(60) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `unverified_users`
---
---
--- INSERT INTO `unverified_users` (`userId`, `confirmCode`) VALUES
---   (6, '38007188'),
---   (7, '38787806'),
---   (8, '84752420'),
---   (9, '36464858'),
---   (110, '64787719'),
---   (113, '75368781'),
---   (114, '10022901'),
---   (115, '32101785'),
---   (116, '30784045'),
---   (117, '91769063'),
---   (118, '1122468');
 
 -- --------------------------------------------------------
 
@@ -538,19 +544,7 @@ CREATE TABLE `users` (
   `password` varchar(60) NOT NULL,
   `verified` tinyint(1) DEFAULT '0',
   `image` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`userId`, `username`, `email`, `firstName`, `lastName`, `address`, `postcode`, `city`, `countryId`, `password`, `verified`, `image`) VALUES
-  (1, 'Andy1234', 'xxx', 'Andreas', 'Rauter', 'Flat 23 Prospect House, Donegal Street', 'N19QD', 'London', 229, '$2y$10$VraZBbuk/StYSL3tp261Iu9R3/8YLNVcGaMEN2C8YAFlc6JzMlGpW', 1, ''),
-  (5, 'sickAustrian', 'andreas.l.rauter@gmail.com', 'Andreas Lukas', 'Rauter', 'Flat 23 Prospect House, Donegal Street', 'N19QA', 'London', 114, '$2y$10$CdMrB2AI5CcpjMdN8bAuK.1c1BMaqKWdUJshPTGHau5iK1BKe0ZTO', 1, '56c4ee12da9e26.43716469.jpg'),
-  (6, 'uuu', 'jack roper@gmail.com', 'll', 'll', 'll', 'll', 'ss', 2, '$2y$10$dA1CDqlihaF4mWzJxoTlsOhiJtiWklkaqrPuaWFOCtJVLSVY2RHvG', 0, NULL),
-  (7, 'xxxx', 'xxxx@gmail.com', 'kk', 'kk', 'kk', 'kk', 'kk', 2, '$2y$10$UCDfTwtkCpoMF0DVb5F3Leyn639kh1yV0GfL.5JrXOYRPGhZx5cU.', 0, NULL),
-  (8, 'all', 'baumhaus@gmail.com', 'll', 'll', 'll', 'll', 'll', 1, '$2y$10$392npKG7jLqZgW3X.Wp.w.iHtweHNqaT/iPalkoNQ1pP8Z5vmDfSC', 0, NULL),
-  (9, 'Gea', 'andreas.rauter1@gmx.at', 'll', 'll', 'll', 'll', 'll', 1, '$2y$10$AJ.NCzeHNy8xBsVvwspyluz13HJVq3fleg7tzrlrCLlZRPsSkO0I6', 0, NULL);
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 
 --
@@ -651,57 +645,57 @@ ADD KEY `fk_country_idx` (`countryId`);
 -- AUTO_INCREMENT for table `auction_watches`
 --
 ALTER TABLE `auction_watches`
-MODIFY `watchId` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `watchId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `auctions`
 --
 ALTER TABLE `auctions`
-MODIFY `auctionId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=183;
+MODIFY `auctionId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `bids`
 --
 ALTER TABLE `bids`
-MODIFY `bidId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1141;
+MODIFY `bidId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `countries`
 --
 ALTER TABLE `countries`
-MODIFY `countryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=247;
+MODIFY `countryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `feedbacks`
 --
 ALTER TABLE `feedbacks`
-MODIFY `feedbackId` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `feedbackId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `item_categories`
 --
 ALTER TABLE `item_categories`
-MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
+MODIFY `categoryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-MODIFY `itemId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=189;
+MODIFY `itemId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `sort_options`
 --
 ALTER TABLE `sort_options`
-MODIFY `sortId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+MODIFY `sortId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `super_item_categories`
 --
 ALTER TABLE `super_item_categories`
-MODIFY `superCategoryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+MODIFY `superCategoryId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `unverified_users`
 --
 ALTER TABLE `unverified_users`
-MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=119;
+MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=119;
+MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
 --
 -- Constraints for dumped tables
 --
@@ -747,7 +741,7 @@ ALTER TABLE `items`
 ADD CONSTRAINT `CategoryNo` FOREIGN KEY (`categoryId`) REFERENCES `item_categories` (`categoryId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
 ADD CONSTRAINT `ConditionNo` FOREIGN KEY (`conditionId`) REFERENCES `item_conditions` (`conditionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_user` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-MODIFY COLUMN itemName VARCHAR(45) CHARACTER SET UTF8 COLLATE UTF8_GENERAL_CI;
+MODIFY COLUMN `itemName` VARCHAR(45) CHARACTER SET UTF8 COLLATE UTF8_GENERAL_CI;
 
 --
 -- Constraints for table `unverified_users`

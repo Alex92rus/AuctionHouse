@@ -45,8 +45,11 @@ if($item->getField("userId") == $userId) {
         unlink( ROOT . $imageName );
     }
 
+    // Delete auction event
+    QueryOperator::dropAuctionEvent( $auctionId );
+
     // Set feedback session
-    SessionOperator::setFeedback( SessionOperator::DELETED_AUCTION );
+    SessionOperator::setNotification( SessionOperator::DELETED_AUCTION );
 }
 
 HelperOperator::redirectTo("../views/my_live_auctions_view.php");
