@@ -835,7 +835,6 @@ class QueryOperator
         $feedbackAsBuyer = self::getFeedbacks( $userId, self::ROLE_BUYER );
 
         $advancedFeedback =  new AdvancedFeedback( $scores, $feedbackAsSeller, $feedbackAsBuyer );
-        //var_dump($advancedFeedback);
         return $advancedFeedback;
     }
 
