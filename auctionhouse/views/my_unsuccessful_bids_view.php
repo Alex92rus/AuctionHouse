@@ -63,7 +63,7 @@ $didNotWinAuctions = QueryOperator::getEndedAuctionsWhereBuyerHasLost($user->get
         <div class="row">
             <div class="col-xs-12">
                 <h4 class="page-header">
-                    Sorry, you did win these auctions
+                    Sorry, you did not win <span class="text-danger"><?= count( $didNotWinAuctions ) ?> auctions</span>
                 </h4>
             </div>
         </div>
@@ -114,14 +114,6 @@ $didNotWinAuctions = QueryOperator::getEndedAuctionsWhereBuyerHasLost($user->get
 
     </div>
     <!-- main end -->
-
-
-    <!-- modal start -->
-    <?php
-    $header = "Delete Auction from Watch List";
-    include "../includes/delete_confirmation.php"
-    ?>
-    <!-- modal end -->
 
 
 </div>

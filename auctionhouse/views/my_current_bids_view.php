@@ -64,7 +64,7 @@ $liveWithBidAuctions= QueryOperator::getLiveAuctionsWhereBuyerHasBid($user->getU
         <div class="row">
             <div class="col-xs-12">
                 <h4 class="page-header">
-                    <span class="text-danger"><?= count($liveWithBidAuctions) ?> </span> Unfinished auctions you have bid on
+                    There are <span class="text-danger"><?= count($liveWithBidAuctions) ?> unfinished auctions</span> you have bid on
                 </h4>
             </div>
         </div>
@@ -115,14 +115,6 @@ $liveWithBidAuctions= QueryOperator::getLiveAuctionsWhereBuyerHasBid($user->getU
 
     </div>
     <!-- main end -->
-
-
-    <!-- modal start -->
-    <?php
-    $header = "Delete Auction from Watch List";
-    include "../includes/delete_confirmation.php"
-    ?>
-    <!-- modal end -->
 
 
 </div>

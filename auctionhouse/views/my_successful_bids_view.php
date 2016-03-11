@@ -63,7 +63,7 @@ $wonAuctions = QueryOperator::getEndedAuctionsWhereBuyerHasWon($user->getUserId(
         <div class="row">
             <div class="col-xs-12">
                 <h4 class="page-header">
-                    Auctions you have won:
+                    You won <span class="text-danger"><?= count( $wonAuctions ) ?> auctions</span>
                 </h4>
             </div>
         </div>
@@ -114,15 +114,6 @@ $wonAuctions = QueryOperator::getEndedAuctionsWhereBuyerHasWon($user->getUserId(
 
     </div>
     <!-- main end -->
-
-
-    <!-- modal start -->
-    <?php
-    $header = "Delete Auction from Watch List";
-    include "../includes/delete_confirmation.php"
-    ?>
-    <!-- modal end -->
-
 
 </div>
 <!-- /#wrapper -->
