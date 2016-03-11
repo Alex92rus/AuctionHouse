@@ -27,7 +27,7 @@ if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "bidPrice" ] ) )
     // Correct inputs
     else
     {
-        // Send email to outbidded user (only if it is not the same user)
+        // Notify outbidded user (only if it is not the same user)
         $highestBid = QueryOperator::getAuctionBids( $auctionId, 1 );
         if ( !empty( $highestBid ) && ( $email = $highestBid[ 0 ] -> getBidderEmail() ) != $user -> getEmail() )
         {
@@ -39,6 +39,8 @@ if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "bidPrice" ] ) )
                 $auction -> getItemBrand(),
                 $auction -> getImage() );
             $outbidEmail -> sentEmail();
+
+            QueryOperator::addNotification( $highestBid[ 0 ] -> getBidderId(), $auctionId, QueryOperator::NOTIFICATION_OUTBIDDED );
         }
 
         // Place bid

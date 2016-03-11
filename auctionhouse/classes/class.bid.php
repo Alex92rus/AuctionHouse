@@ -2,6 +2,7 @@
 
 class Bid
 {
+    private $bidderId;
     private $bidderName;
     private $bidderEmail;
     private $bidderFirstName;
@@ -16,6 +17,18 @@ class Bid
         {
             call_user_func( "Bid::" . "set" . ucfirst( $field ), $value );
         }
+    }
+
+
+    public function getBidderId()
+    {
+        return $this -> bidderId;
+    }
+
+
+    private function setBidderId( $bidderId )
+    {
+        $this -> bidderId = $bidderId;
     }
 
 

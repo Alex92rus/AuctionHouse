@@ -8,6 +8,7 @@ require_once "class.db_category.php";
 require_once "class.db_super_category.php";
 require_once "class.db_condition.php";
 require_once "class.db_sort.php";
+require_once "class.db_notification.php";
 require_once "class.bid.php";
 require_once "class.auction.php";
 require_once "class.feedback.php";
@@ -23,6 +24,8 @@ class QueryOperator
     const SELLER_UNSOLD_AUCTIONS = "unsold";
     const ROLE_SELLER = "seller";
     const ROLE_BUYER = "buyer";
+    const NOTIFICATION_OUTBIDDED = 1;
+    const NOTIFICATION_AUCTION_DELETED = 5;
     private static $database;
 
 
@@ -161,6 +164,20 @@ class QueryOperator
     }
 
 
+    public static function addNotification( $userId, $auctionId, $notificationType )
+    {
+        $now = new DateTime();
+        $notification = new DbNotification( array(
+            "userId" => $userId,
+            "auctionId" => $auctionId,
+            "categoryId" => $notificationType,
+            "time" => $now -> format( "Y-m-d H:i:s" ),
+            "emailed" => 1
+        ) );
+        $notification -> create();
+    }
+
+
     public static function dropAuctionEvent( $auctionId )
     {
         self::getDatabaseInstance();
@@ -197,7 +214,7 @@ class QueryOperator
         self::getDatabaseInstance();
 
         // SQL query for retrieving all bids for a specific auction
-        $bidsQuery  = "SELECT u.username AS bidderName, u.email AS bidderEmail, u.firstName AS bidderFirstName, u.lastName AS bidderLastName, ";
+        $bidsQuery  = "SELECT u.username AS bidderName, u.userId AS bidderId, u.email AS bidderEmail, u.firstName AS bidderFirstName, u.lastName AS bidderLastName, ";
         $bidsQuery .= "b.bidTime, b.bidPrice ";
         $bidsQuery .= "FROM auctions a, bids b, users u ";
         $bidsQuery .= "WHERE a.auctionId = b.auctionId AND b.userId = u.userId AND a.auctionId = $auctionId ";
@@ -547,41 +564,6 @@ class QueryOperator
         $query = str_replace("__userId__", $userId, $query);
         self::getDatabaseInstance();
         return self::queryResultToAdvancedAuctions(self::$database -> issueQuery( $query ));
-    }
-
-
-
-
-    // TODO - no longer need this??
-    public static function getSellerAuctions( $userId, $type )
-    {
-        self::getDatabaseInstance();
-
-        // SQL query for retrieving all live auctions and their details for a specific userId
-        $detailsQuery  = "SELECT a.auctionId, a.quantity, a.startPrice, a.reservePrice, a.startTime, a.endTime, i.itemName, i.itemBrand, i.itemDescription, ";
-        $detailsQuery .= "i.image, cat.categoryName, con.conditionName, u.username, a.views, TIMEDIFF(a.endTime, a.startTime) AS duration, a.startTime <= NOW() AS hasStarted ";
-        $detailsQuery .= "FROM auctions a, items i, item_categories cat, item_conditions con, users u ";
-        $detailsQuery .= "WHERE a.itemId = i.itemId AND i.categoryId = cat.categoryId AND i.conditionId = con.conditionId AND i.userId = u.userId AND i.userId = $userId ";
-        $detailsQuery .= ( $type == self::SELLER_SOLD_AUCTIONS ) ? "AND a.sold = 1 " : "";
-        $detailsQuery .= ( $type == self::SELLER_LIVE_AUCTIONS ) ? "AND a.endTime > NOW() " : "AND a.endTime < NOW() ";
-        $detailsQuery .= "ORDER BY ";
-        $detailsQuery .= ( $type == self::SELLER_LIVE_AUCTIONS ) ? "hasStarted DESC, duration ASC, a.endTime ASC" : "a.endTime DESC";
-        $result = self::$database -> issueQuery( $detailsQuery );
-
-        $liveAuctions = [];
-        while ( $row = $result -> fetch_assoc() )
-        {
-            $auction = new Auction( $row );
-            $auctionId = $auction -> getAuctionId();
-            $bids = self::getAuctionBids( $auctionId );
-            $views = $auction->getViews();
-            $watches = self::getAuctionWatches( $auctionId );
-
-            $liveAuction = new AdvancedAuction( $auction, $bids, $views, $watches );
-            $liveAuctions[] = $liveAuction;
-        }
-
-        return $liveAuctions;
     }
 
 

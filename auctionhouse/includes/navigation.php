@@ -83,8 +83,8 @@ $newAlerts = count($alerts);
                             <div>
                                 <i class="<?= $alert -> getCategoryIcon() ?>"></i> <span style="padding-left: 10px"><?= $category ?></span>
                                 <span class="pull-right text-muted small"><?= $interval->format('%h h %i min ago') ?></span><br>
-                                <span style="padding-left: 28px; color: #253b52;"><?= $alert -> getItemName() . " - " . $alert -> getItemBrand() ?>
-                                </span>
+                                <span style="padding-left: 28px; color: #253b52; font-style: italic; font-size: 13px"><?= $alert -> getItemName() ?></span>
+                                <span style="padding-left: 28px; color: #253b52; font-style: italic; font-size: 13px"><?= $alert -> getItemBrand() ?></span>
                             </div>
                         </a>
                     </li>

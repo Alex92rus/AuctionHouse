@@ -46,79 +46,75 @@ $liveWithBidAuctions= QueryOperator::getLiveAuctionsWhereBuyerHasBid($user->getU
 </head>
 
 <body>
-<!-- display feedback (if available) start -->
-<?php //require_once "../includes/feedback.php" ?>
-<!-- display feedback (if available) end -->
+
+    <div id="wrapper">
+
+        <!-- navigation start -->
+        <?php include_once "../includes/navigation.php" ?>
+        <!-- navigation end -->
 
 
-<div id="wrapper">
+        <!-- main start -->
+        <div id="page-wrapper">
 
-    <!-- navigation start -->
-    <?php include_once "../includes/navigation.php" ?>
-    <!-- navigation end -->
-
-
-    <!-- main start -->
-    <div id="page-wrapper">
-
-        <div class="row">
-            <div class="col-xs-12">
-                <h4 class="page-header">
-                    There are <span class="text-danger"><?= count($liveWithBidAuctions) ?> unfinished auctions</span> you have bid on
-                </h4>
-            </div>
-        </div>
-
-        <!-- search main start -->
-        <div class="row" id="search-main">
-
-            <!-- live auctions list start -->
-            <div class="col-xs-9">
-                <?php
-                if ( count( $liveWithBidAuctions ) == 0 ) {
-                    echo "<h4>There are no unfinished auctions you have bid on</h4>";
-                } else {
-                    foreach ( $liveWithBidAuctions as $auction ) {
-                        echo $auction -> getUsername();
-                        $origin = "liveWithBid";
-                        include "../includes/live_auction_to_buyer.php";
-                    }
-                }
-                ?>
-            </div>
-            <!-- live auctions list end -->
-
-            <!-- recommendations start -->
-            <div class="col-xs-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h5>
-                            Popular on AuctionHouse
-                        </h5>
-                    </div>
-                    <div class="panel-body">
-                        Recommendations
-                    </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4 class="page-header">
+                        There are <span class="text-danger"><?= count($liveWithBidAuctions) ?> unfinished auctions</span> you have bid on
+                    </h4>
                 </div>
             </div>
-            <!-- recommendations end -->
 
-        </div>
-        <!-- search main end -->
+            <!-- search main start -->
+            <div class="row" id="search-main">
 
-        <!-- footer start -->
-        <div class="footer">
-            <div class="container">
+                <!-- live auctions list start -->
+                <div class="col-xs-9">
+                    <?php
+                    if ( count( $liveWithBidAuctions ) == 0 ) {
+                        echo "<h4>There are no unfinished auctions you have bid on</h4>";
+                    } else {
+                        foreach ( $liveWithBidAuctions as $auction ) {
+                            echo $auction -> getUsername();
+                            $origin = "liveWithBid";
+                            include "../includes/live_auction_to_buyer.php";
+                        }
+                    }
+                    ?>
+                </div>
+                <!-- live auctions list end -->
+
+                <!-- recommendations start -->
+                <div class="col-xs-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h5>
+                                Popular on AuctionHouse
+                            </h5>
+                        </div>
+                        <div class="panel-body">
+                            Recommendations
+                        </div>
+                    </div>
+                </div>
+                <!-- recommendations end -->
+
             </div>
+            <!-- search main end -->
+
+            <!-- footer start -->
+            <div class="footer">
+                <div class="container">
+                </div>
+            </div>
+            <!-- footer end -->
+
         </div>
-        <!-- footer end -->
+        <!-- main end -->
+
 
     </div>
-    <!-- main end -->
-
-
-</div>
-<!-- /#wrapper -->
+    <!-- /#wrapper -->
 
 </body>
 

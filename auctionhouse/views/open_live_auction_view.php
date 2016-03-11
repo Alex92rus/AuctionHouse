@@ -236,7 +236,9 @@ $alreadyWatching = DbAuctionWatch::withConditions("WHERE userId = ".$user->getUs
                                     <div class="panel-body">
                                         <h4>Seller Information</h4>
                                         <p>
-                                            <a href=""><?= $auction -> getUsername() ?></a><br>
+                                            <a href="<?php echo '../views/my_feedbacks_view.php?username=' . $auction -> getUsername() ?>">
+                                                <?= $auction -> getUsername() ?>
+                                            </a><br>
                                             100% Positive Feedback
                                         </p>
                                     </div>

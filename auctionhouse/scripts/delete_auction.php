@@ -36,6 +36,8 @@ if($item->getField("userId") == $userId) {
             $item -> getField( "itemBrand" ),
             $item -> getField( "image" ) );
         $outbidEmail -> sentEmail();
+
+        QueryOperator::addNotification( $highestBid -> getBidderId(), $auctionId, QueryOperator::NOTIFICATION_AUCTION_DELETED );
     }
 
     // Delete auction
