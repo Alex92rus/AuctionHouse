@@ -23,6 +23,7 @@ class Auction
     private $watchId; //for a watched Auction
     private $numWatches;
     private $highestBid;
+    private $isUserWinning;
 
 
     public function __construct( $details )
@@ -404,4 +405,23 @@ class Auction
     {
         $this->numWatches = $numWatches;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIsUserWinning()
+    {
+        return $this->isUserWinning;
+    }
+
+    /**
+     * @param mixed $isUserWinning
+     */
+    public function setIsUserWinning($isUserWinning)
+    {
+        $this->isUserWinning = $isUserWinning;
+    }
+
+
+
    }

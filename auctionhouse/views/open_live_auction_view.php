@@ -31,6 +31,8 @@ if(isset( $_GET["s"])){
     $refer = array("search_view.php", "Back to Search Results");
 }elseif (isset($_GET["w"])){
     $refer = array("my_watch_list_view.php", "Back to My Watched Auctions");
+}elseif (isset($_GET["l"])){
+    $refer = array("my_current_bids_view.php", "Back to My Current Bids");
 }
 
 $auction = QueryOperator::getLiveAuction($auctionId);
@@ -211,7 +213,6 @@ $alreadyWatching = DbAuctionWatch::withConditions("WHERE userId = ".$user->getUs
 
                                     <div class="col-xs-12">
                                     <?php
-
 
                                         if(!$alreadyWatching){
                                             $href = '"../scripts/create_watch.php?'.$_SERVER['QUERY_STRING'].'"';

@@ -47,7 +47,8 @@ CREATE TABLE `auctions` (
   `endTime` datetime NOT NULL,
   `sold` tinyint(2) unsigned NOT NULL DEFAULT '0',
   `views` int(11) unsigned NOT NULL DEFAULT '0',
-  `reportFrequency` tinyint(4) unsigned DEFAULT NULL
+  `reportFrequency` tinyint(4) unsigned DEFAULT NULL,
+  `highestBidderId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=latin1;
 
 
@@ -565,7 +566,8 @@ ADD KEY `fk_AuctionWatch_User1_idx` (`userId`);
 --
 ALTER TABLE `auctions`
 ADD PRIMARY KEY (`auctionId`),
-ADD KEY `fk_Auctions_Items1_idx` (`itemId`);
+ADD KEY `fk_Auctions_Items1_idx` (`itemId`),
+ADD KEY `highestBidderId` (`highestBidderId`);
 
 --
 -- Indexes for table `bids`

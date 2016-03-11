@@ -3,6 +3,7 @@ require_once "../classes/class.helper_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../classes/class.validation_operator.php";
 require_once "../classes/class.email.php";
+require_once "../classes/class.db_auction.php";
 
 $auctionId = null;
 
@@ -42,6 +43,9 @@ if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "bidPrice" ] ) )
 
         // Place bid
         QueryOperator::placeBid( $auctionId, $userId, $bidPrice );
+        $dbAuction = DbAuction::find($auctionId);
+        $dbAuction->setField("highestBidderId", $userId);
+        $dbAuction->save();
 
         // Set feedback session
         SessionOperator::setFeedback( SessionOperator::PLACED_BID );

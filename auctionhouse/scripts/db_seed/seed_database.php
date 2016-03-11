@@ -39,14 +39,16 @@ $auctions = DbAuction::withConditions()->getAsClasses();
 
 seedAuctionBids();
 
-editAuctionsAsSold();
+
+
 
 
 //seedAuctionViews();
 
 seedAuctionWatches();
 
-seedFeedbacks();
+$soldAuctions = getSoldAuctions($auctions);
+seedFeedbacks($soldAuctions);
 
 
 
@@ -100,13 +102,13 @@ function seedAuctionWatches(){
 }
 
 
-function seedFeedbacks(){
+function seedFeedbacks($soldAuctions){
     include_once ($_SERVER['DOCUMENT_ROOT'] ."/scripts/db_seed/seed_feedbacks.php");
 }
 
-function editAuctionsAsSold(){
-    global $auctions;
+function getSoldAuctions($auctions){
 
+    $soldAuctions = array();
     $now = new DateTime();
 
     foreach ($auctions as $auction){
@@ -114,19 +116,18 @@ function editAuctionsAsSold(){
         $numBids =$auction->getField("numBids");
         $highestBid = $auction->getField("highestBid");
         if ($now > $endTime){
-            var_dump("ended");
-            ?> <pre><?php echo var_dump($auction) ?></pre> <?php
+
             if( $numBids > 0
                 && $highestBid > $auction->getField("reservePrice")){
 
-                    var_dump("sold");
-                    $auction->setField("sold", 1);
-                    $auction->save();
+                $soldAuctions[] = $auction;
             }
         }
     }
+    return $soldAuctions;
 
 }
+
 
 /**
  * @param $auction DbAuction

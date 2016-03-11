@@ -15,6 +15,7 @@ class HelperOperator
     {
         $current_file_name = basename( $_SERVER[ "REQUEST_URI" ], ".php" );
 
+
         if ( $current_file_name == "create_auction_view" )
         {
             echo 'class="active"';

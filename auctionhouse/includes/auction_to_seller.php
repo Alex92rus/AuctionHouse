@@ -14,6 +14,7 @@ $watches = $advancedAuction -> getWatches();
 $now = new DateTime("now");
 $ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i:s" );
 
+
 // Determine panel type
 $panelType =  null;
 if ( $option == "live" ) {

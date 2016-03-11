@@ -267,7 +267,7 @@ for ($i =0 ; $i < $numUsers ;$i++){
 
             $startPrice = 0.5 * $faker->numberBetween(1,200);
             if($faker->boolean($chanceOfGettingTrue = 80)){
-                $reservePrice   =  $startPrice + 0.5 *$faker->numberBetween(1, 50);
+                $reservePrice   =  $startPrice + 0.5 *$faker->numberBetween(1, 200);
             }else{
                 $reservePrice   = 0;
             }

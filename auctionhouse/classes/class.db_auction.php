@@ -17,7 +17,7 @@ class DbAuction extends DbEntity
         "endTime"       => "s",
         "sold"          => "i",
         "views"         => "i",
-        "reportFrequency" => "i"
+        "highestBidderId" => "i"
 
     );
 }

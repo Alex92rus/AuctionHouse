@@ -3,7 +3,7 @@ require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../scripts/user_session.php";
 $user = SessionOperator::getUser();
-$unsoldAuctions = QueryOperator::getSellerAuctions( $user->getUserId(), QueryOperator::SELLER_UNSOLD_AUCTIONS );
+$unsoldAuctions = QueryOperator::getSellersUnSoldAuctions( $user->getUserId());
 ?>
 <!DOCTYPE html>
 <html lang="en">

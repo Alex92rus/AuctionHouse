@@ -211,10 +211,38 @@ class QueryOperator
         return $emails;
     }
 
+    private static function queryResultToAuctions($result)
+    {
+        $auctions = array();
+        while ($row = $result->fetch_assoc()) {
+            $auctions[] = new Auction($row);
+        }
+        return $auctions;
+    }
+
+    private static function queryResultToAdvancedAuctions($result)
+    {
+
+        $liveAuctions = [];
+        while ( $row = $result -> fetch_assoc() )
+        {
+            $auction = new Auction( $row );
+            $auctionId = $auction -> getAuctionId();
+            $bids = self::getAuctionBids( $auctionId );
+            $views = $auction->getViews();
+            $watches = self::getAuctionWatches( $auctionId );
+
+            $liveAuction = new AdvancedAuction( $auction, $bids, $views, $watches );
+            $liveAuctions[] = $liveAuction;
+        }
+
+        return $liveAuctions;
+    }
+
 
     public static function getWatchedAuctions($userId)
     {
-        $query = "SELECT auctions.auctionId, quantity, startPrice, reservePrice, startTime, sold,
+        $query = "SELECT auctions.auctionId, quantity, startPrice, reservePrice, startTime,
 		endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
         item_categories.categoryName as subCategoryName, superCategoryName,
         item_categories.superCategoryId, item_categories.categoryId,
@@ -224,7 +252,11 @@ class QueryOperator
         case
 			when MAX(bids.bidPrice)is not null THEN MAX(bids.bidPrice)
             else startPrice
-		end as currentPrice
+		end as currentPrice,
+		case
+		    when MAX(bids.bidPrice) > auctions.reservePrice AND auctions.endTime < now()then 1
+		    else 0
+		end as sold
 
 
         FROM auctions
@@ -249,16 +281,227 @@ class QueryOperator
 
         $query = str_replace("__userId__", $userId, $query);
         self::getDatabaseInstance();
-        $result = self::$database -> issueQuery( $query );
-        $auctions = array();
-        while ($row = $result->fetch_assoc()) {
-            $auctions[] = new Auction($row);
-        }
-        return $auctions;
+        return self::queryResultToAuctions(self::$database -> issueQuery( $query ));
+
 
     }
 
+    public static function getLiveAuctionsWhereBuyerHasBid($userId)
+    {
+        $query = "
 
+        SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
+                endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
+                item_categories.categoryName as subCategoryName, superCategoryName,
+                item_categories.superCategoryId, item_categories.categoryId,
+                conditionName, countryName, COUNT(DISTINCT (bids.bidId)) AS numBids,
+                COUNT(DISTINCT (auction_watches.watchId)) AS numWatches,
+                MAX(bids.bidPrice) AS highestBid, MAX(bids.bidPrice)as currentPrice,
+                case
+			        when highestBidderId = __userId__ THEN true
+                    else false
+		        end as isUserWinning
+
+        FROM auctions
+
+                LEFT OUTER JOIN bids ON bids.auctionId = auctions.auctionId
+                LEFT OUTER JOIN auction_watches ON auction_watches.auctionId = auctions.auctionId
+                JOIN items ON items.itemId = auctions.itemId
+                JOIN users ON items.userId = users.userId
+                JOIN item_categories ON items.categoryId = item_categories.categoryId
+                JOIN super_item_categories ON  item_categories.superCategoryId = super_item_categories.superCategoryId
+                JOIN item_conditions ON items.conditionId = item_conditions.conditionId
+                JOIN countries ON users.countryId = countries.countryId
+
+        WHERE auctions.endTime > now() AND auctions.auctionId IN ( SELECT bids.auctionID FROM bids where bids.userId = __userId__ GROUP BY bids.auctionId)
+
+        GROUP BY  auctions.auctionId
+
+        ORDER BY endTime ASC";
+
+
+        $query = str_replace("__userId__", $userId, $query);
+        self::getDatabaseInstance();
+        return self::queryResultToAuctions(self::$database -> issueQuery( $query ));
+
+    }
+
+    public static function getEndedAuctionsWhereBuyerHasLost($userId)
+    {
+        $query = "
+
+        SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime, sold,
+                endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
+                item_categories.categoryName as subCategoryName, superCategoryName,
+                item_categories.superCategoryId, item_categories.categoryId,
+                conditionName, countryName, COUNT(DISTINCT (bids.bidId)) AS numBids,
+                COUNT(DISTINCT (auction_watches.watchId)) AS numWatches,
+                MAX(bids.bidPrice) AS highestBid, MAX(bids.bidPrice)as currentPrice,
+                case
+			        when MAX(bids.bidPrice) > reservePrice THEN true
+                    else false
+		        end as sold
+
+        FROM auctions
+
+                LEFT OUTER JOIN bids ON bids.auctionId = auctions.auctionId
+                LEFT OUTER JOIN auction_watches ON auction_watches.auctionId = auctions.auctionId
+                JOIN items ON items.itemId = auctions.itemId
+                JOIN users ON items.userId = users.userId
+                JOIN item_categories ON items.categoryId = item_categories.categoryId
+                JOIN super_item_categories ON  item_categories.superCategoryId = super_item_categories.superCategoryId
+                JOIN item_conditions ON items.conditionId = item_conditions.conditionId
+                JOIN countries ON users.countryId = countries.countryId
+
+        WHERE auctions.endTime < now() AND auctions.highestBidderId != __userId__
+                AND auctions.auctionId IN ( SELECT bids.auctionID FROM bids where bids.userId = __userId__ GROUP BY bids.auctionId)
+
+        GROUP BY  auctions.auctionId
+
+        ORDER BY endTime ASC";
+        $query = str_replace("__userId__", $userId, $query);
+        self::getDatabaseInstance();
+        return self::queryResultToAuctions(self::$database -> issueQuery( $query ));
+
+    }
+
+    public static function getEndedAuctionsWhereBuyerHasWon($userId)
+    {
+        $query = "
+
+        SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime, sold,
+                endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
+                item_categories.categoryName as subCategoryName, superCategoryName,
+                item_categories.superCategoryId, item_categories.categoryId,
+                conditionName, countryName, COUNT(DISTINCT (bids.bidId)) AS numBids,
+                COUNT(DISTINCT (auction_watches.watchId)) AS numWatches,
+                MAX(bids.bidPrice) AS highestBid, MAX(bids.bidPrice)as currentPrice,
+                1 as sold
+
+        FROM auctions
+
+                LEFT OUTER JOIN bids ON bids.auctionId = auctions.auctionId
+                LEFT OUTER JOIN auction_watches ON auction_watches.auctionId = auctions.auctionId
+                JOIN items ON items.itemId = auctions.itemId
+                JOIN users ON items.userId = users.userId
+                JOIN item_categories ON items.categoryId = item_categories.categoryId
+                JOIN super_item_categories ON  item_categories.superCategoryId = super_item_categories.superCategoryId
+                JOIN item_conditions ON items.conditionId = item_conditions.conditionId
+                JOIN countries ON users.countryId = countries.countryId
+
+        WHERE auctions.endTime < now() AND auctions.highestBidderId = __userId__
+                AND auctions.auctionId IN ( SELECT bids.auctionID FROM bids where bids.userId = __userId__ GROUP BY bids.auctionId)
+
+        GROUP BY  auctions.auctionId
+
+        HAVING MAX(bids.bidPrice) > reservePrice
+
+        ORDER BY endTime ASC";
+        $query = str_replace("__userId__", $userId, $query);
+        self::getDatabaseInstance();
+        return self::queryResultToAuctions(self::$database -> issueQuery( $query ));
+
+    }
+
+    public static function getSellersSoldAuctions($userId)
+    {
+        $query =  "SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
+                            endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
+                            item_categories.categoryName as subCategoryName,
+                            conditionName, 1 as sold
+
+                    FROM auctions
+
+                            LEFT OUTER JOIN bids ON bids.auctionId = auctions.auctionId
+                            JOIN items ON items.itemId = auctions.itemId
+                            JOIN users ON items.userId = users.userId
+                            JOIN item_categories ON items.categoryId = item_categories.categoryId
+
+                            JOIN item_conditions ON items.conditionId = item_conditions.conditionId
+                            JOIN countries ON users.countryId = countries.countryId
+
+                    WHERE items.userId  = __userId__ AND auctions.endTime < now()
+
+                    GROUP BY auctions.auctionId
+
+                    HAVING MAX(bids.bidPrice) > reservePrice
+
+                    ORDER BY    endTime DESC";
+
+        $query = str_replace("__userId__", $userId, $query);
+        self::getDatabaseInstance();
+        return self::queryResultToAdvancedAuctions(self::$database -> issueQuery( $query ));
+
+    }
+
+    public static function getSellersUnSoldAuctions($userId)
+    {
+        $query =  "SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
+                            endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
+                            item_categories.categoryName as subCategoryName,
+                            conditionName, 0 as sold
+
+                    FROM auctions
+
+                            LEFT OUTER JOIN bids ON bids.auctionId = auctions.auctionId
+                            JOIN items ON items.itemId = auctions.itemId
+                            JOIN users ON items.userId = users.userId
+                            JOIN item_categories ON items.categoryId = item_categories.categoryId
+
+                            JOIN item_conditions ON items.conditionId = item_conditions.conditionId
+                            JOIN countries ON users.countryId = countries.countryId
+
+                    WHERE items.userId  =  __userId__ AND auctions.endTime < now()
+
+                    GROUP BY auctions.auctionId
+
+                    HAVING MAX(bids.bidPrice) < reservePrice OR MAX(bids.bidPrice) = NULL
+
+                    ORDER BY    endTime DESC";
+
+        $query = str_replace("__userId__", $userId, $query);
+        self::getDatabaseInstance();
+        return self::queryResultToAdvancedAuctions(self::$database -> issueQuery( $query ));
+
+    }
+
+    public static function getSellersLiveAuctions($userId)
+    {
+        $query =  "SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
+                            endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
+                            item_categories.categoryName as subCategoryName,
+                            conditionName, startTime <= NOW() AS hasStarted,
+                            case
+                                when MAX(bids.bidPrice) > reservePrice THEN true
+                                else false
+                            end as sold
+
+                    FROM auctions
+
+                            LEFT OUTER JOIN bids ON bids.auctionId = auctions.auctionId
+                            JOIN items ON items.itemId = auctions.itemId
+                            JOIN users ON items.userId = users.userId
+                            JOIN item_categories ON items.categoryId = item_categories.categoryId
+                            JOIN item_conditions ON items.conditionId = item_conditions.conditionId
+                            JOIN countries ON users.countryId = countries.countryId
+
+                    WHERE items.userId  =  __userId__ AND auctions.endTime > now()
+
+                    GROUP BY auctions.auctionId
+
+
+
+                    ORDER BY    hasStarted DESC, endTime ASC";
+
+        $query = str_replace("__userId__", $userId, $query);
+        self::getDatabaseInstance();
+        return self::queryResultToAdvancedAuctions(self::$database -> issueQuery( $query ));
+    }
+
+
+
+
+    // TODO - no longer need this??
     public static function getSellerAuctions( $userId, $type )
     {
         self::getDatabaseInstance();

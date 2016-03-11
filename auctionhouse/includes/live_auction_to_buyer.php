@@ -9,14 +9,28 @@ require_once "../classes/class.advanced_auction.php";
 
 if ($origin == "watches"){
     $refer = "&w=1";
-}else if($origin == "search"){
+}else if($origin == "search") {
     $refer = "&s=1";
+}else if($origin == "liveWithBid"){
+    $refer = "&l=1";
 }else{
     $refer= "";
 }
 ?>
 
 <div class="row live-auction-to-buyer">
+
+    <?php
+    //TODO Can we make this a nice header with a green or red background?
+    if($origin == "liveWithBid"){
+        if($auction->getIsUserWinning()){?>
+            <h5 class="text-success">You are Currently the Highest Bidder!</h5> <?php
+        }else{?>
+            <h5 class="text-danger">You have been outbid, Bid again to avoid dissapointment!</h5> <?php
+
+        }
+    }
+    ?>
 
     <div class="col-xs-3 auction-img">
         <img src="<?= $auction->getImage() ?>" class="img-responsive" style="height:150px">
@@ -85,6 +99,7 @@ if ($origin == "watches"){
                                     );
                                     });
                     </script>
+
                 <?php endif ?>
             </div>
 

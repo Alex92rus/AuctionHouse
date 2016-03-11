@@ -1,18 +1,15 @@
 <?php
 
 global $faker;
-global $auctions;
 global $userIds;
-
-$soldAuctions = DbAuction::withConditions("WHERE `sold` = 1")->getAsClasses();
 
 foreach ($soldAuctions as $auction) {
 
-    if($faker->boolean(100)){
+    if($faker->boolean(80)){
         makeFeedbackBySeller($auction,$faker->numberBetween(1,5), $faker->sentence());
     }
 
-    if($faker->boolean(100)){
+    if($faker->boolean(80)){
         makeFeedbackByBuyer($auction, $faker->numberBetween(1,5), $faker->sentence());
     }
 

@@ -20,7 +20,7 @@ foreach ($auctions as $auction) {
 
     $start = new DateTime($auction->getField("startTime"));
     if($start < $now){
-        if($faker->boolean(40)){
+        if($faker->boolean(50)){
             $userIdsWithoutOwner = listUserIdsWithoutAuctionOwner($auction, $userIds);
             makeBidsForAuction($auction, $faker->numberBetween(1, 20), $userIdsWithoutOwner);
         }
@@ -50,13 +50,15 @@ function makeBidsForAuction($auction, $numBids, $userIds)
 
     $price = $auction->getField("startPrice");
 
+    $userId = null;
     for ($i = 0; $i < $numBids; $i++) {
 
         $time = new DateTime('@' . ($startTime->getTimestamp() + ($bidInterval * ($i + 1))));
         $price = $price + 0.5* $faker->numberBetween(1, 10);
 
+        $userId = $faker->randomElement($userIds);
         $bid = new DbBid(array(
-            "userId" => $faker->randomElement($userIds),
+            "userId" => $userId,
             "auctionId" => $auction->getId(),
             "bidTime" => $time->format('Y-m-d H:i:s'),
             "bidPrice" => $price
@@ -67,6 +69,8 @@ function makeBidsForAuction($auction, $numBids, $userIds)
 
     }
     $auction->setField("numBids", $numBids);
+    $auction->setField("highestBidderId", $userId);
+    $auction->save();
     //addViews($auction, $numBids);
 }
 

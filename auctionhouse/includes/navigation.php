@@ -111,6 +111,18 @@ $superCategories = QueryOperator::getSuperCategoriesList();
 
             <li>
                 <a href="#"><i class="fa fa-money fa-fw"></i> My Biddings</a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="../views/my_current_bids_view.php"><i class="fa fa-clock-o fa-fw"></i> Current Bids</a>
+                    </li>
+                    <li>
+                        <a href="../views/my_successful_bids_view.php"><i class="fa fa-money fa-fw"></i> Won / purchased</a>
+                    </li>
+                    <li>
+                        <a href="../views/my_unsuccessful_bids_view.php"><i class="fa fa-history fa-fw"></i> Didn't Win</a>
+                    </li>
+
+                </ul>
             </li>
 
             <li>

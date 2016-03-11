@@ -3,6 +3,7 @@ require_once "../classes/class.session_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../scripts/user_session.php";
 require_once "../classes/class.pagination.php";
+require_once "../classes/class.db_bid.php";
 
 $search_result = SessionOperator::getSearchSetting( SessionOperator::SEARCH_RESULT );
 $sort = SessionOperator::getSearchSetting( SessionOperator::SORT );
@@ -18,6 +19,12 @@ $user = SessionOperator::getUser();
 $liveAuctions = $search_result["auctions"];
 
 $categories = $search_result["categories"];
+
+
+//$bids = DbBid::withConditions("WHERE auctionId = 1797 ORDER BY bidPrice DESC")->getAsClasses();
+
+
+
 
 ?>
 <!DOCTYPE html>
