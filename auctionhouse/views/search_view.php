@@ -78,7 +78,7 @@ $categories = $search_result["categories"];
             <div class="row" id="search-header">
 
                 <label class="col-xs-8" id="search-total-results">
-                    <?= $pagination -> fromTo(); ?> of <?= $pagination -> getTotalCount(); ?> results for <span class="text-danger">"<?= $searchString ?>"</span>
+                    <?= $pagination -> fromTo(); ?> of <?= $pagination -> getTotalCount(); ?> results for <span class="text-danger">"<?= htmlspecialchars(stripslashes($searchString)) ?>"</span>
                 </label>
 
                 <div class="col-xs-4 text-right">

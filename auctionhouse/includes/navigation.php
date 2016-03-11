@@ -11,10 +11,11 @@ $superCategories = QueryOperator::getSuperCategoriesList();
 
 $userId = SessionOperator::getUser() -> getUserId();
 
-$allNotifications = QueryOperator::getNotifications( $userId );
-$alerts = QueryOperator::getNotifications( $userId, "seen" );
+$allAlerts = count( QueryOperator::getNotifications( $userId ) );
+$alerts = QueryOperator::getNotifications( $userId, QueryOperator::NOTIFICATION_UNSEEN );
 $newAlerts = count($alerts);
 ?>
+<script src="../js/custom/navigation.js"></script>
 <!-- header start -->
 <nav class="navbar navbar-default navbar-static-top navbar-top" role="navigation">
 
@@ -37,7 +38,7 @@ $newAlerts = count($alerts);
         <div class="input-group input-group-lg" style="width: inherit">
             <div class="input-group-btn search-panel">
                 <button type="button" class="form-control btn btn-default dropdown-toggle" data-toggle="dropdown" name="test">
-                    <span id="search_concept"><?= $searchCategory ?></span> <span class="caret"></span>
+                    <span id="search_concept"><?= htmlspecialchars(stripslashes($searchCategory)) ?></span> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" id="scrollable-menu" role="menu">
                     <?php if ( !in_array( $searchCategory, $superCategories ) && $searchCategory != $all ) : ?>
@@ -54,8 +55,8 @@ $newAlerts = count($alerts);
                     <?php } ?>
                 </ul>
             </div>
-            <input type="hidden" name="searchCategory" value="<?= $searchCategory ?>" id="searchCategory">
-            <input type="text" class="form-control" value="<?= $searchString ?>" style="width: 500px;" placeholder="Search for live auctions" name="searchString">
+            <input type="hidden" name="searchCategory" value="<?= htmlspecialchars(stripslashes($searchCategory)) ?>" id="searchCategory">
+            <input type="text" class="form-control" value="<?= htmlspecialchars(stripslashes($searchString)) ?>" style="width: 500px;" placeholder="Search for live auctions" name="searchString">
             <span class="input-group-btn">
                  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
             </span>
@@ -68,42 +69,25 @@ $newAlerts = count($alerts);
 
         <!-- notifications start -->
         <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="">
-                <?php if( $newAlerts > 0 ) : ?><span class="badge"><?= $newAlerts ?></span><?php endif ?><i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <span id="alertCounter" class="badge" <?php if( $newAlerts == 0 ) { echo "style=\"display:none\""; }?> ><?= $newAlerts ?></span>
+                <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
             </a>
-            <ul class="dropdown-menu dropdown-alerts">
+            <ul class="dropdown-menu dropdown-alerts" id="alerts">
                 <?php
-                foreach ( $alerts as $alert ) {
-                    $time = new DateTime( $alert -> getTime() );
-                    $now = new DateTime();
-                    $interval = $now->diff( $time );
-                    $category = $alert -> getCategoryName(); ?>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="<?= $alert -> getCategoryIcon() ?>"></i> <span style="padding-left: 10px"><?= $category ?></span>
-                                <span class="pull-right text-muted small"><?= $interval->format('%h h %i min ago') ?></span><br>
-                                <span style="padding-left: 28px; color: #253b52; font-style: italic; font-size: 13px"><?= $alert -> getItemName() ?></span>
-                                <span style="padding-left: 28px; color: #253b52; font-style: italic; font-size: 13px"><?= $alert -> getItemBrand() ?></span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                <?php
+                foreach ( $alerts as $alert ) {;
+                    include "../includes/alert.php";
                 }
-                if ( $newAlerts > 0 ) { ?>
-                    <li>
+                if ( $allAlerts > 0 ) { ?>
+                    <li id="last">
                         <a class="text-center" href="../views/my_notifications_view.php">
-                            <strong>See All Alerts</strong>
-                            <i class="fa fa-angle-right"></i>
+                            <strong>See All Alerts</strong> <i class="fa fa-angle-right"></i>
                         </a>
                     </li>
                 <?php } else { ?>
-                    <li class="divider"></li>
-                    <li class="text-center">
+                    <li class="text-center" style="padding: 10px 0" id="last">
                         <strong>No Alerts Available</strong>
                     </li>
-                    <li class="divider"></li>
                 <?php } ?>
             </ul>
         </li>

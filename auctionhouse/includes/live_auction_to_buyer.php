@@ -112,9 +112,9 @@ if ($origin == "watches"){
                     <?php
                     if($origin == "liveWithBid"){
                         if($auction->getIsUserWinning()){?>
-                            <p class="alert-success">Currently the highest bidder!</p> <?php
+                            <p id="bid" class="alert-success">Currently the highest bidder!</p> <?php
                         }else{?>
-                            <p class="alert-warning">Outbidded, bid again to win!</p> <?php
+                            <p id="bid" class="alert-warning">Outbidded, bid again to win!</p> <?php
 
                         }
                     }

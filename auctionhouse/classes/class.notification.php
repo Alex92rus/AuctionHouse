@@ -2,6 +2,7 @@
 
 class Notification
 {
+    private $notificationId;
     private $auctionId;
     private $time;
     private $categoryName;
@@ -20,6 +21,25 @@ class Notification
             }
         }
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function getNotificationId()
+    {
+        return $this->notificationId;
+    }
+
+
+    /**
+     * @param mixed $notificationId
+     */
+    public function setNotificationId($notificationId)
+    {
+        $this->notificationId = $notificationId;
+    }
+
 
     /**
      * @return mixed
@@ -44,7 +64,10 @@ class Notification
      */
     public function getTime()
     {
-        return $this->time;
+        $time = new DateTime( $this->time );
+        $now = new DateTime();
+        $interval = $now->diff( $time );
+        return $interval -> format('%h h %i min ago');
     }
 
 

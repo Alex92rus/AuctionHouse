@@ -317,7 +317,7 @@ h4#live-auction
 }
 
 
-.alert-success, .alert-warning
+#bid .alert-success, #bid .alert-warning
 {
     padding: 7px 7px;
     border-radius: 3px;

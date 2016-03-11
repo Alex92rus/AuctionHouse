@@ -40,7 +40,7 @@ if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "bidPrice" ] ) )
                 $auction -> getImage() );
             $outbidEmail -> sentEmail();
 
-            QueryOperator::addNotification( $highestBid[ 0 ] -> getBidderId(), $auctionId, QueryOperator::NOTIFICATION_OUTBIDDED );
+            QueryOperator::addNotification( $highestBid[ 0 ] -> getBidderId(), $auctionId, QueryOperator::NOTIFICATION_OUTBID );
         }
 
         // Place bid

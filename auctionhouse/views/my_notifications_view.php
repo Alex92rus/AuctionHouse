@@ -73,18 +73,11 @@ $allNotifications = QueryOperator::getNotifications( SessionOperator::getUser() 
                 </thead>
                 <tbody>
                 <?php
-                foreach( $allNotifications as $alerts ) : ?>
+                foreach( $allNotifications as $alert ) : ?>
                     <tr>
-                        <td class="col-xs-2"><i class="<?= $alerts -> getCategoryIcon() ?>"></i> <span style="padding-left: 10px"><?= $alerts -> getCategoryName() ?></span></td>
-                        <td class="col-xs-6"><?= $alerts -> getItemName() . " - " . $alerts -> getItemBrand() ?></td>
-                        <td class="col-xs-4">
-                            <?php
-                            $time = new DateTime( $alerts -> getTime() );
-                            $now = new DateTime();
-                            $interval = $now->diff( $time );
-                            echo $interval->format('%h h %i min ago');
-                            ?>
-                        </td>
+                        <td class="col-xs-2"><i class="<?= $alert -> getCategoryIcon() ?>"></i> <span style="padding-left: 10px"><?= $alert -> getCategoryName() ?></span></td>
+                        <td class="col-xs-6"><?= $alert -> getItemName() . " - " . $alert -> getItemBrand() ?></td>
+                        <td class="col-xs-4"><?= $alert -> getTime() ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

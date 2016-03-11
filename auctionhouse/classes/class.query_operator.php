@@ -22,10 +22,16 @@ class QueryOperator
     const SELLER_LIVE_AUCTIONS = "live";
     const SELLER_SOLD_AUCTIONS = "sold";
     const SELLER_UNSOLD_AUCTIONS = "unsold";
+
     const ROLE_SELLER = "seller";
     const ROLE_BUYER = "buyer";
-    const NOTIFICATION_OUTBIDDED = 1;
+
+    const NOTIFICATION_UNSEEN = "unseen";
+    const NOTIFICATION_UNNOTIFIED = "unnotified";
+    const NOTIFICATION_OUTBID = 1;
     const NOTIFICATION_AUCTION_DELETED = 5;
+
+
     private static $database;
 
 
@@ -821,25 +827,55 @@ class QueryOperator
     }
 
 
-    public static function getNotifications( $userId, $seen = null )
+    public static function getNotifications( $userId, $type = null )
     {
         self::getDatabaseInstance();
 
         // SQL for retrieving all unseen notifications
-        $query  = "SELECT a.auctionId, time, categoryName, categoryIcon, itemName, itemBrand ";
+        $query  = "SELECT notificationId, a.auctionId, time, categoryName, categoryIcon, itemName, itemBrand ";
         $query .= "FROM auctions a, items i, notifications n, notification_categories ncat ";
-        $query .= "WHERE a.itemId = i.itemId AND a.auctionId = n.auctionId AND n.categoryId = ncat.categoryId AND n.userId = $userId ";
-        $query .= ( is_null( $seen ) ) ? "" : "AND seen = 0 ";
+        $query .= "WHERE a.itemId = i.itemId AND n.auctionId = a.auctionId AND n.categoryId = ncat.categoryId AND n.userId = $userId ";
+        if ( is_null( $type ) ) {
+            $query .= "";
+        } else if ( $type == self::NOTIFICATION_UNSEEN ) {
+            $query .= "AND seen = 0 ";
+        } else if ( $type == self::NOTIFICATION_UNNOTIFIED ) {
+            $query .= "AND notified = 0 ";
+        } else {
+            return "";
+        }
         $query .= "ORDER BY time DESC";
         $result = self::$database -> issueQuery( $query );
 
         $notifications = [];
-        while ( $row = $result -> fetch_assoc() )
-        {
+        while ( $row = $result -> fetch_assoc() ) {
             $notifications[] = new Notification( $row );
         }
 
+        // SQL for marking notifications as notified
+        if ( $type == self::NOTIFICATION_UNNOTIFIED && !empty( $notifications ) ) {
+            $notifyQuery = "UPDATE notifications SET notified = 1 WHERE notificationId = ";
+            foreach ( $notifications as $notification ) {
+                $notifyQuery .= $notification -> getNotificationId();
+                if ( $notification != end( $notifications ) ) {
+                    $notifyQuery .= " OR notificationId = ";
+                }
+            }
+            self::getDatabaseInstance();
+            self::$database -> issueQuery( $notifyQuery );
+        }
+
         return $notifications;
+    }
+
+
+    public static function haveSeen( $userId, $notificationId )
+    {
+        self::getDatabaseInstance();
+
+        // SQL for marking notification as seen
+        $query = "UPDATE notifications SET seen = 1 WHERE userId = $userId AND notificationId = $notificationId";
+        self::$database -> issueQuery( $query );
     }
 
 
