@@ -4,6 +4,7 @@ require_once "../classes/class.bid.php";
 require_once "../classes/class.advanced_auction.php";
 
 /* @var AdvancedAuction $advancedAuction */
+/* @var Auction $auction */
 /* @var string $option */
 
 $auction = $advancedAuction -> getAuction();
@@ -72,6 +73,8 @@ if ( $option == "live" ) {
             </div>
         <?php } else if ( $option == "sold" ) { ?>
             <h5 class="text-success">Sold to <a href=""><?= $bids[ 0 ] -> getBidderName() ?></a> for <strong>£<?= $bids[ 0 ] -> getBidPrice() ?></strong></h5>
+
+
         <?php } else { ?>
             <h5 class="text-danger">
                 <?php if( empty( $bids ) ) { echo "Nobody placed a bid"; } else { echo "Reserve price was not reached. Last bid was <strong>£ " .  $bids[ 0 ] -> getBidPrice() . "</strong>"; } ?>
@@ -97,6 +100,26 @@ if ( $option == "live" ) {
             <div class="col-xs-9">
 
                 <!-- auction unhidden start -->
+                <?php if( $option == "sold") {
+                    $feedbackReceiverUsername = $bids[ 0 ] -> getBidderName();
+                    if ($auction->getHasBuyerFeedback()){?>
+                        <div class="pull-right">
+
+                            <h5>Thank you for leaving <a href="../views/my_feedbacks_view.php?username=<?=$feedbackReceiverUsername?>"> feedback</a></h5>
+
+                        </div>
+                    <?php } else {
+
+                        include "feedback_form.php";
+
+
+                    }
+                } ?>
+
+
+
+
+
                 <div class="row">
                     <div class="col-xs-9">
                         <h4>

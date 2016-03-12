@@ -84,4 +84,15 @@ class QueryBuilder
     {
         return $this->count() > 0 ? true:false;
     }
+
+    public function first()
+    {
+        $this->query = "SELECT * " . $this->query;
+        $result = $this->executeQuery();
+        $classInstance = null;
+        if ($row = $result->fetch_assoc()){
+            $classInstance = new $this->class($row);
+        }
+        return $classInstance;
+    }
 }

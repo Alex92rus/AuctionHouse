@@ -31,6 +31,25 @@ if ($origin == "watches"){
 
         <div class="col-xs-9 auction-info">
 
+            <?php if( $origin == "won") {
+                $feedbackReceiverUsername = $auction->getUsername();
+                ?><h5 class="pull-right"> Seller: <a href="../views/my_feedbacks_view.php?username=<?=$auction->getUsername()?>"> <?=$auction->getUsername()?></a></h5><?php
+                if ($auction->getHasSellerFeedback()){?>
+                    <div class="pull-right">
+
+
+                        <h5>Thank you for leaving feedback for &nbsp;</a></h5>
+
+                    </div>
+                <?php } else {
+
+                    include "feedback_form.php";
+
+
+                }
+            } ?>
+
+
             <div class="row">
                 <div class="col-xs-8">
                     <h4>

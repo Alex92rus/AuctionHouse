@@ -29,6 +29,7 @@ $wonAuctions = QueryOperator::getEndedAuctionsWhereBuyerHasWon($user->getUserId(
     <link href="../css/sb-admin-2.css" rel="stylesheet">
     <link href="../css/dataTables.bootstrap.css" rel="stylesheet">
     <link href="../css/main.css" rel="stylesheet">
+    <link href="../css/leave_feedback.css" rel="stylesheet">
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -41,6 +42,7 @@ $wonAuctions = QueryOperator::getEndedAuctionsWhereBuyerHasWon($user->getUserId(
     <script src="../js/jquery.countdown.min.js"></script>
     <script src="../js/custom/search.js"></script>
     <script src="../js/custom/live_auction.js"></script>
+    <script src="../js/custom/leave_feedback.js"></script>
 
 </head>
 
@@ -75,7 +77,7 @@ $wonAuctions = QueryOperator::getEndedAuctionsWhereBuyerHasWon($user->getUserId(
                     echo "<h4>You have won no auctions</h4>";
                 } else {
                     foreach ( $wonAuctions as $auction ) {
-                        echo $auction -> getUsername();
+                        //echo $auction -> getUsername();
                         $origin = "won";
                         include "../includes/live_auction_to_buyer.php";
                     }

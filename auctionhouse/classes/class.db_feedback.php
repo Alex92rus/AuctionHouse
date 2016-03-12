@@ -13,7 +13,8 @@ class DbFeedback extends DbEntity
         "receiverId"  => "i",
         "creatorId" => "i",
         "score"     => "i",
-        "comment"   => "s"
+        "comment"   => "s",
+        "time" => "s"
 
     );
 }

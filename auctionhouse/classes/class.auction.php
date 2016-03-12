@@ -24,7 +24,8 @@ class Auction
     private $numWatches;
     private $highestBid;
     private $isUserWinning;
-
+    private $hasBuyerFeedback;
+    private $hasSellerFeedback;
 
     public function __construct( $details )
     {
@@ -421,6 +422,42 @@ class Auction
     {
         $this->isUserWinning = $isUserWinning;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getHasBuyerFeedback()
+    {
+        return $this->hasBuyerFeedback;
+    }
+
+    /**
+     * @param mixed $hasBuyerFeedback
+     */
+    public function setHasBuyerFeedback($hasBuyerFeedback)
+    {
+        $this->hasBuyerFeedback = $hasBuyerFeedback;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHasSellerFeedback()
+    {
+        return $this->hasSellerFeedback;
+    }
+
+    /**
+     * @param mixed $hasSellerFeedback
+     */
+    public function setHasSellerFeedback($hasSellerFeedback)
+    {
+        $this->hasSellerFeedback = $hasSellerFeedback;
+    }
+
+
+
+
 
 
 

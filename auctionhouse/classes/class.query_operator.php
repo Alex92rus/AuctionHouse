@@ -446,9 +446,9 @@ class QueryOperator
         SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime, sold,
                 endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
                 item_categories.categoryName as subCategoryName, superCategoryName,
-                item_categories.superCategoryId, item_categories.categoryId,
-                conditionName, countryName, COUNT(DISTINCT (bids.bidId)) AS numBids,
-                COUNT(DISTINCT (auction_watches.watchId)) AS numWatches,
+                item_categories.superCategoryId, item_categories.categoryId, users.username,
+                conditionName, countryName, COUNT( DISTINCT (bids.bidId)) AS numBids,
+                COUNT(DISTINCT (auction_watches.watchId)) AS numWatches, COUNT( DISTINCT(sellers.username)) AS hasSellerFeedback,
                 MAX(bids.bidPrice) AS highestBid, MAX(bids.bidPrice)as currentPrice,
                 1 as sold
 
@@ -462,6 +462,9 @@ class QueryOperator
                 JOIN super_item_categories ON  item_categories.superCategoryId = super_item_categories.superCategoryId
                 JOIN item_conditions ON items.conditionId = item_conditions.conditionId
                 JOIN countries ON users.countryId = countries.countryId
+                LEFT JOIN feedbacks ON creatorId = __userId__ AND feedbacks.auctionId = auctions.auctionId
+                LEFT JOIN users AS sellers ON feedbacks.receiverId = sellers.userId
+
 
         WHERE auctions.endTime < now() AND auctions.highestBidderId = __userId__
                 AND auctions.auctionId IN ( SELECT bids.auctionID FROM bids where bids.userId = __userId__ GROUP BY bids.auctionId)
@@ -481,8 +484,9 @@ class QueryOperator
     {
         $query =  "SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
                             endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
-                            item_categories.categoryName as subCategoryName,
-                            conditionName, 1 as sold
+                            item_categories.categoryName as subCategoryName, creatorId,
+                            conditionName, COUNT(DISTINCT(buyers.username)) AS hasBuyerFeedback,
+							1 as sold
 
                     FROM auctions
 
@@ -493,6 +497,8 @@ class QueryOperator
 
                             JOIN item_conditions ON items.conditionId = item_conditions.conditionId
                             JOIN countries ON users.countryId = countries.countryId
+                            LEFT JOIN feedbacks ON creatorId = __userId__ AND feedbacks.auctionId = auctions.auctionId
+                            LEFT JOIN users AS buyers ON feedbacks.receiverId = buyers.userId
 
                     WHERE items.userId  = __userId__ AND auctions.endTime < now()
 
