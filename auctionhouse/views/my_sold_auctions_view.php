@@ -29,7 +29,6 @@ $soldAuctions = QueryOperator::getSellersSoldAuctions( $user->getUserId() );
     <link href="../css/sb-admin-2.css" rel="stylesheet">
     <link href="../css/dataTables.bootstrap.css" rel="stylesheet">
     <link href="../css/main.css" rel="stylesheet">
-    <link href="../css/leave_feedback.css" rel="stylesheet">
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

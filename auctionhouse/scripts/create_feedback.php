@@ -26,7 +26,6 @@ if($origin = "won"){
 $auctionId =  $_POST[ "auctionId" ];
 $creatorId = SessionOperator::getUser()->getUserId();
 
-
 //get the id of receiver
 $receiverUsername = $_POST[ "receiverUsername" ];
 /* @var DbUser $receiver */
@@ -37,7 +36,6 @@ $receiver = DbUser::withConditions("WHERE username = '". $receiverUsername ."'")
 if($receiver == null or DbFeedback::withConditions
     ("WHERE auctionId = ". $auctionId . " AND creatorId = ". $creatorId . " AND receiverId = ". $receiver->getId())->exists()){
     HelperOperator::redirectTo( $redirectUrl );
-    return;
 }
 
 $now = new DateTime();
@@ -51,6 +49,7 @@ $feedback = new DbFeedback(array(
     "time" =>$now->format('Y-m-d H:i:s')
 ));
 $feedback->create();
+
 
 HelperOperator::redirectTo( $redirectUrl );
 

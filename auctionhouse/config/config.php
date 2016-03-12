@@ -1,5 +1,8 @@
 <?php
 
+// Website url
+defined( "URL" ) ? null : define( "URL", "http://localhost:8888/" );
+
 // Database
 defined( "DB_HOST" ) ? null : define( "DB_HOST", "localhost" );
 defined( "DB_USER" ) ? null : define( "DB_USER", "root" );

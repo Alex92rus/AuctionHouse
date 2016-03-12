@@ -28,27 +28,8 @@ if ($origin == "watches"){
 
         <div class="col-xs-9 auction-info">
 
-            <?php if( $origin == "won") {
-                $feedbackReceiverUsername = $auction->getUsername();
-                ?><h5 class="pull-right"> Seller: <a href="../views/my_feedbacks_view.php?username=<?=$auction->getUsername()?>"> <?=$auction->getUsername()?></a></h5><?php
-                if ($auction->getHasSellerFeedback()){?>
-                    <div class="pull-right">
-
-
-                        <h5>Thank you for leaving feedback for &nbsp;</a></h5>
-
-                    </div>
-                <?php } else {
-
-                    include "feedback_form.php";
-
-
-                }
-            } ?>
-
-
             <div class="row">
-                <div class="col-xs-8">
+                <div class="<?php if ($origin == "won" ){echo "col-xs-6";}else{ echo "col-xs-8";}?>">
                     <h4>
                         <?php
                         if (new DateTime($auction->getEndTime()) > new DateTime()){
@@ -140,6 +121,20 @@ if ($origin == "watches"){
                     ?>
                 </div>
             </div>
+
+            <?php if( $origin == "won") {
+                $feedbackReceiverUsername = $auction->getUsername();
+                if ($auction->getHasSellerFeedback()){?>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <p class="text-info">Thank you for leaving feedback for seller <a href="../views/my_feedbacks_view.php?username=<?=$auction->getUsername()?>"> <?=$auction->getUsername()?></a></a></p>
+                        </div>
+                    </div>
+                <?php } else {
+                    $feedbackType = "Leave Seller Feedback";
+                    include "feedback_form.php";
+                }
+            } ?>
 
         </div>
     </div>

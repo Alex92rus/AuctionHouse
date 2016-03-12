@@ -71,11 +71,12 @@ class Email
     {
         // Set subject
         $this -> subject  = "Email Verification";
+        $url = URL;
 
         // Set message
         $message  = $this -> message;
         $message .= "<h4>We are ready to activate your account. All we need to do is make sure this is your email address.</h4>";
-        $message .= "<a href='http://localhost:8888/scripts/confirmation.php?email={$this -> to}&confirm_code=$confirmCode'>Verify Address</a>";
+        $message .= "<a href='{$url}scripts/confirmation.php?email={$this -> to}&confirm_code=$confirmCode'>Verify Address</a>";
         $message .= "<p>If you did not create a AuctionHouse account, just delete this email and everything will go back to the way it was.</p>";
 
         $this -> message = $message;
@@ -85,11 +86,12 @@ class Email
     {
         // Set subject
         $this -> subject  ="Password Reset";
+        $url = URL;
 
         // Set message
         $message  = $this -> message;
         $message .= "<h4>Please follow the given link  to change your password</h4>";
-        $message .= "<a href='http://localhost:8888/views/change_password_view.php?email={$this -> to}'>Change Password</a>";
+        $message .= "<a href='{$url}views/change_password_view.php?email={$this -> to}'>Change Password</a>";
 
         $this -> message = $message;
     }

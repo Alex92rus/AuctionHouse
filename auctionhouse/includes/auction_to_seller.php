@@ -77,8 +77,6 @@ if ( $option == "live" ) {
             </div>
         <?php } else if ( $option == "sold" ) { ?>
             <h5 class="text-success">Sold to <a href=""><?= $bids[ 0 ] -> getBidderName() ?></a> for <strong>£<?= $bids[ 0 ] -> getBidPrice() ?></strong></h5>
-
-
         <?php } else { ?>
             <h5 class="text-danger">
                 <?php if( empty( $bids ) ) { echo "Nobody placed a bid"; } else { echo "Reserve price was not reached. Last bid was <strong>£ " .  $bids[ 0 ] -> getBidPrice() . "</strong>"; } ?>
@@ -86,7 +84,6 @@ if ( $option == "live" ) {
         <?php } ?>
 
     </div>
-
     <!-- header end -->
 
 
@@ -103,29 +100,8 @@ if ( $option == "live" ) {
             <!-- auction info start -->
             <div class="col-xs-9">
 
-                <!-- auction unhidden start -->
-                <?php if( $option == "sold") {
-                    $feedbackReceiverUsername = $bids[ 0 ] -> getBidderName();
-                    if ($auction->getHasBuyerFeedback()){?>
-                        <div class="pull-right">
-
-                            <h5>Thank you for leaving <a href="../views/my_feedbacks_view.php?username=<?=$feedbackReceiverUsername?>"> feedback</a></h5>
-
-                        </div>
-                    <?php } else {
-
-                        include "feedback_form.php";
-
-
-                    }
-                } ?>
-
-
-
-
-
                 <div class="row">
-                    <div class="col-xs-9">
+                    <div class="<?php if ($option == "sold" ){echo "col-xs-6";}else{ echo "col-xs-9";}?>">
                         <h4>
                             <?= $auction -> getItemName() ?><br>
                             <small><?= $auction -> getItemBrand() ?></small>
@@ -136,6 +112,19 @@ if ( $option == "live" ) {
                             <i class="fa fa-desktop"></i> <strong>Watching <?= $watches ?></strong>
                         </p>
                     </div>
+                    <!-- feedback start -->
+                    <?php if( $option == "sold") {
+                        $feedbackReceiverUsername = $bids[ 0 ] -> getBidderName();
+                        if ($auction->getHasBuyerFeedback()){?>
+                            <div class="col-xs-6">
+                                <p class="pull-right">Thank you for leaving <a href="../views/my_feedbacks_view.php?username=<?=$feedbackReceiverUsername?>"> feedback</a></p>
+                            </div>
+                        <?php } else {
+                            $feedbackType = "Leave Buyer Feedback";
+                            include "feedback_form.php";
+                        }
+                    } ?>
+                    <!-- feedback end -->
                     <?php if( $option == "live" ) : ?>
                         <div class="col-xs-3">
                             <?php if ( $ready ) : ?>
