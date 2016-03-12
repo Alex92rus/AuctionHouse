@@ -37,7 +37,9 @@ if($item->getField("userId") == $userId) {
             $item -> getField( "image" ) );
         $outbidEmail -> sentEmail();
 
-        QueryOperator::addNotification( $highestBid -> getBidderId(), $auctionId, QueryOperator::NOTIFICATION_AUCTION_DELETED );
+        $comment  = "The auction \"" . $item->getField("itemName") . " " . $item->getField("itemBrand") . "\" with ";
+        $comment .= "your current highest bid of " . $highestBid -> getBidPrice() . " GSP was deleted by " . $user -> getUsername() . ".";
+        QueryOperator::addNotification( $highestBid -> getBidderId(), $comment, QueryOperator::NOTIFICATION_AUCTION_DELETED );
     }
 
     // Delete auction

@@ -10,7 +10,7 @@ class DbNotification extends DbEntity
     protected static $fields = array(
 
         "userId"      => "i",
-        "auctionId"   => "i",
+        "message"     => "s",
         "categoryId"  => "i",
         "time"        => "s",
         "seen"        => "i",

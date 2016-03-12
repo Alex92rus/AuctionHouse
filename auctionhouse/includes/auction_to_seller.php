@@ -37,7 +37,7 @@ if ( $option == "live" ) {
 
 
 <!-- panel start -->
-<div class="panel <?= $panelType ?>">
+<div class="panel <?= $panelType ?>" id="auction<?= $auction -> getAuctionId() ?>">
 
 
     <!-- header start -->
@@ -45,17 +45,21 @@ if ( $option == "live" ) {
 
         <?php if ( $option == "live" ) { ?>
             <h5 class="pull-left">
-                <section id="auction<?= $auction -> getAuctionId() ?>">
                 <?php if ( $ready ) { echo "Time Remaining: "; } else { echo "Starts In: "; } ?><strong><span id="timer<?= $auction -> getAuctionId() ?>"></span></strong>
             </h5>
             <script type="text/javascript">
                 var timerId = "#timer" + <?= json_encode( $auction -> getAuctionId() ) ?>;
                 var endTime = <?php if ( $ready ){ echo json_encode( $auction -> getEndTime() ); } else { echo json_encode( $auction -> getStartTime() ); } ?>;
-                $(timerId).countdown( endTime, function(event) {
-                    $(this).text(
-                        event.strftime('%D days %H:%M:%S')
-                    );
-                });
+                $(timerId).countdown( endTime )
+                    .on('update.countdown', function(event) {
+                        $(this).html(
+                            event.strftime('%D days %H:%M:%S')
+                        );
+                    })
+                    .on('finish.countdown', function(event) {
+                        $("#auction" + <?= json_encode( $auction -> getAuctionId() ) ?>).remove();
+                    });
+
             </script>
             <div class="pull-right auction-navigation">
                 <div class="btn-group pull-right">

@@ -228,7 +228,13 @@ $alreadyWatching = DbAuctionWatch::withConditions("WHERE userId = ".$user->getUs
                                     <div class="col-xs-12">
                                         <a href="my_live_auctions_view.php#auction<?= $auction -> getAuctionId() ?>">This is your auction</a>
                                     </div>
-                                <?php } ?>
+                                <?php }
+                                if ( $auction -> getHighestBidderId() == $user -> getUserId() ) { ?>
+                                    <div class="col-xs-12">
+                                        <p class="text-success"><i class="fa fa-smile-o"></i> Currently the highest bidder</p>
+                                    </div>
+                                <?php }
+                                ?>
                             </div>
 
                             <div class="col-xs-4">

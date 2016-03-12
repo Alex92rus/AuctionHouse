@@ -19,11 +19,8 @@ if ($origin == "watches"){
 
 ?>
 
-<div class="row">
+<div class="row" style="padding-right: 15px" id="auction<?= $auction -> getAuctionId() ?>">
     <div class="col-xs-12 live-auction-to-buyer">
-        <?php if( $origin == "watches" ) : ?>
-            <section id="auction<?= $auction -> getAuctionId() ?>">
-         <?php endif ?>
 
         <div class="col-xs-3 auction-img">
             <img src="<?= $auction->getImage() ?>" class="img-responsive" style="height:150px">
@@ -85,12 +82,16 @@ if ($origin == "watches"){
 
                         <script type="text/javascript">
                             var timerId = "#timer" + <?= json_encode( $auction -> getAuctionId() ) ?>;
-                                        var endTime = <?= json_encode( $auction -> getEndTime() ) ?>;
-                                        $(timerId).countdown( endTime, function(event) {
-                                        $(this).text(
+                            var endTime = <?= json_encode( $auction -> getEndTime() ) ?>;
+                            $(timerId).countdown( endTime )
+                                .on('update.countdown', function(event) {
+                                    $(this).html(
                                         event.strftime('%D days %H:%M:%S')
-                                        );
-                                        });
+                                    );
+                                })
+                                .on('finish.countdown', function(event) {
+                                    $("#auction" + <?= json_encode( $auction -> getAuctionId() ) ?>).remove();
+                                });
                         </script>
 
                     <?php endif ?>
@@ -112,10 +113,9 @@ if ($origin == "watches"){
                     <?php
                     if($origin == "liveWithBid"){
                         if($auction->getIsUserWinning()){?>
-                            <p id="bid" class="alert-success">Currently the highest bidder!</p> <?php
+                            <p class="alert-success" style="padding: 7px 7px; border-radius: 3px;">Currently the highest bidder!</p> <?php
                         }else{?>
-                            <p id="bid" class="alert-warning">Outbidded, bid again to win!</p> <?php
-
+                            <p class="alert-warning" style="padding: 7px 7px; border-radius: 3px;">Outbidded, bid again to win!</p> <?php
                         }
                     }
                     ?>

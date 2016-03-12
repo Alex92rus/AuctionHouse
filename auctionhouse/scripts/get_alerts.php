@@ -13,8 +13,7 @@ foreach ( $newAlerts as $newAlert )
                 <div>
                     <i class=\"{$newAlert -> getCategoryIcon()}\"></i> <span style=\"padding-left: 10px\">{$newAlert -> getCategoryName()}</span>
                     <span class=\"pull-right text-muted small\">{$newAlert -> getTime()}</span><br>
-                    <span style=\"padding-left: 26px; color: #253b52; font-style: italic; font-size: 12px\">{$newAlert -> getItemName()}</span><br>
-                    <span style=\"padding-left: 26px; color: #253b52; font-style: italic; font-size: 12px\">{$newAlert -> getItemBrand()}</span><br>
+                    <div style=\"padding-left: 26px; color: #253b52; margin-bottom: 5px; font-style: italic; font-size: 12px\">{$newAlert -> getMessage()}</div>
                     <span style=\"padding-left: 22px\"><button class=\"btn btn-sm btn-default\" id=\"deleteAlert_{$newAlert -> getNotificationId()}\">Delete</button></span>
                 </div>
             </a>

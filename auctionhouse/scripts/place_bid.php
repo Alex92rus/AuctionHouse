@@ -40,7 +40,9 @@ if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "bidPrice" ] ) )
                 $auction -> getImage() );
             $outbidEmail -> sentEmail();
 
-            QueryOperator::addNotification( $highestBid[ 0 ] -> getBidderId(), $auctionId, QueryOperator::NOTIFICATION_OUTBID );
+            $comment  = "You were outbid on the auction \"" . $auction -> getItemName() . " " . $auction -> getItemBrand() . "\" by ";
+            $comment .= "by \"" .$user -> getUserName() . "\". The new highest bid is " . $bidPrice . " GSP.";
+            QueryOperator::addNotification( $highestBid[ 0 ] -> getBidderId(), $comment, QueryOperator::NOTIFICATION_OUTBID );
         }
 
         // Place bid
