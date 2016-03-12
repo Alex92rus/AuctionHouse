@@ -24,19 +24,12 @@ $auction = DbAuction::find($auctionId);
 $item = DbItem::find($auction->getField("itemId"));
 
 // User owns auction
-if($item->getField("userId") == $userId) {
-    // Send email to current highest bidder
-    $highestBid = QueryOperator::getAuctionBids( $auctionId, 1 );
+if($item->getField("userId") == $userId)
+{
+    // Notifiy current highest bidder
+    $highestBid = QueryOperator::getAuctionBids( $auctionId, 1 )[ 0 ];
     if ( !empty( $highestBid )  )
     {
-        $highestBid = $highestBid[ 0 ];
-        $outbidEmail = new Email( $highestBid -> getBidderEmail(), $highestBid -> getBidderFirstName(), $highestBid -> getBidderLastName() );
-        $outbidEmail -> prepareAuctionDeletedEmail(
-            $item -> getField( "itemName" ),
-            $item -> getField( "itemBrand" ),
-            $item -> getField( "image" ) );
-        $outbidEmail -> sentEmail();
-
         $comment  = "The auction \"" . $item->getField("itemName") . " " . $item->getField("itemBrand") . "\" with ";
         $comment .= "your current highest bid of " . $highestBid -> getBidPrice() . " GSP was deleted by " . $user -> getUsername() . ".";
         QueryOperator::addNotification( $highestBid -> getBidderId(), $comment, QueryOperator::NOTIFICATION_AUCTION_DELETED );

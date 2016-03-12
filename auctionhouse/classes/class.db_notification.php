@@ -13,7 +13,6 @@ class DbNotification extends DbEntity
         "message"     => "s",
         "categoryId"  => "i",
         "time"        => "s",
-        "seen"        => "i",
-        "emailed"     => "i",
+        "seen"        => "i"
     );
 }

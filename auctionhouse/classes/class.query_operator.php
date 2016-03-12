@@ -244,8 +244,7 @@ class QueryOperator
         self::getDatabaseInstance();
 
         // SQL query for retrieving all bids for a specific auction
-        $bidsQuery  = "SELECT u.username AS bidderName, u.userId AS bidderId, u.email AS bidderEmail, u.firstName AS bidderFirstName, u.lastName AS bidderLastName, ";
-        $bidsQuery .= "b.bidTime, b.bidPrice ";
+        $bidsQuery  = "SELECT u.username AS bidderName, u.userId AS bidderId, b.bidTime, b.bidPrice ";
         $bidsQuery .= "FROM auctions a, bids b, users u ";
         $bidsQuery .= "WHERE a.auctionId = b.auctionId AND b.userId = u.userId AND a.auctionId = $auctionId ";
         $bidsQuery .= "ORDER BY b.bidId DESC";

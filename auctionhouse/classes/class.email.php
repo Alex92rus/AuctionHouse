@@ -123,46 +123,6 @@ class Email
     }
 
 
-    public function prepareOutbidEmail( $bidPrice, $newHighestBidder, $itemName, $itemBrand, $itemImage )
-    {
-        // Set subject
-        $this -> subject = "You were outbid on an auction";
-
-        // Set message
-        $message  = $this -> message;
-        $message .= "<p>You were outbid on the following auction:<br><br></p>";
-        $message .= "<div><img src=\"cid:itemImage\" style=\"float:left; margin-right:20px; height: 100px; width: inherit\"><p><b>{$itemName}</b><br>{$itemBrand}</p></div>";
-        $message .= "<p style='clear:left'><br><br>New highest bid is £{$bidPrice} by <b>{$newHighestBidder}</b></p>";
-        $this -> message = $message;
-
-        // Set attachment
-        $this -> setAttachment( $itemImage );
-    }
-
-
-    public function prepareAuctionDeletedEmail( $itemName, $itemBrand, $itemImage )
-    {
-        // Set subject
-        $this -> subject = "Auction deleted";
-
-        // Set message
-        $message  = $this -> message;
-        $message .= "<p>Unfortunately, the following auction was deleted by the seller:<br><br></p>";
-        $message .= "<div><img src=\"cid:itemImage\" style=\"float:left; margin-right:20px; height: 100px; width: inherit\"><p><b>{$itemName}</b><br>{$itemBrand}</p></div>";
-        $message .= "<p style='clear:left'><br><br>We were told to inform you that the seller apologies sincerely.</b></p>";
-        $this -> message = $message;
-
-        // Set attachment
-        $this -> setAttachment( $itemImage );
-    }
-
-
-    private function setAttachment( $image )
-    {
-        $this -> email -> AddEmbeddedImage( "..{$image}", "itemImage" );
-    }
-
-
     private function prepareBody()
     {
         $message = $this -> message;
