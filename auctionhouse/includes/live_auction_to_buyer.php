@@ -18,7 +18,7 @@ if ($origin == "watches"){
     $refer= "";
 }
 
-$stillLive = new DateTime($auction->getEndTime(), new DateTimeZone( TIMEZONE )) > new DateTime( "now", new DateTimeZone( TIMEZONE ));
+$stillAlive = new DateTime($auction->getEndTime(), new DateTimeZone( TIMEZONE )) > new DateTime( "now", new DateTimeZone( TIMEZONE ));
 ?>
 
 <div class="row" style="padding-right: 15px" id="auction<?= $auction -> getAuctionId() ?>">
@@ -34,7 +34,7 @@ $stillLive = new DateTime($auction->getEndTime(), new DateTimeZone( TIMEZONE )) 
                 <div class="<?php if ($origin == "won" ){echo "col-xs-6";}else{ echo "col-xs-8";}?>">
                     <h4>
                         <?php
-                        if ($stillLive){
+                        if ($stillAlive){
                             echo ('<a href="../views/open_live_auction_view.php?liveAuction='
                                 . $auction -> getAuctionId() .$refer.'">'.$auction->getItemName().'</a><br>');
 
@@ -67,7 +67,7 @@ $stillLive = new DateTime($auction->getEndTime(), new DateTimeZone( TIMEZONE )) 
 
                             if($auction->getSold() == 1){
                                 echo "<span class='text-success'>SOLD FOR " . $currentPrice . "</span>";
-                            } else if($stillLive) {
+                            } else if(!$stillAlive) {
                                 echo "<span class='text-danger'>UNSOLD - LAST PRICE " . $currentPrice . "</span>";
                             } else {
                                 echo $currentPrice;
@@ -79,7 +79,7 @@ $stillLive = new DateTime($auction->getEndTime(), new DateTimeZone( TIMEZONE )) 
                 </div>
 
                 <div class="col-xs-6">
-                    <?php if ($stillLive) : ?>
+                    <?php if ($stillAlive) : ?>
                         <h5 class="text-danger"><span id="timer<?= $auction ->getAuctionId()?>"></span> left</h5>
 
                         <script type="text/javascript">
