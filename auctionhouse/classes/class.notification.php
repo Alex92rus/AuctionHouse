@@ -7,8 +7,7 @@ class Notification
     private $time;
     private $categoryName;
     private $categoryIcon;
-    private $itemName;
-    private $itemBrand;
+    private $message;
 
 
     public function __construct( $details )
@@ -119,35 +118,17 @@ class Notification
     /**
      * @return mixed
      */
-    public function getItemName()
+    public function getMessage()
     {
-        return $this->itemName;
+        return $this->message;
     }
 
 
     /**
-     * @param mixed $itemName
+     * @param mixed $message
      */
-    public function setItemName($itemName)
+    public function setMessage($message)
     {
-        $this->itemName = $itemName;
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getItemBrand()
-    {
-        return $this->itemBrand;
-    }
-
-
-    /**
-     * @param mixed $itemBrand
-     */
-    public function setItemBrand($itemBrand)
-    {
-        $this->itemBrand = $itemBrand;
+        $this->message = $message;
     }
 }

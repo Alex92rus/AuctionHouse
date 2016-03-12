@@ -141,28 +141,52 @@ class QueryOperator
         self::getDatabaseInstance();
 
         // SQL query for creating auction event
-        $query = "CREATE EVENT auction_%__a__%
-                  ON SCHEDULE AT '$endTime'
-                  DO BEGIN
-                      DECLARE sold int default -1;
-                      DECLARE bidderId int;
+        $query = "
+                CREATE EVENT auction_%__a__%
+                ON SCHEDULE AT '$endTime'
+                DO BEGIN
+                  DECLARE sold int default -1;
+                  DECLARE bidderId int default -1;
+                  DECLARE rPrice int default -1;
+                  DECLARE bPrice int default -1;
+                  DECLARE iName varchar(100);
+                  DECLARE iBrand varchar(100);
 
-                      SELECT userId, reservePrice < bidPrice INTO bidderId, sold
+                  DECLARE sellerText varchar(100);
+                  DECLARE bidderText varchar(100);
+
+                  SELECT highestBidderId, itemName, itemBrand INTO bidderId, iName, iBrand
+                  FROM auctions, items
+                  WHERE auctionID = %__a__% AND auctions.itemId = items.itemId;
+
+                  IF bidderId IS NULL THEN
+                      SET sellerText = CONCAT('Nobody left a bid for \"', iName, ' ', iBrand, '\".');
+                      INSERT INTO notifications(userId, message, categoryId, time) VALUES(%__u__%, sellerText, 6, %__t__%);
+                  ELSE
+                      SELECT highestBid.userId, reservePrice < bidPrice, reservePrice, bidPrice, itemName, itemBrand
+                      INTO bidderId, sold, rPrice, bPrice, iName, iBrand
                       FROM
                           auctions,(SELECT userId, bidPrice
                                     FROM auctions a, bids b
                                     WHERE a.auctionId = b.auctionId AND a.auctionId = %__a__%
                                     ORDER BY bidPrice DESC
-                                    LIMIT 1) AS highestBid
-                      WHERE auctionId = %__a__%;
+                                    LIMIT 1) AS highestBid, items
+                      WHERE auctionId = %__a__% AND auctions.itemId = items.itemId;
+
                       IF sold = 0 THEN
-                          INSERT INTO notifications(userId, auctionId, categoryId, time) VALUES(%__u__%, %__a__%, 4, %__t__%);
-                          INSERT INTO notifications(userId, auctionId, categoryId, time) VALUES(bidderId, %__a__%, 4, %__t__%);
+                          SET sellerText = CONCAT('The highest bid of ', bPrice, ' GBP did not meet the reserve price of ', rPrice, ' GBP for ', iName, ' ', iBrand, '.');
+                          SET bidderText = sellerText;
+                          INSERT INTO notifications(userId, message, categoryId, time) VALUES(%__u__%, sellerText, 4, %__t__%);
+                          INSERT INTO notifications(userId, message, categoryId, time) VALUES(bidderId, bidderText, 4, %__t__%);
                       ELSE
-                          INSERT INTO notifications(userId, auctionId, categoryId, time) VALUES(%__u__%, %__a__%, 3, %__t__%);
-                          INSERT INTO notifications(userId, auctionId, categoryId, time) VALUES(bidderId, %__a__%, 2, %__t__%);
+                          SET sellerText = CONCAT('You sold the auction \"', iName, ' ', iBrand, '\" for ', bPrice, ' GBP.' );
+                          SET bidderText = CONCAT('You won the auction \"', iName, ' ', iBrand, '\" for ', bPrice, ' GBP.' );
+                          INSERT INTO notifications(userId, message, categoryId, time) VALUES(%__u__%, sellerText, 3, %__t__%);
+                          INSERT INTO notifications(userId, message, categoryId, time) VALUES(bidderId, bidderText, 2, %__t__%);
                       END IF;
-                  END";
+                  END IF;
+                END
+                ";
         $query = str_replace( "%__a__%" , $auctionId, $query);
         $query = str_replace( "%__u__%" , $userId, $query);
         $query = str_replace( "%__t__%" , "NOW()", $query);
@@ -170,12 +194,12 @@ class QueryOperator
     }
 
 
-    public static function addNotification( $userId, $auctionId, $notificationType )
+    public static function addNotification( $notifyId, $message, $notificationType )
     {
         $now = new DateTime();
         $notification = new DbNotification( array(
-            "userId" => $userId,
-            "auctionId" => $auctionId,
+            "userId" => $notifyId,
+            "message" => $message,
             "categoryId" => $notificationType,
             "time" => $now -> format( "Y-m-d H:i:s" ),
             "emailed" => 1
@@ -220,8 +244,7 @@ class QueryOperator
         self::getDatabaseInstance();
 
         // SQL query for retrieving all bids for a specific auction
-        $bidsQuery  = "SELECT u.username AS bidderName, u.userId AS bidderId, u.email AS bidderEmail, u.firstName AS bidderFirstName, u.lastName AS bidderLastName, ";
-        $bidsQuery .= "b.bidTime, b.bidPrice ";
+        $bidsQuery  = "SELECT u.username AS bidderName, u.userId AS bidderId, b.bidTime, b.bidPrice ";
         $bidsQuery .= "FROM auctions a, bids b, users u ";
         $bidsQuery .= "WHERE a.auctionId = b.auctionId AND b.userId = u.userId AND a.auctionId = $auctionId ";
         $bidsQuery .= "ORDER BY b.bidId DESC";
@@ -270,21 +293,6 @@ class QueryOperator
         );
     }
 
-
-    public static function getWatchEmails( $auctionId )
-    {
-        self::getDatabaseInstance();
-        $query = "SELECT u.email FROM users u, auction_watches w WHERE w.userId = u.userId AND auctionId = {$auctionId}";
-        $result = self::$database -> issueQuery( $query );
-
-        $emails = [];
-        while ( $row = $result -> fetch_row() )
-        {
-            $emails[] = $row[ 0 ];
-        }
-
-        return $emails;
-    }
 
     private static function queryResultToAuctions($result)
     {
@@ -584,7 +592,7 @@ class QueryOperator
         self::getDatabaseInstance();
 
         // SQL query for retrieving all live auctions and their details for a specific auctionId
-        $detailsQuery  = "SELECT a.auctionId, a.quantity, a.startPrice, a.reservePrice, a.startTime, a.endTime, i.itemName, i.itemBrand, i.itemDescription, ";
+        $detailsQuery  = "SELECT a.auctionId, a.quantity, a.startPrice, a.reservePrice, a.startTime, a.endTime, a.highestBidderId, i.itemName, i.itemBrand, i.itemDescription, ";
         $detailsQuery .= "i.image, cat.categoryName, con.conditionName, u.username, a.views ";
         $detailsQuery .= "FROM auctions a, items i, item_categories cat, item_conditions con, users u ";
         $detailsQuery .= "WHERE a.itemId = i.itemId AND i.categoryId = cat.categoryId AND i.conditionId = con.conditionId AND i.userId = u.userId AND a.auctionId = " .$auctionId . " ";
@@ -838,9 +846,9 @@ class QueryOperator
         self::getDatabaseInstance();
 
         // SQL for retrieving all unseen notifications
-        $query  = "SELECT notificationId, a.auctionId, time, categoryName, categoryIcon, itemName, itemBrand ";
-        $query .= "FROM auctions a, items i, notifications n, notification_categories ncat ";
-        $query .= "WHERE a.itemId = i.itemId AND n.auctionId = a.auctionId AND n.categoryId = ncat.categoryId AND n.userId = $userId ";
+        $query  = "SELECT notificationId, message, time, categoryName, categoryIcon ";
+        $query .= "FROM notifications n, notification_categories ncat ";
+        $query .= "WHERE n.categoryId = ncat.categoryId AND n.userId = $userId ";
         if ( is_null( $type ) ) {
             $query .= "";
         } else if ( $type == self::NOTIFICATION_UNSEEN ) {

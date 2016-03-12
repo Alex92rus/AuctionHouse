@@ -23,6 +23,7 @@ class Auction
     private $watchId; //for a watched Auction
     private $numWatches;
     private $highestBid;
+    private $highestBidderId;
     private $isUserWinning;
     private $hasBuyerFeedback;
     private $hasSellerFeedback;
@@ -410,6 +411,22 @@ class Auction
     /**
      * @return mixed
      */
+    public function getHighestBidderId()
+    {
+        return $this->highestBidderId;
+    }
+
+    /**
+     * @param mixed $highestBidderId
+     */
+    public function setHighestBidderId($highestBidderId)
+    {
+        $this->highestBidderId = $highestBidderId;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getIsUserWinning()
     {
         return $this->isUserWinning;
@@ -422,6 +439,7 @@ class Auction
     {
         $this->isUserWinning = $isUserWinning;
     }
+
 
     /**
      * @return mixed
@@ -455,10 +473,5 @@ class Auction
         $this->hasSellerFeedback = $hasSellerFeedback;
     }
 
-
-
-
-
-
-
+    
    }

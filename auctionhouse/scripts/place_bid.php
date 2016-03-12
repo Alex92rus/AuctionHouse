@@ -27,20 +27,13 @@ if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "bidPrice" ] ) )
     // Correct inputs
     else
     {
-        // Notify outbidded user (only if it is not the same user)
-        $highestBid = QueryOperator::getAuctionBids( $auctionId, 1 );
-        if ( !empty( $highestBid ) && ( $email = $highestBid[ 0 ] -> getBidderEmail() ) != $user -> getEmail() )
+        // Notify outbid user (only if it is not the same user)
+        $highestBidderId = $auction -> getHighestBidderId();
+        if ( !is_null( $highestBidderId ) && $highestBidderId != $userId )
         {
-            $outbidEmail = new Email( $email, $highestBid[ 0 ] -> getBidderFirstName(), $highestBid[ 0 ] -> getBidderLastName() );
-            $outbidEmail -> prepareOutbidEmail(
-                $bidPrice,
-                $user -> getUserName(),
-                $auction -> getItemName(),
-                $auction -> getItemBrand(),
-                $auction -> getImage() );
-            $outbidEmail -> sentEmail();
-
-            QueryOperator::addNotification( $highestBid[ 0 ] -> getBidderId(), $auctionId, QueryOperator::NOTIFICATION_OUTBID );
+            $comment  = "You were outbid on the auction \"" . $auction -> getItemName() . " " . $auction -> getItemBrand() . "\" by ";
+            $comment .= "by \"" .$user -> getUserName() . "\". The new highest bid is " . $bidPrice . " GSP.";
+            QueryOperator::addNotification( $highestBidderId, $comment, QueryOperator::NOTIFICATION_OUTBID );
         }
 
         // Place bid

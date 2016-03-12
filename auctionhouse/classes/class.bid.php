@@ -4,9 +4,6 @@ class Bid
 {
     private $bidderId;
     private $bidderName;
-    private $bidderEmail;
-    private $bidderFirstName;
-    private $bidderLastName;
     private $bidTime;
     private $bidPrice;
 
@@ -44,22 +41,10 @@ class Bid
     }
 
 
-    public function getBidderEmail()
-    {
-        return $this -> bidderEmail;
-    }
-
-
-    private function setBidderEmail( $bidderEmail )
-    {
-        $this -> bidderEmail = $bidderEmail;
-    }
-
-
     public function getBidderFirstName()
-{
-    return $this -> bidderFirstName;
-}
+    {
+        return $this -> bidderFirstName;
+    }
 
 
     private function setBidderFirstName( $bidderFirstName )
