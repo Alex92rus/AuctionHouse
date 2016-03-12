@@ -2,6 +2,7 @@
 require_once "../classes/class.auction.php";
 require_once "../classes/class.bid.php";
 require_once "../classes/class.advanced_auction.php";
+require_once "../config/config.php";
 
 /* @var AdvancedAuction $advancedAuction */
 /* @var Auction $auction */
@@ -12,7 +13,7 @@ $bids = $advancedAuction -> getBids();
 $views = $advancedAuction -> getViews();
 $watches = $advancedAuction -> getWatches();
 
-$now = new DateTime("now");
+$now = new DateTime("now", new DateTimeZone(TIMEZONE) );
 $ready = $auction -> getStartTime() < $now -> format( "Y-m-d H:i:s" );
 
 

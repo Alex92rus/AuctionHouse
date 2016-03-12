@@ -21,11 +21,6 @@ $liveAuctions = $search_result["auctions"];
 $categories = $search_result["categories"];
 
 
-//$bids = DbBid::withConditions("WHERE auctionId = 1797 ORDER BY bidPrice DESC")->getAsClasses();
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

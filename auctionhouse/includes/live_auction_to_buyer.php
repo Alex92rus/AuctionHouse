@@ -2,6 +2,7 @@
 require_once "../classes/class.auction.php";
 require_once "../classes/class.bid.php";
 require_once "../classes/class.advanced_auction.php";
+require_once "../config/config.php";
 
 
 /* @var Auction $auction */
@@ -17,6 +18,7 @@ if ($origin == "watches"){
     $refer= "";
 }
 
+$stillLive = new DateTime($auction->getEndTime(), new DateTimeZone( TIMEZONE )) > new DateTime( "now", new DateTimeZone( TIMEZONE ));
 ?>
 
 <div class="row" style="padding-right: 15px" id="auction<?= $auction -> getAuctionId() ?>">
@@ -32,7 +34,7 @@ if ($origin == "watches"){
                 <div class="<?php if ($origin == "won" ){echo "col-xs-6";}else{ echo "col-xs-8";}?>">
                     <h4>
                         <?php
-                        if (new DateTime($auction->getEndTime()) > new DateTime()){
+                        if ($stillLive){
                             echo ('<a href="../views/open_live_auction_view.php?liveAuction='
                                 . $auction -> getAuctionId() .$refer.'">'.$auction->getItemName().'</a><br>');
 
@@ -65,7 +67,7 @@ if ($origin == "watches"){
 
                             if($auction->getSold() == 1){
                                 echo "<span class='text-success'>SOLD FOR " . $currentPrice . "</span>";
-                            } else if(new DateTime($auction->getEndTime()) < new DateTime() ) {
+                            } else if($stillLive) {
                                 echo "<span class='text-danger'>UNSOLD - LAST PRICE " . $currentPrice . "</span>";
                             } else {
                                 echo $currentPrice;
@@ -77,7 +79,7 @@ if ($origin == "watches"){
                 </div>
 
                 <div class="col-xs-6">
-                    <?php if (new DateTime($auction->getEndTime()) > new DateTime()) : ?>
+                    <?php if ($stillLive) : ?>
                         <h5 class="text-danger"><span id="timer<?= $auction ->getAuctionId()?>"></span> left</h5>
 
                         <script type="text/javascript">
