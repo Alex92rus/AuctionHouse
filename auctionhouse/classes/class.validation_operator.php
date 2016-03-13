@@ -36,7 +36,9 @@ class ValidationOperator
         "startTime" => "Please specify your auction's start time",
         "endTime" => "Please specify your auction's end time",
         "startPrice" => "Please specify your auction's start price",
-        "bidPrice" => "Please specify a bid price"
+        "bidPrice" => "Please specify a bid price",
+        "score" => "Please specify a score between 1 and 5",
+        "comment" => "Please specify a comment"
     ];
     const PASSWORD = [
         self::INVALID_SIZE => "Password needs to be at least 10 characters long!",

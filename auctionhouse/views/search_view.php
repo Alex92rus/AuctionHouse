@@ -172,7 +172,7 @@ $categories = $search_result["categories"];
                                 <?php endif ?>
 
                                 <?php for ( $index = 1; $index <= $pagination -> totalPages(); $index++ ) : ?>
-                                    <li class="<? if ( $pagination -> getCurrentPage() == $index ) echo "active" ?>">
+                                    <li class="<?php if ( $pagination -> getCurrentPage() == $index ) echo "active" ?>">
                                         <a href="<?= $href . $index ?>"><?= $index ?></a>
                                     </li>
                                 <?php endfor ?>

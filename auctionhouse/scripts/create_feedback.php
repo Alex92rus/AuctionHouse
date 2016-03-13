@@ -14,12 +14,24 @@ if ( !isset( $_POST[ "createFeedback" ] ) )
 }
 
 $origin = $_POST[ "origin" ];
-if($origin = "won"){
+if($origin == "won"){
     $redirectUrl = "../views/my_successful_bids_view.php";
-}elseif ($origin = "sold"){
+}elseif ($origin == "sold"){
     $redirectUrl = "../views/my_sold_auctions_view.php";
 }else{
     $redirectUrl = "../views/my_sold_auctions_view.php";
+}
+
+
+
+// Validate feedback input
+$feedback = [ "score" => $_POST[ "score"], "comment" => $_POST[ "comment" ] ];
+if ( ValidationOperator::hasEmtpyFields( $feedback ) ) {
+    // Create a session for all inputs so that they can be recovered after the page returns
+    SessionOperator::setFormInput( $feedback );
+
+    // Redirect back
+    HelperOperator::redirectTo( $redirectUrl );
 }
 
 

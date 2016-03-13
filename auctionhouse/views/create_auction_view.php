@@ -68,22 +68,8 @@ require_once "../classes/class.db_condition.php";
             <!-- profile header end -->
 
             <!-- display item related input errors (if available) start -->
-            <?php if ( ( $errors =  SessionOperator::getAllErrors() ) != null ) :  ?>
-                <div class="alert alert-danger fade in">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>Input error!</strong><br>
-                    <ul>
-                        <?php
-                            foreach ( $errors as $key => $message )
-                            {
-                                echo "<li>" . $message . "</li>";
-                            }
-                        ?>
-                    </ul>
-                </div>
-            <?php endif ?>
+            <?php include "../includes/display_error_message.php" ?>
             <!-- display item related input errors (if available) end -->
-
 
             <!-- auction setup start -->
             <form action="../scripts/create_auction.php" method="post" class="row" role="form"  enctype="multipart/form-data">

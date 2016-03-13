@@ -18,6 +18,8 @@ if ( isset ( $_GET[ "username" ] ) && $_GET[ "username" ] != SessionOperator::ge
 $advancedFeedback = QueryOperator::getFeedback( $username );
 $buyerActive = ( empty( $advancedFeedback -> getFeedbackAsSeller() ) && !empty( $advancedFeedback -> getFeedbackAsBuyer() ) ) ? true : false;
 
+$averageFeedback = $advancedFeedback -> getAverage();
+
 ?>
 
 <!DOCTYPE html>
@@ -81,22 +83,19 @@ $buyerActive = ( empty( $advancedFeedback -> getFeedbackAsSeller() ) && !empty( 
                         </div>
                         <div class="col-xs-7">
                             <h4>Average user rating</h4>
-                            <h2 class="bold padding-bottom-7"><?= $advancedFeedback -> getAverage() ?> <small>/ 5</small></h2>
-                            <button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
-                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                            </button>
-                            <button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
-                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                            </button>
-                            <button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
-                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                            </button>
-                            <button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align">
-                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                            </button>
-                            <button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align">
-                                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                            </button>
+                            <h2 class="bold padding-bottom-7"><?= $averageFeedback ?> <small>/ 5</small></h2>
+                            <?php
+                            $rounded = round( $averageFeedback );
+                            for ( $index = 1; $index <= 5; $index++ ) {
+                                if ( $index <= $rounded ) {
+                                    echo "<button type=\"button\" class=\"btn btn-warning btn-xs\" aria-label=\"Left Align\">";
+                                } else {
+                                    echo "<button type=\"button\" class=\"btn btn-default btn-grey btn-xs\" aria-label=\"Left Align\">";
+                                }
+                                echo "<span class=\"glyphicon glyphicon-star\" aria-hidden=\"true\"></span></button> ";
+                            }
+
+                            ?>
                         </div>
                     </div>
 
@@ -226,7 +225,9 @@ $buyerActive = ( empty( $advancedFeedback -> getFeedbackAsSeller() ) && !empty( 
                 <div class="row">
                     <div class="well text-center">
                         <h1 class="text-danger">No feedback available</h1>
+                        <?php if ( $_GET[ "username" ] == SessionOperator::getUser() -> getUserName() ) : ?>
                         <h4>In order to receive feedbacks, you must sell or win an auction. Only then, a buyer or a seller can rate you.</h4>
+                        <?php endif ?>
                     </div>
                 </div>
             <?php } ?>

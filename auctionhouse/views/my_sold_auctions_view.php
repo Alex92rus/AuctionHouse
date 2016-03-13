@@ -56,6 +56,7 @@ $soldAuctions = QueryOperator::getSellersSoldAuctions( $user->getUserId() );
 
         <!-- main start -->
         <div id="page-wrapper">
+
             <div class="row">
                 <div class="col-xs-12">
                     <h4 class="page-header">
@@ -66,6 +67,10 @@ $soldAuctions = QueryOperator::getSellersSoldAuctions( $user->getUserId() );
                     </h4>
                 </div>
             </div>
+
+            <!-- display feedback input errors (if available) start -->
+            <?php include "../includes/display_error_message.php" ?>
+            <!-- display feedback input errors (if available) end -->
 
             <div class="row">
                 <div class="col-xs-12">

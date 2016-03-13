@@ -6,36 +6,63 @@ $(function(){
 
     $('#new-review').autosize({append: "\n"});
 
-    var reviewBox = $('#post-review-box');
-    var newReview = $('#new-review');
-    var openReviewBtn = $('#open-review-box');
-    var closeReviewBtn = $('#close-review-box');
+    //var reviewBox = $('.post-review-box');
+    //var newReview = $('.new-review');
+    var openReviewBtn = $('.open-review-box');
+    var closeReviewBtn = $('.close-review-box');
     var ratingsField = $('#score-hidden');
 
     openReviewBtn.click(function(e)
     {
-        reviewBox.slideDown(400, function()
+        // Get the data from the data-X attribute in the HTML so we know which box
+        // box to expand
+        var linkId = $(this).data("id");
+        console.log('-> ID', linkId);
+        // Get a handle on the element to expand
+        var formBox = $('#'+linkId);
+        console.log('-> Form', formBox);
+        // Find the close button inside
+        var closeReviewBtn = formBox.find('.close-review-box');
+        // Find the open review button inside
+        var openReviewBtn = $(this);
+        // Slide the from box down
+        formBox.slideDown(400, function()
         {
-            $('#new-review').trigger('autosize.resize');
-            newReview.focus();
+            var reviewField = $('.new-review');
+            reviewField.trigger('autosize.resize');
+            reviewField.focus();
         });
+        // Fadeout the review button
         openReviewBtn.fadeOut(100);
+        // Show the close button
         closeReviewBtn.show();
     });
 
     closeReviewBtn.click(function(e)
     {
         e.preventDefault();
-        reviewBox.slideUp(300, function()
+        // Get the data from the data-X attribute in the HTML so we know which box
+        // box to expand
+        var linkId = $(this).data("id");
+        // Get a handle on the element to expand
+        console.log( "linkId " + linkId );
+        var formBox = $('#'+linkId);
+        // Find the open review button inside
+        var closeReviewBtn = formBox.find('.close-review-box');
+
+        formBox.slideUp(300, function()
         {
-            newReview.focus();
-            openReviewBtn.fadeIn(200);
+            var reviewField = $('.new-review');
+            reviewField.trigger('autosize.resize');
+            reviewField.focus();
+            var varButton = '#open-review-box-' + linkId.match(/\d+/);
+            $(varButton).fadeIn(200);
         });
         closeReviewBtn.hide();
-
     });
 
     $('.starrr').on('starrr:change', function(e, value){
         ratingsField.val(value);
+
     });
 });

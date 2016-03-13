@@ -63,8 +63,9 @@ class Notification
      */
     public function getTime()
     {
-        $time = new DateTime( $this->time );
-        $now = new DateTime();
+        require_once "../config/config.php";
+        $time = new DateTime( $this->time, new DateTimeZone( TIMEZONE ) );
+        $now = new DateTime( "now", new DateTimeZone( TIMEZONE ) );
         $interval = $now->diff( $time );
         return $interval -> format('%h h %i min ago');
     }

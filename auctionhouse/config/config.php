@@ -5,9 +5,9 @@ defined( "URL" ) ? null : define( "URL", "http://ec2-52-10-179-54.us-west-2.comp
 defined( "TIMEZONE" ) ? null : define( "TIMEZONE", "Europe/London" );
 
 // Database
-defined( "DB_HOST" ) ? null : define( "DB_HOST", "auctionhouse.coygx7jgbyib.us-west-2.rds.amazonaws.com" );
-defined( "DB_USER" ) ? null : define( "DB_USER", "ActionHouseAAM" );
-defined( "DB_PASSWORD" ) ? null : define( "DB_PASSWORD", "auctionhouse!#$" );
+defined( "DB_HOST" ) ? null : define( "DB_HOST", "localhost" );
+defined( "DB_USER" ) ? null : define( "DB_USER", "root" );
+defined( "DB_PASSWORD" ) ? null : define( "DB_PASSWORD", "root" );
 defined( "DB_NAME" ) ? null : define( "DB_NAME", "auctionsystem" );
 defined( "DB_PORT" ) ? null : define( "DB_PORT", 3306 );
 
