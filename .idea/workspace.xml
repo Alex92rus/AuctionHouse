@@ -21,7 +21,28 @@
     <favorites_list name="COMP3013Databases" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="live_auction_to_buyer.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/auctionhouse/includes/live_auction_to_buyer.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="11.875">
+              <caret line="4" column="62" selection-start-line="4" selection-start-column="62" selection-end-line="4" selection-end-column="62" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="open_live_auction_view.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/auctionhouse/views/open_live_auction_view.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5">
+              <caret line="251" column="58" selection-start-line="251" selection-start-column="58" selection-end-line="251" selection-end-column="58" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -44,6 +65,7 @@
         <option value="$PROJECT_DIR$/auctionhouse/includes/auction_to_seller.php" />
         <option value="$PROJECT_DIR$/auctionhouse/includes/live_auction_to_buyer.php" />
         <option value="$PROJECT_DIR$/auctionhouse/index.php" />
+        <option value="$PROJECT_DIR$/auctionhouse/views/open_live_auction_view.php" />
       </list>
     </option>
   </component>
@@ -54,10 +76,9 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="1468" />
-    <option name="y" value="-50" />
-    <option name="width" value="1636" />
-    <option name="height" value="981" />
+    <option name="y" value="23" />
+    <option name="width" value="1280" />
+    <option name="height" value="698" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -101,6 +122,38 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="COMP3013Databases" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="COMP3013Databases" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="COMP3013Databases" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="auctionhouse" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="COMP3013Databases" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="COMP3013Databases" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="auctionhouse" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -154,10 +207,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1468" y="-50" width="1636" height="981" extended-state="1" />
-    <editor active="false" />
+    <frame x="0" y="23" width="1280" height="698" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26537013" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26979" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -346,13 +399,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/auctionhouse/views/open_live_auction_view.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/auctionhouse/scripts/delete_watch.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.10752688">
@@ -364,32 +410,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.26881722">
           <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="62" />
-          <folding>
-            <marker date="1457888219000" expanded="true" signature="1530:1596" placeholder="SELECT count... countries" />
-            <marker date="1457888219000" expanded="true" signature="1950:2021" placeholder="SELECT categ... item_categories" />
-            <marker date="1457888219000" expanded="true" signature="2227:2301" placeholder="SELECT condi... item_conditions" />
-            <marker date="1457888219000" expanded="true" signature="3306:3410" placeholder="INSERT INTO users... " />
-            <marker date="1457888219000" expanded="true" signature="3814:3882" placeholder="INSERT INTO unverified_users... " />
-            <marker date="1457888219000" expanded="true" signature="4160:4289" placeholder="INSERT INTO items... " />
-            <marker date="1457888219000" expanded="true" signature="4452:4567" placeholder="INSERT INTO auctions... " />
-            <marker date="1457888219000" expanded="true" signature="12234:13984" placeholder="SELECT aucti... auctions" />
-            <marker date="1457888219000" expanded="true" signature="14291:15905" placeholder="SELECT aucti... auctions" />
-            <marker date="1457888219000" expanded="true" signature="16205:17880" placeholder="SELECT aucti... auctions" />
-            <marker date="1457888219000" expanded="true" signature="18177:20059" placeholder="SELECT aucti... auctions" />
-            <marker date="1457888219000" expanded="true" signature="20337:21720" placeholder="SELECT aucti... auctions" />
-            <marker date="1457888219000" expanded="true" signature="22009:23137" placeholder="SELECT aucti... auctions" />
-            <marker date="1457888219000" expanded="true" signature="23424:24699" placeholder="SELECT aucti... auctions" />
-            <marker date="1457888219000" expanded="true" signature="26114:26192" placeholder="SELECT userI... users" />
-            <marker date="1457888219000" expanded="true" signature="26427:26498" placeholder="SELECT * FRO... unverified_users" />
-            <marker date="1457888219000" expanded="true" signature="27311:27365" placeholder="UPDATE users... " />
-            <marker date="1457888219000" expanded="true" signature="27510:27563" placeholder="DELETE FROM " />
-            <marker date="1457888219000" expanded="true" signature="28777:28826" placeholder="SELECT passw... users" />
-            <marker date="1457888219000" expanded="true" signature="29893:29909" placeholder="UPDATE users... " />
-            <marker date="1457888219000" expanded="true" signature="30711:30748" placeholder="SELECT first... users" />
-            <marker date="1457888219000" expanded="true" signature="31876:31924" placeholder="UPDATE ${{$t... " />
-            <marker date="1457888219000" expanded="true" signature="35575:35635" placeholder="UPDATE notif... " />
-            <marker date="1457888219000" expanded="true" signature="36248:36326" placeholder="UPDATE notif... " />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -435,18 +456,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/auctionhouse/includes/live_auction_to_buyer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.07168459">
-          <caret line="4" column="62" selection-start-line="4" selection-start-column="62" selection-end-line="4" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/auctionhouse/views/search_view.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="3.0824373">
           <caret line="172" column="0" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -454,7 +467,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.57347673">
           <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="62" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -462,6 +474,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.05376344">
           <caret line="3" column="62" selection-start-line="3" selection-start-column="62" selection-end-line="3" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auctionhouse/includes/live_auction_to_buyer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="11.875">
+          <caret line="4" column="62" selection-start-line="4" selection-start-column="62" selection-end-line="4" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auctionhouse/views/open_live_auction_view.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5">
+          <caret line="251" column="58" selection-start-line="251" selection-start-column="58" selection-end-line="251" selection-end-column="58" />
           <folding />
         </state>
       </provider>
