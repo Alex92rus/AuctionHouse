@@ -593,13 +593,24 @@ class QueryOperator
         self::getDatabaseInstance();
 
         // SQL query for retrieving all live auctions and their details for a specific auctionId
-        $detailsQuery  = "SELECT a.auctionId, a.quantity, a.startPrice, a.reservePrice, a.startTime, a.endTime, a.highestBidderId, i.itemName, i.itemBrand, i.itemDescription, ";
-        $detailsQuery .= "i.image, cat.categoryName, con.conditionName, u.username, a.views ";
-        $detailsQuery .= "FROM auctions a, items i, item_categories cat, item_conditions con, users u ";
-        $detailsQuery .= "WHERE a.itemId = i.itemId AND i.categoryId = cat.categoryId AND i.conditionId = con.conditionId AND i.userId = u.userId AND a.auctionId = " .$auctionId . " ";
-        $detailsQuery .= "AND a.endTime > NOW() ";
-        $detailsQuery .= "ORDER BY a.startTime ASC, a.endTime ASC";
-        $result = self::$database -> issueQuery( $detailsQuery );
+        $query = "
+
+        SELECT a.auctionId, a.quantity, a.startPrice, a.reservePrice, a.startTime, a.endTime,
+		a.highestBidderId, i.itemName, i.itemBrand, i.itemDescription,
+        i.image, cat.categoryName, con.conditionName, u.username, a.views,
+        FORMAT (AVG(f.score) / 5, 2)*100 as avgSellerFeedbackPercentage, COUNT(f.score) as numFeedbacksForSeller
+
+		FROM auctions a JOIN items i ON a.itemId = i.itemId
+        JOIN item_categories cat ON cat.categoryId = i.categoryId
+        JOIN item_conditions con ON con.conditionId = i.conditionId
+        JOIN users u ON u.userId = i.userId
+        LEFT JOIN feedbacks f ON f.receiverId = i.userId
+
+
+        WHERE a.auctionId = __auctionId__ ";
+
+        $query = str_replace("__auctionId__", $auctionId, $query);
+        $result = self::$database -> issueQuery( $query );
 
         return new Auction( $result -> fetch_assoc() );
     }

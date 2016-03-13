@@ -17,7 +17,7 @@ class Auction
     private $categoryName;
     private $superCategoryName;
     private $conditionName;
-    private $country;
+    private $countryName;
     private $views;
     private $numBids;
     private $watchId; //for a watched Auction
@@ -27,6 +27,8 @@ class Auction
     private $isUserWinning;
     private $hasBuyerFeedback;
     private $hasSellerFeedback;
+    private $avgSellerFeedbackPercentage;
+    private $numFeedbacksForSeller;
 
     public function __construct( $details )
     {
@@ -319,23 +321,22 @@ class Auction
         $this->conditionName = $conditionName;
     }
 
-
     /**
      * @return mixed
      */
-    public function getCountry()
+    public function getCountryName()
     {
-        return $this->country;
+        return $this->countryName;
     }
-
 
     /**
-     * @param mixed $country
+     * @param mixed $countryName
      */
-    public function setCountry($country)
+    public function setCountryName($countryName)
     {
-        $this->country = $country;
+        $this->countryName = $countryName;
     }
+
 
 
     /**
@@ -473,5 +474,41 @@ class Auction
         $this->hasSellerFeedback = $hasSellerFeedback;
     }
 
-    
+    /**
+     * @return mixed
+     */
+    public function getAvgSellerFeedbackPercentage()
+    {
+        return $this->avgSellerFeedbackPercentage;
+    }
+
+    /**
+     * @param mixed $avgSellerFeedbackPercentage
+     */
+    public function setAvgSellerFeedbackPercentage($avgSellerFeedbackPercentage)
+    {
+        $this->avgSellerFeedbackPercentage = $avgSellerFeedbackPercentage;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNumFeedbacksForSeller()
+    {
+        return $this->numFeedbacksForSeller;
+    }
+
+    /**
+     * @param mixed $numFeedbacksForSeller
+     */
+    public function setNumFeedbacksForSeller($numFeedbacksForSeller)
+    {
+        $this->numFeedbacksForSeller = $numFeedbacksForSeller;
+    }
+
+
+
+
+
+
    }
