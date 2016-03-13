@@ -1,4 +1,5 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
 
 class Notification
 {
@@ -63,7 +64,6 @@ class Notification
      */
     public function getTime()
     {
-        require_once "../config/config.php";
         $time = new DateTime( $this->time, new DateTimeZone( TIMEZONE ) );
         $now = new DateTime( "now", new DateTimeZone( TIMEZONE ) );
         $interval = $now->diff( $time );

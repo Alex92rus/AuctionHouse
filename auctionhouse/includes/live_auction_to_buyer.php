@@ -2,7 +2,7 @@
 require_once "../classes/class.auction.php";
 require_once "../classes/class.bid.php";
 require_once "../classes/class.advanced_auction.php";
-require_once "../config/config.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
 
 
 /* @var Auction $auction */

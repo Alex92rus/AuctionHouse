@@ -15,6 +15,7 @@ require_once "class.feedback.php";
 require_once "class.advanced_auction.php";
 require_once "class.advanced_feedback.php";
 require_once "class.notification.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
 
 
 class QueryOperator
@@ -196,7 +197,7 @@ class QueryOperator
 
     public static function addNotification( $notifyId, $message, $notificationType )
     {
-        $now = new DateTime();
+        $now = new DateTime( "now", new DateTimeZone( TIMEZONE ) );
         $notification = new DbNotification( array(
             "userId" => $notifyId,
             "message" => $message,
@@ -775,7 +776,7 @@ class QueryOperator
 
     public static function placeBid( $auctionId, $userId, $bidPrice )
     {
-        $date = new DateTime();
+        $date = new DateTime( "now", new DateTimeZone( TIMEZONE ) );
 
         $bid = new DbBid( array(
             "userId" => $userId,
