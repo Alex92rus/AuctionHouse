@@ -14,7 +14,7 @@ $result = array();
 if ( isset( $_GET[ "searchString" ] ) && isset( $_GET[ "searchCategory" ] ) && strlen($_GET[ "searchString" ] ) >= 3 )
 {
     $searchString = trim(addslashes($_GET[ "searchString" ]));
-    $searchCategory = addslashes($_GET[ "searchCategory" ]);
+    $searchCategory = htmlspecialchars_decode(addslashes($_GET[ "searchCategory" ]));
     $sort = SessionOperator::getSearchSetting( SessionOperator::SORT );
 
     // Set search sessions
@@ -26,7 +26,7 @@ if ( isset( $_GET[ "searchString" ] ) && isset( $_GET[ "searchCategory" ] ) && s
 else if ( isset( $_GET[ "searchCategory" ] ) )
 {
     $searchString = SessionOperator::getSearchSetting( SessionOperator::SEARCH_STRING );
-    $searchCategory = addslashes( $_GET[ "searchCategory" ] );
+    $searchCategory = htmlspecialchars_decode(addslashes( $_GET[ "searchCategory" ] ));
     $sort = SessionOperator::getSearchSetting( SessionOperator::SORT );
 
     // Set search sessions
