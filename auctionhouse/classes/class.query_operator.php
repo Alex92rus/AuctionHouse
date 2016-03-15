@@ -416,7 +416,7 @@ class QueryOperator
     {
         $query = "
 
-        SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime, sold,
+        SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
                 endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
                 item_categories.categoryName as subCategoryName, superCategoryName,
                 item_categories.superCategoryId, item_categories.categoryId,
@@ -455,7 +455,7 @@ class QueryOperator
     {
         $query = "
 
-        SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime, sold,
+        SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
                 endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
                 item_categories.categoryName as subCategoryName, superCategoryName,
                 item_categories.superCategoryId, item_categories.categoryId, users.username,

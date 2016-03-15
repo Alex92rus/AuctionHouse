@@ -15,7 +15,6 @@ class DbAuction extends DbEntity
         "reservePrice"  => "d",
         "startTime"     => "s",
         "endTime"       => "s",
-        "sold"          => "i",
         "views"         => "i",
         "highestBidderId" => "i"
 
