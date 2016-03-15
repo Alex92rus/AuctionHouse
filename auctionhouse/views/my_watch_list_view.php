@@ -60,6 +60,8 @@ $watchedAuctions = QueryOperator::getWatchedAuctions($user->getUserId());
     <!-- main start -->
     <div id="page-wrapper">
 
+        <?php include_once "../includes/recommender_carousel.php" ?>
+
         <div class="row">
             <div class="col-xs-12">
                 <h4 class="page-header">
