@@ -70,8 +70,8 @@ $stillAlive = new DateTime($auction->getEndTime(), new DateTimeZone( TIMEZONE ))
                     </h4>
                 </div>
 
+                <?php if ($stillAlive) { ?>
                 <div class="col-xs-6">
-                    <?php if ($stillAlive) : ?>
                         <h5 class="text-danger"><span id="timer<?= $auction ->getAuctionId()?>"></span> left</h5>
 
                         <script type="text/javascript">
@@ -87,9 +87,21 @@ $stillAlive = new DateTime($auction->getEndTime(), new DateTimeZone( TIMEZONE ))
                                     $("#auction" + <?= json_encode( $auction -> getAuctionId() ) ?>).remove();
                                 });
                         </script>
-
-                    <?php endif ?>
                 </div>
+                <?php } else { ?>
+                    <div class="col-xs-3">
+                        <div class="panel panel-default" id="seller-info">
+                            <div class="panel-body">
+                                <h4>Seller</h4>
+                                <p>
+                                    <a href="<?php echo '../views/my_feedbacks_view.php?username=' . $auction -> getUsername() ?>">
+                                        <?= $auction -> getUsername() ?>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
 
             </div>
 

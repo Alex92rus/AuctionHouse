@@ -22,34 +22,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="my_successful_bids_view.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/auctionhouse/views/my_successful_bids_view.php">
+      <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/auctionhouse/css/main.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.041667">
-              <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+            <state vertical-scroll-proportion="-16.333334">
+              <caret line="553" column="29" selection-start-line="553" selection-start-column="29" selection-end-line="553" selection-end-column="29" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="my_watch_list_view.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/auctionhouse/views/my_watch_list_view.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.333333">
-              <caret line="74" column="57" selection-start-line="74" selection-start-column="57" selection-end-line="74" selection-end-column="57" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="recommender_carousel.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/auctionhouse/includes/recommender_carousel.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-20.0">
-              <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -57,20 +35,24 @@
       <file leaf-file-name="live_auction_to_buyer.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/auctionhouse/includes/live_auction_to_buyer.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.56461734">
-              <caret line="107" column="49" selection-start-line="107" selection-start-column="49" selection-end-line="107" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.6988708">
+              <caret line="93" column="52" selection-start-line="93" selection-start-column="52" selection-end-line="93" selection-end-column="52" />
               <folding>
-                <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#p#0;n#div#0;n#div#3;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#p#1;n#div#0;n#div#3;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <marker date="1458085586000" expanded="true" signature="2929:3390" placeholder="..." />
+                <marker date="1458085586000" expanded="true" signature="3100:3390" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/auctionhouse/css/main.css">
+      <file leaf-file-name="my_successful_bids_view.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/auctionhouse/views/my_successful_bids_view.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-16.333334">
-              <caret line="553" column="29" selection-start-line="553" selection-start-column="29" selection-end-line="553" selection-end-column="29" />
+            <state vertical-scroll-proportion="-13.833333">
+              <caret line="91" column="31" selection-start-line="91" selection-start-column="24" selection-end-line="91" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -94,7 +76,6 @@
         <option value="$PROJECT_DIR$/auctionhouse/classes/class.notification.php" />
         <option value="$PROJECT_DIR$/auctionhouse/includes/auction_to_seller.php" />
         <option value="$PROJECT_DIR$/auctionhouse/index.php" />
-        <option value="$PROJECT_DIR$/auctionhouse/views/open_live_auction_view.php" />
         <option value="$PROJECT_DIR$/auctionhouse/classes/class.recommender.php" />
         <option value="$PROJECT_DIR$/auctionhouse/classes/class.recommender_system.php" />
         <option value="$PROJECT_DIR$/auctionhouse/scripts/registration.php" />
@@ -119,6 +100,7 @@
         <option value="$PROJECT_DIR$/auctionhouse/views/my_watch_list_view.php" />
         <option value="$PROJECT_DIR$/auctionhouse/css/main.css" />
         <option value="$PROJECT_DIR$/auctionhouse/includes/recommender_carousel.php" />
+        <option value="$PROJECT_DIR$/auctionhouse/views/open_live_auction_view.php" />
         <option value="$PROJECT_DIR$/auctionhouse/includes/live_auction_to_buyer.php" />
       </list>
     </option>
@@ -133,8 +115,8 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="1395" />
-    <option name="y" value="2" />
+    <option name="x" value="1600" />
+    <option name="y" value="-22" />
     <option name="width" value="1744" />
     <option name="height" value="941" />
   </component>
@@ -296,7 +278,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1395" y="2" width="1744" height="941" extended-state="0" />
+    <frame x="1600" y="-22" width="1744" height="941" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19800235" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -454,13 +436,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/auctionhouse/views/open_live_auction_view.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22633137">
-          <caret line="242" column="67" selection-start-line="242" selection-start-column="67" selection-end-line="242" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/auctionhouse/scripts/confirmation.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -574,24 +549,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/auctionhouse/classes/class.query_operator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48081535">
-          <caret line="208" column="53" selection-start-line="208" selection-start-column="53" selection-end-line="208" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/auctionhouse/scripts/delete_auction.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.8093525">
           <caret line="45" column="50" selection-start-line="45" selection-start-column="50" selection-end-line="45" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/auctionhouse/includes/auction_to_seller.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.528777">
-          <caret line="4" column="62" selection-start-line="4" selection-start-column="62" selection-end-line="4" selection-end-column="62" />
         </state>
       </provider>
     </entry>
@@ -639,14 +600,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/auctionhouse/views/my_sold_auctions_view.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79297364">
-          <caret line="61" column="56" selection-start-line="61" selection-start-column="56" selection-end-line="61" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/auctionhouse/views/search_view.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6549561">
@@ -671,18 +624,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/auctionhouse/views/my_successful_bids_view.php">
+    <entry file="file://$PROJECT_DIR$/auctionhouse/includes/recommender_carousel.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.041667">
-          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.60225844">
+          <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/auctionhouse/views/my_watch_list_view.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.333333">
+        <state vertical-scroll-proportion="0.37139273">
           <caret line="74" column="57" selection-start-line="74" selection-start-column="57" selection-end-line="74" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auctionhouse/includes/auction_to_seller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.0514429">
+          <caret line="4" column="62" selection-start-line="4" selection-start-column="62" selection-end-line="4" selection-end-column="62" />
           <folding />
         </state>
       </provider>
@@ -695,22 +658,82 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/auctionhouse/includes/recommender_carousel.php">
+    <entry file="file://$PROJECT_DIR$/auctionhouse/classes/class.query_operator.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-20.0">
-          <caret line="61" column="0" selection-start-line="61" selection-start-column="0" selection-end-line="61" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.22333752">
+          <caret line="494" column="33" selection-start-line="494" selection-start-column="27" selection-end-line="494" selection-end-column="33" />
           <folding>
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <marker date="1458079172000" expanded="true" signature="1576:1642" placeholder="SELECT count... countries" />
+            <marker date="1458079172000" expanded="true" signature="1996:2067" placeholder="SELECT categ... item_categories" />
+            <marker date="1458079172000" expanded="true" signature="2273:2347" placeholder="SELECT condi... item_conditions" />
+            <marker date="1458079172000" expanded="true" signature="3352:3456" placeholder="INSERT INTO users... " />
+            <marker date="1458079172000" expanded="true" signature="3990:4058" placeholder="INSERT INTO unverified_users... " />
+            <marker date="1458079172000" expanded="true" signature="4336:4465" placeholder="INSERT INTO items... " />
+            <marker date="1458079172000" expanded="true" signature="4628:4743" placeholder="INSERT INTO auctions... " />
+            <marker date="1458079172000" expanded="true" signature="12382:14132" placeholder="SELECT aucti... auctions" />
+            <marker date="1458079172000" expanded="true" signature="14439:16053" placeholder="SELECT aucti... auctions" />
+            <marker date="1458079172000" expanded="true" signature="16353:18022" placeholder="SELECT aucti... auctions" />
+            <marker date="1458079172000" expanded="true" signature="18319:20195" placeholder="SELECT aucti... auctions" />
+            <marker date="1458079172000" expanded="true" signature="20491:21285" placeholder="SELECT aucti... auctions" />
+            <marker date="1458079172000" expanded="true" signature="21577:22241" placeholder="SELECT aucti... auctions" />
+            <marker date="1458079172000" expanded="true" signature="22468:23851" placeholder="SELECT aucti... auctions" />
+            <marker date="1458079172000" expanded="true" signature="24140:25268" placeholder="SELECT aucti... auctions" />
+            <marker date="1458079172000" expanded="true" signature="25555:26830" placeholder="SELECT aucti... auctions" />
+            <marker date="1458079172000" expanded="true" signature="27258:27930" placeholder="SELECT a.auc... auctions" />
+            <marker date="1458079172000" expanded="true" signature="28328:28406" placeholder="SELECT userI... users" />
+            <marker date="1458079172000" expanded="true" signature="28641:28712" placeholder="SELECT * FRO... unverified_users" />
+            <marker date="1458079172000" expanded="true" signature="29525:29579" placeholder="UPDATE users... " />
+            <marker date="1458079172000" expanded="true" signature="29724:29777" placeholder="DELETE FROM " />
+            <marker date="1458079172000" expanded="true" signature="29949:30000" placeholder="INSERT INTO recommendations... " />
+            <marker date="1458079172000" expanded="true" signature="31244:31293" placeholder="SELECT passw... users" />
+            <marker date="1458079172000" expanded="true" signature="32360:32376" placeholder="UPDATE users... " />
+            <marker date="1458079172000" expanded="true" signature="33178:33215" placeholder="SELECT first... users" />
+            <marker date="1458079172000" expanded="true" signature="34343:34391" placeholder="UPDATE ${{$t... " />
+            <marker date="1458079172000" expanded="true" signature="38042:38102" placeholder="UPDATE notif... " />
+            <marker date="1458079172000" expanded="true" signature="38674:38752" placeholder="UPDATE notif... " />
+            <marker date="1458079172000" expanded="true" signature="39015:39066" placeholder="select disti... bids" />
+            <marker date="1458079172000" expanded="true" signature="39494:39597" placeholder="select userI... users" />
+            <marker date="1458079172000" expanded="true" signature="39541:39576" placeholder="select userI... unverified_users" />
+            <marker date="1458079172000" expanded="true" signature="40153:40245" placeholder="UPDATE recom... " />
+            <marker date="1458079172000" expanded="true" signature="40482:40534" placeholder="select aucti... auctions" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auctionhouse/views/open_live_auction_view.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.69761604">
+          <caret line="270" column="34" selection-start-line="253" selection-start-column="27" selection-end-line="270" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auctionhouse/views/my_sold_auctions_view.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-27.166666">
+          <caret line="61" column="56" selection-start-line="61" selection-start-column="56" selection-end-line="61" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auctionhouse/views/my_successful_bids_view.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.833333">
+          <caret line="91" column="31" selection-start-line="91" selection-start-column="24" selection-end-line="91" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/auctionhouse/includes/live_auction_to_buyer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.56461734">
-          <caret line="107" column="49" selection-start-line="107" selection-start-column="49" selection-end-line="107" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.6988708">
+          <caret line="93" column="52" selection-start-line="93" selection-start-column="52" selection-end-line="93" selection-end-column="52" />
           <folding>
-            <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#0;n#div#0;n#div#3;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#p#1;n#div#0;n#div#3;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <marker date="1458085586000" expanded="true" signature="2929:3390" placeholder="..." />
+            <marker date="1458085586000" expanded="true" signature="3100:3390" placeholder="..." />
           </folding>
         </state>
       </provider>
