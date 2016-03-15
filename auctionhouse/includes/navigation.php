@@ -149,7 +149,7 @@ $newAlerts = count($alerts);
                         <a href="../views/my_successful_bids_view.php"><i class="fa fa fa-thumbs-up fa-fw"></i> Won Auctions</a>
                     </li>
                     <li>
-                        <a href="../views/my_unsuccessful_bids_view.php"><i class="fa fa-thumbs-down fa-fw"></i> Outbidded Auctions</a>
+                        <a href="../views/my_unsuccessful_bids_view.php"><i class="fa fa-thumbs-down fa-fw"></i> Lost Auctions</a>
                     </li>
 
                 </ul>

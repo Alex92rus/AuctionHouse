@@ -8,16 +8,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
 /* @var Auction $auction */
 /* @var String $origin */
 
-if ($origin == "watches"){
-    $refer = "&w=1";
-}else if($origin == "search") {
-    $refer = "&s=1";
-}else if($origin == "liveWithBid"){
-    $refer = "&l=1";
-}else{
-    $refer= "";
-}
 
+$refer = "&o=".basename($_SERVER["REQUEST_URI"]);
 $stillAlive = new DateTime($auction->getEndTime(), new DateTimeZone( TIMEZONE )) > new DateTime( "now", new DateTimeZone( TIMEZONE ));
 ?>
 

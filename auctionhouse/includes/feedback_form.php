@@ -3,6 +3,11 @@
 /* @var String $feedbackReceiverUsername */
 $seller = $feedbackType == "Leave Seller Feedback";
 $auctionId = $auction->getAuctionId();
+if(!isset($counter)){
+    $counter = 0;
+}else{
+    $counter++;
+}
 ?>
 
 <div class="<?php if ( $seller ) { echo "row";}else{ echo "col-xs-6";}?>">
@@ -15,14 +20,14 @@ $auctionId = $auction->getAuctionId();
         <div class="row post-review-box" id="post-review-box-<?= $auctionId ?>" style="display:none;">
             <div class="col-md-12">
                 <form accept-charset="UTF-8" action="../scripts/create_feedback.php" method="post">
-                    <input id="score-hidden" name="score" type="hidden">
+                    <input id="score-hidden_<?=$counter?>" name="score" type="hidden">
                     <input id="receiverUsername" name="receiverUsername" type="hidden" value="<?= $feedbackReceiverUsername?>">
                     <input id="origin" name="origin" type="hidden" value="<?= $origin ?>">
                     <input id="auctionId" name="auctionId" type="hidden" value="<?= $auctionId ?>">
-                    <textarea class="form-control animated new-review" cols="50" id="new-review" name="comment" placeholder="Leave your feedback comment here..." rows="5" maxlength="500"></textarea>
+                    <textarea class="form-control animated new-review" cols="50" name="comment" placeholder="Leave your feedback comment here..." rows="5" maxlength="500"></textarea>
                     <div class="row" style="margin-top: 7px">
                         <div class="col-xs-6 feedback-menu">
-                            <div class="pull-left stars starrr" data-rating="0"></div>
+                            <div class="pull-left stars starrr" id="stars_<?=$counter?>" data-rating="0"></div>
                         </div>
                         <div class="col-xs-6 feedback-menu text-right">
                             <a class="btn btn-sm btn-danger close-review-box" href="#" id="close-review-box" data-id="post-review-box-<?= $auctionId ?>" style="display:none; margin-right: 10px;">Cancel</a>

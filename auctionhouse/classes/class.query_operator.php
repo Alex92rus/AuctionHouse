@@ -523,7 +523,7 @@ class QueryOperator
 
     }
 
-    public static function getMostPopularAuctions()
+    public static function getMostPopularAuctions($limit = 20)
     {
         $query =  "
 
@@ -544,7 +544,7 @@ class QueryOperator
         WHERE auctions.endTime < now()
 
         GROUP BY  auctions.auctionId
-        ORDER BY numBids DESC LIMIT 20";
+        ORDER BY numBids DESC LIMIT ". $limit;
 
         self::getDatabaseInstance();
         return self::queryResultToAuctions(self::$database -> issueQuery( $query ));

@@ -9,8 +9,10 @@ $(function(){
     //var reviewBox = $('.post-review-box');
     //var newReview = $('.new-review');
     var openReviewBtn = $('.open-review-box');
+
     var closeReviewBtn = $('.close-review-box');
-    var ratingsField = $('#score-hidden');
+    //var ratingsField = $('#score-hidden');
+    var ratingsFieldIdPrefix = "score-hidden_";
 
     openReviewBtn.click(function(e)
     {
@@ -62,7 +64,12 @@ $(function(){
     });
 
     $('.starrr').on('starrr:change', function(e, value){
+
+        var counter = e.target.id.split('_')[1];
+        var ratingsField = $("#" +ratingsFieldIdPrefix + counter);
         ratingsField.val(value);
+        console.log(ratingsField);
 
     });
+
 });

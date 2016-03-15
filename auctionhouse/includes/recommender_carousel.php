@@ -1,26 +1,30 @@
 <?php
 
 
-$collaborative = true;
+
 $recommendedAuctions = QueryOperator::getBuyersRecommendedAuctions(
     SessionOperator::getUser()->getUserId());
 
-if(count($recommendedAuctions ) == 0){
-    $collaborative = false;
-    $recommendedAuctions = QueryOperator::getMostPopularAuctions();
+if(count($recommendedAuctions ) < 20 ){
+
+    $recommendedAuctions = array_merge($recommendedAuctions,
+        QueryOperator::getMostPopularAuctions(20 - count($recommendedAuctions )));
 }
 
 ?>
 <!-- recommendations start -->
+
 <div class="panel panel-default recommendation-box">
 
     <div class="panel-heading">
         <h4>
-            <?php if ($collaborative){
+            <?php /*if ($collaborative){
                 echo "Recommended auctions inspired by your bidding history";
             }else{
                 echo "The Most popular auctions right now";
-            }?>
+            }*/
+                echo "Recommended auctions";
+            ?>
 
         </h4>
     </div>
@@ -31,7 +35,7 @@ if(count($recommendedAuctions ) == 0){
             <div class="carousel-inner">
 
                 <?php for ($splitIndex= 0 ; $splitIndex < ceil(count($recommendedAuctions) /4); $splitIndex++){ ?>
-                    <div class="item <?php echo $splitIndex == 0 ? ' active"' : ""?>>
+                    <div class="item <?php echo $splitIndex == 0 ? ' active' : '';?>">
                         <ul class="thumbnails">
 
                         <?php for ($index = $splitIndex * 4 ; $index < (min(count($recommendedAuctions), ($splitIndex +1) *4)) ; $index++){
@@ -40,7 +44,7 @@ if(count($recommendedAuctions ) == 0){
                             <li class="col-xs-3">
                                 <div class="fff">
                                     <div class="thumbnail">
-                                        <a href="../views/open_live_auction_view.php?liveAuction=<?=$auction->getAuctionId()?>"><img src="<?= $auction->getImage() ?>" class="img-responsive"
+                                        <a href="../views/open_live_auction_view.php?liveAuction=<?=$auction->getAuctionId()?>&o=<?=basename($_SERVER["REQUEST_URI"])?>"><img src="<?= $auction->getImage() ?>" class="img-responsive"
                                                          style="height:160px;"></a>
                                     </div>
                                     <div class="caption">
@@ -85,4 +89,6 @@ if(count($recommendedAuctions ) == 0){
     </div>
 
 </div>
+
+
 <!-- recommendations end -->

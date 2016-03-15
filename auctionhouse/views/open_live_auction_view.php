@@ -27,12 +27,26 @@ else
 
 // to send the user back to the correct page (depending if the got here by search page or watch list)
 $refer = array(null, null);
-if(isset( $_GET["s"])){
-    $refer = array("search_view.php", "Back to Search Results");
-}elseif (isset($_GET["w"])){
-    $refer = array("my_watch_list_view.php", "Back to My Watched Auctions");
-}elseif (isset($_GET["l"])){
-    $refer = array("my_current_bids_view.php", "Back to My Current Bids");
+if(isset(  $_GET["o"])){
+    $refer = array($_GET["o"]);
+    switch ($refer[0]){
+        case "search_view.php":
+            $refer[] = "Back to Search Results";
+            break;
+        case "my_watch_list_view.php":
+            $refer[] = "Back to My Watched Auctions";
+            break;
+        case "my_current_bids_view.php":
+            $refer[] =  "Back to My Current Bids";
+            break;
+        case "my_successful_bids_view.php":
+            $refer[] =  "Back to My Won Auctions";
+            break;
+        case "my_unsuccessful_bids_view.php":
+            $refer[] =  "Back to My Lost Auctions";
+            break;
+    }
+
 }
 
 $auction = QueryOperator::getLiveAuction($auctionId);
