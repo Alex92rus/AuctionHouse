@@ -72,7 +72,7 @@ $watchedAuctions = QueryOperator::getWatchedAuctions($user->getUserId());
         <div class="row" id="search-main">
 
             <!-- live auctions list start -->
-            <div class="col-xs-9">
+            <div class="col-xs-12">
                 <?php
                 if ( count( $watchedAuctions ) == 0 ) {
                     echo "<h4>No Watched Auctions</h4>";
@@ -86,21 +86,6 @@ $watchedAuctions = QueryOperator::getWatchedAuctions($user->getUserId());
                 ?>
             </div>
             <!-- live auctions list end -->
-
-            <!-- recommendations start -->
-            <div class="col-xs-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h5>
-                            Popular on AuctionHouse
-                        </h5>
-                    </div>
-                    <div class="panel-body">
-                        Recommendations
-                    </div>
-                </div>
-            </div>
-            <!-- recommendations end -->
 
         </div>
         <!-- search main end -->

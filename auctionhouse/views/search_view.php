@@ -216,31 +216,31 @@ $categories = $search_result["categories"];
                                     <?php for ( $index = 0; $index < 4; $index++ )
                                     {
                                         $auction = $liveAuctions[ $index ];
-                                    ?>
-                                    <li class="col-xs-3">
-                                        <div class="fff">
-                                            <div class="thumbnail">
-                                                <a href="#"><img src="<?= $auction -> getImage() ?>" class="img-responsive" style="height:160px;"></a>
+                                        ?>
+                                        <li class="col-xs-3">
+                                            <div class="fff">
+                                                <div class="thumbnail">
+                                                    <a href="#"><img src="<?= $auction -> getImage() ?>" class="img-responsive" style="height:160px;"></a>
+                                                </div>
+                                                <div class="caption">
+                                                    <h5 class="text-info"><?= $auction -> getItemName() ?><br><small><?= $auction -> getItemBrand() ?></small></h5>
+                                                    <h4>
+                                                        <strong>
+                                                            <?php
+                                                            $currentPrice = "£";
+                                                            if ( empty( $auction->getHighestBid() ) ) {
+                                                                $currentPrice .= $auction -> getStartPrice();
+                                                            } else {
+                                                                $currentPrice .= $auction->getHighestBid();
+                                                            }
+                                                            echo $currentPrice;
+                                                            ?>
+                                                        </strong><br>
+                                                        <small><?= $auction->getNumBids() ?> Bids</small>
+                                                    </h4>
+                                                </div>
                                             </div>
-                                            <div class="caption">
-                                                <h5 class="text-info"><?= $auction -> getItemName() ?><br><small><?= $auction -> getItemBrand() ?></small></h5>
-                                                <h4>
-                                                    <strong>
-                                                        <?php
-                                                        $currentPrice = "£";
-                                                        if ( empty( $auction->getHighestBid() ) ) {
-                                                            $currentPrice .= $auction -> getStartPrice();
-                                                        } else {
-                                                            $currentPrice .= $auction->getHighestBid();
-                                                        }
-                                                        echo $currentPrice;
-                                                        ?>
-                                                    </strong><br>
-                                                    <small><?= $auction->getNumBids() ?> Bids</small>
-                                                </h4>
-                                            </div>
-                                        </div>
-                                    </li>
+                                        </li>
                                     <?php } ?>
                                 </ul>
                             </div><!-- /Slide1 -->
