@@ -98,7 +98,7 @@ $stillAlive = new DateTime($auction->getEndTime(), new DateTimeZone( TIMEZONE ))
                     <p><i class="fa fa-eye"></i> Views <?= $auction->getViews() ?> | <i class="fa fa-desktop"></i> Watching <?= $auction->getNumWatches() ?></p>
                 </div>
                 <div class="col-xs-6">
-                    <p><?= $auction -> getCountryName() ?></p>
+                    <p><i class="fa fa-flag"></i> <?= $auction -> getCountryName() ?></p>
                 </div>
             </div>
 
