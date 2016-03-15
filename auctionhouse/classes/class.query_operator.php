@@ -105,13 +105,16 @@ class QueryOperator
         // SQL query for creating a new user record
         $registerUserQuery  = "INSERT INTO users ( username, email, firstName, lastName, address, postcode, city, countryId, password ) ";
         $registerUserQuery .= "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )";
-        $accountId = self::$database -> issueQuery( $registerUserQuery, "sssssssis", $parameters );
+        $userId = self::$database -> issueQuery( $registerUserQuery, "sssssssis", $parameters );
 
-        return $accountId;
+        $confirmCode = rand( 100000, 100000000 );
+        QueryOperator::addUnverifiedAccount( array( $userId, $confirmCode ) );
+
+        return $confirmCode;
     }
 
 
-    public static function addUnverifiedAccount( $parameters )
+    private static function addUnverifiedAccount( $parameters )
     {
         self::getDatabaseInstance();
 
@@ -655,6 +658,10 @@ class QueryOperator
         // SQL query for deleting unverified account
         $deleteUnverified = "DELETE FROM unverified_users WHERE userId = '$userId'";
         self::$database -> issueQuery( $deleteUnverified );
+
+        // SQL query for adding userId to recommendation receiver list
+        $addToRecommendationList  = "INSERT INTO recommendations ( userId ) VALUES ( ? )";
+        self::$database -> issueQuery( $addToRecommendationList, "i", array( $userId ) );
     }
 
 
@@ -887,7 +894,6 @@ class QueryOperator
                     $notifyQuery .= " OR notificationId = ";
                 }
             }
-            self::getDatabaseInstance();
             self::$database -> issueQuery( $notifyQuery );
         }
 
@@ -902,6 +908,74 @@ class QueryOperator
         // SQL for marking notification as seen
         $query = "UPDATE notifications SET seen = 1 WHERE userId = $userId AND notificationId = $notificationId";
         self::$database -> issueQuery( $query );
+    }
+
+
+    public static function getBidOnAuctions( $userId )
+    {
+        self::getDatabaseInstance();
+
+        // SQL for retrieving all distinct auctions a user has bid on
+        $query  = "select distinct auctionId from bids where userId = $userId";
+        $result = self::$database -> issueQuery( $query );
+
+        $auctionIds = [];
+        while ( $row = $result -> fetch_row() )
+        {
+            $auctionIds[] = $row[ 0 ];
+        }
+
+        return $auctionIds;
+    }
+
+
+    public static function getUsersBidOnAuctions()
+    {
+        self::getDatabaseInstance();
+
+        // SQL for retrieving all verified users expect the specified one
+        $query  = "select userId from users where userId not in ( select userId from unverified_users) order by userId asc";
+        $result = self::$database -> issueQuery( $query );
+
+        $users = [];
+        while ( $row = $result -> fetch_row() )
+        {
+            $bids = self::getBidOnAuctions( $row[ 0 ] );
+            if ( !empty( $bids ) )
+            {
+                $users[ $row[ 0 ] ] = $bids;
+            }
+        }
+
+        return $users;
+    }
+
+
+    public static function setUserRecommendations( $userId, $recommendedAuctions )
+    {
+        self::getDatabaseInstance();
+
+        // SQL for creating auction recommendation for a user
+        $query = "UPDATE recommendations SET recommendations = '$recommendedAuctions' WHERE userId = '$userId'";
+        self::$database -> issueQuery( $query );
+    }
+
+
+    public static function getAllLiveAuctions()
+    {
+        self::getDatabaseInstance();
+
+        // SQL for retrieving all live auctions (not expired yet)
+        $query  = "select auctionId from auctions where endTime > NOW()";
+        $result = self::$database -> issueQuery( $query );
+
+        $auctionIds = [];
+        while ( $row = $result -> fetch_row() )
+        {
+            $auctionIds[] = $row[ 0 ];
+        }
+
+        return $auctionIds;
     }
 
 

@@ -1,7 +1,7 @@
 <?php
 
 // Website url
-defined( "URL" ) ? null : define( "URL", "http://ec2-52-10-179-54.us-west-2.compute.amazonaws.com/" );
+defined( "URL" ) ? null : define( "URL", "http://localhost:8888/" );
 defined( "TIMEZONE" ) ? null : define( "TIMEZONE", "Europe/London" );
 
 // Database
@@ -16,7 +16,7 @@ defined( "EMAIL_DEBUG" ) ? null : define( "EMAIL_DEBUG", "html" );
 defined( "EMAIL_ENCRYPTION" ) ? null : define( "EMAIL_ENCRYPTION", "tls" );
 defined( "EMAIL_HOST" ) ? null : define( "EMAIL_HOST", "smtp.gmail.com" );
 defined( "EMAIL_USER" ) ? null : define( "EMAIL_USER", "auction.house.ucl@gmail.com" );
-defined( "EMAIL_PASSWORD" ) ? null : define( "EMAIL_PASSWORD", "Bidder2016!" );
+defined( "EMAIL_PASSWORD" ) ? null : define( "EMAIL_PASSWORD", "COMP3031!@#$" );
 defined( "EMAIL_SMTP" ) ? null : define( "EMAIL_SMTP", 587 );
 
 // Upload

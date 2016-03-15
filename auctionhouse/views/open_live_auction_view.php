@@ -247,13 +247,9 @@ $alreadyWatching = DbAuctionWatch::withConditions("WHERE userId = ".$user->getUs
                                             </a><br>
                                              <a href="<?php echo '../views/my_feedbacks_view.php?username=' . $auction -> getUsername() ?>">
                                                 <?php if ($auction->getAvgSellerFeedbackPercentage() != null){?>
-                                                    avg. rating:
-                                                    <?=$auction->getAvgSellerFeedbackPercentage()."%" ?>
+                                                    <?=$auction->getAvgSellerFeedbackPercentage()."% Posotive Feedback" ?>
 
                                                 <?php } ?>
-                                                <?=("(". $auction->getNumFeedbacksForSeller(). " ratings)" )?>
-
-
                                             </a><br>
                                         </p>
                                     </div>
