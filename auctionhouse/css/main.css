@@ -523,3 +523,43 @@ h4#live-auction
     color: #d17581;
 }
 
+
+
+/*-------------------------------------
+ * Recommendation CSS
+ *-------------------------------------*/
+
+
+.recommendation-box
+{
+    margin-top: 100px;
+}
+
+
+.recommendation-box .panel-body
+{
+    padding-top: 30px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+
+ul.thumbnails,
+.thumbnail
+{
+    margin-bottom: 0;
+}
+
+
+li
+{
+    list-style-type:none;
+}
+
+
+.thumbnails li> .fff .caption
+{
+    background:#fff !important;
+    padding:10px
+}
+

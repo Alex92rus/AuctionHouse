@@ -195,6 +195,180 @@ $categories = $search_result["categories"];
             </div>
             <!-- search main end -->
 
+
+
+            <!-- recommendations start -->
+            <div class="panel panel-default recommendation-box">
+
+                <div class="panel-heading">
+                    <h4>
+                        Recommended auctions inspired by your bidding history
+                    </h4>
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="carousel slide" id="myCarousel" data-interval="false" data-ride="carousel">
+                        <div class="carousel-inner">
+
+                            <div class="item active">
+                                <ul class="thumbnails">
+                                    <?php for ( $index = 0; $index < 4; $index++ )
+                                    {
+                                        $auction = $liveAuctions[ $index ];
+                                    ?>
+                                    <li class="col-xs-3">
+                                        <div class="fff">
+                                            <div class="thumbnail">
+                                                <a href="#"><img src="<?= $auction -> getImage() ?>" class="img-responsive" style="height:160px;"></a>
+                                            </div>
+                                            <div class="caption">
+                                                <h5 class="text-info"><?= $auction -> getItemName() ?><br><small><?= $auction -> getItemBrand() ?></small></h5>
+                                                <h4>
+                                                    <strong>
+                                                        <?php
+                                                        $currentPrice = "£";
+                                                        if ( empty( $auction->getHighestBid() ) ) {
+                                                            $currentPrice .= $auction -> getStartPrice();
+                                                        } else {
+                                                            $currentPrice .= $auction->getHighestBid();
+                                                        }
+                                                        echo $currentPrice;
+                                                        ?>
+                                                    </strong><br>
+                                                    <small><?= $auction->getNumBids() ?> Bids</small>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <?php } ?>
+                                </ul>
+                            </div><!-- /Slide1 -->
+
+                            <div class="item">
+                                <ul class="thumbnails">
+                                    <li class="col-sm-3">
+                                        <div class="fff">
+                                            <div class="thumbnail">
+                                                <a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+                                            </div>
+                                            <div class="caption">
+                                                <h4>Praesent commodo</h4>
+                                                <p>Nullam Condimentum Nibh Etiam Sem</p>
+                                                <a class="btn btn-mini" href="#">» Read More</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="col-sm-3">
+                                        <div class="fff">
+                                            <div class="thumbnail">
+                                                <a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+                                            </div>
+                                            <div class="caption">
+                                                <h4>Praesent commodo</h4>
+                                                <p>Nullam Condimentum Nibh Etiam Sem</p>
+                                                <a class="btn btn-mini" href="#">» Read More</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="col-sm-3">
+                                        <div class="fff">
+                                            <div class="thumbnail">
+                                                <a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+                                            </div>
+                                            <div class="caption">
+                                                <h4>Praesent commodo</h4>
+                                                <p>Nullam Condimentum Nibh Etiam Sem</p>
+                                                <a class="btn btn-mini" href="#">» Read More</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="col-sm-3">
+                                        <div class="fff">
+                                            <div class="thumbnail">
+                                                <a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+                                            </div>
+                                            <div class="caption">
+                                                <h4>Praesent commodo</h4>
+                                                <p>Nullam Condimentum Nibh Etiam Sem</p>
+                                                <a class="btn btn-mini" href="#">» Read More</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div><!-- /Slide2 -->
+
+                            <div class="item">
+                                <ul class="thumbnails">
+                                    <li class="col-sm-3">
+                                        <div class="fff">
+                                            <div class="thumbnail">
+                                                <a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+                                            </div>
+                                            <div class="caption">
+                                                <h4>Praesent commodo</h4>
+                                                <p>Nullam Condimentum Nibh Etiam Sem</p>
+                                                <a class="btn btn-mini" href="#">» Read More</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="col-sm-3">
+                                        <div class="fff">
+                                            <div class="thumbnail">
+                                                <a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+                                            </div>
+                                            <div class="caption">
+                                                <h4>Praesent commodo</h4>
+                                                <p>Nullam Condimentum Nibh Etiam Sem</p>
+                                                <a class="btn btn-mini" href="#">» Read More</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="col-sm-3">
+                                        <div class="fff">
+                                            <div class="thumbnail">
+                                                <a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+                                            </div>
+                                            <div class="caption">
+                                                <h4>Praesent commodo</h4>
+                                                <p>Nullam Condimentum Nibh Etiam Sem</p>
+                                                <a class="btn btn-mini" href="#">» Read More</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="col-sm-3">
+                                        <div class="fff">
+                                            <div class="thumbnail">
+                                                <a href="#"><img src="http://placehold.it/360x240" alt=""></a>
+                                            </div>
+                                            <div class="caption">
+                                                <h4>Praesent commodo</h4>
+                                                <p>Nullam Condimentum Nibh Etiam Sem</p>
+                                                <a class="btn btn-mini" href="#">» Read More</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div><!-- /Slide3 -->
+
+                        </div>
+
+                        <nav>
+                            <ul class="control-box pager">
+                                <li><a data-slide="prev" href="#myCarousel" class=""><i class="glyphicon glyphicon-chevron-left"></i></a></li>
+                                <li><a data-slide="next" href="#myCarousel" class=""><i class="glyphicon glyphicon-chevron-right"></i></li>
+                            </ul>
+                        </nav>
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- recommendations end -->
+
+
+
+
             <!-- footer start -->
             <div class="footer">
                 <div class="container">

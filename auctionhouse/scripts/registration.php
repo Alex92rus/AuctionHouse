@@ -44,7 +44,7 @@ else
     // Create new user
     $registration[ "country" ] = QueryOperator::getCountryId( $registration[ "country" ] );
     $encryptedPassword = password_hash( $registration[ "password1" ], PASSWORD_BCRYPT );
-    $insertId = QueryOperator::addAccount( array(
+    $confirmCode = QueryOperator::addAccount( array(
         $registration[ "username" ],
         $registration[ "email" ],
         $registration[ "firstName" ],
@@ -54,10 +54,6 @@ else
         $registration[ "city" ],
         $registration[ "country" ],
         $encryptedPassword ) );
-
-    // Mark user as unverified
-    $confirmCode = rand( 100000, 100000000 );
-    QueryOperator::addUnverifiedAccount( array( $insertId, $confirmCode ) );
 
     // Create a session for the successfully submitted registration (account not verified yet)
     SessionOperator::setNotification( SessionOperator::SUBMITTED_REGISTRATION );
