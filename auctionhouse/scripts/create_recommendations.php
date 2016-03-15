@@ -10,6 +10,7 @@ ini_set('max_execution_time', 3600);
 $allUserBids = QueryOperator::getUsersBidOnAuctions();
 $allLiveAuctions = QueryOperator::getAllLiveAuctions();
 
+$start = new DateTime( "now", new DateTimeZone( "Europe/London" ) );
 // For each userId calculate their recommended auctions
 foreach ( $allUserBids as $currentUserId => $currentUserBidOnAuctions )
 {
@@ -32,12 +33,12 @@ foreach ( $allUserBids as $currentUserId => $currentUserBidOnAuctions )
 
     // Ret recommended auctionIds that are still running (live)
     $recommendedAuctionIds = array_keys( $recommendations );
-    $recommendedAuctionIds = array_intersect( $allLiveAuctions, $recommendedAuctionIds );
+    $recommendedAuctionIds = array_intersect( $recommendedAuctionIds, $allLiveAuctions);
 
     // Prepare recommendation list string
     $list = "";
     $counter = 0;
-    $total = count( $recommendedAuctionIds );
+    $total = count( $recommendations );
     foreach ( $recommendedAuctionIds as $auctionId )
     {
         $list .= $auctionId;
@@ -51,5 +52,10 @@ foreach ( $allUserBids as $currentUserId => $currentUserBidOnAuctions )
     //Store string in the database
     QueryOperator::setUserRecommendations( $currentUserId, $list );
 }
+
+$end = new DateTime( "now", new DateTimeZone( "Europe/London" ) );
+$interval = $start->diff($end);
+echo $interval->format( '%h h %s s' );
+
 
 

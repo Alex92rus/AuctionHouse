@@ -196,12 +196,11 @@ $categories = $search_result["categories"];
             <!-- search main end -->
 
 
-
             <!-- recommendations start -->
-            <?php include "../includes/recommender_carousel.php" ?>
+            <?php
+            $page = "search";
+            include "../includes/recommender_carousel.php" ?>
             <!-- recommendations end -->
-
-
 
 
             <!-- footer start -->

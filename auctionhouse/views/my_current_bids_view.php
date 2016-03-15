@@ -57,8 +57,6 @@ $liveWithBidAuctions= QueryOperator::getLiveAuctionsWhereBuyerHasBid($user->getU
         <!-- main start -->
         <div id="page-wrapper">
 
-            <?php include_once "../includes/recommender_carousel.php" ?>
-
             <div class="row">
                 <div class="col-xs-12">
                     <h4 class="page-header">
@@ -66,6 +64,14 @@ $liveWithBidAuctions= QueryOperator::getLiveAuctionsWhereBuyerHasBid($user->getU
                     </h4>
                 </div>
             </div>
+
+
+            <!-- recommendations start -->
+            <?php
+            $page = "bids";
+            include "../includes/recommender_carousel.php" ?>
+            <!-- recommendations end -->
+
 
             <!-- search main start -->
             <div class="row" id="search-main">

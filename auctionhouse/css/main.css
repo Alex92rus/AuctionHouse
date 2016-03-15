@@ -530,17 +530,11 @@ h4#live-auction
  *-------------------------------------*/
 
 
-.recommendation-box
-{
-    margin-top: 100px;
-}
-
-
 .recommendation-box .panel-body
 {
-    padding-top: 30px;
     padding-left: 0;
     padding-right: 0;
+    padding-bottom: 0;
 }
 
 
@@ -560,6 +554,24 @@ li
 .thumbnails li> .fff .caption
 {
     background:#fff !important;
-    padding:10px
+    padding: 10px;
 }
 
+
+.carousel-control.left, .carousel-control.right
+{
+    background-image: none;
+}
+
+
+.carousel-control
+{
+    width: 5%;
+}
+
+
+.recommendations
+{
+    padding-left: 40px;
+    padding-right: 40px;
+}
