@@ -31,6 +31,7 @@ class QueryOperator
     const NOTIFICATION_UNNOTIFIED = "unnotified";
     const NOTIFICATION_OUTBID = 1;
     const NOTIFICATION_AUCTION_DELETED = 5;
+    const NOTIFICATION_FEEDBACK_RECEIVED = 7;
 
 
     private static $database;
@@ -205,8 +206,7 @@ class QueryOperator
             "userId" => $notifyId,
             "message" => $message,
             "categoryId" => $notificationType,
-            "time" => $now -> format( "Y-m-d H:i:s" ),
-            "emailed" => 1
+            "time" => $now -> format( "Y-m-d H:i:s" )
         ) );
         $notification -> create();
     }

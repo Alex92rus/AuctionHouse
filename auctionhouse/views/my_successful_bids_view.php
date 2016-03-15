@@ -58,6 +58,10 @@ $wonAuctions = QueryOperator::getEndedAuctionsWhereBuyerHasWon($user->getUserId(
     <!-- main start -->
     <div id="page-wrapper">
 
+        <!-- display feedback (if available) start -->
+        <?php require_once "../includes/notification.php" ?>
+        <!-- display feedback (if available) end -->
+
         <div class="row">
             <div class="col-xs-12">
                 <h4 class="page-header">

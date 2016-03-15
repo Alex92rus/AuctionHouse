@@ -36,6 +36,7 @@ class SessionOperator
     const PLACED_BID = "placed_bid";
     const CREATED_AUCTION = "created_auction";
     const CREATED_WATCH = "created_watch";
+    const FEEDBACK_SENT = "feedback_sent";
 
     const SUCCESS = "success";
     const WARNING = "warning";
@@ -178,6 +179,10 @@ class SessionOperator
             case self::CREATED_WATCH:
                 $title = "Auction added to watch list!";
                 $info  = "You can now track this auction underneath the 'My Watch List' section.";
+                break;
+            case self::FEEDBACK_SENT:
+                $title = "Feedback sent!";
+                $info = "Thank you for leaving a feedback, we really appreciate it.";
                 break;
             default:
                 $title = $info = $type = null;

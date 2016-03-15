@@ -5,6 +5,9 @@ require_once "../classes/class.validation_operator.php";
 require_once "../classes/class.query_operator.php";
 require_once "../classes/class.db_feedback.php";
 require_once "../classes/class.db_user.php";
+require_once "../classes/class.db_auction.php";
+require_once "../classes/class.db_item.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
 
 
 // Only process when start auction button was clicked
@@ -50,8 +53,8 @@ if($receiver == null or DbFeedback::withConditions
     HelperOperator::redirectTo( $redirectUrl );
 }
 
-$now = new DateTime();
-
+// Create Feedback
+$now = new DateTime( "now", new DateTimeZone( TIMEZONE ) );
 $feedback = new DbFeedback(array(
     "auctionId" => $_POST[ "auctionId" ],
     "creatorId" => SessionOperator::getUser()->getUserId(),
@@ -62,7 +65,17 @@ $feedback = new DbFeedback(array(
 ));
 $feedback->create();
 
+// Notify receiver
+$auction = DbAuction::find($auctionId);
+$item = DbItem::find($auction->getField("itemId"));
+$comment  = "You received a feedback from \"" . SessionOperator::getUser() -> getUserName() . "\" in your participation in \"";
+$comment .= $item -> getField( "itemName" ) . " - " .  $item -> getField( "itemBrand" ) . "\".";
+QueryOperator::addNotification( $receiver->getId(), $comment, QueryOperator::NOTIFICATION_FEEDBACK_RECEIVED );
 
+// Set feedback session
+SessionOperator::setNotification( SessionOperator::FEEDBACK_SENT );
+
+// Return to page
 HelperOperator::redirectTo( $redirectUrl );
 
 
