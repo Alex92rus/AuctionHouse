@@ -24,6 +24,7 @@ class Auction
     private $numWatches;
     private $highestBid;
     private $highestBidderId;
+    private $currentPrice;
     private $isUserWinning;
     private $hasBuyerFeedback;
     private $hasSellerFeedback;
@@ -390,6 +391,24 @@ class Auction
     {
         $this->highestBid = $highestBid;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrentPrice()
+    {
+        return $this->currentPrice;
+    }
+
+    /**
+     * @param mixed $currentPrice
+     */
+    public function setCurrentPrice($currentPrice)
+    {
+        $this->currentPrice = $currentPrice;
+    }
+
+
 
 
     /**

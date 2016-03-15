@@ -399,7 +399,7 @@ class QueryOperator
                 JOIN item_conditions ON items.conditionId = item_conditions.conditionId
                 JOIN countries ON users.countryId = countries.countryId
 
-        WHERE auctions.endTime > now() AND auctions.auctionId IN ( SELECT bids.auctionID FROM bids where bids.userId = __userId__ GROUP BY bids.auctionId)
+        WHERE auctions.endTime > now() AND auctions.auctionId IN ( SELECT bids.auctionId FROM bids where bids.userId = __userId__ GROUP BY bids.auctionId)
 
         GROUP BY  auctions.auctionId
 
@@ -440,7 +440,7 @@ class QueryOperator
                 JOIN countries ON users.countryId = countries.countryId
 
         WHERE auctions.endTime < now() AND auctions.highestBidderId != __userId__
-                AND auctions.auctionId IN ( SELECT bids.auctionID FROM bids where bids.userId = __userId__ GROUP BY bids.auctionId)
+                AND auctions.auctionId IN ( SELECT bids.auctionId FROM bids where bids.userId = __userId__ GROUP BY bids.auctionId)
 
         GROUP BY  auctions.auctionId
 
@@ -479,7 +479,7 @@ class QueryOperator
 
 
         WHERE auctions.endTime < now() AND auctions.highestBidderId = __userId__
-                AND auctions.auctionId IN ( SELECT bids.auctionID FROM bids where bids.userId = __userId__ GROUP BY bids.auctionId)
+                AND auctions.auctionId IN ( SELECT bids.auctionId FROM bids where bids.userId = __userId__ GROUP BY bids.auctionId)
 
         GROUP BY  auctions.auctionId
 
@@ -489,6 +489,66 @@ class QueryOperator
         $query = str_replace("__userId__", $userId, $query);
         self::getDatabaseInstance();
         return self::queryResultToAuctions(self::$database -> issueQuery( $query ));
+
+    }
+
+    public static function getBuyersRecommendedAuctions( $userId)
+    {
+
+        $query =  "
+
+        SELECT  auctions.auctionId, quantity, startPrice,
+                endTime, itemName, itemBrand, items.image,
+                COUNT( DISTINCT (bids.bidId)) AS numBids,
+                MAX(bids.bidPrice) AS highestBid,
+                case
+                    when MAX(bids.bidPrice)is not null THEN MAX(bids.bidPrice)
+                    else startPrice
+                end as currentPrice
+
+        FROM auctions
+
+                LEFT OUTER JOIN bids ON bids.auctionId = auctions.auctionId
+                JOIN items ON items.itemId = auctions.itemId
+
+        WHERE auctions.endTime < now()
+        AND FIND_IN_SET ( auctions.auctionId ,( SELECT recommendations
+                FROM recommendations WHERE userId = __userId__ ))
+
+        GROUP BY  auctions.auctionId
+        ORDER BY numBids DESC";
+        $query = str_replace("__userId__", $userId, $query);
+        self::getDatabaseInstance();
+        return self::queryResultToAuctions(self::$database -> issueQuery( $query ));
+
+    }
+
+    public static function getMostPopularAuctions()
+    {
+        $query =  "
+
+        SELECT  auctions.auctionId, quantity, startPrice,
+                endTime, itemName, itemBrand, items.image,
+                COUNT( DISTINCT (bids.bidId)) AS numBids,
+                MAX(bids.bidPrice) AS highestBid,
+                case
+                    when MAX(bids.bidPrice)is not null THEN MAX(bids.bidPrice)
+                    else startPrice
+                end as currentPrice
+
+        FROM auctions
+
+                LEFT OUTER JOIN bids ON bids.auctionId = auctions.auctionId
+                JOIN items ON items.itemId = auctions.itemId
+
+        WHERE auctions.endTime < now()
+
+        GROUP BY  auctions.auctionId
+        ORDER BY numBids DESC LIMIT 20";
+
+        self::getDatabaseInstance();
+        return self::queryResultToAuctions(self::$database -> issueQuery( $query ));
+
 
     }
 
