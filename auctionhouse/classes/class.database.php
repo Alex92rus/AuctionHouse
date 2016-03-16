@@ -26,6 +26,9 @@ class Database
     {
         $result = null;
 
+
+
+
         // Determine query type
         $queryType = explode( " ", trim( $sql ) );
         $queryType = strtoupper( $queryType[ 0 ] );
@@ -43,6 +46,7 @@ class Database
                 $result = $this -> insertQuery( $sql, $insertType, $params );
                 break;
             case "UPDATE":
+
                 if ( $insertType == null && $params === null )
                     $this->otherQuery( $sql );
                 else

@@ -275,6 +275,9 @@ class QueryOperator
 
 
     public static function searchAuctions($query) {
+
+        ?> <pre><?php echo var_dump($query) ?></pre> <?php
+        die();
         self::getDatabaseInstance();
         $result = self::$database -> issueQuery( $query );
         $auctions = array();
@@ -659,11 +662,7 @@ class QueryOperator
         $query =  "SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
                             endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
                             item_categories.categoryName as subCategoryName,
-                            conditionName, startTime <= NOW() AS hasStarted,
-                            case
-                                when MAX(bids.bidPrice) > reservePrice THEN true
-                                else false
-                            end as sold
+                            conditionName, startTime <= NOW() AS hasStarted
 
                     FROM auctions
 
