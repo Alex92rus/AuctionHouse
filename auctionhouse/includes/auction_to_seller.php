@@ -202,7 +202,7 @@ if ( $option == "live" ) {
                                 <h4>Bidding History</h4>
                             </div>
                         </div>
-                        <table class="table table-striped table-bordered table-hover"  cellspacing="0" id="dataTables-example">
+                        <table class="table table-striped table-bordered table-hover"  cellspacing="0" id="dataTables-example<?= $auction -> getAuctionId() ?>">
                             <thead>
                             <tr>
                                 <th>Bid Price</th>

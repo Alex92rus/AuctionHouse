@@ -372,7 +372,6 @@ class QueryOperator
             JOIN item_conditions ON items.conditionId = item_conditions.conditionId
             JOIN countries ON users.countryId = countries.countryId
 
-
         WHERE auction_watches.watchId IN( __watchedIds__)
 
         GROUP BY auctions.auctionId

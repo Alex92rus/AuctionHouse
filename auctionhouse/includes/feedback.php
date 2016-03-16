@@ -1,9 +1,8 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
+
 /* @var Feedback $feedback */
-
-
-
-$feedbackTime = new DateTime( $feedback -> getFeedbackTime() );
+$feedbackTime = new DateTime( $feedback -> getFeedbackTime(), new DateTimeZone( TIMEZONE ) );
 $month = substr( $feedbackTime -> format( 'F' ), 0, 3 );
 $day = $feedbackTime -> format( 'd' );
 $year = $feedbackTime -> format( 'Y' );
