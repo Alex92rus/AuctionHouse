@@ -38,7 +38,7 @@ foreach ( $allUserBids as $currentUserId => $currentUserBidOnAuctions )
     // Prepare recommendation list string
     $list = "";
     $counter = 0;
-    $total = count( $recommendations );
+    $total = count( $recommendedAuctionIds );
     foreach ( $recommendedAuctionIds as $auctionId )
     {
         $list .= $auctionId;
@@ -55,7 +55,7 @@ foreach ( $allUserBids as $currentUserId => $currentUserBidOnAuctions )
 
 $end = new DateTime( "now", new DateTimeZone( "Europe/London" ) );
 $interval = $start->diff($end);
-echo $interval->format( '%h h %s s' );
+echo $interval->format( '%h h $i min %s s' );
 
 
 
