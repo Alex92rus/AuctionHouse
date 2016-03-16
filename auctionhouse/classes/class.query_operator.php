@@ -224,18 +224,12 @@ class QueryOperator
 
     public static function getAuctionWatches( $auctionId )
     {
-        return self::getAuctionTraffic( $auctionId, "auction_watches" );
-    }
-
-
-    private static function getAuctionTraffic( $auctionId, $table )
-    {
         self::getDatabaseInstance();
 
         // SQL query for calculating number of views or watches for a specific auction
         $query  = "SELECT COUNT(*)";
-        $query .= "FROM auctions a, $table v ";
-        $query .= "WHERE a.auctionId = v.auctionId AND a.auctionId = $auctionId" ;
+        $query .= "FROM auctions a, auction_watches aw ";
+        $query .= "WHERE a.auctionId = aw.auctionId AND a.auctionId = $auctionId" ;
         $result = self::$database -> issueQuery( $query );
         $row = $result -> fetch_row();
 
@@ -755,10 +749,6 @@ class QueryOperator
         // SQL query for deleting unverified account
         $deleteUnverified = "DELETE FROM unverified_users WHERE userId = '$userId'";
         self::$database -> issueQuery( $deleteUnverified );
-
-        // SQL query for adding userId to recommendation receiver list
-        $addToRecommendationList  = "INSERT INTO recommendations ( userId ) VALUES ( ? )";
-        self::$database -> issueQuery( $addToRecommendationList, "i", array( $userId ) );
     }
 
 
