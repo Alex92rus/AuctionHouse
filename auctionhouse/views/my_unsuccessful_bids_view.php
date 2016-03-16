@@ -84,7 +84,7 @@ $didNotWinAuctions = QueryOperator::getEndedAuctionsWhereBuyerHasLost($user->get
                         echo "<h4>There are no auctions you failed to win</h4>";
                     } else {
                         foreach ( $didNotWinAuctions as $auction ) {
-                            echo $auction -> getUsername();
+
                             $origin = "didNotWin";
                             include "../includes/live_auction_to_buyer.php";
                         }

@@ -94,8 +94,8 @@ $stillAlive = new DateTime($auction->getEndTime(), new DateTimeZone( TIMEZONE ))
                             <div class="panel-body">
                                 <h4>Seller</h4>
                                 <p>
-                                    <a href="<?php echo '../views/my_feedbacks_view.php?username=' . $auction -> getUsername() ?>">
-                                        <?= $auction -> getUsername() ?>
+                                    <a href="<?php echo '../views/my_feedbacks_view.php?username=' . $auction -> getSellerUsername() ?>">
+                                        <?= $auction -> getSellerUsername() ?>
                                     </a>
                                 </p>
                             </div>
@@ -129,7 +129,7 @@ $stillAlive = new DateTime($auction->getEndTime(), new DateTimeZone( TIMEZONE ))
             </div>
 
             <?php if( $origin == "won") {
-                $feedbackReceiverUsername = $auction->getUsername();
+                $feedbackReceiverUsername = $auction->getSellerUsername();
                 if ($auction->getHasSellerFeedback()){?>
                     <div class="row">
                         <div class="col-xs-12">

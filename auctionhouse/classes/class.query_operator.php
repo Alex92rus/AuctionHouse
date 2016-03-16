@@ -419,7 +419,7 @@ class QueryOperator
         SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
                 endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
                 item_categories.categoryName as subCategoryName, superCategoryName,
-                item_categories.superCategoryId, item_categories.categoryId,
+                item_categories.superCategoryId, item_categories.categoryId, users.username as sellerUsername,
                 conditionName, countryName, COUNT(DISTINCT (bids.bidId)) AS numBids,
                 COUNT(DISTINCT (auction_watches.watchId)) AS numWatches,
                 MAX(bids.bidPrice) AS highestBid, MAX(bids.bidPrice)as currentPrice,
@@ -458,9 +458,9 @@ class QueryOperator
         SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
                 endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
                 item_categories.categoryName as subCategoryName, superCategoryName,
-                item_categories.superCategoryId, item_categories.categoryId, users.username,
+                item_categories.superCategoryId, item_categories.categoryId, users.username as sellerUsername,
                 conditionName, countryName, COUNT( DISTINCT (bids.bidId)) AS numBids,
-                COUNT(DISTINCT (auction_watches.watchId)) AS numWatches, COUNT( DISTINCT(sellers.username)) AS hasSellerFeedback,
+                COUNT(DISTINCT (auction_watches.watchId)) AS numWatches, COUNT( DISTINCT(sentFeedbackOn.username)) AS hasSellerFeedback,
                 MAX(bids.bidPrice) AS highestBid, MAX(bids.bidPrice)as currentPrice,
                 1 as sold
 
@@ -475,7 +475,7 @@ class QueryOperator
                 JOIN item_conditions ON items.conditionId = item_conditions.conditionId
                 JOIN countries ON users.countryId = countries.countryId
                 LEFT JOIN feedbacks ON creatorId = __userId__ AND feedbacks.auctionId = auctions.auctionId
-                LEFT JOIN users AS sellers ON feedbacks.receiverId = sellers.userId
+                LEFT JOIN users AS sentFeedbackOn ON feedbacks.receiverId = sentFeedbackOn.userId
 
 
         WHERE auctions.endTime < now() AND auctions.highestBidderId = __userId__

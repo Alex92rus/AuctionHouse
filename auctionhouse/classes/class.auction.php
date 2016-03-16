@@ -4,6 +4,7 @@ class Auction
 {
     private $auctionId;
     private $username;
+    private $sellerUsername;
     private $quantity;
     private $startPrice;
     private $reservePrice;
@@ -24,6 +25,7 @@ class Auction
     private $numWatches;
     private $highestBid;
     private $highestBidderId;
+    private $highestBidderUsername;
     private $currentPrice;
     private $isUserWinning;
     private $hasBuyerFeedback;
@@ -58,22 +60,40 @@ class Auction
         $this->auctionId = $auctionId;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getHighestBidderUsername()
+    {
+        return $this->highestBidderUsername;
+    }
+
+    /**
+     * @param mixed $highestBidderUsername
+     */
+    public function setHighestBidderUsername($highestBidderUsername)
+    {
+        $this->highestBidderUsername = $highestBidderUsername;
+    }
 
     /**
      * @return mixed
      */
-    public function getUsername()
+    public function getSellerUsername()
     {
-        return $this->username;
+        return $this->sellerUsername;
     }
 
     /**
-     * @param mixed $username
+     * @param mixed $sellerUsername
      */
-    public function setUsername($username)
+    public function setSellerUsername($sellerUsername)
     {
-        $this->username = $username;
+        $this->sellerUsername = $sellerUsername;
     }
+
+
+
 
 
     /**

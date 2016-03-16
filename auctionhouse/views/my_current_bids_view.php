@@ -83,7 +83,7 @@ $liveWithBidAuctions= QueryOperator::getLiveAuctionsWhereBuyerHasBid($user->getU
                         echo "<h4>There are no unfinished auctions you have bid on</h4>";
                     } else {
                         foreach ( $liveWithBidAuctions as $auction ) {
-                            echo $auction -> getUsername();
+                            echo $auction -> getSellerUsername();
                             $origin = "liveWithBid";
                             include "../includes/live_auction_to_buyer.php";
                         }
