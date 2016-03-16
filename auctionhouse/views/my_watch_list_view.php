@@ -86,7 +86,7 @@ $watchedAuctions = QueryOperator::getWatchedAuctions($user->getUserId());
                     echo "<h4>No Watched Auctions</h4>";
                 } else {
                     foreach ( $watchedAuctions as $auction ) {
-                        echo $auction -> getUsername();
+                        echo $auction -> getSellerUsername();
                         $origin = "watches";
                         include "../includes/live_auction_to_buyer.php";
                     }
