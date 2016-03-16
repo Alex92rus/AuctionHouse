@@ -54,7 +54,7 @@ $bids = QueryOperator::getAuctionBids($auction->getAuctionId());
 
 $watches = QueryOperator::getAuctionWatches($auction->getAuctionId());
 
-$isMyAuction = $auction -> getUsername() == SessionOperator::getUser() -> getUsername();
+$isMyAuction = $auction -> getSellerUsername() == SessionOperator::getUser() -> getUsername();
 
 //increment num_views of auction on database
 $dbAuction = DbAuction::find($auctionId);

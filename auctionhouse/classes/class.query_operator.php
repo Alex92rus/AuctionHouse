@@ -683,7 +683,7 @@ class QueryOperator
 
         SELECT a.auctionId, a.quantity, a.startPrice, a.reservePrice, a.startTime, a.endTime,
 		a.highestBidderId, i.itemName, i.itemBrand, i.itemDescription,
-        i.image, cat.categoryName, con.conditionName, u.username, a.views,
+        i.image, cat.categoryName, con.conditionName, u.username as sellerUsername, a.views,
         FORMAT (AVG(f.score) / 5, 2)*100 as avgSellerFeedbackPercentage, COUNT(f.score) as numFeedbacksForSeller
 
 		FROM auctions a JOIN items i ON a.itemId = i.itemId
