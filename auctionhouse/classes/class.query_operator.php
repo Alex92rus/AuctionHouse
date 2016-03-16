@@ -329,6 +329,23 @@ class QueryOperator
 
     public static function getWatchedAuctions($userId)
     {
+        //watchIds belonging to user _it was found this was alot faster than a subquery in the other query
+        $query = "
+                  SELECT auction_watches.watchId
+                  FROM auctions JOIN auction_watches ON auctions.auctionId = auction_watches.auctionId
+                  WHERE auction_watches.userId = 200";
+        $query = str_replace("__userId__", $userId, $query);
+        self::getDatabaseInstance();
+        $watchedIds = "";
+        $result  = self::$database -> issueQuery( $query );
+        while ($row = $result->fetch_assoc()){
+            $watchedIds .= $row["watchId"]. ",";
+        }
+        if(strlen($watchedIds) ==0 ){ //empty
+            return array();
+        }
+        $watchedIds = substr($watchedIds, 0, strlen($watchedIds)-1);
+
         $query = "SELECT auctions.auctionId, quantity, startPrice, reservePrice, startTime,
 		endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
         item_categories.categoryName as subCategoryName, superCategoryName,
@@ -356,16 +373,14 @@ class QueryOperator
             JOIN countries ON users.countryId = countries.countryId
 
 
-        WHERE auction_watches.watchId IN( SELECT auction_watches.watchId
-                                          FROM auctions JOIN auction_watches ON auctions.auctionId = auction_watches.auctionId
-                                          WHERE auction_watches.userId = __userId__ )
+        WHERE auction_watches.watchId IN( __watchedIds__)
 
         GROUP BY auctions.auctionId
 
         ORDER BY CASE WHEN auctions.endTime > now() THEN 0 ELSE 1 END ASC, auctions.endTime ASC
         ";
 
-        $query = str_replace("__userId__", $userId, $query);
+        $query = str_replace("__watchedIds__", $watchedIds, $query);
         self::getDatabaseInstance();
         return self::queryResultToAuctions(self::$database -> issueQuery( $query ));
 
