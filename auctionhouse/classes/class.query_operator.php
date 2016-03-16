@@ -349,7 +349,7 @@ class QueryOperator
         $query = "SELECT auctions.auctionId, quantity, startPrice, reservePrice, startTime,
 		endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
         item_categories.categoryName as subCategoryName, superCategoryName,
-        item_categories.superCategoryId, item_categories.categoryId,
+        item_categories.superCategoryId, item_categories.categoryId, users.username as sellerUsername,
         conditionName, countryName, auction_watches.watchId, COUNT(DISTINCT (bids.bidId)) AS numBids,
         MAX(bids.bidPrice) AS highestBid,
         case

@@ -133,7 +133,7 @@ $stillAlive = new DateTime($auction->getEndTime(), new DateTimeZone( TIMEZONE ))
                 if ($auction->getHasSellerFeedback()){?>
                     <div class="row">
                         <div class="col-xs-12">
-                            <p class="text-info">Thank you for leaving feedback for seller <a href="../views/my_feedbacks_view.php?username=<?=$auction->getUsername()?>"> <?=$auction->getUsername()?></a></a></p>
+                            <p class="text-info">Thank you for leaving feedback for seller <a href="../views/my_feedbacks_view.php?username=<?=$auction->getSellerUsername()?>"> <?=$auction->getSellerUsername()?></a></a></p>
                         </div>
                     </div>
                 <?php } else {
