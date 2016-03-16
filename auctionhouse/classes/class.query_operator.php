@@ -494,6 +494,20 @@ class QueryOperator
 
     public static function getBuyersRecommendedAuctions( $userId)
     {
+        $query = "
+
+        SELECT recommendations
+        FROM recommendations
+        WHERE userId = __userId__";
+        $query = str_replace("__userId__", $userId, $query);
+        self::getDatabaseInstance();
+        $recommendedDelimited = self::$database -> issueQuery( $query )->fetch_assoc()["recommendations"];
+
+        if($recommendedDelimited == null){ //empty
+            return array();
+        }
+        $recommendedIds = explode(",", $recommendedDelimited);
+        $auctionsTemp = array_fill(0, count($recommendedIds) -1, null);
 
         $query =  "
 
@@ -519,8 +533,17 @@ class QueryOperator
         ORDER BY numBids DESC";
         $query = str_replace("__userId__", $userId, $query);
         self::getDatabaseInstance();
-        return self::queryResultToAuctions(self::$database -> issueQuery( $query ));
+        $auctions =  self::queryResultToAuctions(self::$database -> issueQuery( $query ));
 
+        //putting them into a null array in order they appear
+        //note some values may remain null because the auction has expired
+        foreach ($auctions as $auction){
+            $auctionsTemp[(array_search($auction->getAuctionId(), $recommendedIds))] = $auction;
+        }
+        //remove the null elements
+        $auctions = array_filter($auctionsTemp, function($var){return !is_null($var);} );
+
+        return $auctions;
     }
 
     public static function getMostPopularAuctions($limit = 20)
