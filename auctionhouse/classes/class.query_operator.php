@@ -358,7 +358,7 @@ class QueryOperator
 
         WHERE auction_watches.watchId IN( SELECT auction_watches.watchId
                                           FROM auctions JOIN auction_watches ON auctions.auctionId = auction_watches.auctionId
-                                          WHERE auction_watches.userId = __userId__ )
+                                          WHERE auction_watches.userId = __userId__)
 
         GROUP BY auctions.auctionId
 

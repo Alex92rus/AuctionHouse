@@ -19,8 +19,12 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-    $('#dataTables-example').DataTable({
+    $('[id^="dataTables-example"]').filter(
+        function(){
+            return this.id.match(/\d+$/);
+        }).DataTable({
         "order": [[ 0, "desc" ]],
         responsive: true
     });
 });
+
