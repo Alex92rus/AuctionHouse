@@ -21,23 +21,54 @@
     <favorites_list name="COMP3013Databases" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.css" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/auctionhouse/css/index.css">
+    <leaf>
+      <file leaf-file-name="place_bid.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/auctionhouse/scripts/place_bid.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.47217235">
-              <caret line="50" column="1" selection-start-line="50" selection-start-column="1" selection-end-line="50" selection-end-column="1" />
+            <state vertical-scroll-proportion="0.86535007">
+              <caret line="44" column="66" selection-start-line="44" selection-start-column="66" selection-end-line="44" selection-end-column="66" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/auctionhouse/index.php">
+      <file leaf-file-name="class.query_operator.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/auctionhouse/classes/class.query_operator.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="52.541668">
-              <caret line="3" column="62" selection-start-line="3" selection-start-column="62" selection-end-line="3" selection-end-column="62" />
-              <folding />
+            <state vertical-scroll-proportion="-9.791667">
+              <caret line="34" column="30" selection-start-line="34" selection-start-column="10" selection-end-line="34" selection-end-column="30" />
+              <folding>
+                <marker date="1458247146000" expanded="true" signature="1612:1678" placeholder="SELECT count... countries" />
+                <marker date="1458247146000" expanded="true" signature="2032:2103" placeholder="SELECT categ... item_categories" />
+                <marker date="1458247146000" expanded="true" signature="2309:2383" placeholder="SELECT condi... item_conditions" />
+                <marker date="1458247146000" expanded="true" signature="3388:3492" placeholder="INSERT INTO users... " />
+                <marker date="1458247146000" expanded="true" signature="4026:4094" placeholder="INSERT INTO unverified_users... " />
+                <marker date="1458247146000" expanded="true" signature="4372:4501" placeholder="INSERT INTO items... " />
+                <marker date="1458247146000" expanded="true" signature="4664:4779" placeholder="INSERT INTO auctions... " />
+                <marker date="1458247146000" expanded="true" signature="12403:12596" placeholder="SELECT aucti... auctions" />
+                <marker date="1458247146000" expanded="true" signature="13061:14617" placeholder="SELECT aucti... auctions" />
+                <marker date="1458247146000" expanded="true" signature="14932:16546" placeholder="SELECT aucti... auctions" />
+                <marker date="1458247146000" expanded="true" signature="16846:18549" placeholder="SELECT aucti... auctions" />
+                <marker date="1458247146000" expanded="true" signature="18846:20761" placeholder="SELECT aucti... auctions" />
+                <marker date="1458247146000" expanded="true" signature="21055:22323" placeholder="SELECT aucti... *" />
+                <marker date="1458247146000" expanded="true" signature="21254:21341" placeholder="SELECT * FRO... recommendations" />
+                <marker date="1458247146000" expanded="true" signature="21378:22210" placeholder="SELECT aucti... auctions" />
+                <marker date="1458247146000" expanded="true" signature="22617:23281" placeholder="SELECT aucti... auctions" />
+                <marker date="1458247146000" expanded="true" signature="23508:24888" placeholder="SELECT aucti... auctions" />
+                <marker date="1458247146000" expanded="true" signature="25177:26288" placeholder="SELECT aucti... auctions" />
+                <marker date="1458247146000" expanded="true" signature="26575:27649" placeholder="SELECT aucti... auctions" />
+                <marker date="1458247146000" expanded="true" signature="28077:28790" placeholder="SELECT a.auc... auctions" />
+                <marker date="1458247146000" expanded="true" signature="29188:29266" placeholder="SELECT userI... users" />
+                <marker date="1458247146000" expanded="true" signature="29501:29572" placeholder="SELECT * FRO... unverified_users" />
+                <marker date="1458247146000" expanded="true" signature="30385:30439" placeholder="UPDATE users... " />
+                <marker date="1458247146000" expanded="true" signature="30584:30637" placeholder="DELETE FROM " />
+                <marker date="1458247146000" expanded="true" signature="31851:31900" placeholder="SELECT passw... users" />
+                <marker date="1458247146000" expanded="true" signature="32967:32983" placeholder="UPDATE users... " />
+                <marker date="1458247146000" expanded="true" signature="33785:33822" placeholder="SELECT first... users" />
+                <marker date="1458247146000" expanded="true" signature="34950:34998" placeholder="UPDATE ${{$t... " />
+                <marker date="1458247146000" expanded="true" signature="38676:38736" placeholder="UPDATE notif... " />
+                <marker date="1458247146000" expanded="true" signature="39308:39386" placeholder="UPDATE notif... " />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -89,8 +120,9 @@
         <option value="$PROJECT_DIR$/auctionhouse/index.php" />
         <option value="$PROJECT_DIR$/auctionhouse/cron/create_recommendations.php" />
         <option value="$PROJECT_DIR$/auctionhouse/db/complete_db_with_contents.sql" />
-        <option value="$PROJECT_DIR$/auctionhouse/classes/class.query_operator.php" />
         <option value="$PROJECT_DIR$/auctionhouse/css/index.css" />
+        <option value="$PROJECT_DIR$/auctionhouse/classes/class.query_operator.php" />
+        <option value="$PROJECT_DIR$/auctionhouse/scripts/place_bid.php" />
       </list>
     </option>
   </component>
@@ -165,6 +197,24 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="COMP3013Databases" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="COMP3013Databases" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="auctionhouse" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="classes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -233,7 +283,7 @@
     <frame x="0" y="23" width="1280" height="701" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25928918" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2673667" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -284,13 +334,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/auctionhouse/scripts/have_seen.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/auctionhouse/scripts/place_bid.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -604,67 +647,71 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/auctionhouse/classes/class.query_operator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24775584">
-          <caret line="889" column="0" selection-start-line="889" selection-start-column="0" selection-end-line="889" selection-end-column="0" />
-          <folding>
-            <marker date="1458220286000" expanded="true" signature="1576:1642" placeholder="SELECT count... countries" />
-            <marker date="1458220286000" expanded="true" signature="1996:2067" placeholder="SELECT categ... item_categories" />
-            <marker date="1458220286000" expanded="true" signature="2273:2347" placeholder="SELECT condi... item_conditions" />
-            <marker date="1458220286000" expanded="true" signature="3352:3456" placeholder="INSERT INTO users... " />
-            <marker date="1458220286000" expanded="true" signature="3990:4058" placeholder="INSERT INTO unverified_users... " />
-            <marker date="1458220286000" expanded="true" signature="4336:4465" placeholder="INSERT INTO items... " />
-            <marker date="1458220286000" expanded="true" signature="4628:4743" placeholder="INSERT INTO auctions... " />
-            <marker date="1458220286000" expanded="true" signature="12366:12559" placeholder="SELECT aucti... auctions" />
-            <marker date="1458220286000" expanded="true" signature="13024:14580" placeholder="SELECT aucti... auctions" />
-            <marker date="1458220286000" expanded="true" signature="14895:16509" placeholder="SELECT aucti... auctions" />
-            <marker date="1458220286000" expanded="true" signature="16809:18512" placeholder="SELECT aucti... auctions" />
-            <marker date="1458220286000" expanded="true" signature="18809:20724" placeholder="SELECT aucti... auctions" />
-            <marker date="1458220286000" expanded="true" signature="21018:22286" placeholder="SELECT aucti... *" />
-            <marker date="1458220286000" expanded="true" signature="21217:21304" placeholder="SELECT * FRO... recommendations" />
-            <marker date="1458220286000" expanded="true" signature="21341:22173" placeholder="SELECT aucti... auctions" />
-            <marker date="1458220286000" expanded="true" signature="22580:23244" placeholder="SELECT aucti... auctions" />
-            <marker date="1458220286000" expanded="true" signature="23471:23710" placeholder="SELECT aucti... auctions" />
-            <marker date="1458220286000" expanded="true" signature="23471:24851" placeholder="SELECT aucti... auctions" />
-            <marker date="1458220286000" expanded="true" signature="25140:26251" placeholder="SELECT aucti... auctions" />
-            <marker date="1458220286000" expanded="true" signature="26538:27612" placeholder="SELECT aucti... auctions" />
-            <marker date="1458220286000" expanded="true" signature="26778:27612" placeholder="SELECT aucti... auctions" />
-            <marker date="1458220286000" expanded="true" signature="28040:28730" placeholder="SELECT a.auc... auctions" />
-            <marker date="1458220286000" expanded="true" signature="29128:29206" placeholder="SELECT userI... users" />
-            <marker date="1458220286000" expanded="true" signature="29441:29512" placeholder="SELECT * FRO... unverified_users" />
-            <marker date="1458220286000" expanded="true" signature="30325:30379" placeholder="UPDATE users... " />
-            <marker date="1458220286000" expanded="true" signature="30524:30577" placeholder="DELETE FROM " />
-            <marker date="1458220286000" expanded="true" signature="31791:31840" placeholder="SELECT passw... users" />
-            <marker date="1458220286000" expanded="true" signature="32907:32923" placeholder="UPDATE users... " />
-            <marker date="1458220286000" expanded="true" signature="33725:33762" placeholder="SELECT first... users" />
-            <marker date="1458220286000" expanded="true" signature="34890:34938" placeholder="UPDATE ${{$t... " />
-            <marker date="1458220286000" expanded="true" signature="38616:38676" placeholder="UPDATE notif... " />
-            <marker date="1458220286000" expanded="true" signature="39248:39326" placeholder="UPDATE notif... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/auctionhouse/css/main.css">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="6.2513466">
           <caret line="553" column="29" selection-start-line="553" selection-start-column="29" selection-end-line="553" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/auctionhouse/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="52.541668">
-          <caret line="3" column="62" selection-start-line="3" selection-start-column="62" selection-end-line="3" selection-end-column="62" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/auctionhouse/css/index.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47217235">
+        <state vertical-scroll-proportion="0.491921">
           <caret line="50" column="1" selection-start-line="50" selection-start-column="1" selection-end-line="50" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auctionhouse/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.080789946">
+          <caret line="3" column="62" selection-start-line="3" selection-start-column="62" selection-end-line="3" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auctionhouse/classes/class.query_operator.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.791667">
+          <caret line="34" column="30" selection-start-line="34" selection-start-column="10" selection-end-line="34" selection-end-column="30" />
+          <folding>
+            <marker date="1458247146000" expanded="true" signature="1612:1678" placeholder="SELECT count... countries" />
+            <marker date="1458247146000" expanded="true" signature="2032:2103" placeholder="SELECT categ... item_categories" />
+            <marker date="1458247146000" expanded="true" signature="2309:2383" placeholder="SELECT condi... item_conditions" />
+            <marker date="1458247146000" expanded="true" signature="3388:3492" placeholder="INSERT INTO users... " />
+            <marker date="1458247146000" expanded="true" signature="4026:4094" placeholder="INSERT INTO unverified_users... " />
+            <marker date="1458247146000" expanded="true" signature="4372:4501" placeholder="INSERT INTO items... " />
+            <marker date="1458247146000" expanded="true" signature="4664:4779" placeholder="INSERT INTO auctions... " />
+            <marker date="1458247146000" expanded="true" signature="12403:12596" placeholder="SELECT aucti... auctions" />
+            <marker date="1458247146000" expanded="true" signature="13061:14617" placeholder="SELECT aucti... auctions" />
+            <marker date="1458247146000" expanded="true" signature="14932:16546" placeholder="SELECT aucti... auctions" />
+            <marker date="1458247146000" expanded="true" signature="16846:18549" placeholder="SELECT aucti... auctions" />
+            <marker date="1458247146000" expanded="true" signature="18846:20761" placeholder="SELECT aucti... auctions" />
+            <marker date="1458247146000" expanded="true" signature="21055:22323" placeholder="SELECT aucti... *" />
+            <marker date="1458247146000" expanded="true" signature="21254:21341" placeholder="SELECT * FRO... recommendations" />
+            <marker date="1458247146000" expanded="true" signature="21378:22210" placeholder="SELECT aucti... auctions" />
+            <marker date="1458247146000" expanded="true" signature="22617:23281" placeholder="SELECT aucti... auctions" />
+            <marker date="1458247146000" expanded="true" signature="23508:24888" placeholder="SELECT aucti... auctions" />
+            <marker date="1458247146000" expanded="true" signature="25177:26288" placeholder="SELECT aucti... auctions" />
+            <marker date="1458247146000" expanded="true" signature="26575:27649" placeholder="SELECT aucti... auctions" />
+            <marker date="1458247146000" expanded="true" signature="28077:28790" placeholder="SELECT a.auc... auctions" />
+            <marker date="1458247146000" expanded="true" signature="29188:29266" placeholder="SELECT userI... users" />
+            <marker date="1458247146000" expanded="true" signature="29501:29572" placeholder="SELECT * FRO... unverified_users" />
+            <marker date="1458247146000" expanded="true" signature="30385:30439" placeholder="UPDATE users... " />
+            <marker date="1458247146000" expanded="true" signature="30584:30637" placeholder="DELETE FROM " />
+            <marker date="1458247146000" expanded="true" signature="31851:31900" placeholder="SELECT passw... users" />
+            <marker date="1458247146000" expanded="true" signature="32967:32983" placeholder="UPDATE users... " />
+            <marker date="1458247146000" expanded="true" signature="33785:33822" placeholder="SELECT first... users" />
+            <marker date="1458247146000" expanded="true" signature="34950:34998" placeholder="UPDATE ${{$t... " />
+            <marker date="1458247146000" expanded="true" signature="38676:38736" placeholder="UPDATE notif... " />
+            <marker date="1458247146000" expanded="true" signature="39308:39386" placeholder="UPDATE notif... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auctionhouse/scripts/place_bid.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.86535007">
+          <caret line="44" column="66" selection-start-line="44" selection-start-column="66" selection-end-line="44" selection-end-column="66" />
           <folding />
         </state>
       </provider>
