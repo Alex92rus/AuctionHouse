@@ -270,6 +270,7 @@ class QueryOperator
 
     public static function searchAuctions($query) {
 
+
         self::getDatabaseInstance();
         $result = self::$database -> issueQuery( $query );
         $auctions = array();

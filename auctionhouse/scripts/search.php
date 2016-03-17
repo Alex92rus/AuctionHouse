@@ -53,7 +53,7 @@ else {
 $cats = getCatIdAndType($searchCategory);
 
 // Set up pagination object
-$total = QueryOperator::countFoundAuctions(buildQuery($searchString, $cats, $sort));
+$total = QueryOperator::countFoundAuctions(buildQuery($searchString, $cats, null));
 $page = ( isset ( $_GET[ "page" ] ) ) ? $_GET[ "page" ] : 1; $page = $page <= $total ? $page : 1;
 $per_page = 15;
 $pagination = new Pagination( $page, $per_page, $total );
@@ -145,19 +145,19 @@ function buildQuery($searchString, $searchCategory, $sortOption, $limit = null, 
             $query .= $orderBy;
             break;
         case "Time: ending soonest":
-            $orderBy = "ORDER BY auctions.endTime ASC";
+            $orderBy = " ORDER BY auctions.endTime ASC";
             $query .= $orderBy;
             break;
         case "Time: newly listed":
-            $orderBy = "ORDER BY auctions.endTime DESC";
+            $orderBy = " ORDER BY auctions.endTime DESC";
             $query .= $orderBy;
             break;
         case "Price: lowest first":
-            $orderBy = "ORDER BY currentPrice ASC";
+            $orderBy = " ORDER BY currentPrice ASC";
             $query .= $orderBy;
             break;
         case "Price: highest first":
-            $orderBy = "ORDER BY currentPrice DESC";
+            $orderBy = " ORDER BY currentPrice DESC";
             $query .= $orderBy;
             break;
     }
