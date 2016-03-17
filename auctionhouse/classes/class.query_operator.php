@@ -574,7 +574,7 @@ class QueryOperator
     {
         $query =  "SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
                             endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
-                            item_categories.categoryName as subCategoryName, creatorId,
+                            item_categories.categoryName as categoryName, creatorId,
                             conditionName, COUNT(DISTINCT(buyers.username)) AS hasBuyerFeedback,
 							1 as sold
 
@@ -608,7 +608,7 @@ class QueryOperator
     {
         $query =  "SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
                             endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
-                            item_categories.categoryName as subCategoryName,
+                            item_categories.categoryName as categoryName,
                             conditionName, 0 as sold
 
                     FROM auctions
@@ -625,7 +625,7 @@ class QueryOperator
 
                     GROUP BY auctions.auctionId
 
-                    HAVING MAX(bids.bidPrice) < reservePrice OR MAX(bids.bidPrice) = NULL
+                    HAVING MAX(bids.bidPrice) OR ISNULL(MAX(bids.bidPrice))
 
                     ORDER BY    endTime DESC";
 
@@ -639,7 +639,7 @@ class QueryOperator
     {
         $query =  "SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
                             endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
-                            item_categories.categoryName as subCategoryName,
+                            item_categories.categoryName as categoryName,
                             conditionName, startTime <= NOW() AS hasStarted
 
                     FROM auctions

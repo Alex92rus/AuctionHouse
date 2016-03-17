@@ -66,7 +66,8 @@ else
     }
 
     // Get item category and condition id
-    $ids = QueryOperator::getItemRelatedIds( $new_auction[ "itemCategory" ], $new_auction[ "itemCondition" ] );
+    $ids = QueryOperator::getItemRelatedIds(addslashes( $new_auction[ "itemCategory" ]), $new_auction[ "itemCondition" ] );
+
 
     // Prepare item parameters
     $item[] = SessionOperator::getUser() -> getUserId();
