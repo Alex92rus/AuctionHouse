@@ -898,7 +898,7 @@ class QueryOperator
         $query .= "WHERE f.auctionId = a.auctionId AND a.itemId = i.itemId AND f.creatorId = u.userId AND ";
         $query .= "f.receiverId = $userId AND i.userId";
         $query .= ( $role == self:: ROLE_SELLER ) ? " = " : " != ";
-        $query .= "$userId";
+        $query .= "$userId ORDER BY feedbackTime DESC";
         $result = self::$database -> issueQuery( $query );
 
         $feedbacks = [];
