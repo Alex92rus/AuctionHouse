@@ -9,6 +9,7 @@ $cronDb = new CronQueryOperator();
 $allLiveAuctions = $cronDb -> getAllLiveAuctions();
 
 
+
 // For each userId calculate their recommended auctions
 foreach ( $allUserBids as $currentUserId => $currentUserBidOnAuctions )
 {
@@ -42,7 +43,6 @@ foreach ( $allUserBids as $currentUserId => $currentUserBidOnAuctions )
     $cronDb = new CronQueryOperator();
     $cronDb -> setAuctionRecommendation( $currentUserId, $liveRecommendedAuctions );
 }
-
 
 
 
@@ -92,8 +92,8 @@ class RecommenderSystem
         array_multisort( $v, SORT_DESC, $k, SORT_ASC );
         $matchList = array_combine( $k, $v );
 
-        // Return the first 50 auctions with the highest matches
-        $matchList = array_slice( $matchList, 0, 50, true );
+        // Return the first 20 highest recommended auctions
+        $matchList = array_slice( $matchList, 0, 20, true );
         return $matchList;
     }
 }
@@ -109,7 +109,7 @@ class CronQueryOperator
     public function __construct()
     {
         // Set up connection
-        $this -> connection = new mysqli( "localhost", "root", "", "auctionsystem", "3306" );
+        $this -> connection = new mysqli( "localhost", "root", "root", "auctionsystem", "3306" );
         if ( $this -> connection -> connect_error )
         {
             die( "Database connection failed: " . $this -> connection -> connect_error );
