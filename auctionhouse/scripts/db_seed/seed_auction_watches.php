@@ -8,6 +8,10 @@ foreach ($auctions as $auction) {
 
     $userIdsWithoutOwner = listUserIdsWithoutAuctionOwner($auction, $userIds);
     $numWatches = 0;
+
+    if(new DateTime($auction->getField("startTime")) > new DateTime()){
+        continue;
+    }
     if($numBids= $auction->getField("numBids")){
         $numWatches = (int)($numBids * $faker->randomFloat(1,0.5, 1.5));
         //addWatches($auction, $userIdsWithoutOwner, (int)($numBids * $faker->randomFloat(0.5, 1.5)));

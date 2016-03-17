@@ -294,7 +294,6 @@ for ($i =0 ; $i < $numUsers ;$i++){
                 "reservePrice" => $reservePrice,
                 "startTime" => $startTime->format('Y-m-d H:i:s'),
                 "endTime"   => $endTime->format('Y-m-d H:i:s'),
-                "sold"      => 0,
                 "views"     =>$numViews,
                 "reportFrequency" => $faker->randomElement(array_values($reportFrequencies))
 
