@@ -224,18 +224,12 @@ class QueryOperator
 
     public static function getAuctionWatches( $auctionId )
     {
-        return self::getAuctionTraffic( $auctionId, "auction_watches" );
-    }
-
-
-    private static function getAuctionTraffic( $auctionId, $table )
-    {
         self::getDatabaseInstance();
 
         // SQL query for calculating number of views or watches for a specific auction
-        $query  = "SELECT COUNT(*)";
-        $query .= "FROM auctions a, $table v ";
-        $query .= "WHERE a.auctionId = v.auctionId AND a.auctionId = $auctionId" ;
+        $query  = "SELECT COUNT(*) ";
+        $query .= "FROM auctions a, auction_watches aw ";
+        $query .= "WHERE a.auctionId = aw.auctionId AND a.auctionId = $auctionId" ;
         $result = self::$database -> issueQuery( $query );
         $row = $result -> fetch_row();
 
@@ -276,8 +270,6 @@ class QueryOperator
 
     public static function searchAuctions($query) {
 
-        ?> <pre><?php echo var_dump($query) ?></pre> <?php
-        die();
         self::getDatabaseInstance();
         $result = self::$database -> issueQuery( $query );
         $auctions = array();
@@ -336,7 +328,7 @@ class QueryOperator
         $query = "
                   SELECT auction_watches.watchId
                   FROM auctions JOIN auction_watches ON auctions.auctionId = auction_watches.auctionId
-                  WHERE auction_watches.userId = 200";
+                  WHERE auction_watches.userId = __userId__";
         $query = str_replace("__userId__", $userId, $query);
         self::getDatabaseInstance();
         $watchedIds = "";
@@ -360,7 +352,7 @@ class QueryOperator
             else startPrice
 		end as currentPrice,
 		case
-		    when MAX(bids.bidPrice) > auctions.reservePrice AND auctions.endTime < now()then 1
+		    when MAX(bids.bidPrice) > auctions.reservePrice AND auctions.endTime < now() then 1
 		    else 0
 		end as sold
 
@@ -509,7 +501,47 @@ class QueryOperator
 
     }
 
-    public static function getBuyersRecommendedAuctions( $userId)
+
+    public static function getBuyersRecommendedAuctions($userId)
+    {
+        $query = "
+
+        SELECT auctionsBidsItems.auctionId, quantity, startPrice, reservePrice, startTime,
+	   endTime, itemName, itemBrand, itemDescription, image, views,
+	   numBids,highestBid,currentPrice
+
+        FROM	(SELECT *
+                FROM recommendations
+                WHERE userId = __userId__) 					AS recommended
+
+        JOIN	(SELECT  auctions.auctionId, quantity, startPrice, reservePrice, startTime,
+                endTime, itemName, itemBrand, itemDescription, items.image, auctions.views,
+                                            COUNT(DISTINCT (bids.bidId)) AS numBids,
+                                            MAX(bids.bidPrice) AS highestBid,
+                                            case
+                    when MAX(bids.bidPrice)is not null THEN MAX(bids.bidPrice)
+                                                              else startPrice
+                end as currentPrice
+                FROM auctions
+
+                LEFT OUTER JOIN bids ON bids.auctionId = auctions.auctionId
+                JOIN items ON items.itemId = auctions.itemId
+
+                WHERE auctions.endTime > now()
+
+                GROUP BY auctions.auctionId) 		 AS auctionsBidsItems
+
+        ON recommended.auctionId = auctionsBidsItems.auctionId
+
+        ORDER BY score ";
+
+        $query = str_replace("__userId__", $userId, $query);
+        self::getDatabaseInstance();
+        return self::queryResultToAuctions(self::$database -> issueQuery( $query ));
+    }
+
+
+    public static function getBuyersRecommendedAuctions2( $userId)
     {
         $query = "
 
@@ -754,10 +786,6 @@ class QueryOperator
         // SQL query for deleting unverified account
         $deleteUnverified = "DELETE FROM unverified_users WHERE userId = '$userId'";
         self::$database -> issueQuery( $deleteUnverified );
-
-        // SQL query for adding userId to recommendation receiver list
-        $addToRecommendationList  = "INSERT INTO recommendations ( userId ) VALUES ( ? )";
-        self::$database -> issueQuery( $addToRecommendationList, "i", array( $userId ) );
     }
 
 
@@ -1006,73 +1034,6 @@ class QueryOperator
         self::$database -> issueQuery( $query );
     }
 
-
-    public static function getBidOnAuctions( $userId )
-    {
-        self::getDatabaseInstance();
-
-        // SQL for retrieving all distinct auctions a user has bid on
-        $query  = "select distinct auctionId from bids where userId = $userId";
-        $result = self::$database -> issueQuery( $query );
-
-        $auctionIds = [];
-        while ( $row = $result -> fetch_row() )
-        {
-            $auctionIds[] = $row[ 0 ];
-        }
-
-        return $auctionIds;
-    }
-
-
-    public static function getUsersBidOnAuctions()
-    {
-        self::getDatabaseInstance();
-
-        // SQL for retrieving all verified users expect the specified one
-        $query  = "select userId from users where userId not in ( select userId from unverified_users) order by userId asc";
-        $result = self::$database -> issueQuery( $query );
-
-        $users = [];
-        while ( $row = $result -> fetch_row() )
-        {
-            $bids = self::getBidOnAuctions( $row[ 0 ] );
-            if ( !empty( $bids ) )
-            {
-                $users[ $row[ 0 ] ] = $bids;
-            }
-        }
-
-        return $users;
-    }
-
-
-    public static function setUserRecommendations( $userId, $recommendedAuctions )
-    {
-        self::getDatabaseInstance();
-
-        // SQL for creating auction recommendation for a user
-        $query = "UPDATE recommendations SET recommendations = '$recommendedAuctions' WHERE userId = '$userId'";
-        self::$database -> issueQuery( $query );
-    }
-
-
-    public static function getAllLiveAuctions()
-    {
-        self::getDatabaseInstance();
-
-        // SQL for retrieving all live auctions (not expired yet)
-        $query  = "select auctionId from auctions where endTime > NOW()";
-        $result = self::$database -> issueQuery( $query );
-
-        $auctionIds = [];
-        while ( $row = $result -> fetch_row() )
-        {
-            $auctionIds[] = $row[ 0 ];
-        }
-
-        return $auctionIds;
-    }
 
 
     public static function getCountriesList()

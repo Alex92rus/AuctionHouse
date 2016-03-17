@@ -76,8 +76,6 @@ class QueryBuilder
     public function count()
     {
         $this->query = "SELECT COUNT(*) AS num_rows " . $this->query;
-        var_dump($this->query);
-        die();
         return $this->executeQuery()->fetch_assoc()["num_rows"];
 
     }

@@ -93,9 +93,6 @@ class Auction
     }
 
 
-
-
-
     /**
      * @return mixed
      */

@@ -109,202 +109,202 @@ $alreadyWatching = DbAuctionWatch::withConditions("WHERE userId = ".$user->getUs
 </head>
 
 <body>
-    <!-- display feedback (if available) start -->
-    <?php require_once "../includes/notification.php" ?>
-    <!-- display feedback (if available) end -->
+<!-- display feedback (if available) start -->
+<?php require_once "../includes/notification.php" ?>
+<!-- display feedback (if available) end -->
 
 
-    <div id="wrapper">
+<div id="wrapper">
 
-        <!-- navigation start -->
-        <?php include_once "../includes/navigation.php" ?>
-        <!-- navigation end -->
-
-
-        <!-- main start -->
-        <div id="page-wrapper">
-
-            <!-- back start -->
-            <div class="row">
-                <?php if ( !empty( $refer ) ) : ?>
-                    <div class="col-xs-12" id="go-back-navigation">
-                        <a href="<?=$refer[0]?>" class="btn btn-primary"><i class="fa fa-chevron-left"></i></a>
-                        <a href="<?=$refer[0]?>"> <?=$refer[1]?></a>
-                    </div>
-                <?php endif ?>
-            </div>
-            <!-- back end -->
+    <!-- navigation start -->
+    <?php include_once "../includes/navigation.php" ?>
+    <!-- navigation end -->
 
 
-            <!-- display item related input errors (if available) start -->
-            <?php if ( ( $error = SessionOperator::getInputErrors( "bidPrice" ) ) != null ) :  ?>
-                <div class="alert alert-danger fade in">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>Input error!</strong> <?= $error ?>
+    <!-- main start -->
+    <div id="page-wrapper">
+
+        <!-- back start -->
+        <div class="row">
+            <?php if ( !empty( $refer ) ) : ?>
+                <div class="col-xs-12" id="go-back-navigation">
+                    <a href="<?=$refer[0]?>" class="btn btn-primary"><i class="fa fa-chevron-left"></i></a>
+                    <a href="<?=$refer[0]?>"> <?=$refer[1]?></a>
                 </div>
             <?php endif ?>
-            <!-- display item related input errors (if available) end -->
+        </div>
+        <!-- back end -->
 
 
-            <!-- live auction start -->
-            <div class="row">
+        <!-- display item related input errors (if available) start -->
+        <?php if ( ( $error = SessionOperator::getInputErrors( "bidPrice" ) ) != null ) :  ?>
+            <div class="alert alert-danger fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Input error!</strong> <?= $error ?>
+            </div>
+        <?php endif ?>
+        <!-- display item related input errors (if available) end -->
 
-                <!-- item image start -->
-                <div class="col-xs-3">
-                    <img src="<?= $auction->getImage() ?>" class="img-responsive img-rounded">
-                </div>
-                <!-- item image end -->
 
-                <!-- auction info start -->
-                <div class="col-xs-9">
+        <!-- live auction start -->
+        <div class="row">
 
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <h3 id="live-auction">
-                                <?= $auction -> getItemName() ?> - <?= $auction -> getItemBrand() ?>
-                            </h3>
-                            <p class="text-info">
-                                <i class="fa fa-eye"></i> <strong>Views <?= $views ?></strong> |
-                                <i class="fa fa-desktop"></i> <strong>Watching <?= $watches ?></strong>
-                            </p>
+            <!-- item image start -->
+            <div class="col-xs-3">
+                <img src="<?= $auction->getImage() ?>" class="img-responsive img-rounded">
+            </div>
+            <!-- item image end -->
+
+            <!-- auction info start -->
+            <div class="col-xs-9">
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h3 id="live-auction">
+                            <?= $auction -> getItemName() ?> - <?= $auction -> getItemBrand() ?>
+                        </h3>
+                        <p class="text-info">
+                            <i class="fa fa-eye"></i> <strong>Views <?= $views ?></strong> |
+                            <i class="fa fa-desktop"></i> <strong>Watching <?= $watches ?></strong>
+                        </p>
+                    </div>
+                </div><hr id="live-auction">
+
+                <div class="row">
+                    <div class="move-in">
+                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-plus-square"></i> Condition</p></div>
+                        <div class="col-xs-9"><p class="p-info"><?= $auction -> getConditionName() ?></p></div>
+                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-clock-o"></i> Time Left</p></div>
+                        <div class="col-xs-9"><p class="p-info"><strong><span class="text-danger" id="timer"></span></strong></p></div>
+                    </div>
+                    <script type="text/javascript">
+                        var timerId = "#timer";
+                        var endTime = <?= json_encode( $auction -> getEndTime() ) ?>;
+                        $(timerId).countdown( endTime, function(event) {
+                            $(this).text(
+                                event.strftime('%D days %H:%M:%S')
+                            );
+                        });
+                    </script>
+
+                    <div class="col-xs-12" id="bid-box">
+                        <div class="col-xs-3">
+                            <p class="p-title" style="padding-top:4px;"><i class="fa fa-money"></i>
+                                <?php if ( empty( $bids ) ) { echo "Starting Bid"; } else { echo "Current Bid"; } ?></p>
                         </div>
-                    </div><hr id="live-auction">
 
-                    <div class="row">
-                        <div class="move-in">
-                            <div class="col-xs-3"><p class="p-title"><i class="fa fa-plus-square"></i> Condition</p></div>
-                            <div class="col-xs-9"><p class="p-info"><?= $auction -> getConditionName() ?></p></div>
-                            <div class="col-xs-3"><p class="p-title"><i class="fa fa-clock-o"></i> Time Left</p></div>
-                            <div class="col-xs-9"><p class="p-info"><strong><span class="text-danger" id="timer"></span></strong></p></div>
-                        </div>
-                        <script type="text/javascript">
-                            var timerId = "#timer";
-                            var endTime = <?= json_encode( $auction -> getEndTime() ) ?>;
-                            $(timerId).countdown( endTime, function(event) {
-                                $(this).text(
-                                    event.strftime('%D days %H:%M:%S')
-                                );
-                            });
-                        </script>
-
-                        <div class="col-xs-12" id="bid-box">
-                            <div class="col-xs-3">
-                                <p class="p-title" style="padding-top:4px;"><i class="fa fa-money"></i>
-                                    <?php if ( empty( $bids ) ) { echo "Starting Bid"; } else { echo "Current Bid"; } ?></p>
-                            </div>
-
-                            <div class="col-xs-5">
-                                <div class="col-xs-8"><p class="p-info bid-price" style="margin-top: 0">£
-                                        <?php
-                                        $bid = null;
-                                        if ( empty( $bids ) ) {
-                                            $bid  = $auction -> getStartPrice();
-                                            if ( !$isMyAuction ) {
-                                                $bid .= "<br><small>Enter £" . $auction->getStartPrice() . " or more</small>";
-                                            }
-                                        } else {
-                                            $bid  = $bids[ 0 ] -> getBidPrice();
-                                            if( !$isMyAuction ) {
-                                                $bid .= "<br><small>Enter £ " . ($bid + HelperOperator::getIncrement($bid)) . " or more</small>";
-                                            }
+                        <div class="col-xs-5">
+                            <div class="col-xs-8"><p class="p-info bid-price" style="margin-top: 0">£
+                                    <?php
+                                    $bid = null;
+                                    if ( empty( $bids ) ) {
+                                        $bid  = $auction -> getStartPrice();
+                                        if ( !$isMyAuction ) {
+                                            $bid .= "<br><small>Enter £" . $auction->getStartPrice() . " or more</small>";
                                         }
-                                        echo $bid
-                                        ?></p>
-                                </div>
-                                <div class="col-xs-4">
-                                    <p class="p-info text-info" style="padding-top:4px;"><?= count( $bids ) ?> bids</p>
-                                </div>
-                                <?php if( !$isMyAuction ) { ?>
-                                    <form method="GET" action="../scripts/place_bid.php">
-                                        <div class="col-xs-8">
-                                            <input type="hidden" name="auctionId" value="<?= $auction -> getAuctionId() ?>">
-                                            <input type="text" class="form-control" name="bidPrice" maxlength="11" style="height: 30px"
-                                                <?php echo 'value = "' . SessionOperator::getFormInput( "bidPrice" ) . '"'; ?> ><br>
-                                        </div>
-                                        <div class="col-xs-4">
-                                            <button type="submit" class="btn btn-primary" style="height: 30px; padding: 4px 12px">Place Bid</button>
-                                        </div>
-                                    </form>
+                                    } else {
+                                        $bid  = $bids[ 0 ] -> getBidPrice();
+                                        if( !$isMyAuction ) {
+                                            $bid .= "<br><small>Enter £ " . ($bid + HelperOperator::getIncrement($bid)) . " or more</small>";
+                                        }
+                                    }
+                                    echo $bid
+                                    ?></p>
+                            </div>
+                            <div class="col-xs-4">
+                                <p class="p-info text-info" style="padding-top:4px;"><?= count( $bids ) ?> bids</p>
+                            </div>
+                            <?php if( !$isMyAuction ) { ?>
+                                <form method="GET" action="../scripts/place_bid.php">
+                                    <div class="col-xs-8">
+                                        <input type="hidden" name="auctionId" value="<?= $auction -> getAuctionId() ?>">
+                                        <input type="text" class="form-control" name="bidPrice" maxlength="11" style="height: 30px"
+                                            <?php echo 'value = "' . SessionOperator::getFormInput( "bidPrice" ) . '"'; ?> ><br>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <button type="submit" class="btn btn-primary" style="height: 30px; padding: 4px 12px">Place Bid</button>
+                                    </div>
+                                </form>
 
-                                    <div class="col-xs-12">
+                                <div class="col-xs-12">
                                     <?php
 
-                                        if(!$alreadyWatching){
-                                            $href = '"../scripts/create_watch.php?'.$_SERVER['QUERY_STRING'].'"';
-                                            echo '<a href='.$href.'><i class="fa fa-eye"></i> Add to watch list</a>';
-                                        }else{
-                                            echo "<a class=\"text-success\" href=\"my_watch_list_view.php#auction{$auction -> getAuctionId()}\"><i class=\"fa fa-eye\"></i> Watching</a>";
-                                        }
+                                    if(!$alreadyWatching){
+                                        $href = '"../scripts/create_watch.php?'.$_SERVER['QUERY_STRING'].'"';
+                                        echo '<a href='.$href.'><i class="fa fa-eye"></i> Add to watch list</a>';
+                                    }else{
+                                        echo "<a class=\"text-success\" href=\"my_watch_list_view.php#auction{$auction -> getAuctionId()}\"><i class=\"fa fa-eye\"></i> Watching</a>";
+                                    }
                                     ?>
 
-                                    </div>
-                                <?php } else { ?>
-                                    <div class="col-xs-12">
-                                        <a href="my_live_auctions_view.php#auction<?= $auction -> getAuctionId() ?>">This is your auction</a>
-                                    </div>
-                                <?php }
-                                if ( $auction -> getHighestBidderId() == $user -> getUserId() ) { ?>
-                                    <div class="col-xs-12">
-                                        <p class="text-success"><i class="fa fa-smile-o"></i> Currently the highest bidder</p>
-                                    </div>
-                                <?php }
-                                ?>
-                            </div>
-
-                            <div class="col-xs-4">
-                                <div class="panel panel-default" id="seller-info">
-                                    <div class="panel-body">
-                                        <h4>Seller Information</h4>
-                                        <p>
-                                            <a href="<?php echo '../views/my_feedbacks_view.php?username=' . $auction -> getUsername() ?>">
-                                                <?= $auction -> getUsername() ?>
-                                            </a><br>
-                                             <a href="<?php echo '../views/my_feedbacks_view.php?username=' . $auction -> getUsername() ?>">
-                                                <?php if ($auction->getAvgSellerFeedbackPercentage() != null){?>
-                                                    <?=$auction->getAvgSellerFeedbackPercentage()."% Posotive Feedback" ?>
-
-                                                <?php } ?>
-                                            </a><br>
-                                        </p>
-                                    </div>
                                 </div>
-                            </div>
+                            <?php } else { ?>
+                                <div class="col-xs-12">
+                                    <a href="my_live_auctions_view.php#auction<?= $auction -> getAuctionId() ?>">This is your auction</a>
+                                </div>
+                            <?php }
+                            if ( $auction -> getHighestBidderId() == $user -> getUserId() ) { ?>
+                                <div class="col-xs-12">
+                                    <p class="text-success"><i class="fa fa-smile-o"></i> Currently the highest bidder</p>
+                                </div>
+                            <?php }
+                            ?>
                         </div>
 
-                        <div class="move-in">
-                            <div class="col-xs-3"><p class="p-title"><i class="fa fa-shopping-cart"></i> Quantity</p></div>
-                            <div class="col-xs-9"><p class="p-info"><?= $auction -> getQuantity() ?></p></div>
-                            <div class="col-xs-3"><p class="p-title"><i class="fa fa-tags"></i> Category</p></div>
-                            <div class="col-xs-9"><p class="p-info"><?= $auction -> getCategoryName() ?></p></div>
-                            <div class="col-xs-3"><p class="p-title"><i class="fa fa-money"></i> Start Price</p></div>
-                            <div class="col-xs-9"><p class="p-info"><?= $auction -> getStartPrice() ?></p></div>
-                            <div class="col-xs-3"><p class="p-title"><i class="fa fa-calendar-check-o"></i> Start Time</p></div>
-                            <div class="col-xs-9"><p class="p-info"><?= date_create( $auction -> getStartTime() ) -> format( 'd-m-Y h:i' ) ?></p></div>
-                            <div class="col-xs-3"><p class="p-title"><i class="fa fa-list"></i> Description</p></div>
-                            <div class="col-xs-9"><p class="p-info text-justify"><?= $auction -> getItemDescription() ?></p></div>
+                        <div class="col-xs-4">
+                            <div class="panel panel-default" id="seller-info">
+                                <div class="panel-body">
+                                    <h4>Seller Information</h4>
+                                    <p>
+                                        <a href="<?php echo '../views/my_feedbacks_view.php?username=' . $auction -> getSellerUsername() ?>">
+                                            <?= $auction -> getSellerUsername() ?>
+                                        </a><br>
+                                        <a href="<?php echo '../views/my_feedbacks_view.php?username=' . $auction -> getSellerUsername() ?>">
+                                            <?php if ($auction->getAvgSellerFeedbackPercentage() != null){?>
+                                                <?=$auction->getAvgSellerFeedbackPercentage()."% Posotive Feedback" ?>
+
+                                            <?php } ?>
+                                        </a><br>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
+                    <div class="move-in">
+                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-shopping-cart"></i> Quantity</p></div>
+                        <div class="col-xs-9"><p class="p-info"><?= $auction -> getQuantity() ?></p></div>
+                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-tags"></i> Category</p></div>
+                        <div class="col-xs-9"><p class="p-info"><?= $auction -> getCategoryName() ?></p></div>
+                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-money"></i> Start Price</p></div>
+                        <div class="col-xs-9"><p class="p-info"><?= $auction -> getStartPrice() ?></p></div>
+                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-calendar-check-o"></i> Start Time</p></div>
+                        <div class="col-xs-9"><p class="p-info"><?= date_create( $auction -> getStartTime() ) -> format( 'd-m-Y h:i' ) ?></p></div>
+                        <div class="col-xs-3"><p class="p-title"><i class="fa fa-list"></i> Description</p></div>
+                        <div class="col-xs-9"><p class="p-info text-justify"><?= $auction -> getItemDescription() ?></p></div>
+                    </div>
                 </div>
-                <!-- live auction end -->
 
             </div>
-            <!-- main end -->
-
-
-            <!-- footer start -->
-            <div class="footer">
-                <div class="container">
-                </div>
-            </div>
-            <!-- footer end -->
+            <!-- live auction end -->
 
         </div>
         <!-- main end -->
 
 
+        <!-- footer start -->
+        <div class="footer">
+            <div class="container">
+            </div>
+        </div>
+        <!-- footer end -->
+
     </div>
-    <!-- /#wrapper -->
+    <!-- main end -->
+
+
+</div>
+<!-- /#wrapper -->
 
 </body>
 

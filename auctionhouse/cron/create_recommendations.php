@@ -27,30 +27,22 @@ foreach ( $allUserBids as $currentUserId => $currentUserBidOnAuctions )
     }
 
     // Calculate recommendation array
-    $recommendations = RecommenderSystem::getRecommendedAuctions( $remainingUserBids );
+    $allRecommendations = RecommenderSystem::getRecommendedAuctions( $remainingUserBids );
 
-    // Ret recommended auctionIds that are still running (live)
-    $recommendedAuctionIds = array_keys( $recommendations );
-    $recommendedAuctionIds = array_intersect( $recommendedAuctionIds, $allLiveAuctions);
-
-    // Prepare recommendation list string
-    $list = "";
-    $counter = 0;
-    $total = count( $recommendedAuctionIds );
-    foreach ( $recommendedAuctionIds as $auctionId )
+    // Get recommended auctions that are still running (live)
+    $allRecommendedAuctionIds = array_keys( $allRecommendations );
+    $liveRecommendedAuctionIds = array_intersect( $allRecommendedAuctionIds, $allLiveAuctions);
+    $liveRecommendedAuctions = [];
+    foreach ( $liveRecommendedAuctionIds as $auctionId )
     {
-        $list .= $auctionId;
-        if ( $counter < $total - 1 )
-        {
-            $list .= ",";
-        }
-        $counter++;
+        $liveRecommendedAuctions[ $auctionId ] = $allRecommendations[ $auctionId ];
     }
 
-    //Store string in the database
+    // Store recommended auctions into the database
     $cronDb = new CronQueryOperator();
-    $cronDb -> setUserRecommendations( $currentUserId, $list );
+    $cronDb -> setAuctionRecommendation( $currentUserId, $liveRecommendedAuctions );
 }
+
 
 
 
@@ -117,7 +109,7 @@ class CronQueryOperator
     public function __construct()
     {
         // Set up connection
-        $this -> connection = new mysqli( "localhost", "root", "root", "auctionsystem", "3306" );
+        $this -> connection = new mysqli( "localhost", "root", "", "auctionsystem", "3306" );
         if ( $this -> connection -> connect_error )
         {
             die( "Database connection failed: " . $this -> connection -> connect_error );
@@ -129,16 +121,25 @@ class CronQueryOperator
     {
         if ( !$result )
         {
-            die( "Failure when setting recommendations "  . $this -> connection -> connect_error );
+            die( "Failure when performing recommendations updates "  . mysqli_error( $this -> connection ) );
         }
         return $result;
     }
 
 
-    public function setUserRecommendations( $userId, $list )
+    public function setAuctionRecommendation( $userId, $recommendedAuctions )
     {
-        $query = "UPDATE recommendations SET recommendations = '$list' WHERE userId = $userId";
-        $this -> checkForErrors( $this -> connection -> query( $query ) );
+        // Delete out of date recommendations
+        $deleteQuery = "delete from recommendations where userId = $userId";
+        $this -> checkForErrors( $this -> connection -> query( $deleteQuery ) );
+
+        // Insert new recommendations
+        foreach ( $recommendedAuctions as $auctionId => $score )
+        {
+            $insertQuery = "insert into recommendations(userId, auctionId, score) VALUES( $userId, $auctionId, $score )";
+            $this -> checkForErrors( $this -> connection -> query( $insertQuery ) );
+        }
+
         $this -> connection ->close();
     }
 

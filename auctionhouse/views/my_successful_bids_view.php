@@ -88,7 +88,6 @@ $wonAuctions = QueryOperator::getEndedAuctionsWhereBuyerHasWon($user->getUserId(
                     echo "<h4>You have won no auctions</h4>";
                 } else {
                     foreach ( $wonAuctions as $auction ) {
-                        //echo $auction -> getUsername();
                         $origin = "won";
                         include "../includes/live_auction_to_buyer.php";
                     }
