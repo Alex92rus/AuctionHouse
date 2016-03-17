@@ -32,6 +32,7 @@ class QueryOperator
     const NOTIFICATION_OUTBID = 1;
     const NOTIFICATION_AUCTION_DELETED = 5;
     const NOTIFICATION_FEEDBACK_RECEIVED = 7;
+    const NOTIFICATION_NEW_BID = 8;
 
 
     private static $database;

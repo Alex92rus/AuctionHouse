@@ -36,6 +36,11 @@ if ( isset( $_GET[ "auctionId" ] ) && isset( $_GET[ "bidPrice" ] ) )
             QueryOperator::addNotification( $highestBidderId, $comment, QueryOperator::NOTIFICATION_OUTBID );
         }
 
+
+        $comment  = "You received a new bid on the auction \"" . $auction -> getItemName() . " " . $auction -> getItemBrand() . "\" by ";
+        $comment .= "by \"" .$user -> getUserName() . "\". The new highest bid is " . $bidPrice . " GSP.";
+        QueryOperator::addNotification( $auction -> getSellerId(), $comment, QueryOperator::NOTIFICATION_NEW_BID );
+
         // Place bid
         QueryOperator::placeBid( $auctionId, $userId, $bidPrice );
         $dbAuction = DbAuction::find($auctionId);
