@@ -5,6 +5,7 @@ class Auction
     private $auctionId;
     private $username;
     private $sellerUsername;
+    private $sellerId;
     private $quantity;
     private $startPrice;
     private $reservePrice;
@@ -92,6 +93,23 @@ class Auction
         $this->sellerUsername = $sellerUsername;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getSellerId()
+    {
+        return $this->sellerId;
+    }
+
+    /**
+     * @param mixed $sellerId
+     */
+    public function setSellerId($sellerId)
+    {
+        $this->sellerId = $sellerId;
+    }
+
+    
 
     /**
      * @return mixed
