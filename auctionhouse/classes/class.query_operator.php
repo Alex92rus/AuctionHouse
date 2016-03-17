@@ -627,7 +627,7 @@ class QueryOperator
 
                     GROUP BY auctions.auctionId
 
-                    HAVING MAX(bids.bidPrice) > reservePrice OR ISNULL(MAX(bids.bidPrice))
+                    HAVING MAX(bids.bidPrice) < reservePrice OR ISNULL(MAX(bids.bidPrice))
 
                     ORDER BY    endTime DESC";
 

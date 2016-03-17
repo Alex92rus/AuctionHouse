@@ -109,7 +109,7 @@ class Auction
         $this->sellerId = $sellerId;
     }
 
-    
+
 
     /**
      * @return mixed
