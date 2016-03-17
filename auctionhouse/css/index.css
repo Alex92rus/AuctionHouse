@@ -55,6 +55,12 @@ label
 }
 
 
+.text-danger
+{
+    color: #fca77d;
+}
+
+
 .container
 {
     padding-top: 15px;
