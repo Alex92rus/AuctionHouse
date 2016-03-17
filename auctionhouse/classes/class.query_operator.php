@@ -541,60 +541,6 @@ class QueryOperator
     }
 
 
-    public static function getBuyersRecommendedAuctions2( $userId)
-    {
-        $query = "
-
-        SELECT recommendations
-        FROM recommendations
-        WHERE userId = __userId__";
-        $query = str_replace("__userId__", $userId, $query);
-        self::getDatabaseInstance();
-        $recommendedDelimited = self::$database -> issueQuery( $query )->fetch_assoc()["recommendations"];
-
-        if($recommendedDelimited == null){ //empty
-            return array();
-        }
-        $recommendedIds = explode(",", $recommendedDelimited);
-        $auctionsTemp = array_fill(0, count($recommendedIds) -1, null);
-
-        $query =  "
-
-        SELECT  auctions.auctionId, quantity, startPrice,
-                endTime, itemName, itemBrand, items.image,
-                COUNT( DISTINCT (bids.bidId)) AS numBids,
-                MAX(bids.bidPrice) AS highestBid,
-                case
-                    when MAX(bids.bidPrice)is not null THEN MAX(bids.bidPrice)
-                    else startPrice
-                end as currentPrice
-
-        FROM auctions
-
-                LEFT OUTER JOIN bids ON bids.auctionId = auctions.auctionId
-                JOIN items ON items.itemId = auctions.itemId
-
-        WHERE auctions.endTime < now()
-        AND FIND_IN_SET ( auctions.auctionId ,( SELECT recommendations
-                FROM recommendations WHERE userId = __userId__ ))
-
-        GROUP BY  auctions.auctionId
-        ORDER BY numBids DESC";
-        $query = str_replace("__userId__", $userId, $query);
-        self::getDatabaseInstance();
-        $auctions =  self::queryResultToAuctions(self::$database -> issueQuery( $query ));
-
-        //putting them into a null array in order they appear
-        //note some values may remain null because the auction has expired
-        foreach ($auctions as $auction){
-            $auctionsTemp[(array_search($auction->getAuctionId(), $recommendedIds))] = $auction;
-        }
-        //remove the null elements
-        $auctions = array_filter($auctionsTemp, function($var){return !is_null($var);} );
-
-        return $auctions;
-    }
-
     public static function getMostPopularAuctions($limit = 20)
     {
         $query =  "
