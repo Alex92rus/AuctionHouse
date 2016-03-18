@@ -271,7 +271,7 @@ for ($i =0 ; $i < $numUsers ;$i++){
             }else{
                 $reservePrice   = 0;
             }
-            $startTime = $faker->dateTimeBetween('-2 weeks', '+2 weeks');
+            $startTime = $faker->dateTimeBetween('-2 weeks', '+2 months');
             $endTime = new DateTime($startTime->format('Y-m-d H:i:s'));
             $endTime->add(date_interval_create_from_date_string("7 days"));
             //$endTime = $faker->dateTimeBetween('+1 day', '+15 days');

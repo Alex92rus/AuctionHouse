@@ -30,7 +30,7 @@ $reportFrequencies = $_env_reportFrequencies;
 
 
 
-seedUsersItemsAndAuctions(500, 20, 5);
+seedUsersItemsAndAuctions(1000, 20, 5);
 
 
 //now get the userIds and auctions for next steps

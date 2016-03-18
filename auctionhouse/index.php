@@ -5,7 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
 
 
 //uncomment to seed database ; either run delete_table_data in db dir or reload schema first
-//include_once "scripts/db_seed/seed_database.php";
+include_once "scripts/db_seed/seed_database.php";
 
 
 ?>

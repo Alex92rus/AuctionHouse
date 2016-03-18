@@ -48,13 +48,13 @@ function makeBidsForAuction($auction, $numBids, $userIds)
 
     $bidInterval = (int)(($endTime->getTimestamp() - $startTime->getTimestamp()) / $numBids);
 
-    $price = $auction->getField("startPrice");
+    $price = (double)$auction->getField("startPrice");
 
     $userId = null;
     for ($i = 0; $i < $numBids; $i++) {
 
         $time = new DateTime('@' . ($startTime->getTimestamp() + ($bidInterval * ($i + 1))));
-        $price = $price + 0.5* $faker->numberBetween(1, 10);
+        $price = $price + 0.5 * $faker->numberBetween(2, 10);
 
         $userId = $faker->randomElement($userIds);
         $bid = new DbBid(array(
