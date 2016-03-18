@@ -11,7 +11,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] ."/classes/class.db_auction_watch.php");
 require_once ($_SERVER['DOCUMENT_ROOT'] ."/classes/class.db_feedback.php");
 include     ($_SERVER['DOCUMENT_ROOT'] ."/config/env_variables.php");
 
-set_time_limit(300);
+set_time_limit(0);
 
 $csvFile = $_SERVER['DOCUMENT_ROOT'] ."/scripts/db_seed/items.csv";
 $itemData = parse_csv_file($csvFile);

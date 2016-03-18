@@ -1017,4 +1017,27 @@ class QueryOperator
         // Query for returning all sort options stored in the db
         return DbSortOption::withConditions()->getListOfColumn( "sortName" );
     }
+
+
+    public static function test()
+    {
+        self::getDatabaseInstance();
+
+        $query  = "select a.auctionId, userId, endTime
+                   from auctions a, items i
+                   where a.itemId = i.itemId AND endTime > NOW()";
+        $result = self::$database -> issueQuery( $query );
+
+        $auctionIds = [];
+        while ( $row = $result -> fetch_assoc() )
+        {
+            $auctionIds[] = [
+                "auctionId" => $row[ "auctionId" ],
+                "userId" => $row[ "userId" ],
+                "endTime" => $row[ "endTime" ]
+                ];
+        }
+
+        return $auctionIds;
+    }
 }
