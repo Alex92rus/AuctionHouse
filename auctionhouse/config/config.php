@@ -14,7 +14,7 @@ defined( "DB_PORT" ) ? null : define( "DB_PORT", 3306 );
 // Email server
 defined( "EMAIL_DEBUG" ) ? null : define( "EMAIL_DEBUG", "html" );
 defined( "EMAIL_ENCRYPTION" ) ? null : define( "EMAIL_ENCRYPTION", "tls" );
-defined( "EMAIL_HOST" ) ? null : define( "EMAIL_HOST", "smtp.gmail.com" );
+defined( "EMAIL_HOST" ) ? null : define( "EMAIL_HOST", "" );
 defined( "EMAIL_USER" ) ? null : define( "EMAIL_USER", "" );
 defined( "EMAIL_PASSWORD" ) ? null : define( "EMAIL_PASSWORD", "" );
 defined( "EMAIL_SMTP" ) ? null : define( "EMAIL_SMTP", 587 );
