@@ -17,22 +17,33 @@ foreach ( $allUserBids as $currentUserId => $currentUserBidOnAuctions )
     $remainingUserBids = $allUserBids;
     unset( $remainingUserBids[ $currentUserId ] );
 
+    $totalMatches = 0;
+    $userMatches = [];
     // Remove users with unrelated bids
     foreach ( $remainingUserBids as $otherUserId => $otherUserBidOnAuctions )
     {
         $intersect = array_intersect( $currentUserBidOnAuctions, $otherUserBidOnAuctions );
+        // User not related
         if ( empty( $intersect ) )
         {
             unset( $remainingUserBids[ $otherUserId ] );
         }
+        // User related
+        else
+        {
+            $matches = count( $intersect );
+            $userMatches[ $otherUserId ] = $matches;
+            $totalMatches += $matches;
+        }
     }
 
     // Calculate recommendation array
-    $allRecommendations = RecommenderSystem::getRecommendedAuctions( $remainingUserBids );
+    $allRecommendations = RecommenderSystem::getRecommendedAuctions( $remainingUserBids, $totalMatches, $userMatches );
 
-    // Get recommended auctions that are still running (live)
+    // Get recommended auctions that are still running (live) and user has not bid on yet
     $allRecommendedAuctionIds = array_keys( $allRecommendations );
     $liveRecommendedAuctionIds = array_intersect( $allRecommendedAuctionIds, $allLiveAuctions);
+    $liveRecommendedAuctionIds = array_diff( $liveRecommendedAuctionIds, $currentUserBidOnAuctions );
     $liveRecommendedAuctions = [];
     foreach ( $liveRecommendedAuctionIds as $auctionId )
     {
@@ -50,51 +61,38 @@ foreach ( $allUserBids as $currentUserId => $currentUserBidOnAuctions )
 // Recommender System
 class RecommenderSystem
 {
-    public static function getRecommendedAuctions( $userBids )
+    public static function getRecommendedAuctions( $userBids, $totalMatches, $userMatches )
     {
-        $matchList = [];
+        $auctionIdList = [];
 
-        // Compare each user with each user
-        foreach ( $userBids as $userA => $userABids )
+        foreach ( $userBids as $userId => $auctions )
         {
-            foreach ( $userBids as $userB => $userBBids )
+            foreach( $auctions as $auctionId )
             {
-                if ( $userB <= $userA )
-                {
-                    continue;
-                }
+                $increment = round(  ( $userMatches[ $userId ] / $totalMatches ) * 10000000 );
 
-                // Get mutual auctionIds both users bid on
-                $matches = array_intersect( $userABids, $userBBids );
-                if ( !empty( $matches ) )
+                // If the auctionId already exists increment the existing counter
+                if ( array_key_exists( $auctionId, $auctionIdList ) )
                 {
-                    // For each common auctionId, increment its counter
-                    foreach( $matches as $match )
-                    {
-                        if ( array_key_exists( $match, $matchList ) )
-                        {
-                            $sum = $matchList[ $match ];
-                            $matchList[ $match ] = ++$sum;
-                        }
-                        else
-                        {
-                            $matchList[ $match ] = 1;
-                        }
-                    }
+                    $auctionIdList[ $auctionId ] += $increment;
+                }
+                // If the auctionId does not exist, create a new counter for this auctionId
+                else
+                {
+                    $auctionIdList[ $auctionId ] = $increment;
                 }
             }
 
         }
 
         // First sort values (number of matches) in desc order, then sort keys (auctionIds) in asc asc order
-        $k = array_keys( $matchList );
-        $v = array_values( $matchList );
+        $k = array_keys( $auctionIdList );
+        $v = array_values( $auctionIdList );
         array_multisort( $v, SORT_DESC, $k, SORT_ASC );
-        $matchList = array_combine( $k, $v );
+        $auctionIdList = array_combine( $k, $v );
 
-        // Return the first 20 highest recommended auctions
-        $matchList = array_slice( $matchList, 0, 20, true );
-        return $matchList;
+        $recommendedAuctionIds = array_slice( $auctionIdList, 0, 20, true );
+        return $recommendedAuctionIds;
     }
 }
 
